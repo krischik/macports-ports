@@ -1,9 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           compiler_blacklist_versions 1.0
 
 name                unbound
-version             1.6.3
+version             1.6.4
 categories          net
 license             BSD
 maintainers         {snc @nerdling}
@@ -29,15 +30,15 @@ long_description    Unbound is a validating, recursive, and caching DNS \
 
 master_sites        http://unbound.net/downloads/
 
-checksums           rmd160  a40872d863b0d5374973c10ade525095836df1d6 \
-                    sha256  4c7e655c1d0d2d133fdeb81bc1ab3aa5c155700f66c9f5fb53fa6a5c3ea9845f
+checksums           rmd160  cec85c40373525e525b773c01104ff432c9523d9 \
+                    sha256  df0a88816ec31ccb8284c9eb132e1166fbf6d9cde71fbc4b8cd08a91ee777fed
 
 configure.args-append   --with-pidfile=${prefix}/var/run/${name}/${name}.pid \
                         --with-ssl=${prefix} \
                         --with-rootkey-file=${prefix}/etc/${name}/root.key
 
 if {${os.major} == 10} {
-	configure.compiler  macports-clang-3.4
+    compiler.blacklist  *llvm-gcc-4.2 *gcc-4.0 gcc-3.3 clang
 }
 
 variant libevent description {Build with libevent (slower, but allows use of large outgoing port ranges)} {
