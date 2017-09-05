@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-hypothesis
-version             3.11.6
+version             3.17.0
 categories-append   devel
 platforms           darwin
 license             MPL-2
@@ -22,11 +22,10 @@ long_description \
 
 homepage            https://pypi.python.org/pypi/hypothesis
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
-
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  363ca4f0bb9b0d365cd87b501755eabd25a0a134 \
-                    sha256  54262436f4921107c5c5a06c80789c05f3a619d798208273d5779559e264e0d5
+checksums           rmd160  668f5836940ab44a4a98bac48d64c73d17062553 \
+                    sha256  7dfae52a8f7c3698977087ffc4ae1ff4667ce21c48bbea165c2757c3df1516fb
 
 if {${name} ne ${subport}} {
     depends_build-append  port:py${python.version}-setuptools

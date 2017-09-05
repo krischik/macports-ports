@@ -4,7 +4,7 @@ PortSystem              1.0
 PortGroup               compiler_blacklist_versions 1.0
 
 name                    nodejs8
-version                 8.1.2
+version                 8.4.0
 
 categories              devel net
 platforms               darwin
@@ -24,8 +24,9 @@ homepage                http://nodejs.org/
 master_sites            ${homepage}dist/v${version}
 use_xz                  yes
 
-checksums               rmd160  6c8887c42f8b51c2433bd303b6d363020fffa394 \
-                        sha256  ac190c1964ee0c28d4c163c0ccbb47435b2e4bd9b4c065b74a93373105c574b3
+checksums               rmd160  000190e1c985e861a9590649b5d041e9a042cc6b \
+                        sha256  5d5aa2a101dcc617231a475812eb8ed87cac21491f1dcc7997b9dd463563f361
+
 
 distname                node-v${version}
 

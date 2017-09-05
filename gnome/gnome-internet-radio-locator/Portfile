@@ -3,11 +3,12 @@
 PortSystem          1.0
 
 name                gnome-internet-radio-locator
-version             0.3.0
+version             0.8.0
+revision            1
 set branch          [join [lrange [split $version .] 0 1] .]
 categories          gnome
 platforms           darwin
-license             GPL-2+
+license             GPL-3+
 maintainers         {gnome.org:ole @oleaamot} \
                     openmaintainer
 description         GNOME Internet Radio Locator
@@ -17,12 +18,15 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  56a9a44d8883ebd252611812a84ba2705ffbbb55 \
-                    sha256  4c9884ec348a4e3ed305d2bfa39a3413a35d4bc0863b0a53f73d9163c920cf36
+checksums           rmd160  72c0f0284ab3a25f9012ea09b258ef9b66e1cf71\
+                    sha256  c6aba4bfcd4d0628ba2abb105b72396236324c31be03ddb4943456b21a1254c2
 
 depends_build       port:autoconf \
                     port:automake \
                     port:gnome-common \
+                    port:gstreamer1-gst-plugins-bad \
+                    port:gstreamer1-gst-plugins-good \
+                    port:gstreamer1-gst-plugins-ugly \
                     port:gtk-doc \
                     port:intltool \
                     port:itstool \
@@ -30,15 +34,16 @@ depends_build       port:autoconf \
                     port:yelp-tools
 
 depends_lib         port:desktop-file-utils \
+                    port:geocode-glib \
                     path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                    port:gnome-vfs \
+                    port:gstreamer1 \
+                    port:gstreamer1-gst-plugins-base \
                     port:gtk3 \
                     port:libchamplain \
                     port:libgnome \
                     port:libgnomeui \
                     port:libxml2 \
-                    port:gnome-vfs \
-                    port:gstreamer1 \
-                    port:gstreamer1-gst-plugins-base \
                     path:lib/pkgconfig/pango.pc:pango \
                     port:zlib
 

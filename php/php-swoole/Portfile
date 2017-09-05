@@ -4,7 +4,7 @@ PortSystem              1.0
 PortGroup               php 1.1
 
 name                    php-swoole
-version                 1.9.14
+version                 1.9.20
 categories-append       net devel
 platforms               darwin
 maintainers             {ryandesign @ryandesign} openmaintainer
@@ -13,8 +13,8 @@ license                 Apache-2
 php.branches            5.3 5.4 5.5 5.6 7.0 7.1
 php.pecl                yes
 
-checksums               rmd160  d787666763ffc2fb21647b5e14537dc90623f30b \
-                        sha256  c9af66c0b7ee2400d8768e27b7a10109cd91cc8745d3155fc447b57f415be03b
+checksums               rmd160  cafaf4e17aa81b58762c61465a8de8123fd20a03 \
+                        sha256  05ed897ffaec750f4437786ed0697c3ec2753a7c53c8a3e233e41432e0f394c1
 
 description             an event-driven asynchronous & concurrent & coroutine networking engine with high performance for PHP
 

@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                nginx
-version             1.13.2
+version             1.13.4
 categories          www mail
 platforms           darwin
 license             BSD
@@ -34,8 +34,8 @@ master_sites        http://nginx.org/download:nginx \
 
 distfiles           ${name}-${version}${extract.suffix}:nginx
 checksums           ${name}-${version}${extract.suffix} \
-                    rmd160  eaf5ef2397ce477fac87beb77c3be833b4a6ba80 \
-                    sha256  d77f234d14989d273a363f570e1d892395c006fef2ec04789be90f41a1919b70
+                    rmd160  3c8452cfa6f223e019a3411aec4d874c18082e23 \
+                    sha256  de21f3c49ba65c611329d8759a63d72e5fcf719bc6f2a3270e2541348ef1fbba
 
 depends_lib         port:pcre \
                     port:zlib
@@ -118,7 +118,7 @@ notes "\
     Additionally, the files [join ${auto_activate_confs} ", "] have been copied to ${nginx_confdir} if they didn't exist yet.\n\
     Adjust these files to your needs before starting nginx."
 
-default_variants +mp4 +flv +secure_link +ssl
+default_variants +mp4 +flv +secure_link +ssl +http2
 
 variant auth_request description {Add client authorization based on the result of a subrequest} {
     configure.args-append   --with-http_auth_request_module

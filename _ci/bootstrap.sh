@@ -1,12 +1,12 @@
 #!/bin/bash
+set -e
 curl -fsSLO "https://raw.githubusercontent.com/Homebrew/install/master/uninstall"
 chmod 0755 uninstall && ./uninstall -fq && rm -f uninstall
 /usr/bin/sudo /usr/bin/find /usr/local -mindepth 2 -delete && hash -r
 export OS_MAJOR=$(uname -r | cut -f 1 -d .)
-export MP_VER=v2.4.1a
-curl -fsSLO "https://dl.bintray.com/macports-ci-bot/macports-base/MacPorts-${MP_VER}-${OS_MAJOR}.tar.bz2"
-sudo tar -xpf "MacPorts-${MP_VER}-${OS_MAJOR}.tar.bz2" -C /
-rm -f "MacPorts-${MP_VER}-${OS_MAJOR}.tar.bz2"
+curl -fsSLO "https://dl.bintray.com/macports-ci-bot/macports-base/MacPorts-${OS_MAJOR}.tar.bz2"
+sudo tar -xpf "MacPorts-${OS_MAJOR}.tar.bz2" -C /
+rm -f "MacPorts-${OS_MAJOR}.tar.bz2"
 unset CC && source /opt/local/share/macports/setupenv.bash
 sudo sed -i "" "s|rsync://rsync.macports.org/macports/release/tarballs/ports.tar|file://${PWD}|; /^file:/s/default/nosync,default/" /opt/local/etc/macports/sources.conf
 echo "ui_interactive no" | sudo tee -a /opt/local/etc/macports/macports.conf
@@ -15,6 +15,7 @@ git remote add macports https://github.com/macports/macports-ports.git
 git fetch macports master
 git checkout -qf macports/master
 git checkout -qf -
+sudo patch /opt/local/bin/portindex _ci/patch-portindex.diff
 portindex
 sudo /opt/local/postflight && sudo rm -f /opt/local/postflight
 git clone --depth 1 https://github.com/macports/mpbb.git ../mpbb

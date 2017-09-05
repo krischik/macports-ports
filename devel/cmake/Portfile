@@ -23,15 +23,15 @@ dist_subdir         cmake
 
 subport cmake-devel {}
 
-set branch          3.8
+set branch          3.9
 
 if {${subport} eq ${name}} {
 
     # release
 
-    version         ${branch}.2
-    checksums       rmd160 369ed02b2a69a47d0792b7ee964907afedbd669d \
-                    sha256 da3072794eb4c09f2d782fcee043847b99bb4cf8d4573978d9b2024214d6e92d
+    version         ${branch}.1
+    checksums       rmd160 5938821da9cc282af60ad9c7fde2bd55a7626866 \
+                    sha256 d768ee83d217f91bb597b3ca2ac663da7a8603c97e1f1a5184bc01e0ad2b12bb
 
     master_sites    http://www.cmake.org/files/v${branch}/
     conflicts       cmake-devel
@@ -44,7 +44,8 @@ if {${subport} eq ${name}} {
         patch-Modules-FindQt4.cmake.release.diff \
         patch-Modules-FindFreetype.cmake.release.diff \
         patch-Modules-noArchCheck.release.diff \
-        patch-CMakeFindFrameworks.cmake.release.diff
+        patch-CMakeFindFrameworks.cmake.release.diff \
+        patch-Source_CMakeVersionCompute.cmake.release.diff
 
     livecheck.type  regex
     livecheck.regex ${name}-(\[0-9.\]+)${extract.suffix}
@@ -54,10 +55,10 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    version         20170627
-    set commit      1e34b42e7163b1f210b8a536b721af31fb059787
-    checksums       rmd160 8745c1f3aa64e4c598b54f6fbc0423043cb815bb \
-                    sha256 da59e6e8d2ba0cd7be0f2f493e3882dda9832285a71a67a808a9e65f25322dce
+    version         20170828
+    set commit      5eb6d200f4087f066eec4b9da805d33f95ede2bf
+    checksums       rmd160 600ed18d0b8b7742f09ac5b7a745c7c324dc09d2 \
+                    sha256 222a30df2288881e65fa59c5062c25c07a17d9e8dd287e033a91875addb5ab4c
 
     master_sites    https://gitlab.kitware.com/cmake/cmake/repository/archive.tar.bz2?ref=${commit}&
     distname        ${name}-${commit}
@@ -78,6 +79,10 @@ if {${subport} eq ${name}} {
         patch-CMakeFindFrameworks.cmake.devel.diff \
         patch-Source_CMakeVersionCompute.cmake.devel.diff
 
+    # require C++11 as of 2017-08-21
+    # https://gitlab.kitware.com/cmake/cmake/commit/c1f3eb9f2d628b2911aa17f65012fab0befc4b87
+    PortGroup cxx11 1.1
+
     livecheck.type  regex
     livecheck.regex /cmake/cmake/commit/(\[0-9a-g\]+)
     livecheck.version ${commit}
@@ -95,10 +100,6 @@ depends_lib-append  port:curl \
 # allow use of libuv or libuv-devel;
 # system libuv is the default as of 20160830 (g320f5)
 depends_lib-append  path:lib/pkgconfig/libuv.pc:libuv
-
-# CMake 3.2 changed dependency requirements to include jsoncpp.
-# jsoncpp 1.0+ requires CMake for building. catch 22. So, have CMake
-# use its internal jsoncpp until a better solution comes about.
 
 configure.env-append \
                     CMAKE_PREFIX_PATH=${prefix} \
@@ -124,6 +125,10 @@ platform darwin {
     }
 }
 
+# CMake 3.2 changed dependency requirements to include jsoncpp.
+# jsoncpp 1.0+ requires CMake for building. catch 22. So, have CMake
+# use its internal jsoncpp until a better solution comes about.
+
 configure.args-append --docdir=share/doc/cmake \
                     --parallel=${build.jobs} \
                     --init=${worksrcpath}/macports.cmake \
@@ -140,9 +145,16 @@ array set merger_host {i386 {} x86_64 {} ppc {} ppc64 {}}
 # Tiger has issues with system libraries;
 # just use the ones internal to cmake instead.
 platform darwin 8 {
-    configure.args-delete --system-libs \
-                          --no-system-jsoncpp
-    depends_lib-delete    path:lib/pkgconfig/libuv.pc:libuv
+    configure.args-delete --system-libs
+    configure.args-append --no-system-libs
+    depends_lib-delete \
+        path:lib/pkgconfig/libuv.pc:libuv \
+        port:curl \
+        port:expat \
+        port:zlib \
+        port:bzip2 \
+        port:libarchive \
+        port:ncurses
 }
 
 # Leopard's Rosetta has some difficulties configuring the ppc slice

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                diffoscope
-version             83
+version             85
 platforms           darwin
 supported_archs     noarch
 license             GPL-3+
@@ -23,9 +23,9 @@ long_description    diffoscope will try to get to the bottom of what makes \
 homepage            https://diffoscope.org/
 master_sites        pypi:d/diffoscope
 
-checksums           md5     921ea2dae739a6385dc2a6344ba39dd0 \
-                    rmd160  2225e2928fee7b19c57e7375b4a61ca2c6defad2 \
-                    sha256  ae57276779a233e4c8332518fa6d1a75e5bb2cc9a7f982037a377936919d95b1
+checksums           md5     8b2d8efd2ac12d899724c71e76140068 \
+                    rmd160  6a99b688cd1e94180e6fd1212420bc911d86ed09 \
+                    sha256  370070197ec0c313963ba81b225e3e0dfd0d51a494a796df1267cfb5c9762ad6
 
 python.default_version 36
 
@@ -41,11 +41,10 @@ depends_run-append  port:gnutar \
 
 patchfiles          patch-locale.diff
 
-# MacPorts >= 2.4
-#depends_test-append \
-#                    port:py${python.version}-py \
-#                    port:py${python.version}-pytest
+depends_test-append \
+                    port:py${python.version}-py \
+                    port:py${python.version}-pytest
 
-test.run yes
+test.run            yes
 
 livecheck.type      pypi

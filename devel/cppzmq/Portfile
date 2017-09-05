@@ -1,14 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-
 PortGroup           github 1.0
 
-github.setup        zeromq cppzmq 37275e78f2aec909b082592790b8e61b975c1cc7
-version             20170626
-checksums           rmd160 83725d1599def2cfd736eec78bce77446bdcb298 \
-                    sha256 0c9305ffcddd8ba37291e9f7e7956ae45e6006c0c0aaf14dfe5db6924ee9ea37
-
+name                cppzmq
 maintainers         michaelld openmaintainer
 platforms           darwin
 categories          devel sysutils net
@@ -16,6 +11,39 @@ license             Permissive
 
 description         High-level C++ Binding for 0MQ
 long_description    ${description}
+
+subport cppzmq-devel {}
+
+if {${subport} eq ${name}} {
+
+    # release
+
+    github.setup    zeromq cppzmq 4.2.2 v
+    checksums       rmd160 4d3ab1a389e82e028ae3f96f39e0adc7057d537a \
+                    sha256 9c4ce9f94fec4f198a3ad56cd8b337fe1c72c3202e763301f2410e12cb383c8e
+
+    # bump the epoch because I moved the version from 20170720 to 4.2.2
+
+    epoch           1
+
+    conflicts       ${name}-devel
+    long_description ${description}: \
+        This port follows the release version of ${name}, which is typically updated every 6 months. If for some reason this port does not build or function as desired, try the ${name}-devel port.
+
+} else {
+
+    # devel
+
+    github.setup    zeromq cppzmq e85a7b981b1db74c19f314badbff8609a092fe83
+    version         20170829
+    checksums       rmd160 ac6deb4dfe00d1fcf95e1839d221e6a4737035fa \
+                    sha256 fa9d97acfdad4a96536761d4a1683955f80746b04528945b6f3cb3b3368986d2
+
+    conflicts       ${name}
+    long_description ${description}: \
+        This port follows the GIT master version of ${name}, which is typically updated every few days to weeks.
+
+}
 
 depends_lib-append  path:lib/libzmq.dylib:zmq
 

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-xdis
-version             3.4.0
+version             3.5.2
 platforms           darwin
 license             GPL-2
 maintainers         {khindenburg @kurthindenburg} openmaintainer
@@ -24,13 +24,14 @@ homepage            http://pypi.python.org/pypi/${python.rootname}/
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  0f9b7a6de5f030aaa307061b5431e716f61e667b \
-                    sha256  08e61f48e0cbf270883bdd7ef140ec6f4472a98d09d818275c8e7bb41b75ecde
+checksums           rmd160  370f69da62d0a67e3f70b9b23d399788a8505fcd \
+                    sha256  e2db992590220311554750a6f6e05d53cdbabcad5ac1e55ba9b973510bf0045a
 
 python.versions     27 34 35 36
 
 if {${name} ne ${subport}} {
-    depends_build-append    port:py${python.version}-setuptools
+    depends_build-append    port:py${python.version}-setuptools \
+                            port:py${python.version}-pytest-runner
 
     depends_test-append port:py${python.version}-py \
                         port:py${python.version}-pytest

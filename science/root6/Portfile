@@ -10,9 +10,9 @@ PortGroup           select 1.0
 PortGroup           xcodeversion 1.0
 
 # don't forget to update both the git tag and the version
-github.setup        root-project root 6-10-00 v
+github.setup        root-project root 6-10-04 v
 version             [string map {- .} ${github.version}]
-revision            2
+revision            1
 livecheck.version   ${github.version}
 # github.setup      root-mirror root <sha>
 # version           6.10.00
@@ -20,8 +20,8 @@ livecheck.version   ${github.version}
 
 set version_major   [lindex [split ${version} .] 0]
 
-checksums           rmd160  049ec3aa3886abd604348d2d65ba0b6b7c945aa8 \
-                    sha256  bfcca21ffe0cb02711ba178ea9303e4d0643118c3f2329a8b752273aae194ecc
+checksums           rmd160  44f0979386373a144da02855235b681914a1dd62 \
+                    sha256  bc478322b119dda510a6b85086f5b8de1bf8016ca8ede3ebf692ef8ef2be6758
 
 name                root${version_major}
 categories          science
@@ -135,6 +135,7 @@ configure.args-append \
                     -Dastiff=ON \
                     -Dgeocad=OFF \
                     -Dr=OFF \
+                    -Dbuiltin_veccore=OFF \
                     -DPNG_LIBRARY=${prefix}/lib/libpng.dylib \
                     -DPNG_PNG_INCLUDE_DIR=${prefix}/include
 
@@ -243,7 +244,7 @@ post-activate {
 
 universal_variant no
 
-default_variants +cocoa +ssl +xml +gsl +minuit2 +tmva +roofit +graphviz +opengl +soversion +http +cxx17
+default_variants +cocoa +ssl +xml +gsl +minuit2 +tmva +roofit +graphviz +opengl +soversion +http +cxx17 +veccore
 
 variant qt4 description {Enable QT4 support} {
     configure.args-replace  -Dqt=OFF -Dqt=ON
@@ -256,6 +257,10 @@ variant cxx14 description {Enable c++14 compiler support} {
 
 variant cxx17 description {Enable c++17 compiler support} {
     configure.args-replace  -Dcxx17=OFF -Dcxx17=ON
+}
+
+variant veccore description {Enable VecCore support} {
+    configure.args-replace  -Dbuiltin_veccore=OFF -Dbuiltin_veccore=ON
 }
 
 variant valgrind description {Build internal LLVM library with valgrind support} {
@@ -421,7 +426,7 @@ foreach py_ver ${python_versions} {
         } elseif { [ file exists "${prefix}/lib/libpython${py_ver}.dylib" ] } {
             configure.args-append -DPYTHON_LIBRARY="${prefix}/lib/libpython${py_ver}.dylib"
         }
-        depends_lib-append      port:python${py_ver_no_dot} port:py${py_ver_no_dot}-numpy
+        depends_lib-append      port:python${py_ver_no_dot} port:py${py_ver_no_dot}-numpy port:py${py_ver_no_dot}-jupyter port:py${py_ver_no_dot}-readline
         
         post-destroot {
             # Install PyROOT lib in the correct place
@@ -430,6 +435,7 @@ foreach py_ver ${python_versions} {
             file mkdir ${destroot}${mypysitedir}
             foreach pyfile [glob ${destroot}${install_prefix}/lib/root/*.py*] { move $pyfile ${destroot}${mypysitedir}/ }
             ln -sf ${install_prefix}/lib/root/libPyROOT.so ${destroot}${mypylibdir}/
+            ln -sf ${install_prefix}/lib/root/libPyROOT.so ${destroot}${mypysitedir}/
             # Fix python version in scripts
             set pystringtoreplace "/usr/bin/python"
             foreach f [ exec find ${destroot}${install_prefix} -type f -and -name "*.py" ] {
@@ -438,6 +444,11 @@ foreach py_ver ${python_versions} {
             #foreach f [ exec find ${destroot}${install_prefix}/bin -type f | xargs grep -Il ${pystringtoreplace} ] {
             #    reinplace "s|${pystringtoreplace}|${prefix}/bin/python${active_python_version}|g" $f
             #}
+            # Support for juypter
+            ln -s ${install_prefix}/lib/root/JupyROOT       ${destroot}${mypysitedir}/
+            ln -s ${install_prefix}/lib/root/JsMVA          ${destroot}${mypysitedir}/
+            ln -s ${install_prefix}/lib/root/libJupyROOT.so ${destroot}${mypysitedir}/
+            ln -s ${install_prefix}/lib/root/libJupyROOT.so ${destroot}${mypylibdir}/
         }
 
     }
