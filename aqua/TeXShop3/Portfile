@@ -5,12 +5,12 @@ PortGroup           xcode 1.0
 
 name                TeXShop3
 conflicts           TeXShop
-version             3.85
+version             3.87
 
 set major           [lindex [split ${version} .] 0]
 categories          aqua editors
 license             GPL-2+
-maintainers         {jwa @jyrkiwahlstedt} openmaintainer
+maintainers         {mps @Schamschula} openmaintainer
 description         TeX previewer for Mac OS X
 long_description   \
     TeXShop is a TeX previewer for Mac OS X, written in Cocoa.  \
@@ -26,8 +26,8 @@ dist_subdir         TeXShop/
 worksrcdir          texshopsource[strsed ${version} {/\.//}]
 set propername      TeXShop
 
-checksums           rmd160  0de39eca9798cd9c9ec84c5faeccc86da28de38e \
-                    sha256  eb4cb01632dff7bbef7292886da139432c166d8622f9e20b328c342ec381e0bf
+checksums           rmd160  3021d9ba1debbcdf715e66c0a21ea6a42d56ff33 \
+                    sha256  1b367277a47971420b7eb1b1858876410603aaa3d43eb0007be7c4d93618d765
 
 pre-fetch {
     platform darwin {

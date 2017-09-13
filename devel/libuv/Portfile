@@ -18,9 +18,9 @@ long_description \
 
 if {${subport} eq ${name}} {
 
-    github.setup    libuv libuv 1.14.0 v
-    checksums       rmd160 4931ddc5d8467156b02d31e9fe96e84067a4498c \
-                    sha256 0a552ae730d88d83b883549f8b49b141163fcc81a9eee7f6febc84304a3b9c37
+    github.setup    libuv libuv 1.14.1 v
+    checksums       rmd160 f67146472a53c11562b630a7f4f92693352cdb71 \
+                    sha256 3c22a68317818921489ef295c6012bedbd03be773f44918f16a5628ac666e8db
 
     conflicts       libuv-devel
 
@@ -28,10 +28,10 @@ if {${subport} eq ${name}} {
 
 subport libuv-devel {
 
-    github.setup    libuv libuv 564677d325db6122cba2091100d07ea6d366161b
-    version         20170821
-    checksums       rmd160 d65dcc284154e6f82eb537f8185e3ac31fbc1cee \
-                    sha256 67999bb823b09158f94f71877ac4e04d8336accd065ca914ffd01342ea7d6709
+    github.setup    libuv libuv 832ab902cf63dd42d6c75b60196dfb83d553e126
+    version         20170907
+    checksums       rmd160 41deedcb11797ceac28c7a83206d11588ae93638 \
+                    sha256 64bc2a8d874931d3a0379a2513484a86dfa001ad237b16c0a45f911a202e7d74
 
     long_description    ${long_description} \
         This port is kept up with the libuv GIT 'master' branch, is typically updated weekly to monthly.

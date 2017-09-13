@@ -20,14 +20,32 @@ if {${name} eq ${subport}} {
     checksums           rmd160 e04348c22a8f8026f6a53ffbdecfcc3e24d63db3 \
                         sha256 f9e2e59afb4ec7d9ea8b99b7430b201999de28f88d18e139a60cb89bc68813d1
     conflicts           direnv-devel
+
+    # fix importing of dotenv
+    patchfiles-append   patch-cmd_dotenv.go.release.diff
+
+    post-patch {
+        # move 'dotenv' into 'src/dotenv' to make GOPATH happy
+        file mkdir ${worksrcpath}/src
+        move ${worksrcpath}/dotenv ${worksrcpath}/src
+    }
 }
 
 subport direnv-devel {
-    github.setup        direnv direnv 295569da5a2f9d48d68f56a64cd0ba37bd904884
-    version             20170828
-    checksums           rmd160 7dfafb0b075fd18c94ff116acd618a52f641ba72 \
-                        sha256 92dddf5134176565bd952b3e84c58a32367cb48d1a4689085fffb085f9ecf176
+    github.setup        direnv direnv 9d51bdb0b92655bffbd0355b2fc18c7124c30713
+    version             20170907
+    checksums           rmd160 96bb97d3f319815e792ffe21cf9cddcc56cb3601 \
+                        sha256 1847577226fce120016461795943985a58169c2438553fe3013a8d060f9fd473
     conflicts           direnv
+
+    # fix importing of dotenv
+    patchfiles-append   patch-cmd_dotenv.go.devel.diff
+
+    post-patch {
+        # move 'dotenv' into 'src/dotenv' to make GOPATH happy
+        file mkdir ${worksrcpath}/src
+        move ${worksrcpath}/vendor/github.com/direnv/go-dotenv ${worksrcpath}/src/dotenv
+    }
 }
 
 # override github information
@@ -38,17 +56,8 @@ homepage                http://direnv.net/
 
 depends_lib-append      port:go
 
-# fix importing of dotenv
-patchfiles-append       patch-cmd_dotenv.go.diff
-
 # fix PREFIX and DESTDIR variables to match what 'port' needs
 patchfiles-append       patch-Makefile.diff
-
-post-patch {
-    # move 'dotenv' into 'src/dotenv' to make GOPATH happy
-    file mkdir ${worksrcpath}/src
-    move ${worksrcpath}/dotenv ${worksrcpath}/src
-}
 
 use_configure           no
 
