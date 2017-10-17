@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                npm5
-version             5.4.1
+version             5.5.1
 
 categories          devel
 platforms           darwin
@@ -19,7 +19,7 @@ long_description    npm is a package manager for node. \
 
 conflicts           npm2 npm3 npm4
 
-homepage            http://www.npmjs.org/
+homepage            https://www.npmjs.com/
 
 master_sites        http://registry.npmjs.org/npm/-/
 
@@ -27,8 +27,8 @@ distname            npm-${version}
 
 extract.suffix      .tgz
 
-checksums           rmd160  752ccfbe0d71caa26d02005e1b3d6f56af4de69e \
-                    sha256  1d43fad63e4be2c8c28ec58fc8c1c14fc0f106018802c83fe75d163ae1435178
+checksums           rmd160  df54fbd1fb2fcad0356ff0ec1f768418d39c599d \
+                    sha256  b8b9afb0bb6211a289f969f66ba184ca5bc83abf6a570e0853ea5185073dca6f
 
 worksrcdir          "package"
 

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 
 name                cppzmq
-maintainers         michaelld openmaintainer
+maintainers         {michaelld @michaelld} openmaintainer
 platforms           darwin
 categories          devel sysutils net
 license             Permissive
@@ -34,10 +34,10 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    github.setup    zeromq cppzmq af523fad7d93e0fa10a5fec5c0cf28c0f9246493
-    version         20170831
-    checksums       rmd160 ee5e4aeed1dc71bdddabf23af776cae834d8d197 \
-                    sha256 c94151111bb49e29b126276b7bea8b74495763e1e60b320fb99c874abc843cf7
+    github.setup    zeromq cppzmq 80553147229806e7c0aff9ddb29682bf56f20282
+    version         20171010
+    checksums       rmd160 41c922deb653670450fca96e0bb39f96654adea2 \
+                    sha256 3b25535b8e07d9a9e0ed3ed17a0d80d26de5d202419f9b961a22c1be6c97c298
 
     conflicts       ${name}
     long_description ${description}: \

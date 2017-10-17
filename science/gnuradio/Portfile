@@ -12,7 +12,7 @@ PortGroup           wxWidgets 1.0
 wxWidgets.use       wxPython-3.0
 
 name                gnuradio
-maintainers         michaelld
+maintainers         {michaelld @michaelld}
 
 description         GNU Radio is Software Defined Radio (SDR)
 
@@ -54,11 +54,11 @@ subport gnuradio-devel {
     name                gnuradio-devel
     conflicts           gnuradio gnuradio-next
 
-    github.setup        gnuradio gnuradio 34933ac6bc9be665b916be146cf040197fc19229
-    version             20170827
+    github.setup        gnuradio gnuradio a0adcd3347c7ffd6ef3c42ce7705a23978774d3b
+    version             20171005
     checksums \
-        rmd160 d57825133fe21bd897cb6337534367d34b695af7 \
-        sha256 a3359178b60d777f4947f4681ff72a0c28a287422f21e8204e7d6a4d603159b4
+        rmd160 cfea38518ae4d17d11f6933095bd6deda65f6255 \
+        sha256 b6f7bfbe5d21512c4cdb5bb0cc4b56d3d25fa040926a3dd8b74dec316cdd3cc1
 
     # set the version override string
 
@@ -74,11 +74,11 @@ subport gnuradio-next {
     name                gnuradio-next
     conflicts           gnuradio gnuradio-devel
 
-    github.setup        gnuradio gnuradio 1375fe38dd7ff6bcaffc25aed9b990a64cdb9c03
-    version             20170827
+    github.setup        gnuradio gnuradio 3c63f7334d6de70d655aa97fcccbfb950645f4d4
+    version             20171005
     checksums \
-        rmd160 12bb829c0563662d8bdcc852622ae657fcd912e0 \
-        sha256 efe064522016e72594fd955eb773bfce28878c9f06ceeb4f5fe3ead7a56a3c6e
+        rmd160 a0f7760a78e6b3d3b031e8d24e2dcfc118d26225 \
+        sha256 c1afc49bb117c6ea6634620a75776e29959bdd359653779c92ca8ac515f7d2b9
 
     # set the version override string
 
@@ -108,7 +108,7 @@ if {${subport} eq "gnuradio"} {
     # checking depending on version of CppUnit & allowing MacPorts to
     # decide the setting.
 
-    patchfiles-append patch-CMakeLists.txt.release.diff
+    patchfiles-append patch-CMakeLists.txt.diff
 
     # temporary patch to fix gr-fec to switch code from 'constexpr' to
     # just 'const'; this patch is already integrated upstream, so
@@ -133,7 +133,12 @@ if {${subport} eq "gnuradio"} {
     # the directories, sorting them to be internal to build or source
     # first and external last.
 
-    patchfiles-append patch-add-CMakeOverloads.release.diff
+    patchfiles-append patch-add-CMakeOverloads.diff
+
+    # temporary patch to fix FindCppUnit.cmake to return version found
+    # to calling script.
+
+    patchfiles-append patch-cmake_Modules_FindCppUnit.cmake.diff
 
 } elseif {${subport} eq "gnuradio-devel"} {
 
@@ -141,41 +146,15 @@ if {${subport} eq "gnuradio"} {
     patchfiles-append \
         patch-cmake-expand.devel.diff
 
-    # Fix setting of the C++ standard internal to GR, with internal
-    # checking depending on version of CppUnit & allowing MacPorts to
-    # decide the setting.
-
-    patchfiles-append patch-CMakeLists.txt.devel.diff
-
-    # temporary patch to add in a macro that overloads the function
-    # include_directories to be a little smarter as to the ordering of
-    # the directories, sorting them to be internal to build or source
-    # first and external last.
-
-    patchfiles-append patch-add-CMakeOverloads.devel.diff
-
 } else {
 
     # patches for next
     patchfiles-append \
         patch-cmake-expand.next.diff
 
-    # Fix setting of the C++ standard internal to GR, with internal
-    # checking depending on version of CppUnit & allowing MacPorts to
-    # decide the setting.
-
-    patchfiles-append patch-CMakeLists.txt.next.diff
-
     # temporary patch to fix include order
 
     patchfiles-append patch-fix_includes.next.diff
-
-    # temporary patch to add in a macro that overloads the function
-    # include_directories to be a little smarter as to the ordering of
-    # the directories, sorting them to be internal to build or source
-    # first and external last.
-
-    patchfiles-append patch-add-CMakeOverloads.next.diff
 
 }
 
@@ -185,11 +164,6 @@ platform darwin 10 {
     patchfiles-append \
         patch-gr-blocks_lib_float_array_to_int.cc.diff
 }
-
-# temporary patch to fix FindCppUnit.cmake to return version found
-# to calling script.
-
-patchfiles-append patch-cmake_Modules_FindCppUnit.cmake.diff
 
 # override githib PortGroup homepage setting
 
@@ -294,7 +268,7 @@ post-destroot {
 # per user concensus: enable all variants except +ctrlport,
 # +performance_counters, +debug, and +universal.
 
-default_variants +docs +grc +qtgui +wxgui +uhd +wavelet \
+default_variants +docs +grc +qtgui +uhd +wavelet \
     +jack +portaudio +swig +sdl +zeromq
 
 if {${subport} eq "gnuradio" ||

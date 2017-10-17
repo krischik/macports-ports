@@ -13,7 +13,7 @@ categories            net security python
 license               GPL-2
 platforms             darwin
 supported_archs       noarch
-maintainers           michaelld openmaintainer
+maintainers           {michaelld @michaelld} openmaintainer
 
 description           A powerful packet manipulation tool
 long_description      \
@@ -34,6 +34,7 @@ subport ${name}-devel {}
 if {${subport} eq ${name}} {
 
     github.setup    secdev ${name} 2.3.3 v
+    revision        1
     checksums       rmd160 3ff0856e3edadcba0d64ae07a0eb0910aee7491c \
                     sha256 52764c3860d4ec9177459ec733bee3da181eb6a726d30ea60f760b1153807363
 
@@ -41,10 +42,10 @@ if {${subport} eq ${name}} {
 
 } else {
 
-    github.setup    secdev scapy bea47cc71e0b13a789c83fd51ab38b6df367b67c
-    version         20170912
-    checksums       rmd160 2a4ff4d3fe15de2bdd9639165139f69e3d1987f7 \
-                    sha256 263854cd5a8e257770eac5e81496e31e266945765e27fb46413818bc99a9c35e
+    github.setup    secdev scapy b715f1be4718ef99cc8341a220ff2771e4a15a97
+    version         20171006
+    checksums       rmd160 93b4921251bccf395e2b60f040ecc50a283b6aa0 \
+                    sha256 d4d272016553823d3a43c6f7ef366ae6f68dff1054df7e2fd81f26c27b99490e
 
     long_description    ${long_description} \
         This port is kept up with the ${name} GIT 'master' branch, is typically updated weekly to monthly.

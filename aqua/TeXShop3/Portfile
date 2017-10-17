@@ -2,10 +2,12 @@
 
 PortSystem          1.0
 PortGroup           xcode 1.0
+PortGroup           xcodeversion 1.0
 
 name                TeXShop3
 conflicts           TeXShop
-version             3.87
+version             3.88
+revision            1
 
 set major           [lindex [split ${version} .] 0]
 categories          aqua editors
@@ -26,14 +28,19 @@ dist_subdir         TeXShop/
 worksrcdir          texshopsource[strsed ${version} {/\.//}]
 set propername      TeXShop
 
-checksums           rmd160  3021d9ba1debbcdf715e66c0a21ea6a42d56ff33 \
-                    sha256  1b367277a47971420b7eb1b1858876410603aaa3d43eb0007be7c4d93618d765
+# stealth update to fix some Xcode 9 issues
+dist_subdir         ${name}/${version}_1
+
+checksums           rmd160  4e9496f08c1ef989ff4a2754c79984510505484d \
+                    sha256  e9e4eeaec00456930589871cbca803897637f6a194faaaa318fc0c9163c46637
+
+minimum_xcodeversions       {16 9}
 
 pre-fetch {
     platform darwin {
-        if {${os.major} < 11} {
-            ui_error "${name} requires at least 10.7, Lion"
-            return -code error "This version is for 10.7, Lion, and later only"
+        if {${os.major} < 16} {
+            ui_error "${name} @${version} requires at least macOS 10.12 Sierra"
+            return -code error "imcompatible macOS version"
         }
     }
 }
@@ -46,8 +53,6 @@ post-extract    {
     # thin the bundled frameworks
     system -W ${worksrcpath} "lipo -thin ${configure.build_arch} ${ogrekit} -output ${ogrekit}"
 }
-
-macosx_deployment_target    10.7
 
 build.target        ${propername}
 

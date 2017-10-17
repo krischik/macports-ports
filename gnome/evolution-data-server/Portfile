@@ -6,7 +6,7 @@ PortGroup           cmake 1.0
 cmake.out_of_source yes
 
 name                evolution-data-server
-version             3.26.0
+version             3.26.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 description         Addressbook and calender libs for GNOME.
 long_description    Evolution Data Server provides a central location for \
@@ -20,8 +20,8 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  9d7a8c1dea4bc84ff5068956a967e0af028c292c \
-                    sha256  7776ef431e58a07b32e5b678b8df4ae5e85f99003a933dafa6bb73842ccff067
+checksums           rmd160  2dcc75f725fb1df9182e0515eeda7c34871dc11e \
+                    sha256  ea207a3abd5e7bb8ccaa88741de7715a128083efdf8296af2c3a2fb8d072a4b3
 
 depends_build-append \
                     port:pkgconfig \
@@ -47,7 +47,8 @@ depends_lib         port:gtk3 \
                     port:vala \
                     port:db53 \
 
-patchfiles          patch-addressbook-libebook-contacts-e-phone-number-private.cpp.diff
+patchfiles          patch-addressbook-libebook-contacts-e-phone-number-private.cpp.diff \
+                    patch-cmake-no-undefined.diff
 
 configure.args-append \
                     -DENABLE_SCHEMAS_COMPILE=OFF \
@@ -58,7 +59,6 @@ configure.args-append \
                     -DENABLE_INTROSPECTION=OFF \
                     -DENABLE_SMIME=ON \
                     -DENABLE_GTK=ON \
-                    -DENABLE_GOOGLE_AUTH=ON \
                     -DENABLE_EXAMPLES=OFF \
                     -DENABLE_GOA=ON \
                     -DENABLE_IPV6=ON \
@@ -94,9 +94,10 @@ post-activate    {
 
 platform darwin {
     if {${configure.cxx_stdlib} eq "libstdc++"} {
-# google auth requires webkitgtk-3.0 >= 2.4.9 json-glib >= 1.0.4
-        configure.args-append --disable-google-auth
+# google auth requires webkit2gtk-4.0 >= 2.11.91 json-glib >= 1.0.4
+        configure.args-append -DENABLE_GOOGLE_AUTH=OFF
     } else {
+        configure.args-append -DENABLE_GOOGLE_AUTH=ON
         depends_lib-append  path:lib/pkgconfig/webkit2gtk-4.0.pc:webkit2-gtk \
                             port:json-glib
     }

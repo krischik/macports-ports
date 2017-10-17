@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                youtube-dl
-version             2017.09.11
+version             2017.10.15.1
 categories          net
 platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -14,11 +14,12 @@ description         command-line program to download videos from YouTube.com and
 
 long_description    ${name} is a small ${description}.
 
-homepage            http://rg3.github.com/youtube-dl/
+homepage            http://rg3.github.io/youtube-dl/
 master_sites        https://yt-dl.org/downloads/${version}
 
-checksums           rmd160  8bdffaa38d8e191b337c1a13826095f0b7125aa5 \
-                    sha256  8b6defdd7cb9a8228eca2ef03a8c203a3ccba1ed97cb700f11b40a3af548212a
+checksums           rmd160  d82322b510aa496ae87d077aa7902e9570f6dd64 \
+                    sha256  da6ae68b2fbe81da7cf4ac6b989fa7bf27b3beb214eed551d466cc6e41d7297f \
+                    size    2820437
 
 depends_build       bin:zip:zip
 
@@ -29,12 +30,18 @@ post-extract {
     delete ${worksrcpath}/${name}
 }
 
-patchfiles          patch-youtube_dl-update.py.diff
+patchfiles          patch-config-location.diff \
+                    patch-youtube_dl-update.py.diff
 patch.args          --backup
 
 post-patch {
+    reinplace -W ${worksrcpath} "s|@PREFIX@|${prefix}|g" \
+            youtube_dl/options.py \
+            README.md \
+            youtube-dl.1
+
     # Restore original mtimes of files changed by the patch so that `make` doesn't try to regenerate the documentation with `pandoc`.
-    foreach f {youtube_dl/update.py} {
+    foreach f {youtube_dl/update.py youtube_dl/options.py README.md youtube-dl.1} {
         file mtime ${worksrcpath}/${f} [file mtime ${worksrcpath}/${f}.orig]
     }
 }
@@ -90,5 +97,5 @@ if {![variant_isset python27] && ![variant_isset python34] && ![variant_isset py
 }
 
 livecheck.type      regex
-livecheck.url       http://rg3.github.com/youtube-dl/update/versions.json
-livecheck.regex     {"latest":\s*"([0-9.]+)"}
+livecheck.url       ${homepage}update/LATEST_VERSION
+livecheck.regex     {^([0-9.]+)$}

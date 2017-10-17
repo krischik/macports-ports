@@ -6,7 +6,7 @@ name            fltk
 categories      aqua devel
 license         LGPL
 platforms       macosx
-maintainers     michaelld openmaintainer
+maintainers     {michaelld @michaelld} openmaintainer
 description     Fast Light Tool Kit
 
 long_description \
@@ -59,9 +59,9 @@ if {${subport} eq ${name}} {
 
     conflicts       fltk
 
-    version         1.4.x-r12431
-    checksums       rmd160 38f7ea11d73caec7115d45cf28e2b5e2f02dc5e4 \
-                    sha256 286eb69cc469ac29d338183d94b4f316602e201aef067094afa754aa75568eaa
+    version         1.4.x-r12479
+    checksums       rmd160 903893e54e56b63b42d96222fd0a2d306b123e39 \
+                    sha256 0dab721bdf9111149caec7ab03a53db17cf6b925cbe0d6f1328efa2ef7e47a03
 
     master_sites    http://fltk.org/pub/fltk/snapshots/
     distname        fltk-${version}

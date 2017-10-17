@@ -8,7 +8,7 @@ categories          devel sysutils
 platforms           darwin
 license             MIT
 
-maintainers         michaelld openmaintainer
+maintainers         {michaelld @michaelld} openmaintainer
 
 description         ${name} is an environment switcher for the shell.
 
@@ -16,9 +16,9 @@ long_description    \
     ${description} It knows how to hook into bash, zsh, tcsh and fish shell to load or unload environment variables depending on the current directory. This allows project-specific environment variables without cluttering the \"~/.profile\" file.
 
 if {${name} eq ${subport}} {
-    github.setup        direnv direnv 2.12.2 v
-    checksums           rmd160 e04348c22a8f8026f6a53ffbdecfcc3e24d63db3 \
-                        sha256 f9e2e59afb4ec7d9ea8b99b7430b201999de28f88d18e139a60cb89bc68813d1
+    github.setup        direnv direnv 2.13.1 v
+    checksums           rmd160 4f703cd46cd256ebf9085bb3abe631ff40740044 \
+                        sha256 77b1bbc9b15abb1033ae60e12f52c667101478478013122999dd8159c378a94f
     conflicts           direnv-devel
 
     # fix importing of dotenv
@@ -27,15 +27,15 @@ if {${name} eq ${subport}} {
     post-patch {
         # move 'dotenv' into 'src/dotenv' to make GOPATH happy
         file mkdir ${worksrcpath}/src
-        move ${worksrcpath}/dotenv ${worksrcpath}/src
+        move ${worksrcpath}/vendor/github.com/direnv/go-dotenv ${worksrcpath}/src/dotenv
     }
 }
 
 subport direnv-devel {
-    github.setup        direnv direnv 9d51bdb0b92655bffbd0355b2fc18c7124c30713
-    version             20170907
-    checksums           rmd160 96bb97d3f319815e792ffe21cf9cddcc56cb3601 \
-                        sha256 1847577226fce120016461795943985a58169c2438553fe3013a8d060f9fd473
+    github.setup        direnv direnv 79aa1d0401d695887a93a5608220d21fe05c149d
+    version             20170928
+    checksums           rmd160 4f703cd46cd256ebf9085bb3abe631ff40740044 \
+                        sha256 77b1bbc9b15abb1033ae60e12f52c667101478478013122999dd8159c378a94f
     conflicts           direnv
 
     # fix importing of dotenv

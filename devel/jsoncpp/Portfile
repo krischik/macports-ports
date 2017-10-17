@@ -8,7 +8,7 @@ PortGroup           cxx11 1.1
 name                jsoncpp
 categories          devel
 platforms           darwin
-maintainers         michaelld openmaintainer
+maintainers         {michaelld @michaelld} openmaintainer
 license             MIT
 
 description         JSON C++ library
@@ -30,10 +30,10 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    github.setup    open-source-parsers jsoncpp 586e7a84f6a4213d1f8af8289204dc5827931134
-    version         20170911
-    checksums       rmd160 8259d0e8851efa0d864952dc452862c6af6f9849 \
-                    sha256 f4e752b636dc0969bc360b4fcc50beb6f32a41a7026872b99bd06a5b640899e8
+    github.setup    open-source-parsers jsoncpp 42a161fc80b32cc63c1a3e7ab1c9ed588a83edaa
+    version         20171003
+    checksums       rmd160 c96ebf3f217397fff50d98cd731ae0aba5ac2bd8 \
+                    sha256 3c768fdfcc313b3286f55a4f4c8cd98427df0c339bb45e989a029453ebd1db10
 
     conflicts       jsoncpp
     long_description ${description}: \

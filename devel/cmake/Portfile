@@ -9,7 +9,7 @@ name                cmake
 categories          devel
 license             BSD
 installs_libs       no
-maintainers         michaelld
+maintainers         {michaelld @michaelld}
 description         Cross-platform make
 set base_long_description \
     "An extensible, open-source system that manages the build \
@@ -29,9 +29,9 @@ if {${subport} eq ${name}} {
 
     # release
 
-    version         ${branch}.2
-    checksums       rmd160 133cfee5d133675b94851a4583d9e8186eb9654d \
-                    sha256 954a5801a456ee48e76f01107c9a4961677dd0f3e115275bbd18410dc22ba3c1
+    version         ${branch}.4
+    checksums       rmd160 bb9c30f2726413f0d7d7b92e0294b61438151d62 \
+                    sha256 b5d86f12ae0072db520fdbdad67405f799eb728b610ed66043c20a92b4906ca1
 
     master_sites    http://www.cmake.org/files/v${branch}/
     conflicts       cmake-devel
@@ -47,6 +47,10 @@ if {${subport} eq ${name}} {
         patch-CMakeFindFrameworks.cmake.release.diff \
         patch-Source_CMakeVersionCompute.cmake.release.diff
 
+    # temporary patch for allow for building using Xcode 9
+    # see also: https://trac.macports.org/ticket/54875
+    patchfiles-append patch-Source-kwsys-kwsysPlatformTestsCXX.cxx.diff
+
     livecheck.type  regex
     livecheck.regex ${name}-(\[0-9.\]+)${extract.suffix}
     livecheck.url   [lindex $master_sites 0]
@@ -55,10 +59,10 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    version         20170911
-    set commit      f06ddacafc68369150f3a6fa806e8e4af421dc7b
-    checksums       rmd160 b9ea869fb8a90b9dfe6faeae84048c313c91345b \
-                    sha256 c85df0083aaafd7e8a703fbed505fef5c5032e2a42cd7cab3153739507745288
+    version         20171011
+    set commit      86edb6660b8b938cf291e69cc73e01fc30c69809
+    checksums       rmd160 dc2a74c9e1bca777a20a95741c3bf2a96b670e07 \
+                    sha256 5482302541e1aac14f4a87320b310cfd54ea8ef6b1d1571dbca26793fa2e8b0c
 
     master_sites    https://gitlab.kitware.com/cmake/cmake/repository/archive.tar.bz2?ref=${commit}&
     distname        ${name}-${commit}

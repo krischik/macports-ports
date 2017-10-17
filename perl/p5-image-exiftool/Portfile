@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.24 5.26
-perl5.setup         Image-ExifTool 10.61
+perl5.setup         Image-ExifTool 10.63
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 platforms           darwin
@@ -13,8 +13,8 @@ supported_archs     noarch
 description         Perl interface and general command line utility to read, write and edit EXIF metadata
 long_description    ${description}
 
-checksums           rmd160  05204c7e7c25ba06bac2b0bfe8947ee930979db0 \
-                    sha256  a8f2b535c070f17ae6113bc1dd2e9db5a663621f1726b45f57511e374b5190eb
+checksums           rmd160  3c950a85a0688b2a960e124287ddd5da65de9e99 \
+                    sha256  84d63972e9172cd18fce54fef862f0d818c91c29a79c95689557be31747b9fde
 
 homepage            http://exiftool.sourceforge.net/
 master_sites        sourceforge:project/exiftool/

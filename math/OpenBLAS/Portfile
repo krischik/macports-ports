@@ -7,7 +7,7 @@ PortGroup           muniversal 1.0
 name                OpenBLAS
 categories          math science
 license             BSD
-maintainers         nicos michaelld openmaintainer
+maintainers         nicos {michaelld @michaelld} openmaintainer
 description         OpenBLAS is an optimized BLAS library based on GotoBLAS2
 long_description    ${description}
 platforms           darwin
@@ -19,10 +19,10 @@ archive_sites
 subport OpenBLAS-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    xianyi OpenBLAS 46c9357c72801f4e186b56abcf7b75d3fad767ab
-    version         20170909
-    checksums       rmd160 17177e6f505f0a13fbb971bea095facae034ff30 \
-                    sha256 9b2b295a29162dc7b8c44caaadff9472b38f55bf72c730dc238471d5bae239f9
+    github.setup    xianyi OpenBLAS c460027dbeadc3babd6a1e7161a87264a060ee44
+    version         20171010
+    checksums       rmd160 cc3053b216ec05091b4b67e0fd45d68a03b61649 \
+                    sha256 43d6698ddbb0b7bba660bae23501a6a7fe87aa3045c364b23df786d062b94d8b
 
     name            ${github.project}-devel
     conflicts       OpenBLAS
@@ -60,7 +60,7 @@ if {![catch {sysctl hw.optional.avx1_0} has_avx] && $has_avx == 1 &&
 
 # declare +gcc* variants
 
-set GCC_VERSIONS_NO_DOT {45 46 47 48 49 5 6 7}
+set GCC_VERSIONS_NO_DOT {45 46 47 48 49 5 6 7 8}
 
 foreach this_gcc_version_no_dot ${GCC_VERSIONS_NO_DOT} {
     set ndx [lsearch -exact ${this_gcc_version_no_dot} ${this_gcc_version_no_dot}]

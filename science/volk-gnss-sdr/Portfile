@@ -8,7 +8,7 @@ PortGroup           active_variants 1.1
 PortGroup           cxx11 1.1
 
 name                volk-gnss-sdr
-maintainers         michaelld gmail.com:carlesfernandez openmaintainer
+maintainers         {michaelld @michaelld} {gmail.com:carlesfernandez @gnss-sdr} openmaintainer
 description         Volk modules for GNSS-SDR
 categories          science
 license             GPL-3
@@ -50,10 +50,10 @@ subport volk-gnss-sdr-next {
         This port is kept up with the VOLK-GNSS-SDR GIT next branch, which is typically updated daily to weekly.  This version of VOLK-GNSS-SDR generally contains fixes and new features that will be incorporated in an upcoming release, and compiles against the gnss-sdr-next and gnuradio-next ports.  This port may or not compile or function correctly, as it represents a work in progress.  If it does not work, check back in a few days.  Or try deactivating the currently active gnss-sdr and gnuradio ports, cleaning any current builds, and trying again.
 
     name                volk-gnss-sdr-next
-    github.setup        gnss-sdr gnss-sdr 3f557eeb4185a999b3a8eabcc44f327f335ab506
-    version             20170903
-    checksums           rmd160 23542a1959228683bb0cbddaa60069e4db0b417d \
-                        sha256 7bfc6f8059353e60352402e9233fe8517931dec6037a5b2073049f5cc6e6c8ee
+    github.setup        gnss-sdr gnss-sdr e352978777f88f3dd7ff9539d6a872277799d92f
+    version             20171003
+    checksums           rmd160 549133d74487e8c184d0379a12d4df311d14208b \
+                        sha256 a20f22a012b9068323f3f7d8dbc3183c5d74e6dff3d9350088c4d538f97f1f66
 
     conflicts           volk-gnss-sdr volk-gnss-sdr-devel
 
