@@ -3,7 +3,7 @@
 PortSystem 1.0
 
 name				go-ethereum
-version				1.6.6
+version				1.7.2
 revision			0
 categories			finance crypto
 license				GPL-3
@@ -17,10 +17,10 @@ master_sites		${homepage}/archive/
 distfiles			v${version}.tar.gz
 distname			go-ethereum-${version}
 
-checksums			md5		7814cde44fc813fcdea28aa4151b7d11 \
-					sha1	56dde3f1d6f116717fb2549717a812af74ed8cef \
-					rmd160	d4e97ebdba61293fd3948fe29056664f91df3cf6 \
-					sha256	5079bd2b9e746eef3d33815b84f59c643b3a2b6550e0dbf9c993e540c679cc4e
+checksums			md5		edcf8b254bfd0e5902ccbbab3a1920e0 \
+					sha1	efc1ca9f2bb91b3c49a96543368ba70ed322e2de \
+					rmd160	85a81a059fd70595d4955673b891cd0ef48b943d \
+					sha256	456ff0e6f495a69b4df11618156010d6f26ccbaba39e544c95108942b10897dc
 
 depends_build		port:go
 
