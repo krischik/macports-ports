@@ -7,10 +7,10 @@ PortGroup           compiler_blacklist_versions 1.0
 PortGroup           active_variants 1.1
 PortGroup           github 1.0
 
-github.setup        FFmpeg FFmpeg 549ef6ef9a8168281640b9cd0240abe071cbbda3
+github.setup        FFmpeg FFmpeg 6e1654768585692e327343059b35695b6123444a
 name                ffmpeg-devel
 conflicts           ffmpeg
-version             20170912
+version             20171024
 license             LGPL-2.1+
 categories          multimedia
 maintainers         {devans @dbevans} {jeremyhu @jeremyhu} openmaintainer
@@ -49,8 +49,8 @@ long_description    FFmpeg is a complete solution to record, convert and \
 platforms           darwin
 homepage            http://www.ffmpeg.org/
 
-checksums           rmd160  74d111cb90417270bfeb01a86364e89ef7c423f9 \
-                    sha256  fa05f46526b79e56bd45190b3cb85381df82a6bccabe368c102cf9e3038f5dde
+checksums           rmd160  106c025aab98a4768a93af1a7196bd4ca9f9d74f \
+                    sha256  3d2212b976e30106e1f39622eef40bd5a1fb12d6587400dcfdb6b094d5c4d2ca
 
 depends_build       port:pkgconfig \
                     port:gmake \
@@ -82,8 +82,7 @@ depends_lib         port:lame \
                     port:xz \
                     port:zlib
 
-patchfiles          patch-libavcodec-audiotoolboxenc.c.diff \
-                    patch-configure-no-static-libopenjpeg.diff
+patchfiles          patch-libavcodec-audiotoolboxenc.c.diff
 
 #
 # enable auto configure of asm optimizations
@@ -95,6 +94,14 @@ if {[lsearch [get_canonical_archs] i386] != -1} {
     # clang-3.1 hits https://trac.macports.org/ticket/30137 (<rdar://problem/11542429>)
     # clang-139 hits https://trac.macports.org/ticket/38141
     compiler.blacklist-append {clang < 422.1.7}
+}
+
+platform darwin powerpc {
+    # https://trac.macports.org/ticket/55124
+    # requires newer compiler than gcc4.2 to build
+    compiler.blacklist
+    compiler.whitelist    macports-gcc-6
+    universal_variant     no
 }
 
 # The old ffmpeg port was GPL-2+ as base and had a no_gpl variant, so this keeps us consistent

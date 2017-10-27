@@ -701,6 +701,11 @@ foreach {module module_info} [array get modules] {
             # see https://bugreports.qt.io/browse/QTBUG-62266
             patchfiles-append patch-sdk10_13.diff
 
+            # avoid non-standard C++ that Xcode Clang accepts but other compilers do not
+            # see http://lists.llvm.org/pipermail/llvm-bugs/2017-January/053481.html
+            # see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=11764
+            patchfiles-append patch-qualified_reference.diff
+
             #-----------------------------------------------------------------------------
             # qtbase is used for:
             #    1) building qtbase
@@ -765,9 +770,16 @@ foreach {module module_info} [array get modules] {
             }
 
             post-patch {
+
+                if {${configure.cxx_stdlib} eq "macports-libstdc++" && ${os.major} < 13} {
+                    set cxx_abi " -D_GLIBCXX_USE_CXX11_ABI=0"
+                } else {
+                    set cxx_abi ""
+                }
+
                 # respect configure.cxx_stdlib
                 reinplace \
-                    "s|__MACPORTS_CXX_STDLIB__|${configure.cxx_stdlib}|g" \
+                    "s|__MACPORTS_CXX_STDLIB__|${configure.cxx_stdlib}${cxx_abi}|g" \
                     ${worksrcpath}/mkspecs/common/clang-mac.conf
 
                 # respect macosx_deployment_target
@@ -958,6 +970,7 @@ foreach {module module_info} [array get modules] {
             # For consistency, clear MacPorts environment.
             #configure.cxx_stdlib
             proc portconfigure::should_add_stdlib {} {return false}
+            proc register_gcc_dependents {} {}
             configure.sdkroot
             configure.cc_archflags
             configure.cxx_archflags

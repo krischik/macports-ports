@@ -41,23 +41,37 @@ PortGroup compiler_blacklist_versions 1.0
 
 if {${cxx_stdlib} eq "libstdc++" } {
 
-    compiler.whitelist          macports-clang-4.0
-
     # see https://trac.macports.org/ticket/53194
     configure.cxx_stdlib macports-libstdc++
-    
+
+    proc register_gcc_dependents {} {
+        global os.major
+        depends_lib-delete port:libgcc
+        depends_lib-append port:libgcc
+        # ensure desired compiler flags are present
+        if { ${os.major} < 13 } {
+            configure.cxxflags-delete    -D_GLIBCXX_USE_CXX11_ABI=0
+            configure.cxxflags-append    -D_GLIBCXX_USE_CXX11_ABI=0
+            configure.objcxxflags-delete -D_GLIBCXX_USE_CXX11_ABI=0
+            configure.objcxxflags-append -D_GLIBCXX_USE_CXX11_ABI=0
+        }
+    }
+    # do not force all Portfiles to switch from depends_lib to depends_lib-append
+    port::register_callback register_gcc_dependents
+
+    if {${build_arch} eq "ppc" || ${build_arch} eq "ppc64"} {
+        # ports will build on powerpc with gcc6, gcc4ABI-compatible
+        pre-configure {
+            ui_msg "PowerPC C++11 ports are compiling with GCC. EXPERIMENTAL."
+        }
+        compiler.whitelist  macports-gcc-6
+        universal_variant   no
+    } else {
+        compiler.whitelist  macports-clang-5.0
+    }
+
     # see https://trac.macports.org/ticket/54766
     depends_lib-append port:libgcc
-
-    platform darwin powerpc {
-        # ports will build on powerpc with gcc6, gcc4ABI-compatible
-        
-        pre-configure {
-            ui_msg "PowerPC C++11 ports are compiling with gcc6. EXPERIMENTAL."
-        }
-        compiler.whitelist      macports-gcc-6
-        universal_variant no
-    }
 
     if { ${os.major} < 13 } {
         # prior to OS X Mavericks, libstdc++ was the default C++ runtime, so

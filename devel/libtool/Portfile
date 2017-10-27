@@ -4,7 +4,7 @@ PortSystem          1.0
 
 name                libtool
 version             2.4.6
-revision            3
+revision            4
 categories          devel sysutils
 platforms           darwin freebsd
 # Scripts are GPL-2+, libltdl is LGPL-2+, but all parts that tend to be
@@ -64,6 +64,15 @@ post-destroot {
     xinstall -m 0644 -W ${worksrcpath} \
             AUTHORS COPYING ChangeLog NEWS README THANKS TODO \
             ${destroot}${docdir}
+
+    # libtool 2.4.6 contains com.dropbox.attributes xattrs,
+    # let's avoid spreading them further (#54459)
+    # xattr on leopard or earlier does not support -r so do the recursion manually
+    if {${os.platform} eq "darwin" && ${os.major} >= 10} {
+        system "xattr -r -d com.dropbox.attributes ${destroot}"
+    } else {
+        system -W ${destroot} "find . -type f -print0 | xargs -0 xattr -d com.dropbox.attributes"
+    }
 }
 
 test.run            yes
