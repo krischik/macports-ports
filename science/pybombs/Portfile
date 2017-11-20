@@ -14,7 +14,7 @@ categories            science python
 license               GPL-3
 platforms             darwin
 supported_archs       noarch
-maintainers           michaelld
+maintainers           {michaelld @michaelld}
 
 description           Python Build Overlay Managed Bundle System
 
@@ -24,11 +24,10 @@ subport ${name}-devel {}
 
 if {${subport} eq ${name}} {
 
-    github.setup    pybombs pybombs 2.3.0 v
-    revision        1
-    checksums       rmd160 1780d5174c630456e5bb9d3315a2f0f2746c6816 \
-                    sha256 f611de637dcbfe56852945568867fa4e3c25dfcedb269406b904463817bbab08
-    worksrcdir      gnuradio-pybombs-37e7afe
+    github.setup    pybombs pybombs 2.3.2 v
+    checksums       rmd160 a19b3071d02d705872c9b0cbdecd5bf6f16a88a2 \
+                    sha256 88c8ad3550df8990e2f56857c7cb27f15eadcbcfc35a59ffd1f4a6dbf7639af6
+    worksrcdir      gnuradio-pybombs-1cbd8cd
 
     conflicts       ${name}-devel
 
@@ -39,11 +38,10 @@ if {${subport} eq ${name}} {
 
 } else {
 
-    github.setup    pybombs pybombs fcfb72daa6fd292aabf514779b9790827756e144
-    version         20170616
-    revision        1
-    checksums       rmd160 e6ccf9f114e3dfd4b59b5c722e34636773a4673f \
-                    sha256 05c08169a963f28b7a58a67299646a13bad6608b1a08d6d52039225c467b1174
+    github.setup    pybombs pybombs d40b0b04205a034b6cb99eace33aaa4bcad8410c
+    version         20170914
+    checksums       rmd160 5cfad3b7d35009807e7527bce9668437c82b3e9b \
+                    sha256 74a49afe7a659078b5c9dae78c4ea126ba2eba890bc948d616401b42a44d7433
     worksrcdir      gnuradio-${github.project}-[string range ${github.version} 0 6]
 
     long_description    ${long_description} \
@@ -51,9 +49,8 @@ if {${subport} eq ${name}} {
     conflicts       ${name}
 
     # fix the version to be very explicit
-    patchfiles-append patch-pybombs__init__.py.diff
     post-patch {
-        reinplace "s|@VERSION@|git-[string range ${github.version} 0 7](${version}) MacPorts|g" ${worksrcpath}/pybombs/__init__.py
+        reinplace "s@2.3.3a@2.3.3a-git-[string range ${github.version} 0 7] MacPorts@g" ${worksrcpath}/pybombs/__init__.py
     }
 }
 

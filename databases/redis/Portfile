@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                redis
-version             3.2.9
+version             4.0.2
 categories          databases
 platforms           darwin
 license             BSD
@@ -16,8 +16,8 @@ long_description    ${description}
 homepage            http://redis.io/
 master_sites        http://download.redis.io/releases/
 
-checksums           rmd160  a889d2fd2981be5e5cf05bb399c1df5d8915b338 \
-                    sha256  6eaacfa983b287e440d0839ead20c2231749d5d6b78bbe0e0ffa3a890c59ff26
+checksums           rmd160  90f5a44020ada6af9d8f7b21bcc1564a3782ddf2 \
+                    sha256  b1a0915dbc91b979d06df1977fe594c3fa9b189f1f3d38743a2948c9f7634813
 
 patchfiles          patch-redis.conf.diff
 

@@ -3,10 +3,10 @@
 PortSystem                      1.0
 
 name                            curl
-version                         7.54.1
+version                         7.56.0
 categories                      net www
 platforms                       darwin freebsd
-maintainers                     ryandesign
+maintainers                     {ryandesign @ryandesign}
 license                         Curl
 
 description                     Tool for transferring files with URL syntax
@@ -21,14 +21,13 @@ master_sites                    ${homepage}/download/:curl \
                                 http://curl.mirror.anstey.ca/:curl \
                                 http://curl.askapache.com/download/:curl
 
-use_bzip2                       yes
-
+use_xz                          yes
 set curl_distfile               ${distfiles}
 distfiles                       ${curl_distfile}:curl
 
 checksums                       ${curl_distfile} \
-                                rmd160  6f8eb154e020157811b72a27688840ca10321320 \
-                                sha256  fdfc4df2d001ee0c44ec071186e770046249263c491fcae48df0e1a3ca8f25a0
+                                rmd160  3d046d82b3cbe49985274e90e268f05c415db702 \
+                                sha256  32437bcca0e9434384329fdc733547879d25ba70335b3cf9e3d9cbc3e71fd172
 
 if {${name} eq ${subport}} {
     PortGroup                   muniversal 1.0
@@ -220,19 +219,23 @@ subport curl-ca-bundle {
                                 (CA certs) which curl (when linked with OpenSSL) uses to \
                                 verify the authenticity of secure web and FTP servers.
 
+    depends_extract-append      bin:bzip2:bzip2
+
     depends_build               path:bin/perl:perl5
 
     set certdata_file           certdata.txt
     # The output of the Tcl command "clock seconds" (you can run it in tclsh) when
     # the certdata.txt file in the port was last updated.
-    set certdata_updated        1491974200
-    set certdata_version        53be95383c09
-    set certdata_distfile       certdata-${certdata_version}${extract.suffix}
+    set certdata_updated        1500995000
+    set certdata_version        be884de5820a
+    set certdata_extract_cmd    bzip2
+    set certdata_extract_suffix .tar.bz2
+    set certdata_distfile       certdata-${certdata_version}${certdata_extract_suffix}
     set certdata_path           security/nss/lib/ckfw/builtins/${certdata_file}
 
     # Only try to fetch from the master site shortly after the port is updated, to guard against stealth updates.
     if {[clock seconds] - ${certdata_updated} < 604800} {
-        master_sites-append     https://hg.mozilla.org/mozilla-central/archive/${certdata_version}${extract.suffix}/${certdata_path}?dummy=:certdata
+        master_sites-append     https://hg.mozilla.org/mozilla-central/archive/${certdata_version}${certdata_extract_suffix}/${certdata_path}?dummy=:certdata
     } else {
         master_sites-append     macports_distfiles::certdata
     }
@@ -240,13 +243,16 @@ subport curl-ca-bundle {
     distfiles-append            ${certdata_distfile}:certdata
 
     checksums-append            ${certdata_distfile} \
-                                rmd160  edd4628c626930bf182ccd023d99116679b2d6a8 \
-                                sha256  7fc7748de4376c581731de3c02c7fd01c94a9f0e6f4afe4c7110d76b9ae32a5b
+                                rmd160  f923926b7c5537cd04e27f1be4c1538f099eb4bf \
+                                sha256  94f67c4c88e8655d720d7c5f9332391899fe0a96ca1d2d1370f476e718ffb760
 
-    extract.only                ${certdata_distfile}
+    extract.only                ${curl_distfile}
+    set curl_mk_ca_bundle_files "${worksrcdir}/Makefile ${worksrcdir}/lib/mk-ca-bundle.pl"
+    extract.post_args-append    {*}${curl_mk_ca_bundle_files}
 
     post-extract {
-        system -W ${workpath} "${extract.cmd} ${extract.pre_args} '${distpath}/${curl_distfile}' ${extract.post_args} ${worksrcdir}/Makefile ${worksrcdir}/lib/mk-ca-bundle.pl"
+        extract.post_args-delete    {*}${curl_mk_ca_bundle_files}
+        system -W ${workpath} "${certdata_extract_cmd} ${extract.pre_args} '${distpath}/${certdata_distfile}' ${extract.post_args}"
         move ${workpath}/mozilla-central-${certdata_version}/${certdata_path} ${worksrcpath}/${certdata_file}
     }
 

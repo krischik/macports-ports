@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                gnome-control-center
-version             3.22.2
+version             3.26.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 description         GNOME's main interface for configuration of the various \
                     aspects of your desktop.
@@ -17,8 +17,8 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  d8225856cd1ae92933830b78462252d50b15504c \
-                    sha256  7512ff3e256c1d43a746752e90a8079d0b064aae35283cfe863e19706ce22f92
+checksums           rmd160  6387cd3bc851ba8b8097c0f2a935ddb24e962d42 \
+                    sha256  5e5dbb0cd6b882d02662a94c15613f29be3b9152aa38847b17f8d5bea2cfc290
 
 depends_build       port:pkgconfig \
                     port:intltool \
@@ -55,12 +55,11 @@ depends_lib         port:desktop-file-utils \
 depends_run         port:gnome-keyring \
                     port:yelp
 
-# color panel disabled by patch, dependency colord requires libudev
+# color, display panels disabled by patch, dependency colord requires libudev
 
 patchfiles          patch-disable-color-panel.diff \
-                    patch-panels-user-accounts.diff \
-                    patch-fix-build-when-wayland-is-disabled.diff \
-                    patch-fix-crash-renderer-not-set.diff
+                    patch-disable-display-panel.diff \
+                    patch-panels-user-accounts.diff
 
 # reconfigure using upstream autogen.sh for intltool 0.51 compatibility
 

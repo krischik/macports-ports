@@ -3,14 +3,14 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        processing processing 3.3 processing-0257-
+github.setup        processing processing 3.3.6 processing-0263-
 
 categories          lang
 platforms           darwin
 license             GPL-2
-
-maintainers         guenael.com:macports \
+maintainers         {guenael.com:macports @numeratus} \
                     openmaintainer
+
 description         Flexible software sketchbook and a language for learning how to code\
                     within the context of the visual arts.
 long_description    \
@@ -21,13 +21,16 @@ long_description    \
     tool for generating finished professional work. Today, there are tens of \
     thousands of students, artists, designers, researchers, and hobbyists who \
     use Processing for learning, prototyping, and production.
-homepage            http://processing.org
 
-checksums           rmd160  0413168f0697d49ed0b7e5720b26386200d48188 \
-                    sha256  62df61bb776bfe3d4b5cb8ac605aa65b61179ff6c94b0a6690b35d7d44d1a739
+homepage            https://processing.org
+
+checksums           rmd160  36cc1304a0b926583ec43dee9f3f0e8033f67874 \
+                    sha256  b20fba338dd632dfae84e298cf21d2ea71ed8b1ce370ce4a73d22470c8b814ad
 
 depends_build       port:apache-ant
+
 use_configure       no
+
 build.dir           ${worksrcpath}/build
 build.cmd           ${prefix}/bin/ant
 build.target        macosx-build

@@ -13,7 +13,7 @@ categories            net security python
 license               GPL-2
 platforms             darwin
 supported_archs       noarch
-maintainers           michaelld openmaintainer
+maintainers           {michaelld @michaelld} openmaintainer
 
 description           A powerful packet manipulation tool
 long_description      \
@@ -34,6 +34,7 @@ subport ${name}-devel {}
 if {${subport} eq ${name}} {
 
     github.setup    secdev ${name} 2.3.3 v
+    revision        1
     checksums       rmd160 3ff0856e3edadcba0d64ae07a0eb0910aee7491c \
                     sha256 52764c3860d4ec9177459ec733bee3da181eb6a726d30ea60f760b1153807363
 
@@ -41,10 +42,10 @@ if {${subport} eq ${name}} {
 
 } else {
 
-    github.setup    secdev scapy 65442c3629b90dc955b84cc25df485d0e591007b
-    version         20170704
-    checksums       rmd160 49ef92a0c627b3013414fcb5c4bbdc8b64b2c492 \
-                    sha256 4fb3272496220902848e14049d7c2a381a24a472279c5ef75ab95ac2f464ff0d
+    github.setup    secdev scapy b715f1be4718ef99cc8341a220ff2771e4a15a97
+    version         20171006
+    checksums       rmd160 93b4921251bccf395e2b60f040ecc50a283b6aa0 \
+                    sha256 d4d272016553823d3a43c6f7ef366ae6f68dff1054df7e2fd81f26c27b99490e
 
     long_description    ${long_description} \
         This port is kept up with the ${name} GIT 'master' branch, is typically updated weekly to monthly.
@@ -54,7 +55,7 @@ if {${subport} eq ${name}} {
 
 homepage              http://www.secdev.org/projects/${name}
 
-depends_lib-append    port:py${python.version}-readline \
+depends_lib-append    port:py${python.version}-gnureadline \
                       port:py${python.version}-pylibpcap \
                       port:py${python.version}-libdnet \
                       port:py${python.version}-crypto

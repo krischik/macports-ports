@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           bitbucket 1.0
 
-bitbucket.setup     ruamel yaml 0.15.18
-checksums           rmd160 a80bd6d9f0bb07fc5c1510ef3e5dfe8dc278a097 \
-                    sha256 8d9ff9945b660dd5d0e34a3e0e7bf27fa702b6ba0b5f0948814f2d161d8f72a9
+bitbucket.setup     ruamel yaml 0.15.34
+checksums           rmd160 4c0a108c4944935a84b40cd96974eeaef12acb3a \
+                    sha256 514b7552f1ecb128dd2901d1b6e4cfa4dd45a8f3a3aad338d328502aa9170fb3
 
 name                py-ruamel-yaml
 license             MIT
 platforms           darwin
-maintainers         michaelld openmaintainer
+maintainers         {michaelld @michaelld} openmaintainer
 
 description         YAML 1.2 loader/dumper package for Python
 long_description    ${description}. \

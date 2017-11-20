@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-tqdm
-version             4.14.0
+version             4.19.2
 revision            0
 categories-append   devel
 platforms           darwin
@@ -23,8 +23,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  de0fda8114e5c25044501dfc87a1c06bc3b08ffb \
-                    sha256  284b7cb57c135f41122580df8a818ffffd85449a61365dfb41907d2bf115e88e
+checksums           rmd160  abd10f469b661d3aa1d64ab20c081b3116432009 \
+                    sha256  a6fd7479f3fb0ba653290e61d97917b2621c51cc8e31dc19963b5002904abaa1
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools

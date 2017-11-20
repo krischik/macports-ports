@@ -3,11 +3,10 @@
 PortSystem              1.0
 PortGroup               github 1.0
 
-github.setup            samtools samtools 1.4
-revision                1
+github.setup            samtools samtools 1.6
 categories              science
 platforms               darwin
-maintainers             gmail.com:haroldpimentel openmaintainer
+maintainers             {ryandesign @ryandesign} openmaintainer
 license                 MIT
 
 description             Tools for alignments in the SAM format
@@ -17,8 +16,9 @@ long_description        SAM (Sequence Alignment/Map) Tools provide various \
                         format, including sorting, merging, indexing and \
                         generating alignments in a per-position format.
 
-checksums               rmd160  3440638a5b5c9545871672a2659bf90b14e6acf9 \
-                        sha256  9aae5bf835274981ae22d385a390b875aef34db91e6355337ca8b4dd2960e3f4
+checksums               rmd160  61a9e25a5cd88309df809ca38979243855d68b20 \
+                        sha256  ee5cd2c8d158a5969a6db59195ff90923c662000816cc0c41a190b2964dbe49e \
+                        size    4214727
 
 homepage                http://www.htslib.org/
 github.tarball_from     releases

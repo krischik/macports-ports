@@ -4,10 +4,10 @@ PortSystem          1.0
 
 name                tor-devel
 conflicts           tor
-version             0.3.1.4-alpha
+version             0.3.2.1-alpha
 categories          security
 platforms           darwin
-maintainers         maclemon.at:macports.org openmaintainer
+maintainers         nomaintainer
 license             BSD
 
 description         anonymizing overlay network for TCP
@@ -23,8 +23,8 @@ homepage            https://www.torproject.org/
 master_sites        https://dist.torproject.org/
 distname            tor-${version}
 
-checksums           rmd160  30e089527f929d197825553204ce6d2ec5448353 \
-                    sha256  36ba88bd62f6f630bdba02c6bc348e8176224cec44281f6dacd86c46426c79d1
+checksums           rmd160  c671e1e5d813019a16f6575b09b6361cf565b741 \
+                    sha256  a2ce9c0eb0eaf1a478bb8cba4b809b9e4b65dd28a49ff26f78d3b3ea06126728
 
 depends_lib         port:libevent \
                     path:lib/libssl.dylib:openssl \

@@ -14,7 +14,7 @@ homepage        http://libusb.info/
 
 platforms       darwin
 license         LGPL-2.1+
-maintainers     michaelld toby
+maintainers     {michaelld @michaelld} toby
 
 use_parallel_build no
 
@@ -38,10 +38,10 @@ if {${subport} eq ${name}} {
     long_description ${long_description} \
         This port provides devel version of ${name}, updated weekly to monthly.
 
-    github.setup   libusb libusb e59e437a1fed20c2e363154b6e9639b88f549bd7
-    version        20170618
-    checksums      rmd160 16a64d6438230ecf4ae795e1d209d374e23a373b \
-                   sha256 1046f30f337d6310a91867b6ad7b633038c1008d01a2d32258e46ad63af5ea05
+    github.setup   libusb libusb b4c9b4272d61cecffeddeb91abd31efe256a6224
+    version        20170824
+    checksums      rmd160 e1aa2d528a33d397b80a487c66406e6b67732b5b \
+                   sha256 32e1c43d37bb4d3ebc0a22004b929b7ac94834e80b66dfa37df2bab493b8680b
 
     conflicts      libusb
     patchfiles     patch-libusb_os_darwin_usb.h.devel.diff

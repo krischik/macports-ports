@@ -3,7 +3,7 @@ PortGroup           github 1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 set vim_version     8.0
-set snapshot        133
+set snapshot        138
 github.setup        macvim-dev macvim ${snapshot} snapshot-
 name                MacVim
 version             ${vim_version}.snapshot${snapshot}
@@ -18,16 +18,22 @@ long_description \
 
 homepage            https://macvim-dev.github.io/macvim/
 
-checksums           rmd160  a7e772a54067334d6f39c6e1c176fcc88b86b0ac \
-                    sha256  75621e84d306ccfe66b61849fe2a3bdbf199046537f02b6f32c897a536c0debc
+checksums           rmd160  602e5308d74608593ee5012cfd28f8d4f8a83253 \
+                    sha256  d91ae253082c5a0e3234d55154ebdc23801a5fa56576e80983837d0983e7c572 \
+                    size    19705345
 
 depends_build       bin:grep:grep
 depends_lib         port:ncurses \
                     port:gettext \
                     port:libiconv
 
+# MacVim does not build for arch i386
+# https://trac.macports.org/ticket/54666
+supported_archs     x86_64
+
 patchfiles          patch-MacVim-GCC-VERSION.diff \
-                    patch-remove-sparkle.diff
+                    patch-remove-sparkle.diff \
+                    patch-remove-Homebrew-python.diff
 
 pre-fetch {
     if {${os.platform} eq "darwin" && ${os.major} < 12} {

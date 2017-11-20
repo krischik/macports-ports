@@ -24,19 +24,19 @@ license                 {MIT NCSA}
 subport                 libomp-devel {}
 
 if {${subport} ne ${name}} {
-    if {${os.platform} eq "darwin" && ${os.major} <= 12} {
+    if {${os.platform} eq "darwin" && ${configure.cxx_stdlib} eq "libstdc++"} {
         version                 291764
         replaced_by             libomp
     } else {
         conflicts               libomp
-        github.setup            llvm-mirror openmp 0c93c10
+        github.setup            llvm-mirror openmp 31535f3
         worksrcdir              openmp-${version}/runtime
-        version                 291764
+        version                 312539
         revision                0
         name                    ${subport}
         checksums \
-            rmd160  01a68450359997d383151a62fad8b30bcca3d4a3 \
-            sha256  7e0dee60c14ced54bdcc4ee11e09f432baeec4d2847c96af7af46e913005fb91
+            rmd160  d5f737202375c175bac691bb3b603b48f6f09d6b \
+            sha256  2c70c90611b7363d08aae137cb5979934f4c010c13e6c9a2de232251d73a5d72
 
         livecheck.url \
             http://llvm.org/viewvc/llvm-project/openmp/trunk/?view=log
@@ -45,19 +45,29 @@ if {${subport} ne ${name}} {
     }
 } else {
     conflicts               libomp-devel
-    if {${os.platform} eq "darwin" && ${os.major} > 12} {
-        github.setup            llvm-mirror openmp 391 svn-tags/RELEASE_
-        worksrcdir              openmp-${version}/rc1/runtime
-        version                 3.9.1
+    if {${os.platform} eq "darwin" && ${configure.cxx_stdlib} ne "libstdc++"} {
+        if {${os.major} <= 12} {
+            # kmp_alloc.c includes <atomic> but libc++ is not the default on
+            # these systems. https://trac.macports.org/ticket/52554
+            configure.cflags-append -stdlib=libc++
+        }
+        version                 5.0.0
         revision                0
+        master_sites            https://releases.llvm.org/${version}
+        distname                openmp-${version}.src
+        use_xz                  yes
+        dist_subdir             openmp-release
         checksums \
-            rmd160  7897556b28132ef4593f9ef67bf87b8247f1dbc0 \
-            sha256  0533375104a44a863e7c4976ccb0bc9663e1df4354fe3816386fe5207285d8e3
+            rmd160  5db226c3d0546057cf21ce6fc02bcfed646a76bf \
+            sha256  c0ef081b05e0725a04e8711d9ecea2e90d6c3fbb1622845336d3d095d0a3f7c5
+
+        worksrcdir              ${distname}/runtime
     } else {
+        # Last version working on libstdc++
         github.setup            llvm-mirror openmp 381 svn-tags/RELEASE_
-        worksrcdir              openmp-${version}/rc1/runtime
+        worksrcdir              openmp-${version}/final/runtime
         version                 3.8.1
-        revision                2
+        revision                3
         checksums \
             rmd160  a41054068a127ef84610afef8090109078cb6c46 \
             sha256  4c46b5946fe9b2a701661746d11c7c85c51a7f18673194a7ebd2a43470948a34
@@ -76,7 +86,7 @@ compiler.blacklist-append {clang < 500} *gcc*
 
 # Avoid dependency cycle
 # https://trac.macports.org/ticket/53110
-foreach ver {3.8 3.9 devel} {
+foreach ver {3.8 3.9 4.0 5.0 devel} {
     if {![file exists ${prefix}/bin/clang-mp-${ver}]} {
         compiler.blacklist-append macports-clang-${ver}
     }
@@ -130,8 +140,10 @@ post-destroot {
 }
 
 notes "
-  Use with clang-3.7 and up by adding \"-fopenmp\" during compilation / linking.
-   * For clang-3.7 without +openmp variant, use:
+ To use this OpenMP library:
+  * For clang-3.8+, or clang-3.7 with +openmp variant:
+     add \"-fopenmp\" during compilation / linking.
+  * For clang-3.7 without +openmp variant, use:
      \"-I${prefix}/include/libomp -L${prefix}/lib/libomp -fopenmp\"
 "
 

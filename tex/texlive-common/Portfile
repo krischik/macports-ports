@@ -18,7 +18,8 @@ platforms           darwin
 supported_archs     noarch
 license             Permissive
 
-master_sites        http://giraffe.cs.washington.edu/texlive/
+master_sites        http://giraffe.cs.washington.edu/texlive/ \
+                    http://alpaca.cs.washington.edu/texlive/
 worksrcdir          ${distname}
 use_xz              yes
 
@@ -27,7 +28,7 @@ checksums           rmd160  6fb366c4bddd6b98840d1e852af123ad25ffeafa \
 
 livecheck.type  regex
 livecheck.url   ${master_sites}
-livecheck.regex ${name}-(\[\\d-\]+)\\.tar
+livecheck.regex ${name}-(\[\\d-\]+(?:\\.\\d+)?)\\.tar
 
 post-patch {
     foreach x {texmf.cnf.d/10paths.cnf texmfcnf.lua texlive-update-cnf} {

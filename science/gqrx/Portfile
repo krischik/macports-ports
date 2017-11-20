@@ -5,7 +5,7 @@ PortGroup           github 1.0
 PortGroup           qmake5 1.0
 
 name                gqrx
-maintainers         michaelld openmaintainer
+maintainers         {michaelld @michaelld} openmaintainer
 
 description         Gqrx is a software defined radio (SDR) receiver using GNU Radio, OSMOSDR, and Qt5.
 long_description {Gqrx is a software defined radio receiver for Funcube Dongle (FCD), RTL2832U-based DVB-T devices (RTL-SDR), Universal Software Radio Peripherals (USRP) and Osmo SDR devices.  Gqrx is powered by GNU Radio and the Qt5 GUI toolkit.  Gqrx is free and open source software and anyone is invited to hack the source code to suit their needs.}
@@ -19,11 +19,10 @@ dist_subdir         gqrx
 
 if {${subport} eq ${name}} {
 
-    github.setup    csete gqrx 2.6.1 v
-    revision        2
+    github.setup    csete gqrx 2.8 v
     checksums       \
-        rmd160 45d60f7e56a361bd59790fe0cb7928fe59b7acac \
-        sha256 aef4867c085425c52bfb39887e3dd53aa6aac0742a6aa8be51a9e3d0b31d4b71
+        rmd160 8689df1aec053d2815ba765d45b4eb1c261af7d8 \
+        sha256 45556836ddb31b888a45535470444ae429c8a1259683262717c4a808102669fa
 
     patchfiles-append   patch-gqrx.pro.release.diff
 
@@ -38,10 +37,10 @@ provides the release version, which is typically updated every month or so.
 
 subport gqrx-devel {
 
-    github.setup        csete gqrx 82e0cc2c6be3c3d360cf7565f84b6d942329cc53
-    version             20170531
-    checksums           rmd160 ddd01dd2071cb5e6f54a7f5dcc363378d7ee9b67 \
-                        sha256 89feda98ecbc8e23d9351e57a4407c9cbf8315e6baa601912046e32d6c204825
+    github.setup        csete gqrx 514a08ad5096fba4bf76035f7e9ffbad19f8350c
+    version             20170916
+    checksums           rmd160 2bb3cb2f8031cea21fcf13319dcd4f776099333b \
+                        sha256 3d2005a3cd6baf42e017dd64560039eb14a9d18a3265fa0d4156392baf9d008a
 
     patchfiles-append   patch-gqrx.pro.devel.diff
 

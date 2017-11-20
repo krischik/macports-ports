@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.24 5.26
-perl5.setup         Devel-Cover 1.25
+perl5.setup         Devel-Cover 1.29
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         Code coverage metrics for Perl
@@ -12,8 +12,8 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  93dd212fa2720a001af0fa9fdf020bfdafd8e102 \
-                    sha256  4880c4f60dd4589e7853dd98a26564f0ec3f15b0006a6a9567bdf4fa0803fa36
+checksums           rmd160  3f4f65368bc2266f7f193fed4e4c5ef01cb6bc9d \
+                    sha256  16987dc98a868f1b195c32114c32009fedd03b67a7a465a0b38bafb5fa52d329
 
 if {${perl5.major} != ""} {
     depends_lib-append \
@@ -27,6 +27,7 @@ if {${perl5.major} != ""} {
                     port:p${perl5.major}-perl-tidy \
                     port:p${perl5.major}-pod-coverage \
                     port:p${perl5.major}-ppi-html \
+                    port:p${perl5.major}-sereal \
                     port:p${perl5.major}-sereal-decoder \
                     port:p${perl5.major}-sereal-encoder \
                     port:p${perl5.major}-template-toolkit \

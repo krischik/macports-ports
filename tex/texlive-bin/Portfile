@@ -3,13 +3,16 @@
 PortSystem      1.0
 PortGroup       compiler_blacklist_versions 1.0
 PortGroup       texlive 1.0
+PortGroup       cxx11 1.1
 
 # luajittex requires muniversal (and some patches to configure
 # scripts) to build universal
 PortGroup       muniversal 1.0
 
+
 name            texlive-bin
 version         2017
+revision        2
 
 categories      tex
 maintainers     {dports @drkp}
@@ -33,7 +36,8 @@ license         Copyleft Permissive LGPL-2.1+ BSD
 # download time, it omits a number of libraries and utilities that we
 # don't build. However, the port should still work with an unmodified
 # texlive distfile.
-master_sites    http://giraffe.cs.washington.edu/texlive/
+master_sites    http://giraffe.cs.washington.edu/texlive/ \
+                http://alpaca.cs.washington.edu/texlive/
 set distversion 20170604
 use_xz          yes
 distname        texlive-source-${distversion}-stripped
@@ -70,7 +74,8 @@ depends_lib     port:fontconfig \
 
 depends_run     port:ghostscript
 
-depends_build   path:bin/perl:perl5 \
+depends_build-append \
+                path:bin/perl:perl5 \
                 path:bin/pkg-config:pkgconfig
 
 # patches related to changes in install paths
@@ -115,15 +120,6 @@ post-patch {
     reinplace "s|@@PREFIX@@|${prefix}|" ${worksrcpath}/texk/kpathsea/paths.h
     reinplace "s|@@TEXMFSYSCONFIG@@|${texlive_texmfsysconfig}|" ${worksrcpath}/texk/kpathsea/paths.h
 }
-
-# llvm-gcc apparently fails on Xcode 4.0.x (#30758)
-compiler.blacklist {llvm-gcc-4.2 < 2335.15}
-
-# Fix build failure on Tiger due to use of -isystem
-compiler.blacklist-append gcc-4.0 gcc-3.3
-
-# The C++ code in 20170604 doesn't play well with clang-425.0.28
-compiler.blacklist-append {clang < 500}
 
 # We use MacPorts-provided libraries instead of the ones included in
 # texlive whenever possible, to avoid redundancy and to better keep
@@ -222,6 +218,14 @@ if {[string match *clang* ${configure.cxx}]} {
 } else {
     build.env-append        OBJCXXFLAGS="${configure.objcxxflags} [get_canonical_archflags objcxx]"
 }
+
+# work around differences between libc++ and libstdc++ headers building with clang
+# https://trac.macports.org/ticket/54358#comment:26
+if {[string match *clang* ${configure.cxx}]} {
+    configure.cxxflags-append -std=c++11
+    configure.cxxflags-append -Wno-reserved-user-defined-literal
+}
+
 
 post-destroot   {
     # Anything that gets installed into texmf-dist will be installed

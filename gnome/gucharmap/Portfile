@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           gobject_introspection 1.0
 
 name                gucharmap
-version             9.0.2
+version             10.0.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 description         gucharmap is a featureful unicode character map.
 long_description    ${description}
@@ -17,8 +17,8 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  20c45edc041b1830a57d7727f74786297df321bd \
-                    sha256  723ea92c8e877beae3986432b8e002807c6c2d1140590dff1c5bff34bb6ed265
+checksums           rmd160  9c5694429389eb6e5fe1a9497b32cf5601363752 \
+                    sha256  51a2bf91c4590ea2159f828156864f088a0bd4c12e7a1c396002a23d48b2d5e2
 
 depends_build       port:pkgconfig \
                     port:intltool \

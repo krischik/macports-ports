@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-setuptools
-version             36.0.1
+version             36.5.0
 categories-append   devel
 license             {PSF ZPL}
 maintainers         {jmr @jmroot} openmaintainer
@@ -22,9 +22,9 @@ master_sites        pypi:s/setuptools/
 distname            setuptools-${version}
 use_zip             yes
 
-checksums           md5    430eb106788183eefe9f444a300007f0 \
-                    rmd160 b439228ce682fd99b1300905d9d85222a942270e \
-                    sha256 e17c4687fddd6d70a6604ac0ad25e33324cec71b5137267dd5c45e103c4b288a
+checksums           md5    704f500dd55f4bd0be905444f3ba892c \
+                    rmd160 3fec867df437f758b622c4197abdb29fb8609226 \
+                    sha256 ce2007c1cea3359870b80657d634253a0765b0c7dc5a988d77ba803fc86f2c64
 
 python.versions     26 27 33 34 35 36
 python.link_binaries no

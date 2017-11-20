@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.24 5.26
-perl5.setup         Test-Simple 1.302086
+perl5.setup         Test-Simple 1.302103
 platforms           darwin
 supported_archs     noarch
 maintainers         {devans @dbevans} openmaintainer
@@ -13,8 +13,8 @@ license             {Artistic-1 GPL}
 description         Framework for writing test tools that all work together.
 long_description    ${description} Now includes new Test2 as preferred test framework.
 
-checksums           rmd160  950ca7e8b4853c894d40729197aaab72d5101f39 \
-                    sha256  21e4c93c52529a10ef970afcf2cdb5719bcfef5f71af09cad3675fcf021995b1
+checksums           rmd160  810a62bdabf05bad0a5e5d60fa9b8020f6768f11 \
+                    sha256  e86423883d56d0cd8d2d735f81053c7fb88a607d1018a061ab228d53161c4850
 
 if {${perl5.major} != ""} {
 

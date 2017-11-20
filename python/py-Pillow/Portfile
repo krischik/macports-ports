@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-Pillow
-version             4.1.1
+version             4.3.0
 revision            0
 categories-append   devel
 platforms           darwin
@@ -23,8 +23,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            Pillow-${version}
 
-checksums           rmd160  19c14fd1587be134d20cafbecf5771ad313ad2d4 \
-                    sha256  00b6a5f28d00f720235a937ebc2f50f4292a5c7e2d6ab9a8b26153b625c4f431
+checksums           rmd160  e2d862ed90e654da9057f13443fedc390f935d9a \
+                    sha256  a97c715d44efd5b4aa8d739b8fad88b93ed79f1b33fc2822d5802043f3b1b527
 
 if {${name} ne ${subport}} {
     conflicts           py${python.version}-pil

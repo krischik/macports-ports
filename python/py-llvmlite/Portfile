@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-llvmlite
-version             0.18.0
+version             0.20.0
 revision            0
 categories-append   devel science
 platforms           darwin
@@ -22,8 +22,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  e6b1474bc6ac88e22844d595dfbec9436b8ca019 \
-                    sha256  25a38af925f0523b834b92216d7f7cc997624942d5958287350c254f5e730404
+checksums           rmd160  59b7d5fd0bc9fcefc46bc7f6ebe7a2b40561ac38 \
+                    sha256  b2f174848df16bb9195a07fec102110a06d018da736bd9b3570a54d44c797c29
 
 if {${name} ne ${subport}} {
     patchfiles-append   patch-ffi_Makefile.osx.diff

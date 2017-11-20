@@ -8,7 +8,7 @@ categories          devel sysutils net
 platforms           darwin
 license             LGPL-3+
 
-maintainers         inconsistent.nl:merijn stromnov michaelld openmaintainer
+maintainers         inconsistent.nl:merijn stromnov {michaelld @michaelld} openmaintainer
 
 description         0MQ (ZeroMQ) lightweight messaging kernel
 
@@ -51,10 +51,10 @@ subport zmq22 {
 }
 
 subport zmq-devel {
-    github.setup        zeromq zeromq4-1 44c56a8e09cab35c629cb028a9a7ddb79cac5fc7
-    version             20170407
-    checksums           rmd160 8bcce63887e721f49a524105e72a30efff53f0a5 \
-                        sha256 4ad55eef9f8e484abc9392cde207b4e6cec87ff0e064fc4d682f5048859ab1a0
+    github.setup        zeromq zeromq4-1 a3f98304da9024f2d0ac4e838a646c231ddff5ee
+    version             20170923
+    checksums           rmd160 233d8d199018a663102a3f3f1f7aee84c15f879b \
+                        sha256 7bf520b325de208460ce88dd1e938691134c32bf1d0114a92fad9c7c98746238
 
     depends_lib-append  port:libsodium
 

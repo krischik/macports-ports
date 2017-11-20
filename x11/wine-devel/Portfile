@@ -2,6 +2,7 @@
 
 PortSystem                  1.0
 PortGroup                   compiler_blacklist_versions 1.0
+PortGroup                   snowleopard_fixes 1.0
 
 # Please keep the wine, wine-devel and wine-crossover ports as similar as possible.
 
@@ -12,11 +13,11 @@ PortGroup                   compiler_blacklist_versions 1.0
 name                        wine-devel
 conflicts                   wine wine-crossover
 set my_name                 wine
-version                     2.12
+version                     2.19
 set branch                  [lindex [split ${version} .] 0].x
 license                     LGPL-2.1+
 categories                  x11
-maintainers                 {ryandesign @ryandesign} {jwa @jyrkiwahlstedt} openmaintainer
+maintainers                 {ryandesign @ryandesign} openmaintainer
 homepage                    https://www.winehq.org
 platforms                   darwin
 use_xz                      yes
@@ -25,7 +26,7 @@ dist_subdir                 ${my_name}
 set wine_distfile           ${distname}${extract.suffix}
 set wine_gecko_version      2.47
 set wine_gecko_distfile     wine_gecko-${wine_gecko_version}-x86.msi
-set wine_mono_version       4.7.0
+set wine_mono_version       4.7.1
 set wine_mono_distfile      wine-mono-${wine_mono_version}.msi
 use_parallel_build          yes
 
@@ -55,14 +56,17 @@ distfiles                   ${wine_distfile}:winesource \
                             ${wine_mono_distfile}:winemono
 
 checksums                   ${wine_distfile} \
-                            rmd160  2f7c60e631c3865595b298701129ab460ed36da3 \
-                            sha256  496c11af841487e6ec4e1953ac19b05a7f48e397da502653ffbd9fe9004213a7 \
+                            rmd160  6713e3d4c2c8abf44a4b51edda289fd6149673b9 \
+                            sha256  487131e69875ae9c2d042798f954160146e603e449c3c97981f29b42f4a66095 \
+                            size    19549464 \
                             ${wine_gecko_distfile} \
                             rmd160  abf7cc78b49dd0623bc8fe87ae0e32bb8694e13d \
                             sha256  3b8a361f5d63952d21caafd74e849a774994822fb96c5922b01d554f1677643a \
+                            size    49266176 \
                             ${wine_mono_distfile} \
-                            rmd160  6158dce54355c4174ff30544db3a0fd2b9c488b5 \
-                            sha256  7698474dd9cb9eb80796b5812dff37386ba97b78b21ca23b20079ca5ad6ca5a1
+                            rmd160  3e2932960dabff8283f02b32dc573b0dda6adfac \
+                            sha256  2c8d5db7f833c3413b2519991f5af1f433d59a927564ec6f38a3f1f8b2c629aa \
+                            size    56470528
 
 # Note: Most of the X11 libs are dlopen()'d
 depends_lib                 port:fontconfig \

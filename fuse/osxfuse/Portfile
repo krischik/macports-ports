@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                osxfuse
-version             3.6.0
+version             3.7.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          fuse devel
 platforms           macosx
@@ -44,13 +44,14 @@ if {${kernel_arch} ne "x86_64"} {
 }
 
 distfiles
+dist_subdir ${name}/${version}
 set mp.dist {
-    osxfuse     fe5d0d4
-    kext        be85464
-    framework   ae7d4de
-    prefpane    87df3f1
-    fuse        b6d17a5
-    support     ab7b781
+    osxfuse     431bdc5
+    kext        0a73539
+    framework   e1df643
+    prefpane    8a65eb2
+    fuse        559738e
+    support     19b4e8b
 }
 
 depends_build       port:autoconf \
@@ -71,27 +72,27 @@ if { $use_signed_kext } {
     distfiles-append ${name}-${version}.dmg
 }
 
-checksums            osxfuse-fe5d0d4.tar.gz \
-                     rmd160  4e62714c59f0dc27840b7b954eb20609ccf1e1f6 \
-                     sha256  655cb16f321280ea78d539971b1a127d95c926c8db2ce2bf10937e0029f54356 \
-                     kext-be85464.tar.gz \
-                     rmd160  911e4a8a8002cb48d1b5a5a960725b3ebd250237 \
-                     sha256  1713f3daaec5ef02524a3ef9a431feada9fb1254147510777354b7cbf6f5c111 \
-                     framework-ae7d4de.tar.gz \
-                     rmd160  d0dc45d512cdb03987d2a8a90c7aba3a980145bc \
-                     sha256  0616b96fd63e9bdb522b6a3717296ff9bf7132f67bb2467f4fc028f5af3056b7 \
-                     prefpane-87df3f1.tar.gz \
-                     rmd160  3d95d87f42ee06fbe7c5abcd464dec200ffcd07c \
-                     sha256  0dec17b92ac9ce630a135f51f10880476b8dbea5541643717eb41583b92b28e0 \
-                     fuse-b6d17a5.tar.gz \
-                     rmd160  a954971f18853340eabb73d6217dd37ad8b8b5d0 \
-                     sha256  81abe0378e4d4cd1eb5dcf528d3da0c4e94dcbe97031670b1fd1be8f7675f2dc \
-                     support-ab7b781.tar.gz \
-                     rmd160  87061863069fe46146240ffef41e64d21a66c544 \
-                     sha256  cb02ed8e0572662750b101bd581928260a954994b0146beb0ac28cc85c3e467e \
-                     osxfuse-3.6.0.dmg \
-                     rmd160  853347d87e460eda77fe7fa6a65b2dfea374c026 \
-                     sha256  83223ae68012882110670d09d1c0d9d5f656fe9fef69c6a10d18cc85a3e2c166
+checksums           osxfuse-431bdc5.tar.gz \
+                    rmd160  71feaf83788bc2d1a862dd603993dab06f18e0e4 \
+                    sha256  4e93768fd8276bf458c237ee298db659e412cff26362ee13a0789000e387f7b5 \
+                    kext-0a73539.tar.gz \
+                    rmd160  8e05632c0e27528845115c51cddcc074b0555720 \
+                    sha256  48bf4a9a6befed3a710f3254f5572891e7c5e6b2e637e2ee70a222882864bedf \
+                    framework-e1df643.tar.gz \
+                    rmd160  6b929ca95d19636a84c3c6805b6bb4afad7af0c1 \
+                    sha256  7a9946a7bd5b29e0c826be267ccdbcce98f8c2946b8aea355ed9257d28c359a9 \
+                    prefpane-8a65eb2.tar.gz \
+                    rmd160  cdf12079ce6ed657b11814c5d1aba1f698f210eb \
+                    sha256  45510edfbfbc8d430fa06f8bc3f4f1d5db943c84c2e93445fa64224f742d4124 \
+                    fuse-559738e.tar.gz \
+                    rmd160  97ebdbf37f84035400666f7252c67313700db494 \
+                    sha256  32818f955c7179987bee8b4187e23a00763d43e19759190956b92740b673cb94 \
+                    support-19b4e8b.tar.gz \
+                    rmd160  26028986b1dac72789be9bf760f40afe00e79a1a \
+                    sha256  5a606d9f9d3a652d20c4e23efca5638edde0b70c24d0a85ec21fc1ddd0395da9 \
+                    osxfuse-3.7.1.dmg \
+                    rmd160  b63fdf2dae4dbe8f95e52b38f2f310fbb7c7164f \
+                    sha256  0982bca1661d1b8df1c310e828984b25c11dfdc623a79566bfa6283779fad24c
 
 # extract phase will just extract the dmg; post-extract will expand
 # the tarballs
@@ -120,6 +121,10 @@ post-extract {
     }
 }
 
+if { ! $use_signed_kext } {
+    patchfiles      patch-build.d_targets_packagemanager.sh.diff
+}
+
 use_configure   no
 
 build.cmd       ./build.sh -t packagemanager
@@ -141,16 +146,6 @@ destroot.target -a install
 destroot.args   -v 5 --build-directory="${workpath}"
 destroot.destdir -- "${destroot}${prefix}"
 
-# Move filesystem bundle into place
-post-destroot {
-    # Set proper permissions
-    fs-traverse f ${destroot}${prefix}/Library {
-        file attributes $f -owner root -group wheel
-    }
-    # Enable setuid on helper binary
-    file attributes ${destroot}${prefix}/Library/Filesystems/osxfuse.fs/Contents/Resources/load_osxfuse -permissions 04755
-}
-
 
 # On Mavericks and Yosemite, replace the kext we just built with the
 # one from the binary distribution. This works around OS X's
@@ -166,6 +161,15 @@ if { $use_signed_kext } {
         file copy ${workpath}/pkg/Core.pkg/Library/Filesystems/osxfuse.fs/Contents/Extensions \
             ${destroot}${prefix}/Library/Filesystems/osxfuse.fs/Contents
     }
+}
+
+post-destroot {
+    # Set proper permissions
+    fs-traverse f ${destroot}${prefix}/Library {
+        file attributes $f -owner root -group wheel
+    }
+    # Enable setuid on helper binary
+    file attributes ${destroot}${prefix}/Library/Filesystems/osxfuse.fs/Contents/Resources/load_osxfuse -permissions 04755
 }
 
 destroot.violate_mtree yes

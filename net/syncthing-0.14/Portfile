@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        syncthing syncthing 0.14.31 v
+github.setup        syncthing syncthing 0.14.39 v
 name                syncthing-0.14
 categories          net
 platforms           darwin
@@ -18,8 +18,8 @@ long_description    Syncthing replaces proprietary sync and cloud services \
                     and how it's transmitted over the Internet.
 homepage            https://syncthing.net
 
-checksums           rmd160  530f9fb79ca408d568b5d9106abc65530bad6b2d \
-                    sha256  846ca3cad32c0d914d1eb3e6ee06217458ad0dac248b240f5fa111811bfd2743
+checksums           rmd160  98d1a20fc4c73b162f9c73d114eff4384f0ae904 \
+                    sha256  9d14285a6c036fa563d4e2163109e2e1762ec7c21969e16104e3f43a771aedc1
 
 worksrcdir          src/github.com/syncthing/syncthing
 extract.mkdir       yes
@@ -53,3 +53,4 @@ notes-append        \
     "2. Edit syncthing.plist by replacing USERNAME with your actual username" \
     "3. Log out and in again, or run: launchctl load ~/Library/LaunchAgents/syncthing.plist"
 
+livecheck.url       ${github.homepage}/releases/latest

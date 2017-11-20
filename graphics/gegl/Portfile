@@ -49,11 +49,16 @@ depends_lib         port:babl \
                     port:vala
 
 patchfiles          patch-fix-introspection.diff \
+                    gegl-enums.c.patch \
                     patch-configure.ac.diff \
                     patch-use-intltoolize.diff \
                     patch-examples-Makefile.am.diff \
                     rename-for-altivec.patch \
                     patch-ffmpeg.diff
+
+# Avoid error: use of undeclared identifier 'GEGL'
+# See https://git.gnome.org/browse/gegl/commit/?id=81fb956b221e4b1f919788d8a5f6a3a5462b86ae
+patchfiles-append   patch-g_log_domain.diff
 
 post-patch {
     # http://trac.macports.org/ticket/35148

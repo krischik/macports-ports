@@ -1,0 +1,26 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+PortGroup           python 1.0
+
+github.setup        Calysto metakernel 0.20.7 v
+set real_name       metakernel
+name                py-${real_name}
+license             BSD-3-Clause
+maintainers         {mps @Schamschula} openmaintainer
+description         A Jupyter/IPython kernel template
+long_description    ${description} which includes core magic functions (including \
+                    help, command and file path completion, parallel and distributed \
+                    processing, downloads, and much more).
+platforms           darwin
+
+checksums           rmd160  060d911adf09d810118b6d70b8a53881a9c56940 \
+                    sha256  af1acb6426bce3e6a2ebc6afe5a74c077035acd72c87da890f2aa8e4e8389b76
+
+python.versions     27 34 35 36
+
+if {${name} ne ${subport}} {
+    depends_lib-append  \
+                    port:py${python.version}-notebook
+}

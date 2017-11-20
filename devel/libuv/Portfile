@@ -6,8 +6,7 @@ PortGroup           github 1.0
 name                libuv
 categories          devel
 platforms           darwin
-maintainers         {raimue @raimue} \
-                    michaelld \
+maintainers         {michaelld @michaelld} \
                     openmaintainer
 license             {MIT BSD}
 
@@ -18,9 +17,9 @@ long_description \
 
 if {${subport} eq ${name}} {
 
-    github.setup    libuv libuv 1.13.1 v
-    checksums       rmd160 7e278950228c4c84d7c8f45d76142706c770eb0f \
-                    sha256 5038787b4f65b7e9c6d7ba9fbad156ff8459c12cfd5ec73c90286dc729a3f513
+    github.setup    libuv libuv 1.15.0 v
+    checksums       rmd160 b86e59e0ce594bd6c48954cb076f9a8b6992bd20 \
+                    sha256 4a227f32d84604a4f525a2c5b2e19526d265545028b1912da09c89fdf875e444
 
     conflicts       libuv-devel
 
@@ -28,10 +27,10 @@ if {${subport} eq ${name}} {
 
 subport libuv-devel {
 
-    github.setup    libuv libuv d3a958d444e35fa7f05bd7c6a826bc04221553e0
-    version         20170705
-    checksums       rmd160 2bc4c4ce047aa5537249c639b6bb43bd1ba259b5 \
-                    sha256 f400f885e757bd841fd13bc2cbd1cab2ea17b999f2231f53fa6c804387dd5e6a
+    github.setup    libuv libuv 44b7c71035a4270510f642923604cc5fed93d20e
+    version         20171004
+    checksums       rmd160 76052a481d4bec96cb06ca63480d8626e7fe9c44 \
+                    sha256 22430c7b4c84d1b695b2ce0e773a46cbfbcf0d672079275a0f06dd3bb1da3471
 
     long_description    ${long_description} \
         This port is kept up with the libuv GIT 'master' branch, is typically updated weekly to monthly.

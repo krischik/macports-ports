@@ -12,7 +12,7 @@ compiler.blacklist-append   {*gcc-4.6} {clang < 700}
 
 name                octave
 version             4.2.1
-revision            3
+revision            8
 categories          math science
 platforms           darwin
 license             GPL-3+
@@ -64,7 +64,6 @@ patchfiles-append patch-host_name.diff
 patchfiles-append patch-file-stat.cc.diff
 
 post-patch {
-
     if { ${os.arch} eq "i386" } {
         if { ${os.major} >= 9 && [sysctl hw.cpu64bit_capable] == 1 } {
             set short_host_name x86_64-apple-${os.platform}${os.major}.x.x
@@ -114,8 +113,15 @@ pre-patch {
 # avoid depends_build-append port:coreutils
 configure.env-append MKDIR_P="/bin/mkdir -p"
 
-# avoid depends_build-append port:cctools
-configure.env-append RANLIB=/usr/bin/ranlib
+if { ${os.major} > 10 } {
+    # avoid depends_build-append port:cctools
+    configure.env-append RANLIB=/usr/bin/ranlib
+} else {
+    # ranlib on older systems is too old to handle newer clang output
+    # https://trac.macports.org/ticket/54228
+    depends_build-append port:cctools
+    configure.env-append RANLIB=${prefix}/bin/ranlib
+}
 
 # main octave port lists as a depends_lib
 # configure.ac list it among the "[p]rograms used in Makefiles"
@@ -410,7 +416,7 @@ variant sound description {enable audio support (file I/O and playback)} {
 default_variants-append +sound
 
 variant app description "build application bundle to launch ${subport}" {
-    depends_build-append port:ImageMagick
+    depends_build-append port:librsvg
 
     if {[vercmp ${xcodeversion} 4.5] < 0} {
         # need a way to generate icns file for XCode prior to 4.5
@@ -481,15 +487,10 @@ variant app description "build application bundle to launch ${subport}" {
 
             set hres [expr 2*${res}]
 
-            # find new density so that converted PNG files do not look pixelated
-            set denw  [expr ${dpi}*${res}/${width}]
-            set denh  [expr ${dpi}*${res}/${height}]
-
-            set hdenw [expr 2*${denw}]
-            set hdenh [expr 2*${denh}]
-
-            system -W ${worksrcpath} "${prefix}/bin/convert -background transparent -resize ${res}x${res}   -density ${denw}x${denh}   ${svg} Octave.iconset/icon_${res}x${res}.png"
-            system -W ${worksrcpath} "${prefix}/bin/convert -background transparent -resize ${hres}x${hres} -density ${hdenw}x${hdenh} ${svg} Octave.iconset/icon_${res}x${res}@2x.png"
+            # see http://savannah.gnu.org/bugs/?37062
+            # see http://hg.savannah.gnu.org/hgweb/octave/rev/1687269e31e4
+            system -W ${worksrcpath} "${prefix}/bin/rsvg-convert -w ${res} ${svg}  > Octave.iconset/icon_${res}x${res}.png"
+            system -W ${worksrcpath} "${prefix}/bin/rsvg-convert -w ${hres} ${svg} > Octave.iconset/icon_${res}x${res}@2x.png"
         }
 
         if {[vercmp ${xcodeversion} 4.5] >= 0} {
