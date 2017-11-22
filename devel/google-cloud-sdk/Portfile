@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                google-cloud-sdk
-version             177.0.0
+version             180.0.1
 categories          devel python
 license             Apache-2
 maintainers         nomaintainer
@@ -20,8 +20,8 @@ master_sites        https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/
 distname            ${name}-${version}-${os.platform}-${configure.build_arch}
 worksrcdir          ${name}
 
-checksums           rmd160  3712bac9280b26369258594063c7188b38519bb9 \
-                    sha256  af7ccaab5869651ebc8623326c26efee67a0b544eec9a0014038f9bc7588628e
+checksums           rmd160  5d89a3a699a834814c82e95d66e3674d69093e1d \
+                    sha256  33efe06b3a9f5c74aeb7d0048fc4afa634fab5de3c7739dc54aad19c34bb8416
 
 python.default_version 27
 

@@ -8,6 +8,7 @@ PortGroup       snowleopard_fixes 1.0
 
 name            gnutls
 version         3.5.16
+revision        1
 set branch      [join [lrange [split ${version} .] 0 1] .]
 categories      devel security
 # yes, some of the libs are GPL only
@@ -23,7 +24,7 @@ long_description \
     not include any patented algorithms \
     and is available under the GNU Lesser General Public License (LGPL).
 
-master_sites    ftp://ftp.gnutls.org/gcrypt/gnutls/v${branch}/ \
+master_sites    https://www.gnupg.org/ftp/gcrypt/gnutls/v${branch}/ \
                 http://mirrors.dotsrc.org/gcrypt/gnutls/v${branch}/
 
 checksums       rmd160  96fdda2cec8344e37a046c8e5d68bdc8f3df00d0 \
@@ -37,7 +38,7 @@ depends_build-append \
 
 depends_lib-append \
                 port:gmp \
-                port:libidn \
+                port:libidn2 \
                 port:libtasn1 \
                 port:libunistring \
                 port:p11-kit \

@@ -109,40 +109,40 @@ switch ${subport_branch} {
     }
     5.6 {
         epoch           2
-        version         5.6.31
+        version         5.6.32
         use_xz          yes
-        checksums       rmd160  68960936685b6b96bcfd6ac6c69c537143274537 \
-                        sha256  c464af61240a9b7729fabe0314cdbdd5a000a4f0c9bd201f89f8628732fe4ae4 \
-                        size    12461268
+        checksums       rmd160  5930273dc2cf376ece692e1458753f3b7a4ff2ca \
+                        sha256  8c2b4f721c7475fb9eabda2495209e91ea933082e6f34299d11cba88cd76e64b \
+                        size    12464512
     }
     7.0 {
         epoch           2
-        version         7.0.24
+        version         7.0.25
         use_xz          yes
-        checksums       rmd160  ba6ceb57c8829de19bc44193c786d7a3887a9b2a \
-                        sha256  4dba7aa365193c9229f89f1975fad4c01135d29922a338ffb4a27e840d6f1c98 \
-                        size    11959232
+        checksums       rmd160  1163259a65b844ef9eb1ff5719dba4e68c99f597 \
+                        sha256  5cc14bd20fb2226f6d34465662425cd100441bde9042ea1cef2e4506d6ded8cc \
+                        size    11963668
     }
     7.1 {
         epoch           2
-        version         7.1.10
+        version         7.1.11
         use_xz          yes
-        checksums       rmd160  9333e9980f5a742cda6abecc86f39bc4b79e674d \
-                        sha256  2b8efa771a2ead0bb3ae67b530ca505b5b286adc873cca9ce97a6e1d6815c50b \
-                        size    12166036
+        checksums       rmd160  a03fde308d6cd6e4db82573312bd6378fa7f07da \
+                        sha256  074093e9d7d21afedc5106904218a80a47b854abe368d2728ed22184c884893e \
+                        size    12169884
     }
     7.2 {
         # When this becomes a stable version, remove the overrides for homepage,
         # master_sites and livecheck, and update php.latest_stable_branch in the
         # php-1.1 portgroup.
         epoch           1
-        version         7.2.0RC4
+        version         7.2.0RC6
         homepage        https://qa.php.net/
-        master_sites    https://downloads.php.net/~remi/
+        master_sites    https://downloads.php.net/~pollita/
         use_xz          yes
-        checksums       rmd160  5cb44236f4fa60539f074f5fd7501f273d619c5b \
-                        sha256  08ee9e764891224d73f157e01594605fc85c63ffc9d4773d9ac29b0e3160c68f \
-                        size    11980436
+        checksums       rmd160  30b7019a84459795b5638b97543c60f32536e3ea \
+                        sha256  be4df00ff5b66e9f13c83e1d08d1d5384ae7ccc820e26f7e5f9e660011496a9e \
+                        size    12077856
         livecheck.url   ${homepage}
         livecheck.regex php-([strsed ${subport_branch} {g/\\./\\./}](?:\\.\[0-9.\]+)*(?:(?:alpha|beta|RC)\\d+|-latest))\\.tar
     }
@@ -366,7 +366,7 @@ subport ${php} {
         notes-append "
 PHP ${branch} has reached end-of-life. Please upgrade to PHP ${php.oldest_supported_branch} or newer. The newest stable version is ${php.latest_stable_branch}.
 
-To learn how to update your code, please read the following guides:
+To learn how to update your code, please read the following guide:
 
     http://php.net/manual/en/migration[php.suffix_from_branch ${php.latest_stable_branch}].php
 
@@ -375,7 +375,7 @@ To learn how to update your code, please read the following guides:
     }
     
     if {[vercmp ${branch} ${php.latest_stable_branch}] > 0} {
-        notes-append "${php} @${version}_${revision} is a development preview—do not use it in production!\n\n\n"
+        notes-append "${php} @${version} is a development preview—do not use it in production!\n\n\n"
     }
     
     if {![file exists ${phpinidir}/php.ini]} {
@@ -427,10 +427,6 @@ subport ${php}-apache2handler {
         5.3.29              {revision 2}
         5.4.45              {revision 2}
         5.5.38              {revision 2}
-        5.6.31              {revision 2}
-        7.0.24              {revision 2}
-        7.1.10              {revision 2}
-        7.2.0RC4            {revision 2}
     }
     
     description             ${php} Apache 2 Handler SAPI

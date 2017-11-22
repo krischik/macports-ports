@@ -9,7 +9,7 @@ PortGroup           compiler_blacklist_versions 1.0
 name                gtk3
 set real_name       gtk+
 epoch               1
-version             3.22.24
+version             3.22.26
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          gnome x11
 license             LGPL-2.1+
@@ -29,8 +29,8 @@ use_xz              yes
 
 master_sites        gnome:sources/gtk+/${branch}/
 
-checksums           rmd160  028c5d7dc86bdd9be9bc9c1e4cf478f5d39195c6 \
-                    sha256  cbb16e4cfc928ab8f5f22f7290616f95f6ebc8c97cc724a2007b07ced833592b
+checksums           rmd160  42c684ce7f7fdd10accc86c8e7042509e5125d64 \
+                    sha256  61eef0d320e541976e2dfe445729f12b5ade53050ee9de6184235cb60cd4b967
 
 minimum_xcodeversions {9 3.1}
 
@@ -231,12 +231,6 @@ variant quartz conflicts x11 {
     # This patch is part of #53911 and is backported from upstream's repository.
     # Can probably be removed the next time around.
     patchfiles-append       patch-gdk-launch-support-newer-glib.diff
-
-    # icon browser demo: revert addition of copy-to-clipboard button
-    # https://git.gnome.org/browse/gtk+/commit/?h=gtk-3-22&id=51b1445cd1b1df7abb8f11a0cd9bcef9a3e41825
-    # breaks quartz build due to unconditional use of X11 API
-    # introduced in 3.22.16
-    patchfiles-append       patch-browser-demo-revert-add-copy-to-clipboard-button.diff
 
     configure.args-append   --enable-quartz-backend
 }

@@ -6,7 +6,7 @@ PortGroup           xcodeversion 1.0
 
 name                TeXShop3
 conflicts           TeXShop
-version             3.88
+version             3.89
 revision            2
 
 set major           [lindex [split ${version} .] 0]
@@ -28,13 +28,11 @@ dist_subdir         TeXShop/
 worksrcdir          texshopsource[strsed ${version} {/\.//}]
 set propername      TeXShop
 
-# stealth update to fix some Xcode 9 issues
-dist_subdir         TeXShop/${version}_1
+# stealth update
+dist_subdir         TeXShop/${version}_2
 
-checksums           rmd160  4e9496f08c1ef989ff4a2754c79984510505484d \
-                    sha256  e9e4eeaec00456930589871cbca803897637f6a194faaaa318fc0c9163c46637
-
-patchfiles          patch-Sources-TSDocument.m.diff
+checksums           rmd160  2de19f5a8eee72c2e00d52ed127b2f4658652b75 \
+                    sha256  970fc7b474eec687322dd88f46e150bacea7a09fa235d5644a5a90121a6f5f22
 
 minimum_xcodeversions       {16 9}
 
