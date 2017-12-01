@@ -1,0 +1,48 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4
+
+PortSystem 1.0
+
+name				steem
+version				0.19.2
+revision			0
+categories			finance crypto
+license				GPL-3
+platforms			darwin
+maintainers			openmaintainer krischik
+description			Steem is a Delegated Proof of Stake blockchain.
+long_description	Steem is a Delegated Proof of Stake blockchain that uses a "Proof of Brain" \
+					social consensus algorithm for token allocation.
+
+homepage			https://github.com/steemit/${name}
+master_sites		${homepage}/archive/
+distfiles			v${version}.tar.gz
+distname			steem-${version}
+
+checksums			md5		edcf8b254bfd0e5902ccbbab3a1920e0 \
+					sha1	efc1ca9f2bb91b3c49a96543368ba70ed322e2de \
+					rmd160	85a81a059fd70595d4955673b891cd0ef48b943d \
+					sha256	456ff0e6f495a69b4df11618156010d6f26ccbaba39e544c95108942b10897dc
+
+depends_build		port:automake	\
+					port:cmake		\
+					port:doxygen	\
+					port:openssl	\
+					port:wget			
+
+depends_lib			port:python36	\
+					port:openssl	\
+					port:wget		\
+					port:boost		\
+					port:bitcoin	\
+					port:docker
+
+use_configure		no
+build.cmd			make all
+
+destroot {
+	xinstall -d ${destroot}${prefix}/bin
+}
+
+############################################################ {{{1 ###########
+# vim: set nowrap tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab :
+# vim: set textwidth=0 filetype=tcl foldmethod=marker nospell :
