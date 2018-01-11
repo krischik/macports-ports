@@ -14,7 +14,7 @@ PortGroup                   perl5 1.0
 
 name                        whois
 conflicts                   bahamut expect ripe-whois
-version                     5.2.18
+version                     5.2.20
 categories                  net
 maintainers                 {ryandesign @ryandesign}
 license                     GPL-2+
@@ -30,12 +30,13 @@ long_description            whois is an improved whois client that follows the \
 master_sites                http://ftp.debian.org/debian/pool/main/w/${name}/
 use_xz                      yes
 
-checksums                   rmd160  2c6e6c25a88f1425ef105af57475ee23a8c15279 \
-                            sha256  c35d0d26aff37107c244a8ad54fd42e497ec0b90f76309e9beb7078b827c97d5
+checksums                   rmd160  3b91d0c32720a7dc90a68ebd8be43b932f562d9b \
+                            sha256  6848ab671750ab3782fe4ab2a47910fe4e25aa93894e4d0f3f67b5fcee06c009 \
+                            size    82336
 
 distfiles                   ${name}_${version}${extract.suffix}
 
-perl5.branches              5.24
+perl5.branches              5.26
 
 depends_build               port:perl${perl5.major}
 

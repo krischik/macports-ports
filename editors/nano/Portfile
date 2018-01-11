@@ -3,7 +3,7 @@
 PortSystem      1.0
 
 name            nano
-version         2.9.0
+version         2.9.2
 categories      editors
 platforms       darwin freebsd
 license         GPL-3
@@ -19,8 +19,8 @@ long_description \
 homepage        https://www.nano-editor.org
 master_sites    ${homepage}dist/v[strsed ${version} {/\.[0-9]*$//}]/ gnu
 
-checksums       rmd160  8a061c830f27f608a8f010ea56936c54a0fa8a92 \
-                sha256  220cdf0b29b3d2bcba66e7aaa5b27ed1f2bf53c44192d8e0e0328624da3dbebf
+checksums       rmd160  d0a1ffc055b5b4302b9ee50e7d328f72f03dcb5d \
+                sha256  1ed3c61100181bebb2bf60d60a44a3b9658410cbe05f375f7b3814b2973c8fd1
 
 depends_lib     port:gettext \
                 port:libiconv \

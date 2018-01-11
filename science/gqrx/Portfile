@@ -37,10 +37,10 @@ provides the release version, which is typically updated every month or so.
 
 subport gqrx-devel {
 
-    github.setup        csete gqrx 1503682202ea11afebeccba25d2f345d849e83c2
-    version             20171110
-    checksums           rmd160 d4bc48ade7eedd767c44b7bad87851ee97d796d7 \
-                        sha256 9ff604e9eaa0ca8590ddd3b59402963b0b41630544faf0e9db7cad999818b337
+    github.setup        csete gqrx b1336d1a91419c11dde5c953447f45ab3a366dd1
+    version             20180101
+    checksums           rmd160 929f22dd74fd1fe87166fa180e83247e3c508200 \
+                        sha256 074fc40d6c3a28a8e1b3e19ea81b29c451e7dc89c0671ebe7610b8cb88d3ff89
 
     patchfiles-append   patch-gqrx.pro.devel.diff
 

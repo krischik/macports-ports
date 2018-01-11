@@ -4,7 +4,7 @@ PortSystem          1.0
 
 name                freetds
 epoch               1
-version             1.00.78
+version             1.00.80
 categories          databases
 platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -27,9 +27,9 @@ homepage            http://www.freetds.org/
 master_sites        ftp://ftp.freetds.org/pub/${name}/stable/
 use_bzip2           yes
 
-checksums           rmd160  2fba84d3f924ae5cfa38146ac6473b99f3935a1f \
-                    sha256  ae7d6b5d79f8bcef2aecc43f8522c0c7de152fc4352eac2a67af9585133dc037 \
-                    size    2152586
+checksums           rmd160  bbdaecd3248ed2560a6894a61359a5bc1d939622 \
+                    sha256  d3508fe31d59b40fb5a5bdf040941652b40b7f7c2f23a93f980e7ad6b72a419f \
+                    size    2151977
 
 depends_lib         port:libiconv \
                     port:ncurses \

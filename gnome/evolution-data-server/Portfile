@@ -1,12 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           cmake 1.0
+PortGroup           cmake 1.1
 
 cmake.out_of_source yes
 
 name                evolution-data-server
-version             3.26.2.1
+version             3.26.4
 set branch          [join [lrange [split ${version} .] 0 1] .]
 description         Addressbook and calender libs for GNOME.
 long_description    Evolution Data Server provides a central location for \
@@ -20,8 +20,9 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  29fb666ceab1069738b573ec1aa4350b7ca5be4e \
-                    sha256  09fb1c4ce20c62309e8ea2d80649f590492e88c1deb89118e715e155296baefd
+checksums           rmd160  3005a345c22a91f1e0471c12abee997d29471349 \
+                    sha256  063ea91b94492c69928d3181c745781fe09e5234f1b94e0ba110cee00c2cb40f \
+                    size    4406596
 
 depends_build-append \
                     port:pkgconfig \

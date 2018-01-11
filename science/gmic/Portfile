@@ -1,11 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           cmake 1.0
 PortGroup           cxx11 1.0
 
 name                gmic
-version             2.1.5
+version             2.1.8
+revision            1
 license             CeCILL
 categories          science
 platforms           darwin
@@ -26,13 +26,12 @@ long_description    G'MIC stands for GREYC's Magic Image Converter. It is \
 homepage            http://gmic.eu
 master_sites        http://gmic.eu/files/source/
 
-cmake.out_of_source yes
 use_parallel_build  no
 
 distfiles           ${name}_${version}${extract.suffix}
 
-checksums           rmd160  2f9d0429dbfff60470a4215414dae4149a803925 \
-                    sha256  2f3de90a09bba6d24c89258be016fd6992886bda13dbbcaf03de58c765774845
+checksums           rmd160  f28070fffdfbc5b12fb806bfe7f2c9acfb253a2f \
+                    sha256  f22783f14cb202dec4a840733f2028f6e2c464fdd2f0166fc38943702cea6bde
 
 depends_build-append \
                     port:pkgconfig
@@ -50,9 +49,11 @@ depends_lib         port:fftw-3 \
                     port:xorg-libXext \
                     port:zlib
 
-pre-configure {
-    move ${worksrcpath}/resources/CMakeLists.txt ${worksrcpath}/
-}
+patchfiles          patch-src-Makefile.diff
+
+use_configure       no
+
+build.dir           ${worksrcpath}/src
 
 livecheck.url       http://gmic.eu/files/source/
 livecheck.regex     ${name}_(\[0-9.\]+)${extract.suffix}

@@ -59,10 +59,9 @@ if {${subport} eq ${name}} {
 
     conflicts       fltk
 
-
-    version         1.4.x-r12562
-    checksums       rmd160 b1316c24b307d99ba0f18ef4baf67e30ec91537f \
-                    sha256 8b3bce291c4640da7608dc67f97ec30681d67dbacf71e2ebbe097c3a8ac45058
+    version         1.4.x-r12620
+    checksums       rmd160 94669d2178a93c2f9049cf95611f745f776d8d95 \
+                    sha256 a074b74a473de2f06a5f08bce9957840ef17844ae5c00e693afe0117cab0299e
 
     master_sites    http://fltk.org/pub/fltk/snapshots/
     distname        fltk-${version}

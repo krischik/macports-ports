@@ -5,8 +5,8 @@ PortGroup           cmake 1.0
 PortGroup           mpi 1.0
 
 name                sundials
-version             2.7.0
-#revision            0
+version             3.1.0
+revision            1
 categories          math devel
 license             bsd
 platforms           darwin
@@ -27,29 +27,29 @@ long_description    SUNDIALS consists of the following five solvers: CVODE\
 homepage            https://computation.llnl.gov/projects/sundials
 master_sites        http://computation.llnl.gov/projects/sundials-suite-nonlinear-differential-algebraic-equation-solvers/download/
 
-checksums           rmd160  7bbbff19828c8235422497e11891d07fe02e4021 \
-                    sha256  d39fcac7175d701398e4eb209f7e92a5b30a78358d4a0c0fcc23db23c11ba104
+checksums           rmd160  f2f77ea9ff638bc5f32daeba30ebda2e0c85073a \
+                    sha256  18d52f8f329626f77b99b8bf91e05b7d16b49fde2483d3a0ea55496ce4cdd43a
 
 cmake.out_of_source yes
+
+conflicts           sundials2
 
 # use default cmake behavior to find Lapack
 patchfiles-append   patch-find_lapack.diff
 
 depends_lib-append  port:SuiteSparse
 
-if {[variant_isset examples]} {
-    mpi.setup \
+mpi.setup \
         require_fortran
-} else {
-    mpi.setup
-}
 
 configure.args-append \
-                    -DEXAMPLES_ENABLE=OFF \
-                    -DCXX_ENABLE=OFF \
-                    -DF90_ENABLE=OFF \
+                    -DEXAMPLES_ENABLE_C=OFF \
+                    -DEXAMPLES_ENABLE_CXX=OFF \
+                    -DEXAMPLES_ENABLE_F77=OFF \
+                    -DEXAMPLES_ENABLE_F90=OFF \
+                    -DBLAS_ENABLE=OFF \
                     -DLAPACK_ENABLE=OFF \
-                    -DFCMIX_ENABLE=OFF \
+                    -DFCMIX_ENABLE=ON \
                     -DKLU_ENABLE=ON \
                     -DKLU_LIBRARY_DIR=${prefix}/lib \
                     -DKLU_INCLUDE_DIR=${prefix}/include \
@@ -60,6 +60,9 @@ pre-configure {
         configure.args-delete -DMPI_ENABLE=OFF
         configure.args-append -DMPI_ENABLE=ON \
                               -DMPI_MPICC=${prefix}/bin/${mpi.cc} \
+                              -DMPI_MPICXX=${prefix}/bin/${mpi.cxx} \
+                              -DMPI_MPIF77=${prefix}/bin/${mpi.f77} \
+                              -DMPI_MPIF90=${prefix}/bin/${mpi.f90} \
                               -DMPI_RUN_COMMAND=${prefix}/bin/${mpi.exec}
     }
 }
@@ -85,42 +88,51 @@ if {![mpi_variant_isset]} {
 }
 
 variant examples description {Install Examples} {
+    # F77 examples fail with:
+    #Undefined symbols for architecture x86_64:
+    #  "_F2C_ARKODE_mass_matrix", referenced from:
+    #      _farkdlsmassinit_ in libsundials_farkode.a(farkode.c.o)
+    #      _farkfree_ in libsundials_farkode.a(farkode.c.o)
+    #  "_F2C_ARKODE_matrix", referenced from:
+    #      _farkdlsinit_ in libsundials_farkode.a(farkode.c.o)
+    #      _farkfree_ in libsundials_farkode.a(farkode.c.o)
+    set example_langs {C CXX F90}
+    foreach lang ${example_langs} {
     configure.args-replace \
-        -DEXAMPLES_ENABLE=OFF \
-        -DEXAMPLES_ENABLE=ON
+            -DEXAMPLES_ENABLE_${lang}=OFF \
+            -DEXAMPLES_ENABLE_${lang}=ON
+    }
+    configure.args-append \
+        -DEXAMPLES_INSTALL_PATH=${prefix}/share/examples/${name}
+}
+
+variant lapack conflicts fortran_klu description {Enable LAPACK support} {
+    # from CMakeLists.txt:
+    #    LAPACK is not compatible with INT64_T precision
+    configure.args-append \
+        -DSUNDIALS_INDEX_TYPE=int32_t
 
     configure.args-replace \
         -DLAPACK_ENABLE=OFF \
         -DLAPACK_ENABLE=ON
-
-    configure.args-replace \
-        -DCXX_ENABLE=OFF \
-        -DCXX_ENABLE=ON
-
-    configure.args-replace \
-        -DF90_ENABLE=OFF \
-        -DF90_ENABLE=ON
-
-    configure.args-replace \
-        -DFCMIX_ENABLE=OFF \
-        -DFCMIX_ENABLE=ON
-
-    configure.args-append \
-        -DEXAMPLES_INSTALL_PATH=${prefix}/share/examples/${name}
-
-    pre-fetch {
-        if {![variant_isset accelerate] && ![variant_isset openblas] && ![variant_isset atlas] } {
-            ui_error "You must select either the +accelerate, +atlas, or +openblas variant for linear algebra."
-            return -code error "No linear-algebra variant selected."
-        }
-    }
 }
 
-variant accelerate requires examples conflicts atlas openblas description {Use Apple Accelerate Libraries} {
+variant fortran_klu conflicts lapack description {Build Fortran interface to KLU} {
+    # from src/sunlinsol_klu/CMakeLists.txt:
+    #    The Fortran interface to KLU is not compatible with INT32_T
+    configure.args-append \
+        -DSUNDIALS_INDEX_TYPE=int64_t
+}
+
+if {![variant_isset lapack] && ![variant_isset fortran_klu]} {
+    default_variants-append +fortran_klu
+}
+
+variant accelerate conflicts atlas openblas description {Use Apple Accelerate Libraries} {
     configure.args-append -DBLA_VENDOR=Apple
 }
 
-variant atlas requires examples conflicts accelerate openblas description {Use MacPorts ATLAS Libraries} {
+variant atlas conflicts accelerate openblas description {Use MacPorts ATLAS Libraries} {
     depends_lib-append port:atlas
 
     configure.args-append   \
@@ -132,15 +144,21 @@ variant atlas requires examples conflicts accelerate openblas description {Use M
         -DLAPACK_LIBRARIES=satlas
 }
 
-variant openblas requires examples conflicts atlas accelerate description {Use MacPorts OpenBLAS Libraries} {
-    depends_lib-append path:lib/libopenblas.dylib:openblas
+variant openblas conflicts atlas accelerate description {Use MacPorts OpenBLAS Libraries} {
+    depends_lib-append path:lib/libopenblas.dylib:OpenBLAS
     require_active_variants path:lib/libopenblas.dylib:OpenBLAS lapack
 
     configure.args-append  -DBLA_VENDOR=OpenBLAS
 }
 
-if {[variant_isset examples] && ![variant_isset accelerate] && ![variant_isset atlas] && ![variant_isset openblas]} {
+if {![variant_isset accelerate] && ![variant_isset atlas] && ![variant_isset openblas]} {
     default_variants-append +accelerate
+}
+pre-fetch {
+    if {![variant_isset accelerate] && ![variant_isset openblas] && ![variant_isset atlas] } {
+        ui_error "You must select either the +accelerate, +atlas, or +openblas variant for linear algebra."
+        return -code error "No linear-algebra variant selected."
+    }
 }
 
 variant doc description {install pdf documentation} {
@@ -151,4 +169,10 @@ variant doc description {install pdf documentation} {
     }
 }
 
-livecheck.type      none
+# LICENSE file is installed in a bad location
+post-destroot {
+    xinstall -d -m 0755 ${destroot}${prefix}/share/doc/${name}
+    move ${destroot}${prefix}/LICENSE ${destroot}${prefix}/share/doc/${name}
+}
+
+livecheck.url       https://computation.llnl.gov/projects/sundials/sundials-software

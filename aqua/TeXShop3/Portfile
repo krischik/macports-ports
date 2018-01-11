@@ -6,7 +6,7 @@ PortGroup           xcodeversion 1.0
 
 name                TeXShop3
 conflicts           TeXShop
-version             3.91
+version             3.97
 revision            0
 
 set major           [lindex [split ${version} .] 0]
@@ -25,14 +25,14 @@ master_sites        ${homepage}/texshop-64
 use_zip             yes
 distname            texshopsource[strsed ${version} {/\.//}]
 dist_subdir         TeXShop/
-worksrcdir          texshop-${version}
+worksrcdir          ${distname}
 set propername      TeXShop
 
 # TeXShop3 has frequent stealth updates, keep in sync with revision number
 #dist_subdir         TeXShop/${version}_${revision}
 
-checksums           rmd160  7eb2890eaa8ee912aa3c04644c7608d7dcc60c65 \
-                    sha256  661d72e78894c0770ab61b3e82bb3cb59c4c51a51275ac5fae25836bcd96dbe2
+checksums           rmd160  0d77fd1fe7d22b59f5dedfc8d0e149215f55855f \
+                    sha256  bcd5ed8925b8dd0e2597374bb5f43970ec8286d45466d4f274669030a254af13
 
 minimum_xcodeversions       {16 9}
 
@@ -63,7 +63,7 @@ xcode.build.settings    FRAMEWORK_SEARCH_PATHS=${worksrcpath} \
                         CODE_SIGN_IDENTITY=
 
 destroot.target     ${propername}
-eval xcode.destroot.settings INSTALL_MODE_FLAG=755 ${xcode.build.settings}
+xcode.destroot.settings INSTALL_MODE_FLAG=755 {*}${xcode.build.settings}
 
 post-destroot {
     file delete -force ${destroot}${applications_dir}/TeX.mdimporter

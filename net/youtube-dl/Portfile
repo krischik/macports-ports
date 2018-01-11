@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                youtube-dl
-version             2017.11.15
+version             2018.01.07
 categories          net
 platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -14,12 +14,12 @@ description         command-line program to download videos from YouTube.com and
 
 long_description    ${name} is a small ${description}.
 
-homepage            http://rg3.github.io/youtube-dl/
+homepage            https://rg3.github.io/youtube-dl/
 master_sites        https://yt-dl.org/downloads/${version}
 
-checksums           rmd160  817924b2f3017f7adff003a0526bb7c0b63b210b \
-                    sha256  88b177baaad0ceafc496bbef790c24b35272cbd9527e2b64f536131aad040ce8 \
-                    size    2834012
+checksums           rmd160  bf072d69900d1f5bbeb2b10ed82618fac0633488 \
+                    sha256  280d11c565978d735bae954916390810df1217824bfe704181f1d93ad2f4e1b6 \
+                    size    2877870
 
 depends_build       bin:zip:zip
 

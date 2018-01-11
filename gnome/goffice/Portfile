@@ -19,12 +19,13 @@ use_xz                  yes
 
 if {${name} eq ${subport}} {
     epoch               1
-    version             0.10.36
+    version             0.10.38
 
     license             {GPL-2 GPL-3}
 
-    checksums           rmd160  478eac5ad8c865c13115c7c79d394526394ba557 \
-                        sha256  cfe65fc0a665538704c7bab8541784291cf0781df8b4cff73cb0a513ee0baad6
+    checksums           rmd160  9042b7a1c0276f2949b2163748a851a973d158c4 \
+                        sha256  443199d7a9833fddaadfc4f9065c289e639eed480de316f37da816e396bb9764 \
+                        size    2373308
 
     depends_build       port:pkgconfig \
                         port:intltool \

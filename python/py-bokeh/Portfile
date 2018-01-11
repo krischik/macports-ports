@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-bokeh
-version             0.12.10
+version             0.12.13
 revision            0
 categories-append   devel
 platforms           darwin
@@ -20,13 +20,13 @@ long_description    Bokeh (pronounced boh-Kay) is an implementation of \
                     Grammar of Graphics for Python, that also supports \
                     the customized rendering flexibility of Protovis and d3.
 
-homepage            http://github.com/bokeh/bokeh
+homepage            https://github.com/bokeh/bokeh
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  7fba1d06f7f4f57f7ea96bfb83683c8aa15fb885 \
-                    sha256  6465fae82e94223f16584645b38d34a73d95712870f29c0244649c2cbf2c8393
+checksums           rmd160  ae8fd60d4c679bacbfeb2b7a33484b43a25754d0 \
+                    sha256  6e28cbfd88de0c459435278b75f9982591ec0aaa3d37a195052645e1c62e89e3
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-six \

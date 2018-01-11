@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.24 5.26
-perl5.setup         Gearman 2.004.010
+perl5.setup         Gearman 2.004.012
 categories          perl net
 license             {Artistic-1 GPL}
 platforms           darwin
@@ -15,8 +15,9 @@ long_description    ${description}
 
 homepage            https://metacpan.org/release/Gearman
 
-checksums           rmd160  13fa08db59e9aef119e4a1496261ef7a98ee0a1d \
-                    sha256  7a926e543cc349a494ba89b5b59ee1ffd9573d8a09a6974053ebb00a233ef24e
+checksums           rmd160  a1c41dfb2acf6184e38445c65a63b0b3f062c7f9 \
+                    sha256  b5ff4dbf6868888f988449bab9668db14ca3d71054948d6fb58e2339d1155dc3 \
+                    size    48810
 
 if {${perl5.major} != ""} {
     depends_build-append \

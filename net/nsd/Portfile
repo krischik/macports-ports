@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                nsd
-version             4.1.17
+version             4.1.19
 categories          net
 platforms           darwin
 license             BSD
@@ -19,8 +19,8 @@ set nsdgroup        nsd
 homepage            https://www.nlnetlabs.nl/projects/nsd/
 master_sites        https://www.nlnetlabs.nl/downloads/nsd/
 
-checksums           rmd160  d6f3d9db0fb4b990a6f70e7ad9fae27e410142db \
-                    sha256  107fa506d18ed6fd0a922d1b96774afd9270ec38ec6b17cd7c46fb9433a03a6c
+checksums           rmd160  30769b16255d2e5380eb1f9757c2e0392af5f044 \
+                    sha256  b0782cb9b57416888d488b6460b071cd85ecb5f99381865b3a7f93dddf9e02c5
 
 depends_lib         port:libevent \
                     path:lib/libssl.dylib:openssl

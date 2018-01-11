@@ -7,8 +7,7 @@ PortGroup           gobject_introspection 1.0
 
 name                gegl-0.3
 set gname           gegl
-version             0.3.22
-revision            1
+version             0.3.26
 set branch          [join [lrange [split ${version} .] 0 1] .]
 conflicts           gegl-devel
 license             {GPL-3+ LGPL-3+}
@@ -29,8 +28,8 @@ use_bzip2           yes
 
 distname            ${gname}-${version}
 
-checksums           rmd160  156031706d7bd380db39c4c5146ce759bce30324 \
-                    sha256  b14e95f1666c47043b7156000fce41715480b29e50dd09cbf818f5b2a97a258b
+checksums           rmd160  7cb190ac1d7ca34bd090b91b12e6b405a2752d9d \
+                    sha256  6eff9844c4776546213f5e187e1ebcf646d0d4804ebc6d3dd62003cd4d5c3fa9
 
 depends_build       port:pkgconfig \
                     port:w3m \

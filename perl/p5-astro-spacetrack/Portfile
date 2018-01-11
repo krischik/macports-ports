@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.24 5.26
-perl5.setup         Astro-SpaceTrack 0.100
+perl5.setup         Astro-SpaceTrack 0.102
 license             {Artistic-1 GPL}
 maintainers         {devans @dbevans} openmaintainer
 description         Astro::SpaceTrack - Retrieve orbital data from www.space-track.org
@@ -12,8 +12,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  db2b22440a48e87cf6ad5075bb7c44e464e51aaa \
-                    sha256  981baa6db3943b00ebb0c2d490b21530a40788d03ef197352180e5c9fa8c9f54
+checksums           rmd160  ff990a6bf6c4bb1deecd3d9b00e16ec96d9f4b04 \
+                    sha256  dfa1ca0fd44511f53d016b99617acd2ecf0f852a81395afdb49b8412ee7d412d \
+                    size    170403
 
 if {${perl5.major} != ""} {
     depends_lib-append \
