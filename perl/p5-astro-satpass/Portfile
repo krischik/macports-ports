@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.24 5.26
-perl5.setup         Astro-satpass 0.087 ../../authors/id/W/WY/WYANT
+perl5.setup         Astro-satpass 0.089 ../../authors/id/W/WY/WYANT
 maintainers         nomaintainer
 platforms           darwin
 license             {Artistic-1 GPL}
@@ -17,9 +17,9 @@ long_description    This package contains classes needed to predict \
 
 homepage            https://metacpan.org/release/${perl5.module}
 
-checksums           rmd160  c03df808cfff685482c4ae02fde5ed795b2da78d \
-                    sha256  964c24d4ee309c9f80f0a899c5d000292ed61559e089cbb6a6196ae6ff5e693b \
-                    size    542524
+checksums           rmd160  cd92bc9e646db427c1110fc9d640942cf2407c4f \
+                    sha256  b125505147e085a4ba1988784c82e77ea0252b27fe69e6e83f678b6d5882b988 \
+                    size    548344
 
 variant script description {Install the deprecated satpass script and optional dependencies} {}
 

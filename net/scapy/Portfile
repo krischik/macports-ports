@@ -40,12 +40,17 @@ if {${subport} eq ${name}} {
 
     conflicts       ${name}-devel
 
+    # overload the github livecheck regex to look for versions that
+    # are just numbers and '.', no letters (e.g., "3.7.3_rc2").
+
+    livecheck.regex archive/[join ${github.tag_prefix} ""](\[0-9.\]+)${extract.suffix}
+
 } else {
 
-    github.setup    secdev scapy aa11c749d563c6b4a8cfa88182ae8cfaae2edbf7
-    version         20171223
-    checksums       rmd160 e3587bd8faf0c2e6f33dc85dff4ad59b7392cb9f \
-                    sha256 412776b625827abc2aef543f3ff16eedfc9f598d8a5cd732ab6019083cfa417d
+    github.setup    secdev scapy a82e18cce842c45d9838f11e08035629c5009cb5
+    version         20180204
+    checksums       rmd160 000f23c31efe6b366c9ab3b67f6464a0a73dea7c \
+                    sha256 df51ba51e85e22112157ce52cd0b08ddf7c91538d3d98b5a0e8b7ea1fb27878f
 
     long_description    ${long_description} \
         This port is kept up with the ${name} GIT 'master' branch, is typically updated weekly to monthly.

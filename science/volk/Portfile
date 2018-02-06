@@ -36,11 +36,11 @@ provides the release version, which is typically updated every month or so.
 
 subport volk-devel {
 
-    github.setup    gnuradio volk 921c240b88a319c8f1a2ea7a988dea5e03adb776
-    version         20180105
+    github.setup    gnuradio volk 6dda1a1e9545d24a1c6f0b2a5d4b5d018fdcbff9
+    version         20180203
     checksums       \
-        rmd160 c8be9ba75db0b3e42e03d64cd73ae7948caa8a25 \
-        sha256 3b5b83b8c4e535dcc29c141832ccabdf54561633fdc8c02afa6f1a6349b5a66f
+        rmd160 0fadf0c51356b8519b2f01c40f2a42b760831576 \
+        sha256 18e463f7b2661907059b6a912ea976c5129ef9331b3077ebe1d7c8e7d4dde6c4
 
     conflicts       volk
     long_description ${long_description} ${subport} \

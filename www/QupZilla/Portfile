@@ -5,7 +5,7 @@ PortGroup           github 1.0
 universal_variant   no
 PortGroup           qmake5 1.0
 
-github.setup        QupZilla qupzilla 2.2.3 v
+github.setup        QupZilla qupzilla 2.2.5 v
 name                QupZilla
 categories          www
 platforms           darwin
@@ -26,9 +26,9 @@ github.tarball_from releases
 distname            ${name}-${version}
 use_xz              yes
 
-checksums           rmd160  9356a3abb612940b6459c1d8741937695aa40bfa \
-                    sha256  76f4aa19ef3877b68a6b38a6fb460caae4d2d13361412e986366b4907ce16c72 \
-                    size    2498680
+checksums           rmd160  c1d2deebfcd94f7579a52c3fc93729548074b5ce \
+                    sha256  b1b5bf6b3061a76d1add3c072753cc088140eb0fafcf24b9a0c4951b4d8948f6 \
+                    size    2532760
 
 qt5.depends_build_component     qttools
 qt5.depends_component           qtwebengine
