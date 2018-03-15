@@ -54,17 +54,17 @@ subport gnuradio-devel {
     name                gnuradio-devel
     conflicts           gnuradio gnuradio-next
 
-    github.setup        gnuradio gnuradio f783dd54a2a81bbd7a03b17e26a5563199c52015
-    version             20180208
-    revision            1
+    github.setup        gnuradio gnuradio 713629cce8d571570bc5f0f0db67c5a96d5ee071
+    version             20180306
     checksums \
-        rmd160 705676634348877b950b0dbdb4a55002080af1e2 \
-        sha256 15feb38a71d5b6dea708c1bd47ac18ceace39a6a7fcd8b17f08c9ebf78acb258
+        rmd160 a89ada7ed0e8419a49fe3735e84232e0f4ce41b3 \
+        sha256 bae213791526151aaf46d5e7f0175cfb6fe7cd0a58e31337ed0c96f16a2c5173 \
+        size    4421012
 
     # set the version override string
 
     set GR_VERSION_INFO "devel-git-[string range ${github.version} 0 7](${version})"
-
+ 
 }
 
 subport gnuradio-next {
@@ -75,12 +75,12 @@ subport gnuradio-next {
     name                gnuradio-next
     conflicts           gnuradio gnuradio-devel
 
-    github.setup        gnuradio gnuradio 6ae02d1d6d04a5f529ab3fea496c589f8d14229d
-    version             20180208
-    revision            1
+    github.setup        gnuradio gnuradio 9ae5d4cd3da84ce7e5a0c2abe7fec1ff8d229ae8
+    version             20180303
     checksums \
-        rmd160 39205094e66e55f1a1a7960251522255db67a59c \
-        sha256 e0004837eecf889a42559d290dc5aa49963c8de2276e653dec6b890309fcfaaf
+        rmd160 92a27ac0c237092208f702c914a249b5b121f374 \
+        sha256 a04c6f71c6369f0df941da7b92d6f88804b0f05ff8925d82798be8ac107eb046 \
+        size   3621723
 
     # set the version override string
 
@@ -92,13 +92,20 @@ subport gnuradio-next {
 
 }
 
-# temporary patch to fix header creation to be before dependencies
-# are determined, such that local (to the build) headers are found
-# before already-installed ones.
+# is volk or volk-devel installed?
+# this is required for an API change in Volk, which will either
+# require a patch (for volk-devel) or not (for volk)
+
+set use_volk_release 1
+if {![catch {set installed [lindex [registry_active volk-devel] 0]}]} {
+    set use_volk_release 0
+}
 
 if {${subport} eq "gnuradio"} {
 
     # patches for release only
+
+    # force expansion of CMake-based template files
     patchfiles-append \
         patch-cmake-expand.release.diff
 
@@ -142,20 +149,35 @@ if {${subport} eq "gnuradio"} {
 
     patchfiles-append patch-cmake_Modules_FindCppUnit.cmake.diff
 
+    if {${use_volk_release} == 0} {
+
+        # temporary patch to fix new Volk API
+        patchfiles-append patch-volk-devel-API.diff
+
+    }
 } elseif {${subport} eq "gnuradio-devel"} {
 
     # patches for devel
+
+    # force expansion of CMake-based template files
     patchfiles-append \
         patch-cmake-expand.devel.diff
 
+    if {${use_volk_release} == 0} {
+
+        # temporary patch to fix new Volk API
+        patchfiles-append patch-volk-devel-API.diff
+
+    }
 } else {
 
     # patches for next
+
+    # force expansion of CMake-based template files
     patchfiles-append \
         patch-cmake-expand.next.diff
 
     # temporary patch to fix include order
-
     patchfiles-append patch-fix_includes.next.diff
 
 }

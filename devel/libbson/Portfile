@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           muniversal 1.0
 
-github.setup        mongodb libbson 1.8.2
+github.setup        mongodb libbson 1.9.3
 categories          devel
 platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -17,8 +17,8 @@ long_description    ${name} is a library providing useful routines related to \
 
 github.tarball_from releases
 
-checksums           rmd160  1cdfa049b9d16963cdd0001e5871e8975ec693f1 \
-                    sha256  20546ecc358831d6b44eb3ad2bea1b4ce8aec1c024112bc63d87b46fcb50929a \
-                    size    4885188
+checksums           rmd160  d6e8fb277920466ab51a58ba007aafbe05e15ee4 \
+                    sha256  244e786c746fe6326433b1a6fcaadbdedc0da3d11c7b3168f0afa468f310e5f1 \
+                    size    4957319
 
 configure.args      --disable-silent-rules

@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24 5.26
-perl5.setup         Alien-Build 1.36 ../../authors/id/P/PL/PLICEASE
+perl5.branches      5.26
+perl5.setup         Alien-Build 1.39 ../../authors/id/P/PL/PLICEASE
 license             {Artistic-1 GPL}
 maintainers         {devans @dbevans} openmaintainer
 description         Alien::Build - Build external dependencies for use in CPAN
@@ -12,9 +12,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  6804fcec5ad2619ad95e38077b9d76516649c5fe \
-                    sha256  2166a540438b57365362b3b2d9f461514336b162165361270024d9d8d3e03259 \
-                    size    231657
+checksums           rmd160  b74ed84fdc1b18f6738f569faa793bf3181cfa2e \
+                    sha256  b9f0a4c0090e5d9137636b5a1ae876536635640943e6265b3abc099aec20daaf \
+                    size    217945
 
 if {${perl5.major} != ""} {
     depends_lib-append \

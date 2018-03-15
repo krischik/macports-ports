@@ -49,7 +49,7 @@ supported_archs         x86_64
 ##
 if {(${subport} eq ${name}) || (${subport} eq "lib${name}")} {
     version             2.2.8
-    revision            2
+    revision            3
     license             GPL-2+
 
     platforms           darwin
@@ -139,6 +139,7 @@ if {(${subport} eq ${name}) || (${subport} eq "lib${name}")} {
                         port:readline \
                         port:schroedinger \
                         port:speex \
+                        port:speexDSP \
                         port:taglib \
                         port:tiff \
                         port:twolame \
@@ -435,13 +436,13 @@ if {(${subport} eq ${name}) || (${subport} eq "lib${name}")} {
                                 --enable-realrtsp
     }
 
-    # FreeRDP currently doesn't build with CMake >= 3.1 (#47389)
+    # VLC is not currently compatible with FreeRDP 2
     variant freerdp description {Build the FreeRDP support; currently dysfunctional} {
         depends_lib-append          port:FreeRDP
         # access/rdp.c:45:11: fatal error: 'freerdp/version.h' file not found
         configure.cppflags-append   -DFREERDP_INTERFACE_VERSION \
-                                    -DFREERDP_VERSION_MAJOR=1 \
-                                    -DFREERDP_VERSION_MINOR=1
+                                    -DFREERDP_VERSION_MAJOR=2 \
+                                    -DFREERDP_VERSION_MINOR=0
         configure.args-replace      --disable-freerdp --enable-freerdp
     }
 

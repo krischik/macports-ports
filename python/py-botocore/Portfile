@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-botocore
-version             1.8.36
+version             1.9.6
 platforms           darwin
 license             Apache-2
 maintainers         pixilla openmaintainer
@@ -16,9 +16,9 @@ homepage            https://github.com/boto/botocore
 master_sites        pypi:b/botocore
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  11327043518e3f91eaedc4825e079b8d68f89e81 \
-                    sha256  b2c9e0fd6d14910f759a33c19f8315dddedbb3c5569472b7be7ceed4f001a675 \
-                    size    4191082
+checksums           rmd160  364b98d3cc0ad5906ebef6369d28536289f477a6 \
+                    sha256  c43d16a60089b09696e5094a74204740dfcf306e644b8267342e3afdd181537c \
+                    size    4214248
 
 python.versions     27 34 35 36
 

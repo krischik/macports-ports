@@ -4,9 +4,9 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 PortGroup           github 1.0
 
-set perl-version    5.24
+set perl-version    5.26
 perl5.branches      ${perl-version}
-revision            1
+revision            3
 
 github.setup        bruceravel demeter 0.9.25
 
@@ -15,7 +15,7 @@ conflicts           demeter-devel
 categories          science
 platforms           darwin
 license             Permissive
-maintainers         nist.gov:joe.fowler openmaintainer
+maintainers         {nist.gov:joe.fowler @joefowler} openmaintainer
 
 description         Demeter is a comprehensive system for processing and analyzing X-ray Absorption Spectroscopy data.
 
@@ -81,7 +81,7 @@ depends_lib-append  port:ifeffit \
                     port:p${perl-version}-yaml-tiny \
                     port:perl${perl-version}
 
-configure.cmd       ${prefix}/bin/perl${perl-version} Build.PL
+configure.cmd       ${prefix}/bin/perl${perl-version} -I. Build.PL
 configure.args      --destdir ${destroot}
 
 build.cmd           ./Build

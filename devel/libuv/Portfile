@@ -18,9 +18,9 @@ long_description \
 
 if {${subport} eq ${name}} {
 
-    github.setup    libuv libuv 1.19.1 v
-    checksums       rmd160 96382c2518ce256f3f6e924a4a02381ff3332a60 \
-                    sha256 10b8794584de787b96167812106978c83e1904f5f641de3e2883a63409720408
+    github.setup    libuv libuv 1.19.2 v
+    checksums       rmd160 f33f644a0f47ad02ad0a295cf76a912a564f9b04 \
+                    sha256 fcc84f7512fb30cafe98f7a20a8be794b0b4eafc393f4ffe1816dad1222d2a0e
 
     conflicts       libuv-devel
 
@@ -28,10 +28,11 @@ if {${subport} eq ${name}} {
 
 subport libuv-devel {
 
-    github.setup    libuv libuv 733adae22ab50f7286105a68ccb736f30e62e9d7
-    version         20180208
-    checksums       rmd160 b7a05604dacf7e1d90bc89e1db29fa99796cbede \
-                    sha256 80dc4b9d775789c1572d1ef77ecd54d17fa8974ac9ad869df9bab8ac9e9c6315
+    github.setup    libuv libuv 36671bf32c1043c70a43058248c1ea884c5dd3cd
+    version         20180305
+    checksums       rmd160 ab2086a62ccf572fb7ab6dfd47cb340bd396f0c8 \
+                    sha256 d8fe9fdc950d2d7e2fbd96c8cb916ce6d71ae9739749efd47cdca2ee3f633693 \
+                    size   1178428
 
     long_description    ${long_description} \
         This port is kept up with the libuv GIT 'master' branch, is typically updated weekly to monthly.
