@@ -19,15 +19,16 @@ if {${subport} eq ${name}} {
     long_description ${description}: \
 Provides the release version, which is typically updated every month or so.
 
-    set base_version "3.11.0.0"
+    set base_version "3.11.0.1"
     set spaced_base_version [join [split ${base_version} "."] " "]
     set expanded_base_version [eval "format %03i_%03i_%03i_%03i ${spaced_base_version}"]
     github.setup    EttusResearch uhd ${expanded_base_version} release_
     version         ${base_version}
     conflicts       uhd-devel
-    checksums       rmd160 ab1f18d0fa0049baf77b1aca2c8bf0ada4d8daf8 \
-                    sha256 b8e946a17eca6b44596ad22409fa670397f71c02541c822d44442ab37e4fa904 \
-                    size   9279749
+    checksums       rmd160 3d98ef1796cab742498888932ea93016fd68fc43 \
+                    sha256 67b47f04892a1919df2401b0bbcba4780e840537289e3493f3e60615fd09f9f9 \
+                    size   9299475
+
     # set the version override string
 
     set UHD_VERSION_INFO "Release"
@@ -35,7 +36,7 @@ Provides the release version, which is typically updated every month or so.
     # overload the github livecheck regex to look for versions that
     # are just numbers and '_', no letters (e.g., "3.7.3_rc2").
 
-    livecheck.regex archive/[join ${github.tag_prefix} ""](\[0-9_\]+)${extract.suffix}
+    github.livecheck.regex  {([0-9_]+)}
 
 }
 
@@ -46,16 +47,16 @@ Provides the UHD GIT maint or master branch, depending on which is more advanced
 
     name            uhd-devel
     conflicts       uhd
-    github.setup    EttusResearch uhd 13c32cefcd6ea45e20e2eca97159ca26603ca533
-    version         20180305
-    checksums       rmd160 99130758e36dc7feeedd56a7ddf2621a379a993d \
-                    sha256 4f8f62a010240e094f51b5bb38f03eda774bc63075fe14b483f79caa01d93cea \
-                    size   9279636
+    github.setup    EttusResearch uhd 1d0c25ef7d9fc9f0a2e1d171ade1adf56abaf03c
+    version         20180403
+    checksums       rmd160 7bc02e54f6e817b4dd923a3d1a876e0b69766e98 \
+                    sha256 141ef070914a551116733f4412f93ca2e39777b95a044990e614b7655bc77dc1 \
+                    size   9293715
 
-    # overload the github livecheck URL with the maint branch,
-    # when it is more advanced; comment out for master.
+    # overload the github livecheck branch.
+    # when master is more advanced, comment this out.
 
-    # livecheck.url   ${github.homepage}/commits/maint.atom
+    # github.livecheck.branch maint
 
     # set the version override string
 
@@ -80,6 +81,11 @@ depends_build-append port:pkgconfig
 # do VPATH (out of source tree) build
 
 cmake.out_of_source yes
+
+# temporary patch to disable Boost DIRS before internal DIRS
+
+patchfiles-append patch-host_CMakeLists.txt.diff
+patch.pre_args -p1
 
 # remove top-level library path, such that internal libraries are used
 # instead of any already-installed ones.

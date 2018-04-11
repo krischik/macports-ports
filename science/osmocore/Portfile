@@ -12,11 +12,11 @@ categories          science comms
 license             GPL-3
 platforms           darwin macosx
 
-github.setup        osmocom libosmocore 10959cdea2104a6e8c592d590d5b6acf656eb630
-version             20180308
-checksums           rmd160 9aecf9e0b323119523db9f4de1824d6fc0736364 \
-                    sha256 b04f4da6ad3fbc1980cfc7bbc6af17721699c4a153b5c2a842db3516fd39cb1e \
-                    size   983352
+github.setup        osmocom libosmocore dbb7659208533966940f2a4b622983163a7ee3d0
+version             20180329
+checksums           rmd160 7a27a12b6bf1c4b38269603b502734a36b68fade \
+                    sha256 692f2dccc7902fa1d67d95514bc9a58ef7fcba0ff571cd4147d868a9d02a2dfc \
+                    size   992665
 
 depends_build-append \
     port:automake \

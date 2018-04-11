@@ -9,7 +9,7 @@ set git_name        gimp
 set git_commit      8370fb13a7458e04ed86fe6bff61912d720dbda5
 set git_date        20160517
 version             2.9.3-${git_date}
-revision            9
+revision            10
 license             GPL-3+
 categories          graphics
 maintainers         {devans @dbevans}
@@ -82,7 +82,8 @@ use_parallel_build  no
 
 compiler.blacklist *gcc* {clang < 300}
 
-patchfiles          patch-etc-gimprc.diff \
+patchfiles          patch-autogen.sh.diff \
+                    patch-etc-gimprc.diff \
                     patch-plug-ins-common-web-browser.c.diff
 
 pre-configure {

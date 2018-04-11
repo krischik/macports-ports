@@ -1068,6 +1068,14 @@ foreach {module module_info} [array get modules] {
             # unless overridden, configure script uses gmake if it can find it
             configure.env-append MAKE=${build.cmd}
 
+            post-configure {
+                # remove any QMAKE_* entries from mkspecs/qmodule.pri
+                # This file is created by the configure script, and
+                # will overwrite these variables when set in earlier
+                # mkspecs scripts, which is not what it should be doing.
+                reinplace "/^QMAKE/d" ${worksrcpath}/mkspecs/qmodule.pri
+            }
+
             if { [variant_isset universal] } {
 
                 post-destroot {
@@ -1109,7 +1117,7 @@ foreach {module module_info} [array get modules] {
 
                 # see https://trac.macports.org/ticket/51358
                 #     for why not a path dependency
-                depends_lib-append port:openssl
+                depends_lib-append path:lib/libssl.dylib:openssl
             }
             default_variants-append +openssl
 

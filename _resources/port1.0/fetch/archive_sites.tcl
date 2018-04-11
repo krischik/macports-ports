@@ -6,7 +6,6 @@ set packages_scheme [expr {${os.platform} eq "darwin" && ${os.major} < 10 ? "htt
 set portfetch::mirror_sites::sites(macports_archives) "
     ${packages_scheme}://packages.macports.org/:nosubdir
     http://fco.it.packages.macports.org/mirrors/macports-packages/:nosubdir
-    http://her.gr.packages.macports.org/:nosubdir
     http://jnb.za.packages.macports.org/packages/:nosubdir
     http://kmq.jp.packages.macports.org/:nosubdir
     http://lil.fr.packages.macports.org/:nosubdir
@@ -24,3 +23,10 @@ set portfetch::mirror_sites::archive_type(macports_archives) tbz2
 set portfetch::mirror_sites::archive_prefix(macports_archives) /opt/local
 set portfetch::mirror_sites::archive_frameworks_dir(macports_archives) /opt/local/Library/Frameworks
 set portfetch::mirror_sites::archive_applications_dir(macports_archives) /Applications/MacPorts
+if {${os.platform} eq "darwin" && ${os.major} <= 12} {
+    set portfetch::mirror_sites::archive_cxx_stdlib(macports_archives) libstdc++
+    set portfetch::mirror_sites::archive_delete_la_files(macports_archives) no
+} else {
+    set portfetch::mirror_sites::archive_cxx_stdlib(macports_archives) libc++
+    set portfetch::mirror_sites::archive_delete_la_files(macports_archives) yes
+}

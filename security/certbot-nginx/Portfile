@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                certbot-nginx
-version             0.22.0
+version             0.23.0
 categories          security
 license             Apache-2
 maintainers         {mps @Schamschula} openmaintainer
@@ -16,8 +16,8 @@ master_sites        pypi:c/certbot-nginx
 
 python.versions     27
 
-checksums           rmd160  fe96dec6542c7cf2f89cd1801973d4502434f53b \
-                    sha256  b2b26bf9112062b02518407704cad09f7136322163d529a2dde3b6e1578ecb8c
+checksums           rmd160  c80c3405392e6567ec42ce3d19051a3c050a4c4c \
+                    sha256  cadf14e4bd504d9ce5987a5ec6dbd8e136638e55303ad5dc81dcb723ddd64324
 
 depends_lib-append  port:certbot \
                     port:py${python.version}-acme \

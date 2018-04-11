@@ -19,12 +19,12 @@ homepage            https://qpid.apache.org
 
 PortGroup           github 1.0
 
-github.setup        apache qpid-proton 0.20.0
+github.setup        apache qpid-proton 0.22.0
 
 PortGroup           cmake 1.0
 
-checksums           rmd160  8ebbfd149d88ce14ea056af082e9030ad11d1e7f \
-                    sha256  3080f9ac2d5cefafa53372f9ede23721967403d0f0f35dc5fb862966db09ce63
+checksums           rmd160  97f8f1920286d6841c1ee6ecc9fd6ab512b67eff \
+                    sha256  6d4683e17078361e91bc33e18d99b4c047593ab75269833aca110893910df17b
 
 cmake.out_of_source yes
 configure.args-append \

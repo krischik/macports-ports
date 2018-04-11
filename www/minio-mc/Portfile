@@ -4,10 +4,13 @@ PortSystem          1.0
 PortGroup           github 1.0
 
 # UPDATE THESE IN SYNC!
-set relversion      2018-02-09T23:07:36Z
-set commit          3987f1405aa7a0faaff019cc3b55da4ded9ebbe5
+set version         2018-03-25T01-22-22Z 
+set commit          da5c19848d1e82a24eddb453b01e83d4a0660de4
 
-github.setup        minio mc [string map {: -} ${relversion}] RELEASE.
+set relversion      [regsub {(T..)-(..)-(..Z)} $version {\1:\2:\3}]
+# This is not used for fetching, but is compiled into the executable
+
+github.setup        minio mc $version RELEASE.
 name                minio-mc
 revision            0
 
@@ -20,8 +23,8 @@ long_description \
 license             Apache-2
 
 checksums \
-    rmd160  2e090fe6d6e4624cc3330438f4b1489974e4a018 \
-    sha256  81159080688268199e0fe21aa83a8355784656a48eae660efd5b10172a5ef8d4
+    rmd160  518e3b8c0a3883b27e136e7d9ff9e102a4026ca5 \
+    sha256  5f8d9a06670ab5b07285ca70dca7cc91982e99b2434f7493319696b6a2b6c0b7
 
 set goproj          github.com/${github.author}/${github.project}
 

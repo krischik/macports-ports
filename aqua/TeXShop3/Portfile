@@ -6,8 +6,8 @@ PortGroup           xcodeversion 1.0
 
 name                TeXShop3
 conflicts           TeXShop
-version             3.98
-revision            0
+version             3.99
+revision            1
 
 set major           [lindex [split ${version} .] 0]
 categories          aqua editors
@@ -29,10 +29,10 @@ worksrcdir          ${distname}
 set propername      TeXShop
 
 # TeXShop3 has frequent stealth updates, keep in sync with revision number
-#dist_subdir         TeXShop/${version}_${revision}
+dist_subdir         TeXShop/${version}_${revision}
 
-checksums           rmd160  42ed79c3fa366323b2cb6ce953938b0db6815b31 \
-                    sha256  6c81fc0054fffab2ec4781c8ea28c8794016956b0501097fcc2c8441793aae73
+checksums           rmd160  c545b10305bb7c5f3d63d38e4766a529b5ebd421 \
+                    sha256  4cc7da95c370af72a204f225ade65d1c8bd57d30546285c2c77b3602989c47eb
 
 minimum_xcodeversions       {16 9}
 

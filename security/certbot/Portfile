@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        certbot certbot 0.22.0 v
+github.setup        certbot certbot 0.23.0 v
 categories          security
 license             Apache-2
 maintainers         {mps @Schamschula} openmaintainer
@@ -14,8 +14,8 @@ long_description    ${description}
 platforms           darwin
 homepage            https://certbot.eff.org/
 
-checksums           rmd160  58fc6b76ddc9a555203711125984dca1368c3c22 \
-                    sha256  5fddbe0b1d35273a98547408f9a0b0027f26b49da869b021c8581404be90b09d
+checksums           rmd160  4a213878617f7c9a625e2959712f16cc16399c5c \
+                    sha256  afa8d30a0ccbb17f55334253dce468819e5211adba306ea4fc8bb058d79e9cff
 
 python.versions     27
 

@@ -8,7 +8,7 @@ name                dmd-doc
 categories          lang
 platforms           darwin
 license             DMD
-maintainers         takeshi openmaintainer
+maintainers         {takeshi @tenomoto} openmaintainer
 supported_archs     noarch
 
 description         HTML files for dman of the D programming language compiler
@@ -60,4 +60,4 @@ destroot {
     file copy ${worksrcpath}/dmd ${destroot}${prefix}/share/doc
 }
 
-livecheck.regex     archive/[join ${github.tag_prefix} ""](\[^"-\]+)${extract.suffix}
+github.livecheck.regex  {([^"-]+)}

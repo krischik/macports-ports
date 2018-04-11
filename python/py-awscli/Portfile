@@ -4,8 +4,9 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-awscli
-version             1.14.53
+version             1.15.2
 platforms           darwin
+supported_archs     noarch
 license             Apache-2
 maintainers         pixilla openmaintainer
 
@@ -16,11 +17,11 @@ homepage            https://aws.amazon.com/cli/
 master_sites        pypi:a/awscli
 distname            awscli-${version}
 
-checksums           rmd160  eadbbbb3132eb90998e71d30a694252200ef1da2 \
-                    sha256  b595e3ba898d28283be811b6691de14c95c83c9e8bef9812926a863ae49886b6 \
-                    size    587997
+checksums           rmd160 b8e485fd8fb9fc724959d607fcb08444ff4a51e4 \
+                    sha256 503775c2c32cb950171e3ffc038cffd0a3a845ff1c5d47bfa5530d9b69b1f8b1 \
+                    size   590684
 
-python.versions     27 34 35 36
+python.versions     27 35 36
 
 if {${name} ne ${subport}} {
 

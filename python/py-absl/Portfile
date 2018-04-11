@@ -1,0 +1,40 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-absl
+version             0.1.13
+platforms           darwin
+supported_archs     noarch
+license             Apache-2.0
+maintainers         {@emcrisostomo gmail.com:enrico.m.crisostomo} openmaintainer
+
+description         Abseil Python Common Libraries
+long_description    ${description}
+
+homepage            https://github.com/abseil/abseil-py
+master_sites        pypi:a/absl-py
+distname            absl-py-${version}
+
+checksums           rmd160 333ddc2e7f5de6dc48636f74f050802ec2d75751 \
+                    sha256 d160f7dc39f2f05ddc0bbf3a7bea4cc659fedc45fd9042e87346b24fe1cd00bb \
+                    size   80243
+
+python.versions     27 35 36
+
+livecheck.name      ${python.rootname}-py
+
+if {${name} ne ${subport}} {
+
+    depends_build-append \
+        port:py${python.version}-setuptools \
+        port:py${python.version}-setuptools_scm
+
+    post-extract  {
+        file attributes ${worksrcpath}/PKG-INFO -permissions a+r
+        file attributes ${worksrcpath}/absl_py.egg-info/PKG-INFO -permissions a+r
+    }
+
+    livecheck.type      none
+}

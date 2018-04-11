@@ -37,17 +37,21 @@
 # Documentation (sources):
 # https://github.com/macports/macports-guide/blob/master/guide/xml/portgroup-github.xml
 
-options github.author github.project github.version github.tag_prefix
-options github.homepage github.raw github.master_sites github.tarball_from
+options github.author github.project github.version github.tag_prefix github.tag_suffix
 
+options github.homepage
 default github.homepage {https://github.com/${github.author}/${github.project}}
+
+options github.raw
 default github.raw {https://raw.githubusercontent.com/${github.author}/${github.project}}
 
 # Later code assumes that github.master_sites is a simple string, not a list.
+options github.master_sites
 default github.master_sites {${github.homepage}/tarball/${git.branch}}
 
 default master_sites {${github.master_sites}}
 
+options github.tarball_from
 default github.tarball_from {tags}
 option_proc github.tarball_from handle_tarball_from
 proc handle_tarball_from {option action args} {
@@ -72,13 +76,21 @@ proc handle_tarball_from {option action args} {
     }
 }
 
-proc github.setup {gh_author gh_project gh_version {gh_tag_prefix ""}} {
-    global extract.suffix github.author github.project github.version github.tag_prefix github.homepage github.master_sites PortInfo
+options github.livecheck.branch
+default github.livecheck.branch {master}
+
+options github.livecheck.regex
+default github.livecheck.regex {{([^"]+)}}
+
+proc github.setup {gh_author gh_project gh_version {gh_tag_prefix ""} {gh_tag_suffix ""}} {
+    global extract.suffix github.author github.project github.version github.tag_prefix github.tag_suffix
+    global github.homepage github.master_sites github.livecheck.branch PortInfo
 
     github.author           ${gh_author}
     github.project          ${gh_project}
     github.version          ${gh_version}
     github.tag_prefix       ${gh_tag_prefix}
+    github.tag_suffix       ${gh_tag_suffix}
 
     if {!([info exists PortInfo(name)] && (${PortInfo(name)} ne ${github.project}))} {
         name                ${github.project}
@@ -87,7 +99,7 @@ proc github.setup {gh_author gh_project gh_version {gh_tag_prefix ""}} {
     version                 ${github.version}
     homepage                ${github.homepage}
     git.url                 ${github.homepage}.git
-    git.branch              [join ${github.tag_prefix}]${github.version}
+    git.branch              [join ${github.tag_prefix}]${github.version}[join ${github.tag_suffix}]
     distname                ${github.project}-${github.version}
 
     post-extract {
@@ -116,18 +128,20 @@ proc github.setup {gh_author gh_project gh_version {gh_tag_prefix ""}} {
 
     # If the version is composed entirely of hex characters, and is at least 7
     # characters long, and is not exactly 8 decimal digits (which might be a
-    # version in YYYYMMDD format), and no tag_prefix is provided, then assume we
-    # are using a commit hash and livecheck commits; otherwise livecheck tags.
+    # version in YYYYMMDD format), and no tag prefix or suffix is provided, then
+    # assume we are using a commit hash and livecheck commits; otherwise
+    # livecheck tags.
     if {[join ${github.tag_prefix}] eq "" && \
+        [join ${github.tag_suffix}] eq "" && \
         [regexp "^\[0-9a-f\]{7,}\$" ${github.version}] && \
         ![regexp "^\[0-9\]{8}\$" ${github.version}]} {
         livecheck.type      regexm
-        livecheck.url       ${github.homepage}/commits/master.atom
+        default livecheck.url   {${github.homepage}/commits/${github.livecheck.branch}.atom}
         livecheck.regex     <id>tag:github.com,2008:Grit::Commit/(\[0-9a-f\]{[string length ${github.version}]})\[0-9a-f\]*</id>
     } else {
         livecheck.type      regex
         livecheck.url       ${github.homepage}/tags
-        livecheck.regex     archive/[join ${github.tag_prefix} ""](\[^"\]+)${extract.suffix}
+        default livecheck.regex {[list archive/[join ${github.tag_prefix}][join ${github.livecheck.regex}][join ${github.tag_suffix}]\\.tar\\.gz]}
     }
     livecheck.version       ${github.version}
 }

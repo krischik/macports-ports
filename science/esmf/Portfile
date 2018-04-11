@@ -5,7 +5,7 @@ PortGroup           mpi 1.0
 PortGroup           active_variants 1.1
 
 compilers.choose    f90 cxx
-compilers.setup     require_fortran -dragonegg -clang -llvm
+compilers.setup     require_fortran -clang
 mpi.setup
 mpi.enforce_variant netcdf-fortran
 
@@ -14,7 +14,7 @@ version             7_1_0r
 categories          science devel
 platforms           darwin
 license             UoI-NCSA
-maintainers         takeshi
+maintainers         {takeshi @tenomoto}
 description         software for building and coupling weather, climate, and related models
 long_description    The ESMF defines an architecture for composing complex, coupled \
                     modeling systems and includes data structures \

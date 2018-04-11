@@ -6,14 +6,15 @@ PortGroup           github 1.0
 
 github.setup        ptrkrysik gr-gsm c097ce73c5a864cf4c41f16691a1e3a66c4cce5f
 version             20180305
+revision            2
 checksums           rmd160 f6281a002790394f6e33f0153086b2b2fbdd9359 \
                     sha256 f34658090a4078eb2667dd2c8a2e0180a5e3c254c725833c485856b60206735f \
                     size   384919
 
-# overload the github livecheck URL with the development branch,
-# when it is more advanced; comment out for master.
+# overload the github livecheck branch.
+# when master is more advanced, comment this out.
 
-livecheck.url   ${github.homepage}/commits/development.atom
+github.livecheck.branch development
 
 # allow gr-gsm to work with both gnuradio and gnuradio-devel ...
 
@@ -38,11 +39,21 @@ platforms           darwin
 
 depends_build-append \
     port:pkgconfig \
+    port:swig-python \
     port:py27-docutils
 
 depends_lib-append \
     port:boost \
+    path:lib/libvolk.dylib:volk \
     port:osmocore
+
+depends_test-append \
+    port:cppunit
+
+# for docs
+
+depends_lib-append \
+    port:doxygen
 
 # fix name of rst2man
 

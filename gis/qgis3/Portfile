@@ -7,10 +7,12 @@ PortGroup           cxx11   1.1
 PortGroup           github  1.0
 PortGroup           qt5     1.0
 
-github.setup        qgis QGIS 3_0_0 final-
-revision            1
+github.setup        qgis QGIS c625f95
+#github.commit       c625f95
+revision            20180410
 name                qgis3
-version             [string map {_ .} ${github.version}]
+version             3.0.1
+#version             [string map {_ .} ${github.version}]
 categories          gis
 maintainers         {vince @Veence}
 description         QGIS 3 is a user-friendly GIS based on Qt 5
@@ -24,9 +26,9 @@ license             GPL-2+
 
 homepage            http://www.qgis.org/
 
-checksums           rmd160  f72016dbf0c5d7ad34393713f1372be379fe3bbc \
-                    sha256  c54d5deb739532aee858d049deaa45edff34c0a56ce2d6556250d86be6f4d2e7 \
-                    size    111733389
+checksums           rmd160  cf33323c4a9e13724140b443a5a38162b1ded294 \
+                    sha256  13c6368d8b0d10e95a564df7747bef445cc1f40ef19bd3ed2247615c5213402a \
+                    size    110424411
 
 depends_lib-append  port:libiconv \
                     port:expat \
@@ -35,7 +37,6 @@ depends_lib-append  port:libiconv \
                     path:lib/libssl.dylib:openssl \
                     port:gsl \
                     port:fcgi \
-                    port:proj \
                     port:geos \
                     port:gdal \
                     port:sqlite3 \
@@ -113,7 +114,7 @@ foreach suffix ${postgresql_suffixes} {
     set index [lsearch -exact ${postgresql_variants} ${vrt}]
     set conf [lreplace ${postgresql_variants} ${index} ${index}]
 
-    variant ${vrt} description "Use PostgreSQL ${pgversion}" conflicts ${conf} "
+    variant ${vrt} description "Use PostgreSQL ${pgversion}" conflicts {*}${conf} "
         depends_lib-append      port:${vrt}
         configure.args-append   \
             -DPOSTGRES_CONFIG=${prefix}/lib/${vrt}/bin/pg_config
@@ -146,7 +147,7 @@ foreach pyver ${python_suffixes} {
     set index [lsearch -exact ${python_variants} ${vrt}]
     set conf [lreplace ${python_variants} ${index} ${index}]
 
-        variant ${vrt} description "Use Python ${pyversion}" conflicts ${conf} "
+        variant ${vrt} description "Use Python ${pyversion}" conflicts {*}${conf} "
             depends_lib-append      port:python${pyver} \
                                     port:py${pyver}-pyqt5 \
                                     port:py${pyver}-qscintilla-qt5 \
@@ -187,6 +188,24 @@ set python_default "${python_default}} { default_variants +python36 }"
 
 eval ${python_default}
 
+# PROJ variants
+
+variant proj4 description "Builds with proj4 4.x" {
+    depends_lib-append      port:proj4
+    configure.args-append  "-DPROJ_INCLUDE_DIR=${prefix}/lib/proj49/include"
+    configure.args-append  "-DPROJ_LIBRARY=${prefix}/lib/proj49/lib/libproj.dylib"
+}
+
+variant proj5 description "Builds with proj4 5.x" {
+    depends_lib-append      port:proj
+    configure.args-append  "-DPROJ_INCLUDE_DIR=${prefix}/lib/proj5/include"
+    configure.args-append  "-DPROJ_LIBRARY=${prefix}/lib/proj5/lib/libproj.dylib"
+}
+
+if {![variant_isset proj4] && ![variant_isset proj5]} {
+    default_variants    +proj5
+}
+
 # Other variants
 
 variant grass               description "Build Grass 7 plugin" {
@@ -215,8 +234,6 @@ configure.args-append  "-DGEOS_CONFIG=${prefix}/bin/geos-config"
 configure.args-append  "-DGEOS_INCLUDE_DIR=${prefix}/include"
 configure.args-append  "-DGEOS_LIBRARY=${prefix}/lib/libgeos_c.dylib"
 configure.args-append  "-DGSL_CONFIG=${prefix}/bin/gsl-config"
-configure.args-append  "-DPROJ_INCLUDE_DIR=${prefix}/include"
-configure.args-append  "-DPROJ_LIBRARY=${prefix}/lib/libproj.dylib"
 configure.args-append  "-DSPATIALITE_LIBRARY=${prefix}/lib/libspatialite.dylib"
 configure.args-append  "-DSPATIALITE_INCLUDE_DIR=${prefix}/include"
 configure.args-append  "-DSPATIALINDEX_LIBRARY=${prefix}/lib/libspatialindex.dylib"

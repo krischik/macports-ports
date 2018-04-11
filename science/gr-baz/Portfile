@@ -3,12 +3,13 @@
 PortSystem          1.0
 PortGroup           cmake 1.0
 PortGroup           github 1.0
+PortGroup           cxx11 1.1
 
-github.setup        balint256 gr-baz aa1aea905a1ff808365d02a7e62cf2f714db6781
-version             20180309
-checksums           rmd160 c24ced2b10e8fabdc19736ff89f81640f3a0e2ac \
-                    sha256 d169e71ad93bd611ea1d92ac0886271498332714bba0c156b414cb0f70cc3ec2 \
-                    size   496023
+github.setup        balint256 gr-baz fdad72ad3bd8555339fa4400118ff6014e60029a
+version             20180320
+checksums           rmd160 ade932b92cc7639fa29055faa2944ebefecb5c1c \
+                    sha256 a9f3d8fa60ad89d7b324ad866e3801f5d4e932212b47ddcdb554b0c4506f76f0 \
+                    size   511786
 
 # allow gr-baz to work with both gnuradio and gnuradio-devel ...
 
@@ -33,11 +34,21 @@ long_description    ${description}
 license             GPL-3
 platforms           darwin
 
-depends_build-append port:pkgconfig
-depends_lib-append	port:boost \
-                    port:doxygen \
-                    port:swig \
-                    path:lib/libvolk.dylib:volk
+depends_build-append \
+    port:pkgconfig \
+    port:swig-python
+
+depends_lib-append \
+    port:boost \
+    path:lib/libvolk.dylib:volk
+
+depends_test-append \
+    port:cppunit
+
+# for docs
+
+depends_lib-append \
+    port:doxygen
 
 # do VPATH (out of source tree) build
 

@@ -7,7 +7,7 @@ PortGroup cmake     1.0
 name                libemos
 version             4.5.1
 platforms           darwin
-maintainers         takeshi
+maintainers         {takeshi @tenomoto}
 license             Apache-2
 categories          science
 description         Interpolation library
@@ -22,7 +22,7 @@ long_description \
     and BUFR & CREX encoding/decoding routines.
 
 compilers.choose    fc f77 f90
-compilers.setup     -clang -dragonegg -g95 -llvm
+compilers.setup     -clang -g95
 cmake.out_of_source yes
 
 patchfiles          patch-libemos-dp-CMakeLists.txt.diff \

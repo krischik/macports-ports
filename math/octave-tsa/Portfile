@@ -5,7 +5,7 @@ PortGroup           octave 1.0
 PortGroup           compilers 1.0
 
 octave.setup        tsa 4.4.5
-revision            2
+revision            3
 platforms           darwin
 license             GPL-3+
 maintainers         {mps @Schamschula} openmaintainer
@@ -19,4 +19,4 @@ checksums           rmd160 75267e3df5f2667f20bb3243cc2687565fa70e13 \
 configure.env-append "PREFIX_BIN=${prefix}/bin"
 
 compilers.choose    fc f77 f90
-compilers.setup     require_fortran -dragonegg
+compilers.setup     require_fortran

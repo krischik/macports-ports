@@ -18,9 +18,10 @@ long_description \
 
 if {${subport} eq ${name}} {
 
-    github.setup    libuv libuv 1.19.2 v
-    checksums       rmd160 f33f644a0f47ad02ad0a295cf76a912a564f9b04 \
-                    sha256 fcc84f7512fb30cafe98f7a20a8be794b0b4eafc393f4ffe1816dad1222d2a0e
+    github.setup    libuv libuv 1.20.0 v
+    checksums       rmd160 2ba3740c0998dc192f99412b203ce4a77773beef \
+                    sha256 2a210273f7ea1d255f069a53296e57921c0db0ab5ba0ec0705c33f739514823d \
+                    size   1180332
 
     conflicts       libuv-devel
 
@@ -28,17 +29,17 @@ if {${subport} eq ${name}} {
 
 subport libuv-devel {
 
-    github.setup    libuv libuv 36671bf32c1043c70a43058248c1ea884c5dd3cd
-    version         20180305
-    checksums       rmd160 ab2086a62ccf572fb7ab6dfd47cb340bd396f0c8 \
-                    sha256 d8fe9fdc950d2d7e2fbd96c8cb916ce6d71ae9739749efd47cdca2ee3f633693 \
-                    size   1178428
+    github.setup    libuv libuv 9afb013574e9a988e6fb3365c164fd8250dbaaa6
+    version         20180410
+    checksums       rmd160 9f59d37d6c15adcc2e0eb0f1fa5c69a978ce9979 \
+                    sha256 693f2021278338c3b7076fe7321394a95c3567a226808fd6e61c97839a786178 \
+                    size   1179949
 
     long_description    ${long_description} \
         This port is kept up with the libuv GIT 'master' branch, is typically updated weekly to monthly.
     conflicts       libuv
 
-    livecheck.url   ${github.homepage}/commits/v1.x.atom
+    github.livecheck.branch v1.x
 
 }
 

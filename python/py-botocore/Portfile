@@ -4,23 +4,26 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-botocore
-version             1.9.6
+version             1.10.2
 platforms           darwin
+supported_archs     noarch
 license             Apache-2
 maintainers         pixilla openmaintainer
 
 description         Low level data driven core of boto 3.
-long_description    ${description}
+long_description    A low-level interface to a growing number of Amazon Web \
+                    Services.  The botocore package is the foundation for the \
+                    AWS CLI as well as boto3.
 
 homepage            https://github.com/boto/botocore
 master_sites        pypi:b/botocore
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  364b98d3cc0ad5906ebef6369d28536289f477a6 \
-                    sha256  c43d16a60089b09696e5094a74204740dfcf306e644b8267342e3afdd181537c \
-                    size    4214248
+checksums           rmd160 beca4df4702d015af7952167730159d5953db9c3 \
+                    sha256 27945af4bfb2a1ff1f11c730d24b84da6e1f40465907029e8980903f3b984070 \
+                    size   4327374
 
-python.versions     27 34 35 36
+python.versions     27 35 36
 
 if {${name} ne ${subport}} {
     depends_build-append    port:py${python.version}-setuptools
