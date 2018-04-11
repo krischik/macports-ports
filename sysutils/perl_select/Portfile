@@ -4,7 +4,7 @@ PortSystem              1.0
 PortGroup               select 1.0
 
 name                    perl_select
-version                 0.3
+version                 0.4
 categories              sysutils
 platforms               darwin
 license                 BSD
@@ -72,6 +72,18 @@ platform darwin 15 {
     post-destroot {
         select::install perl ${filespath}/perl5.16-apple.15
         select::install perl ${filespath}/perl5.18-apple.15
+    }
+}
+
+platform darwin 16 {
+    post-destroot {
+        select::install perl ${filespath}/perl5.18-apple.16
+    }
+}
+
+platform darwin 17 {
+    post-destroot {
+        select::install perl ${filespath}/perl5.18-apple.17
     }
 }
 
