@@ -19,11 +19,11 @@ archive_sites
 subport OpenBLAS-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    xianyi OpenBLAS 0c4718c57a4bca10692c7726dbdcc6f77e7ce519
-    version         20180415
-    checksums       rmd160 b9959679bfcf13959d476e4805e025d280270e24 \
-                    sha256 457db9223130c495fcb0db93dc0c849addc82ce975ab666b0c74221ca20b1365 \
-                    size   11786485
+    github.setup    xianyi OpenBLAS dbafe6357bf072eb648c00550fd0a920f8e4bd6e
+    version         20180502
+    checksums       rmd160 afb200a2c9e243129ca9c4d24c92662442282b92 \
+                    sha256 dd0c34299373b4d8113c68aaa1ff9518e5af3441b7a09445f4292c204a693131 \
+                    size   11789045
 
     name            ${github.project}-devel
     conflicts       OpenBLAS
@@ -117,6 +117,9 @@ if {[variant_isset clang]} {
 
     # use selected +gcc* for Fortran only
     depends_build-append    port:gcc${GCC_VER_NO_DOT}
+    # add libgcc as a runtime dependency
+    depends_lib-append      port:libgcc
+
     configure.fc            ${prefix}/bin/gfortran-mp-${GCC_VER_DOT}
 
     if {[vercmp $xcodeversion 5.0] >= 0} {
