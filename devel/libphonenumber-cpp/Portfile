@@ -2,11 +2,11 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
+PortGroup           cxx11 1.1
 PortGroup           github 1.0
 
-github.setup        googlei18n libphonenumber 8.9.4 v
+github.setup        googlei18n libphonenumber 8.9.6 v
 name                libphonenumber-cpp
-revision            1
 license             Apache-2
 description         Google's C++ library for parsing, formatting, storing \
                     and validating international phone numbers.
@@ -15,22 +15,29 @@ maintainers         {devans @dbevans} openmaintainer
 categories          devel
 platforms           darwin
 
-checksums           rmd160  36fe5596d117a2623b053a1e027842f7eaf89cd8 \
-                    sha256  60bb9b8dfe0e3fdec4330e319975182befec449b6209dc9be691daba4c96f496 \
-                    size    6854859
+set main_distfile   ${distfiles}
 
-worksrcdir          ${worksrcdir}/cpp
+set gtest_version   1.8.0
+set gtest_distfile  release-${gtest_version}.tar.gz
+set gtest_srcdir    ${workpath}/googletest-release-${gtest_version}/googletest
+set gtest_master    https://github.com/google/googletest/archive
 
-set gtest_version   1.7.0
-set gtest_dir       ${workpath}
-set gtest_archive   v${gtest_version}.zip
-set gtest_srcdir    ${gtest_dir}/gtest-${gtest_version}
-set gtest_url       https://github.com/neloe/gtest/archive
+distfiles           ${main_distfile}:main \
+                    ${gtest_distfile}:gtest
 
-post-extract {
-    curl fetch ${gtest_url}/${gtest_archive} ${gtest_dir}/${gtest_archive}
-    system "/usr/bin/unzip -d ${gtest_dir} ${gtest_dir}/${gtest_archive}"
-}
+master_sites        ${github.master_sites}:main \
+                    ${gtest_master}:gtest
+
+checksums           ${main_distfile} \
+                    rmd160  c3e6d4e819f50cc9e61376ac3785dd6e879c98d4 \
+                    sha256  2a7f4a749a607c9390799830974b38d5fe03b310b037b2cc855bb8dc7505c22e \
+                    size    7586420 \
+                    ${gtest_distfile} \
+                    rmd160  b0a9e48874df3291a261ed85a0c0a4d677b01dc1 \
+                    sha256  58a6f4277ca2bc8565222b3bbd58a177609e9c488e8a72649359ba51450db7d8 \
+                    size    1281617
+
+worksrcdir          googlei18n-libphonenumber-ea0a87f/cpp
 
 patchfiles          patch-cpp-CMakeLists.txt.diff
 
@@ -40,7 +47,7 @@ depends_build-append \
 depends_lib-append  port:boost \
                     port:icu
 
-# enable build with either protobuf-cpp or protobuf3-cpp
+# enable build with either protobuf-cpp or, preferably, protobuf3-cpp
 depends_lib-append  path:${prefix}/lib/libprotobuf.dylib:protobuf3-cpp
 
 configure.args-append \

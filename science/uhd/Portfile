@@ -47,11 +47,11 @@ Provides the UHD GIT maint or master branch, depending on which is more advanced
 
     name            uhd-devel
     conflicts       uhd
-    github.setup    EttusResearch uhd 3615873feebe2d86f38e45acafb0265ea7246916
-    version         20180502
-    checksums       rmd160 6e3f0528a88744b1c87159cc183e11536781d4f4 \
-                    sha256 cb5f0f08cc25fb8bf57ba2fa373d03d3e8d0d27aeb80750134bf52f5d11e1ab8 \
-                    size   9308977
+    github.setup    EttusResearch uhd 9591c93dd53f95b845ceead39eaaf219dc18659b
+    version         20180517
+    checksums       rmd160 3ba162af530f4f45915666e0ac10fa6054f4d844 \
+                    sha256 e75fbf0389cf022db3cb5f4dbe1f93f833ea70921857e4f575099ba6d39ed3fe \
+                    size   9312291
 
     # overload the github livecheck branch.
     # when master is more advanced, comment this out.

@@ -4,7 +4,7 @@ PortSystem      1.0
 PortGroup       github 1.0
 PortGroup       cxx11 1.1
 
-github.setup    grpc grpc 1.9.1 v
+github.setup    grpc grpc 1.12.0 v
 categories      devel
 maintainers     nomaintainer
 license         Apache-2
@@ -20,8 +20,8 @@ long_description \
     These libraries enable communication between clients and \
     servers using any combination of the supported languages.
 
-checksums       rmd160  90709202459e8bfd71762ac3cafd85fe503b10d4 \
-                sha256  43c1e96886d6ee3fbb2978f645400a92df989d37c80f2408f6730cfc1e05875b
+checksums       rmd160  63cf7566f66feba0b2fc443503ab29329ee5c202 \
+                sha256  02f8b368a20b67f4c57727df45d7969fb6a3ba0a1246a7c843c3a4c8e4946a64
 
 patchfiles patch-Makefile.diff
 

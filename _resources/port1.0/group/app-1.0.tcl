@@ -1,34 +1,5 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 #
-# Copyright (c) 2011-2013, 2015-2018 The MacPorts Project
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are
-# met:
-#
-# 1. Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
-# 2. Redistributions in binary form must reproduce the above copyright
-#    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the distribution.
-# 3. Neither the name of The MacPorts Project nor the names of its
-#    contributors may be used to endorse or promote products derived from
-#    this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-# A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-# OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-# SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-# LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-#
 # This PortGroup helps create an application bundle the user can open from the
 # Finder or the Dock. This is useful for ports that install a program built
 # with an SDK like SDL or Qt that, when launched, causes an icon to appear in
@@ -129,28 +100,6 @@ default app.version {${version}}
 options app.identifier
 default app.identifier {[app.get_default_identifier]}
 
-
-# app.hide_dock_icon: hide the dock icon
-#
-# x11 apps do not receive a proper indication that application has successfully
-# launched, and so the icon keeps bouncing in the dock. Until this is properly
-# fixed, just hide the the dock icon for now
-
-options app.hide_dock_icon 
-default app.hide_dock_icon  no
-
-
-# app.use_launch_script: use a bash launch script instead of a symlink to the executable
-#
-# the default behaviour is to symlink the executable into the bundle. 
-# However, this has two issues -- it passes -psn to the executable,
-# which some ports can't handle. Also, it doesn't set up the path to ${prefix}/bin. The launch
-# script option solves both these issues.
-
-options app.use_launch_script 
-default app.use_launch_script  no
-
-
 proc app.get_default_identifier {} {
     global app.name homepage
     set identifier [split [lindex [split ${homepage} "/"] 2] .]
@@ -165,6 +114,31 @@ proc app.get_default_identifier {} {
     lappend identifier [string map {"." ""} ${app.name}]
     return [regsub -all -nocase {[^a-z0-9.-]} [join ${identifier} .] ""]
 }
+
+
+# app.hide_dock_icon: hide the dock icon
+#
+# x11 apps do not receive a proper indication that application has successfully
+# launched, and so the icon keeps bouncing in the dock. Until this is properly
+# fixed, just hide the the dock icon for now
+
+options app.hide_dock_icon
+default app.hide_dock_icon  {[app.get_default_hide_dock_icon]}
+
+proc app.get_default_hide_dock_icon {} {
+    return [variant_exists x11] && [variant_isset x11]
+}
+
+
+# app.use_launch_script: use a bash launch script instead of a symlink to the executable
+#
+# the default behaviour is to symlink the executable into the bundle.
+# However, this has two issues -- it passes -psn to the executable,
+# which some ports can't handle. Also, it doesn't set up the path to ${prefix}/bin. The launch
+# script option solves both these issues.
+
+options app.use_launch_script
+default app.use_launch_script  no
 
 
 platform macosx {
@@ -251,7 +225,7 @@ platform macosx {
                 # If app.executable starts with ${workpath} or ${filespath}, copy it.
                 if {[string first ${workpath} ${executable}] == 0 || [string first ${filespath} ${executable}] == 0} {
                     xinstall ${executable} ${destroot}${applications_dir}/${app.name}.app/Contents/MacOS/${app.name}
-                
+
                 # app.executable refers to a file that exists but does not belong to this port.
                 # Assume it belongs to a dependency and use it as the target.
                 } else {
@@ -340,7 +314,7 @@ proc app._resolve_symlink {path destroot} {
 }
 
 
-# Write a default launch script for the executable into the bundle, 
+# Write a default launch script for the executable into the bundle,
 # setting the default PATH as would be expected by the binary
 proc app._write_launch_script  {executable app_destination} {
     global prefix
