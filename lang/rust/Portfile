@@ -5,7 +5,7 @@ PortGroup           muniversal 1.0
 PortGroup           active_variants 1.1
 
 name                rust
-version             1.26.0
+version             1.26.2
 categories          lang devel
 platforms           darwin
 supported_archs     i386 x86_64
@@ -66,9 +66,9 @@ foreach arch ${architectures} {
 }
 
 checksums           ${distname}${extract.suffix} \
-                    rmd160  5f7c7180496cdc5dd1c694bba2fa4fce236e708e \
-                    sha256  4fb09bc4e233b71dcbe08a37a3f38cabc32219745ec6a628b18a55a1232281dd \
-                    size    95383826
+                    rmd160  a99aecdcb80e35985598991f3fe37ab5fcdb8b98 \
+                    sha256  fb9ecf304488c9b56600ab20cfd1937482057f7e5db7899fddb86e0774548700 \
+                    size    95312651
 
 checksums-append \
                     rust-std-${ruststd_version}-i686-apple-${os.platform}${extract.suffix} \

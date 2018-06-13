@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                pstoedit
-version             3.71
+version             3.73
 categories          graphics
 platforms           darwin
 maintainers         nomaintainer
@@ -18,11 +18,12 @@ long_description    pstoedit converts PostScript™ and PDF files to other \
 homepage            http://www.pstoedit.net/
 master_sites        sourceforge:project/pstoedit/pstoedit/${version}
 
-checksums           rmd160  8ceec688b2f133b91a93a90b6a062e1e2a75c341 \
-                    sha256  0589cd22cd9c23dee12d9bc9f26760f872185d8a1fb72a05bc58f6b824cfbc95 \
-                    size    1046071
+checksums           rmd160  a031f60c395aea11dd98dd32f9c81b5de9efe69b \
+                    sha256  ad31d13bf4dd1b9e2590dccdbe9e4abe74727aaa16376be85cd5d854f79bf290 \
+                    size    1276849
 
-depends_build       port:pkgconfig
+depends_build       port:pkgconfig \
+                    port:texlive-bin-extra
 
 depends_lib         port:ImageMagick \
                     port:plotutils

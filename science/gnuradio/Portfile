@@ -55,12 +55,12 @@ subport gnuradio-devel {
     name                gnuradio-devel
     conflicts           gnuradio gnuradio-next
 
-    github.setup        gnuradio gnuradio 82d0a6bc2d326dfe002cecd2e6c7341cb4a1d021
-    version             20180428
+    github.setup        gnuradio gnuradio bbc9e6b43d15bb15e005c4e17eda409cfa4460b7
+    version             20180531
     checksums \
-        rmd160 30fa4b909a91d667a826407a26c7c8de0781fa9d \
-        sha256 a72d9269b84b5c2bb02f3cd066222ec828bc9bf0bd1117b3d8fa1d413d480723 \
-        size   4431156
+        rmd160 50218454982a0d0d4997fa1ca81287cb011762b3 \
+        sha256 6c2fe873e5c8d937a1663df302381ea4aa103e86d969463e65fc72c933112812 \
+        size   4431764
 
     # set the version override string
 

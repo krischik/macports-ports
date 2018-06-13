@@ -29,11 +29,11 @@ if {${subport} eq ${name}} {
 
 subport libuv-devel {
 
-    github.setup    libuv libuv b59fc58326854539265e183d905b0c0ad8964857
-    version         20180517
-    checksums       rmd160 c544dd422d927010973113a7718aad50a974e846 \
-                    sha256 fa95aa05729e9b33d4b30caf2b123a5c8de2797ffd5280106a6b16436b8ec4e6 \
-                    size   1183120
+    github.setup    libuv libuv 0cdb4a5b4b706d0e09413d9270da28f9a88dc083
+    version         20180604
+    checksums       rmd160 f25f8ed4c43373909c45b42286a4b71fee23a42b \
+                    sha256 0283bb26c4043f7aa67914a29dc531bc57b9db34338f13ded055e8b36ea922ea \
+                    size   1184406
 
     long_description    ${long_description} \
         This port is kept up with the libuv GIT 'master' branch, is typically updated weekly to monthly.

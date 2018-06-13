@@ -4,7 +4,7 @@ PortSystem              1.0
 PortGroup               compiler_blacklist_versions 1.0
 
 name                    nodejs10
-version                 10.1.0
+version                 10.4.0
 
 categories              devel net
 platforms               darwin
@@ -24,8 +24,9 @@ homepage                http://nodejs.org/
 master_sites            ${homepage}dist/v${version}
 use_xz                  yes
 
-checksums               rmd160  0017e7323c2b55e4a1769e04db1276f47354e3ff \
-                        sha256  a6671055b4085795f5427f42349eae14c5dfe7692c923dffb7635b9f62cc7902
+checksums               rmd160  f2556b9a17cad1f3efef85f2820597947059436c \
+                        sha256  b58f5a39253921c668eb7678679df36f9fb5e46c885242d20f13168973603762 \
+                        size    19659232
 
 distname                node-v${version}
 
@@ -44,8 +45,7 @@ proc rec_glob {basedir pattern} {
 
 configure.python ${prefix}/bin/python2.7
 
-patchfiles              patch-common.gypi.diff \
-                        patch-tools-gyp-pylib-gyp-generator-make.py.diff
+patchfiles              patch-common.gypi.diff
 
 post-patch {
     foreach f [concat ${worksrcpath}/configure \

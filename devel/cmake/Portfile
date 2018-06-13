@@ -37,10 +37,10 @@ if {${subport} eq ${name}} {
 
     # release
 
-    version         ${branch}.1
-    checksums       rmd160 8bf925456e778b489301d8e1d5cdb1e93d4ccc5c \
-                    sha256 57bebc6ca4d1d42c6385249d148d9216087e0fda57a47dc5c858790a70217d0c \
-                    size   7951125
+    version         ${branch}.3
+    checksums       rmd160 90e5ae01c3a68b31095967b5d1c8e245065bb294 \
+                    sha256 287135b6beb7ffc1ccd02707271080bbf14c21d80c067ae2c0040e5f3508c39a \
+                    size   7954155
 
     master_sites    ${homepage}/files/v${branch}/
     conflicts       cmake-devel
@@ -54,7 +54,7 @@ if {${subport} eq ${name}} {
         patch-Modules-noArchCheck.release.diff \
         patch-CMakeFindFrameworks.cmake.release.diff \
         patch-Source_CMakeVersionCompute.cmake.release.diff \
-        patch-Source_CMakeLists.txt.diff
+        patch-Source_CMakeLists.txt.release.diff
 
     livecheck.type  regex
     livecheck.regex ${name}-(\[0-9.\]+)${extract.suffix}
@@ -64,11 +64,11 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    version         20180509
-    set commit      d44441a365e4d4e4188ed2fa6b1f9ccda0568846
-    checksums       rmd160 886532b19289210f3f246778a45aa0bb2fffe293 \
-                    sha256 db58e44c579bad4407dbee4f5351ca6a108d5bc2ec538c5065ba7bff9554f1bc \
-                    size   6261821
+    version         20180605
+    set commit      acaaca968c512fa420f3564649be1f49acfa6a6a
+    checksums       rmd160 49c44b3c8157cf7f3d41006fcbb197107f1b32ed\
+                    sha256 b1ad7795e735b4be2d805f4a4292dfcab8746e19bb498a3d69e858b54c9ba4db\
+                    size   6281249
 
     use_bzip2       yes
     master_sites    https://gitlab.kitware.com/cmake/cmake/repository/archive${extract.suffix}?ref=${commit}&
@@ -84,11 +84,10 @@ if {${subport} eq ${name}} {
 
     # devel-only patches
     patchfiles-append \
-        patch-Modules-FindQt4.cmake.devel.diff \
         patch-Modules-noArchCheck.devel.diff \
         patch-CMakeFindFrameworks.cmake.devel.diff \
         patch-Source_CMakeVersionCompute.cmake.devel.diff \
-        patch-Source_CMakeLists.txt.diff
+        patch-Source_CMakeLists.txt.devel.diff
 
     livecheck.type  regex
     livecheck.regex /cmake/cmake/commit/(\[0-9a-g\]+)
