@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-setuptools_scm
-version             1.15.6
+version             2.0.0
 revision            0
 categories-append   devel
 platforms           darwin
@@ -23,8 +23,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  6db2ec8144cbbc2b0c2e7e294ae52d5f4403edd2 \
-                    sha256  49ab4685589986a42da85706b3311a2f74f1af567d39fee6cb1e088d7a75fb5f
+checksums           rmd160  2bf1821338e44be22652113dfaa1e80bbbd25cc1 \
+                    sha256  638627655ec4625b7a055a5b65f44e88121fce05a281a1597abd6a9f8c04139b
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools

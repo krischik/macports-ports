@@ -4,7 +4,7 @@ PortSystem              1.0
 PortGroup               compiler_blacklist_versions 1.0
 
 name                    nodejs8
-version                 8.7.0
+version                 8.11.1
 
 categories              devel net
 platforms               darwin
@@ -18,21 +18,20 @@ long_description        Node's goal is to provide an easy way to build scalable 
                         Machine or Python's Twisted. Node takes the event model a bit further-it \
                         presents the event loop as a language construct instead of as a library.
 
-conflicts               nodejs4 nodejs5 nodejs6 nodejs7
+conflicts               nodejs4 nodejs5 nodejs6 nodejs7 nodejs9 nodejs10
 
 homepage                http://nodejs.org/
 master_sites            ${homepage}dist/v${version}
 use_xz                  yes
 
-checksums               rmd160  5ae46b13b07d3a0c9c76ea74c32cc40ffd5ea534 \
-                        sha256  5a17d08c68ee7c1e748fd32534edda766cb57c13ed98e693f3075bc9d9a0b59a
+checksums               rmd160  8c389b5258e2a3b369eb2b5d31162c4b59c169ad \
+                        sha256  40a6eb51ea37fafcf0cfb58786b15b99152bec672cccf861c14d1cca0ad4758a
 
 distname                node-v${version}
 
 depends_build           port:pkgconfig
 
-depends_lib             port:icu \
-                        port:python27 \
+depends_lib             port:python27 \
                         path:lib/libssl.dylib:openssl
 
 proc rec_glob {basedir pattern} {
@@ -66,7 +65,7 @@ post-patch {
 }
 
 configure.args-append   --without-npm
-configure.args-append   --with-intl=system-icu
+configure.args-append   --with-intl=small-icu
 configure.args-append   --shared-openssl
 configure.args-append   --shared-openssl-includes=${prefix}/include/openssl
 configure.args-append   --shared-openssl-libpath=${prefix}/lib
@@ -124,8 +123,6 @@ destroot {
 
 # install headers
     xinstall -m 644 -W ${worksrcpath} \
-        src/async-wrap-inl.h \
-        src/async-wrap.h \
         src/base-object-inl.h \
         src/base-object.h \
         src/env-inl.h \
@@ -211,4 +208,4 @@ if {${os.major} < 11} {
 
 livecheck.url       ${homepage}dist/
 livecheck.type      regex
-livecheck.regex     {v(\d+\.\d+\.\d+)}
+livecheck.regex     {v(8\.\d+\.\d+)}

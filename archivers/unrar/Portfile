@@ -4,7 +4,7 @@ PortSystem              1.0
 
 name                    unrar
 set my_name             ${name}src
-version                 5.5.8
+version                 5.6.3
 categories              archivers
 platforms               darwin freebsd
 maintainers             nomaintainer
@@ -16,12 +16,12 @@ long_description        The unRAR utility is a minor part of the RAR archiver \
                         and contains RAR uncompression algorithm. unRAR \
                         requires very small volume of memory to operate.
 
-homepage                http://www.rarlab.com/
+homepage                https://www.rarlab.com/
 master_sites            ${homepage}rar/
 distname                ${my_name}-${version}
 
-checksums               rmd160  11340b2ee80a08d641b851fe413540b1be6c3388 \
-                        sha256  9b66e4353a9944bc140eb2a919ff99482dd548f858f5e296d809e8f7cdb2fcf4
+checksums               rmd160  8f560abe8df675b7a4a8a0d85f9342bc90a49d54 \
+                        sha256  c590e70a745d840ae9b9f05ba6c449438838c8280d76ce796a26b3fcd0a1972e
 
 patchfiles              patch-makefile.unix.diff
 

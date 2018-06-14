@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                xml2rfc
-version             2.8.1
+version             2.8.3
 categories          textproc
 platforms           darwin
 license             BSD
@@ -19,9 +19,9 @@ long_description \
 homepage            https://xml2rfc.tools.ietf.org/
 master_sites        pypi:x/xml2rfc
 
-checksums           md5     bd3ff5a001fb2f4cd9da50d417f7659f \
-                    rmd160  13a07e2316167673e9ff806835d9f17f16493f2b \
-                    sha256  7592e218a3f5d4481b43a311256a6921f2db4d53f4dce2aeaaabd32dd4afc332
+checksums           md5     4af51a8da20ab5759e03616cd2260838 \
+                    rmd160  276b4f6ac8fa1656271ae89abc717c0019b1599c \
+                    sha256  10dcd32a234a4f54598aa4e284c87ba6e0e60c1daa2f4f88e048c5ce785ba166
 
 python.default_version  36
 

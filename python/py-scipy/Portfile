@@ -6,10 +6,10 @@ PortGroup               active_variants 1.1
 PortGroup               github 1.0
 PortGroup               compilers 1.0
 
-github.setup            scipy scipy 0.19.1 v
-revision                2
-checksums               rmd160 ce5e5eb7e8f652ad832261651e64f6a791d76c8c \
-                        sha256 69fd360c43d34c982e0907eca260464e8ed38d279cd17197eba005370b07d89d
+github.setup            scipy scipy 1.0.1 v
+checksums               rmd160 40e2058b0ef22a35be3f7115247d4f06371c2247 \
+                        sha256 68b03a94d05d398cc6aed60da467c9b34936db8a4180b9a8ab2609dfd6a9d886 \
+                        size   18716746
 
 name                    py-scipy
 platforms               darwin
@@ -25,16 +25,17 @@ python.versions         26 27 33 34 35 36
 python.add_archflags    no
 universal_variant       no
 
-compilers.setup         require_fortran -clang -dragonegg -gcc44 -gcc45 -gcc46 \
+compilers.setup         require_fortran -clang -gcc44 -gcc45 -gcc46 \
                         -gcc47 -gcc48 -g95 clang37
-
-livecheck.regex         archive/[join ${github.tag_prefix} ""](\[^"r\]+)${extract.suffix}
 
 if {${name} ne ${subport}} {
 
     depends_lib-append      port:py${python.version}-numpy \
                             port:py${python.version}-nose \
                             port:swig-python
+
+    depends_test-append     port:py${python.version}-py \
+                            port:py${python.version}-pytest
 
     worksrcdir              ${distname}
 
@@ -70,7 +71,7 @@ if {${name} ne ${subport}} {
     }
 
     variant openblas conflicts atlas description "Use MacPorts OpenBLAS Libraries" {
-        depends_lib-append  path:lib/libopenblas.dylib:openblas
+        depends_lib-append  path:lib/libopenblas.dylib:OpenBLAS
     }
 
     if {[variant_isset atlas]} {
@@ -132,4 +133,4 @@ have the +atlas variant active. Please ensure that numpy is activated with the\
 # overload the github livecheck regex to look for versions that
 # are just numbers, '.', and '-', no letters (e.g., "1.0.0b1").
 
-livecheck.regex archive/[join ${github.tag_prefix} ""](\[0-9.-\]+)${extract.suffix}
+github.livecheck.regex  {([0-9.-]+)}

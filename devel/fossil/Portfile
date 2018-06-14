@@ -3,12 +3,12 @@
 PortSystem          1.0
 
 name                fossil
-version             2.3
+version             2.6
 epoch               20110901182519
 categories          devel
 platforms           darwin
 license             BSD
-maintainers         ciserlohn
+maintainers         {ciserlohn @ci42}
 
 description         Simple, high-reliability, distributed software configuration management
 
@@ -25,12 +25,10 @@ distname            ${name}-src-${version}
 
 worksrcdir          ${name}-${version}
 
-checksums           rmd160  8e9bd6a685b75481202c3f7bf592a12a4e4a0b51 \
-                    sha256  f073abf455a38ea0a08c3926d7445ab8115b145457f36c763ad9b74cd6a64a5d
+checksums           rmd160  5799c0f76a2365ec25240bf3d56476f55c4c951a \
+                    sha256  76a794555918be179850739a90f157de0edb8568ad552b4c40ce186c79ff6ed9
 
 test.run            yes
-
-patchfiles          patch-auto.def.diff
 
 depends_lib         port:tcl \
                     port:zlib \

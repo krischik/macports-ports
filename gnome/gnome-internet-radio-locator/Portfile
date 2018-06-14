@@ -3,8 +3,7 @@
 PortSystem          1.0
 
 name                gnome-internet-radio-locator
-version             1.0.0
-revision            1
+version             1.1.2
 set branch          [join [lrange [split $version .] 0 1] .]
 categories          gnome
 platforms           darwin
@@ -18,8 +17,9 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  be020dc3b01cf78e633136340e00f529f683ad41\
-                    sha256  9f3162ac62c30d2bb0a216e638872936be92d9ee4a0a283ebb6bd295fc0fb6e8
+checksums           rmd160  fcb2eb63b6215507756f8229d87395e6d3915eac \
+                    sha256  5249feb18f01ae7cd2e7c06a3eb76f41d6aada4c46fdda8d61a59d45efa53816 \
+                    size    538992
 
 depends_build       port:autoconf \
                     port:automake \
@@ -38,13 +38,10 @@ depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
                     path:lib/pkgconfig/pango.pc:pango \
                     port:desktop-file-utils \
                     port:geocode-glib \
-                    port:gnome-vfs \
                     port:gstreamer1 \
                     port:gstreamer1-gst-plugins-base \
                     port:gtk3 \
                     port:libchamplain \
-                    port:libgnome \
-                    port:libgnomeui \
                     port:libxml2 \
                     port:zlib
 
@@ -66,7 +63,7 @@ configure.optflags  -O0
 configure.args      --disable-silent-rules
 
 post-activate {
-   system "${prefix}/bin/gtk-update-icon-cache -f -t ${prefix}/share/icons/hicolor"
+   system "${prefix}/bin/gtk-update-icon-cache-3.0 -f -t ${prefix}/share/icons/hicolor"
    system "${prefix}/bin/update-desktop-database ${prefix}/share/applications"
 }
 

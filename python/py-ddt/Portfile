@@ -1,0 +1,39 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-ddt
+version             1.1.2
+platforms           darwin
+license             MIT
+maintainers         {khindenburg @kurthindenburg} openmaintainer
+
+description         Data-Driven/Decorated Tests
+long_description    A library to multiply test cases
+
+homepage            https://pypi.python.org/pypi/${python.rootname}/
+master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
+distname            ${python.rootname}-${version}
+
+checksums           rmd160  341c6fe6adf5bdc8f5704f7245ca83f0e88846c9 \
+                    sha256  fdb6af91e668ad29e0e51ec1cb3baf67c628ae006b171735f2d42ae8c1af13f3 \
+                    size    10156
+
+python.versions     27 34 35 36
+
+if {${name} ne ${subport}} {
+    depends_build-append    port:py${python.version}-setuptools
+
+    depends_test-append port:py${python.version}-mock \
+                        port:py${python.version}-nose \
+                        port:py${python.version}-yaml
+    test.run            yes
+    test.env            PYTHONPATH=${worksrcpath}/build/lib:${worksrcpath}
+    test.cmd            nosetests-${python.branch}
+    test.target         test/test_example.py test/test_functional.py
+
+    livecheck.type  none
+} else {
+    livecheck.type  pypi
+}

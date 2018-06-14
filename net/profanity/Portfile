@@ -25,8 +25,8 @@ depends_build-append \
 depends_lib-append port:ncurses \
                    port:libstrophe \
                    port:curl \
-                   port:openssl \
-                   port:glib2 \
+                   path:lib/libssl.dylib:openssl \
+                   path:lib/pkgconfig/glib-2.0.pc:glib2 \
                    port:expat \
                    port:libotr \
                    port:gnutls \
@@ -41,7 +41,7 @@ post-patch {
 
 # specify a python version
 configure.args-append  \
-                   PYTHON_FRAMEWORK=${prefix}/Library/Frameworks/Python.framework \
+                   PYTHON_FRAMEWORK=${frameworks_dir}/Python.framework \
                    PYTHON=${prefix}/bin/python3.4
 
 

@@ -4,7 +4,7 @@ PortSystem      1.0
 PortGroup       muniversal 1.0
 
 name            dbus
-version         1.10.24
+version         1.12.2
 #revision        0
 maintainers     {mcalhoun @MarcusCalhoun-Lopez} openmaintainer
 categories      devel
@@ -18,8 +18,8 @@ long_description \
 homepage        https://www.freedesktop.org/wiki/Software/dbus/
 master_sites    https://dbus.freedesktop.org/releases/dbus/
 
-checksums       rmd160  156d6c4c089f244cbbdd6aeec03909276bc06f70 \
-                sha256  71184eb27638e224579ffa998e88f01d0f1fef17a7811406e53350735eaecd1b
+checksums       rmd160  c032fedc852a1a6fccb11cea1f41c49df7466d8b \
+                sha256  272bb5091770b047c8188b926d5e6038fa4fe6745488b2add96b23e2d9a83d88
 
 # See r68276
 # For configure
@@ -63,7 +63,7 @@ configure.args  --disable-doxygen-docs \
                 --disable-tests
 
 post-patch {
-    if {${startupitem.install} && ![variant_isset no_root]} {
+    if {[tbool ${startupitem.install}] && ![variant_isset no_root]} {
         # Disable if installed into startup directory.
         reinplace "s|</array>|</array>\\\n\\\n\\\t<key>Disabled</key>\\\n\\\t<true/>|" \
             ${worksrcpath}/bus/org.freedesktop.dbus-session.plist.in
@@ -124,7 +124,7 @@ post-destroot {
         puts ${plist} "<key>KeepAlive</key><true/>"
     }
 
-    if {${startupitem.install} && ![variant_isset no_root]} {
+    if {[tbool ${startupitem.install}] && ![variant_isset no_root]} {
         puts ${plist} "<key>Disabled</key><true/>"
     }
 
@@ -133,7 +133,7 @@ post-destroot {
 
     close ${plist}
 
-    if {${startupitem.install} && ![variant_isset no_root]} {
+    if {[tbool ${startupitem.install}] && ![variant_isset no_root]} {
         xinstall -d -m 0755 ${destroot}/Library/LaunchDaemons
         xinstall -d -m 0755 ${destroot}/Library/LaunchAgents
         ln -s ${prefix}/Library/LaunchDaemons/org.freedesktop.dbus-system.plist ${destroot}/Library/LaunchDaemons
@@ -154,7 +154,7 @@ post-activate {
 }
 
 #pre-deactivate {
-#    if {${startupitem.install} && ![variant_isset no_root]} {
+#    if {[tbool ${startupitem.install}] && ![variant_isset no_root]} {
 #        catch {system "launchctl unload /Library/LaunchDaemons/org.freedesktop.dbus-system.plist"}
 #        catch {system "launchctl unload /Library/LaunchAgents/org.freedesktop.dbus-session.plist"}
 #    }
@@ -172,7 +172,7 @@ variant test description {enable tests (Only Works if dbus is Already Installed)
     configure.python        ${prefix}/bin/python2.7
 }
 
-if {${startupitem.install} && ![variant_isset no_root]} {
+if {[tbool ${startupitem.install}] && ![variant_isset no_root]} {
     notes "############################################################################
 # Startup items have been generated that will aid in
 # starting ${name} with launchd. They are disabled

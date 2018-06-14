@@ -2,15 +2,16 @@
 
 PortSystem          1.0
 PortGroup           wxWidgets 1.0
+wxWidgets.use       wxWidgets-3.0
 
 name                saga
 categories          gis
 license             GPL
-version             5.0.0
-#revision            3
+version             6.3.0
+revision            2
 #set branch          [join [lrange [split ${version} .] 0 1] .]
 platforms           darwin
-maintainers         vince openmaintainer
+maintainers         {vince @Veence} openmaintainer
 
 description         SAGA is a GIS oriented towards statistics and analysis
 
@@ -19,52 +20,59 @@ long_description    SAGA is yet another open source GIS targeted towards\
                     a GUI.
 
 homepage            http://www.saga-gis.org/en/index.html
+master_sites        sourceforge:project/saga-gis/SAGA%20-%206/SAGA%20-%20${version}
 
-master_sites        sourceforge:project/saga-gis/SAGA%20-%205/SAGA%20-%20${version}
-distname            saga-${version}
-worksrcdir          saga-${version}
-
-checksums           rmd160  dc581ce1a815d9f2137607538e261a5644c8c7df \
-                    sha256  9be997209737e80262d9f13fd9b9797194a9f2facb10e5b9bd756d8cda675089
+checksums           rmd160  4fd7f91c0c6511f5356528a8b148b714d7d4c542 \
+                    sha256  bb4b99406e3a25cdaa12559904ce3272c449acb542bc0883b2755ce6508dd243
 
 patchfiles          patch-configure.diff
-#                    patch-saga_cmd_cpp.diff 
-
-wxWidgets.use       wxWidgets-3.0
 
 depends_build       port:autoconf \
                     port:automake \
                     port:libtool
 
-depends_lib         port:${wxWidgets.port} \
-                    port:geos \
+depends_lib         port:geos \
                     port:gdal \
-                    port:proj \
+                    port:proj4 \
+                    port:laszip \
                     port:jasper \
                     port:fftw-3 \
-                    port:unixodbc \
+                    port:unixODBC \
                     port:qhull
 
-post-patch  {
-    reinplace -E "s|wx-config|${wxWidgets.wxconfig}|" ${worksrcpath}/configure
+depends_lib-append      port:${wxWidgets.port}
 
-    set mkfiles [exec find ${worksrcpath} -type f -name Makefile.in]
-    foreach makefile ${mkfiles} {
-        reinplace -E "s|wx-config|${wxWidgets.wxconfig}|" ${makefile}
+post-patch {
+    fs-traverse f ${worksrcpath} {
+        if {[file isfile ${f}]} {
+            switch [file tail ${f}] {
+                configure -
+                Makefile.in {
+                    reinplace -E -q "s|wx-config|${wxWidgets.wxconfig}|" ${f}
+                }
+            }
+        }
     }
 }
 
-#use_autoreconf              yes
-#autoreconf.args             -i
+configure.cppflags-append   -I${prefix}/lib/proj49/include
+configure.ldflags-append    -L${prefix}/lib/proj49/lib
 
-configure.args              --disable-openmp \
-                            --enable-debug \
-                            --disable-triangle \
-                            --disable-libfire
+configure.args      --disable-openmp \
+                    --enable-debug \
+                    --disable-triangle \
+                    --disable-libfire \
+                    --disable-gui
 
-variant python27 {
+variant gui description "build the GUI interface" {
+    
+    configure.args-delete   --disable-gui
+}
+
+variant python27 description "build Python 2.7 bindings" {
     depends_lib-append      port:python27\
                             port:swig-python
+    
     configure.args-append   --enable-python
     configure.env-append    PYTHON="${prefix}/bin/python2.7"
     configure.env-append    PYTHON_VERSION="2.7"
@@ -74,17 +82,19 @@ variant libfire {
     configure.args-delete   --disable-libfire
 }
 
-variant postgresql95 conflicts postgresql96 {
-    depends_lib-append      port:postgresql95
-    configure.args-append   --with-postgresql=${prefix}/lib/postgresql95/bin/pg_config
+variant postgresql10 conflicts postgresql96 {
+    depends_lib-append      port:postgresql10
+    configure.args-append   --with-postgresql=${prefix}/lib/postgresql10/bin/pg_config
 }
 
-variant postgresql96 conflicts postgresql95 {
+variant postgresql96 conflicts postgresql10 {
     depends_lib-append      port:postgresql96
     configure.args-append   --with-postgresql=${prefix}/lib/postgresql96/bin/pg_config
 }
 
-default_variants    +python27
+if {![variant_isset postgresql10] && ![variant_isset postgresql96]} {
+    default_variants    +postgresql10
+}
 
 post-destroot {
     if {[variant_isset python27]} {
@@ -94,7 +104,7 @@ post-destroot {
     }
 }
 
-configure.ldflags-append -gdwarf-3
-configure.cxxflags-append  -gdwarf-3
+configure.ldflags-append    -gdwarf-3
+configure.cxxflags-append   -gdwarf-3
 
 livecheck.regex             ${name}_(\[0-9a-z.\]+)${extract.suffix}

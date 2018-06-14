@@ -9,15 +9,15 @@ platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
 license             Apache-2
 
-php.branches        5.3 5.4 5.5 5.6 7.0 7.1
+php.branches        5.3 5.4 5.5 5.6 7.0 7.1 7.2
 php.pecl            yes
 
 if {[vercmp ${php.branch} 5.5] >= 0} {
-    version         1.3.0
+    version         1.4.3
     revision        0
-    checksums       rmd160  bbdc2dfd1d12f3cb4c2d988ef4a1820da13e17c2 \
-                    sha256  7ecec2ee3687a2d0985e389407e3c2fe9817bd3478c266b46e3e2a4656df4965 \
-                    size    927842
+    checksums       rmd160  a6f890be3ec6e0b5598d167aa5e0f1c53a1ecadb \
+                    sha256  633485d2dd3f608143d0716f7ebf352a32d94b16eb7947a2bb851b29bad3e912 \
+                    size    1042883
 } elseif {[vercmp ${php.branch} 5.4] >= 0} {
     version         1.2.11
     revision        0

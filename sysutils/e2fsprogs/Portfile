@@ -3,7 +3,7 @@
 PortSystem                  1.0
 
 name                        e2fsprogs
-version                     1.43.6
+version                     1.44.1
 categories                  sysutils
 platforms                   darwin
 maintainers                 {ryandesign @ryandesign} openmaintainer
@@ -19,8 +19,9 @@ long_description            Utilities to create, check and manipulate extended 2
 homepage                    http://e2fsprogs.sourceforge.net/
 master_sites                sourceforge:project/e2fsprogs/e2fsprogs/v${version}
 
-checksums                   rmd160  d4bb3818494b42109615af5d8384ee008adb0563 \
-                            sha256  60139d75802925b0c23d451da8e4fc84c5e7cf94626cc324b59295495c0fdc80
+checksums                   rmd160  380c6a141e26b8b774e7ccdb750a13106bbb2134 \
+                            sha256  a5a8068dfe105050d8c63d67515a0ae5fff3f37232f725e0aa72b389eeb6c1e6 \
+                            size    7544908
 
 depends_build               port:pkgconfig
 depends_lib                 port:gettext
@@ -29,13 +30,12 @@ patchfiles                  patch-lib__Makefile.darwin-lib.diff
 
 configure.args-append       --enable-bsd-shlibs
 
-# This project is not C99 conformant
-configure.cflags-append     -std=gnu89
-
 # Enable verbose build messages
 build.args-append           V=1
 
 if {${subport} eq ${name}} {
+    revision                    0
+
     universal_variant           no
 
     configure.args-append       --disable-libuuid \
@@ -60,6 +60,8 @@ if {${subport} eq ${name}} {
 }
 
 subport libcomerr {
+    revision                    0
+
     description                 common error description library
     long_description            \
         libcomerr is an attempt to present a common error-handling mechanism to \

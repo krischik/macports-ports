@@ -5,7 +5,8 @@ PortGroup           gobject_introspection 1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 name                libgit2-glib
-version             0.26.0
+version             0.26.2
+revision            2
 license             LGPL-2.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 description         Glib wrapper library around the libgit2 git access library.
@@ -19,8 +20,8 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  2913739eb055b4989b582d6a0115861cd2e8f895 \
-                    sha256  06b16cfcc3a53d9804858618d690e5509e9af2e2245b75f0479cadbbe39745c3
+checksums           rmd160  1f636833ae323c693cb92b4deb926b4d82c07627 \
+                    sha256  2ad6f20db2e38bbfdb6cb452704fe8a911036b86de82dc75bb0f3b20db40ce9c
 
 depends_build       port:pkgconfig
 
@@ -42,19 +43,12 @@ autoreconf.args     -fvi
 configure.args      --disable-silent-rules \
                     --enable-compile-warnings=minimum \
                     --enable-vala \
+                    --enable-ssh \
                     --enable-python=no
 
 # requires python >= 3.2.3
 
-variant python34 conflicts python35 python36 description {Enable Python support, using python34} {
-    configure.args-delete --enable-python=no
-    configure.args-append --enable-python=yes
-    depends_lib-append port:py34-gobject3
-    configure.python ${prefix}/bin/python3.4
-    configure.pkg_config_path-append ${frameworks_dir}/Python.framework/Versions/3.4/lib/pkgconfig/
-}
-
-variant python35 conflicts python34 python36 description {Enable Python support, using python35} {
+variant python35 conflicts python36 description {Enable Python support, using python35} {
     configure.args-delete --enable-python=no
     configure.args-append --enable-python=yes
     depends_lib-append port:py35-gobject3
@@ -62,7 +56,7 @@ variant python35 conflicts python34 python36 description {Enable Python support,
     configure.pkg_config_path-append ${frameworks_dir}/Python.framework/Versions/3.5/lib/pkgconfig/
 }
 
-variant python36 conflicts python34 python35 description {Enable Python support, using python36} {
+variant python36 conflicts python35 description {Enable Python support, using python36} {
     configure.args-delete --enable-python=no
     configure.args-append --enable-python=yes
     depends_lib-append port:py36-gobject3
@@ -70,7 +64,7 @@ variant python36 conflicts python34 python35 description {Enable Python support,
     configure.pkg_config_path-append ${frameworks_dir}/Python.framework/Versions/3.6/lib/pkgconfig/
 }
 
-if {![variant_isset python34] && ![variant_isset python35]} {
+if {![variant_isset python35]} {
     default_variants +python36
 }
 

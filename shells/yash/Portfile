@@ -6,7 +6,7 @@ PortSystem          1.0
 PortGroup           muniversal 1.0
 
 name                yash
-version             2.45
+version             2.47
 categories          shells
 platforms           darwin
 license             GPL-2+
@@ -22,10 +22,10 @@ homepage            http://yash.osdn.jp
 depends_lib         port:gettext port:ncurses
 
 # This number changes with each release.
-master_sites        osdn:${name}/67984
+master_sites        osdn:${name}/69353
 use_xz              yes
-checksums           rmd160  70dc4bdb4710c58f819b921c53c9879e783243c2 \
-                    sha256  5b127d71e0e1edd462b224322c01332819a38eaa442baad807283e139ee56e11
+checksums           rmd160  9b89714a687d1974bcb392eb7b08a571893223b1 \
+                    sha256  931f2e7451d8b1eca2a98caeef7eda0527d96376f9f2c9bec90bc5938e39992e
 
 patchfiles          respect-destdir.patch
 

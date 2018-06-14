@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                nginx
-version             1.13.6
+version             1.13.12
 categories          www mail
 platforms           darwin
 license             BSD
@@ -34,8 +34,8 @@ master_sites        http://nginx.org/download:nginx \
 
 distfiles           ${name}-${version}${extract.suffix}:nginx
 checksums           ${name}-${version}${extract.suffix} \
-                    rmd160  0308540403f1278ee89e30c36fc49f7b63c74f61 \
-                    sha256  8512fc6f986a20af293b61f33b0e72f64a72ea5b1acbcc790c4c4e2d6f63f8f8
+                    rmd160  a92b1b0b3a62ac5fbd804c3f1a81c1f9b0bee2b8 \
+                    sha256  fb92f5602cdb8d3ab1ad47dbeca151b185d62eedb67d347bbe9d79c1438c85de
 
 depends_lib         port:pcre \
                     port:zlib
@@ -293,7 +293,7 @@ variant xslt description {Post-process pages with XSLT} {
 }
 
 variant zip description {Enable Ngx zip download module \
-        (http://code.google.com/p/mod-zip/)} {
+        (https://code.google.com/p/mod-zip/)} {
 
     set zip_distname        mod_zip-1.1.6
     distfiles-append        ${zip_distname}.tar.gz:zip_module

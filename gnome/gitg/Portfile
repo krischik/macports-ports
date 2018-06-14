@@ -22,7 +22,7 @@ long_description    gitg is a fast git repository browser. It currently features
 maintainers         {devans @dbevans} openmaintainer
 categories          gnome devel
 platforms           darwin
-homepage            http://www.gnome.org/
+homepage            https://www.gnome.org/
 master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
@@ -48,7 +48,7 @@ depends_lib         port:desktop-file-utils \
                     port:libsoup \
                     port:libsecret
 
-depends_run         port:gnome-themes-standard
+depends_run         port:adwaita-icon-theme
 
 gobject_introspection yes
 

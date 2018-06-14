@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-dask
-version             0.15.4
+version             0.17.2
 revision            0
 categories-append   devel
 platforms           darwin
@@ -26,13 +26,13 @@ long_description    Dask provides multi-core execution on larger-than-memory \
                     Pandas, and list programming while operating on \
                     inconveniently large data in a small amount of space.
 
-homepage            http://github.com/dask/dask/
+homepage            https://github.com/dask/dask/
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  694cf4e803087db8146a1101d9c4da0730a54f69 \
-                    sha256  cb93b8260f5f854ccf26b52bdc700600a08e6b7527085c7b7d63c04238bab9ea
+checksums           rmd160  3cd13830cce50197829f53f6e2cc13cbffd7b5fa \
+                    sha256  27e470b8cfdd0516189e641b1213fceec0ddc4f37ead1fbce733d3381134fccd
 
 if {${name} ne ${subport}} {
     depends_build-append \

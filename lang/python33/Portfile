@@ -8,6 +8,7 @@ name                python33
 epoch               20141012
 # Remember to keep py33-tkinter and py33-gdbm's versions sync'd with this
 version             3.3.7
+revision            1
 
 set major           [lindex [split $version .] 0]
 set branch          [join [lrange [split ${version} .] 0 1] .]
@@ -37,7 +38,7 @@ patchfiles          patch-setup.py.diff \
                     omit-local-site-packages.patch \
                     patch-Include-pyport.h.diff
 
-# http://bugs.python.org/issue21811
+# https://bugs.python.org/issue21811
 patchfiles-append   yosemite-configure-fixes.patch \
                     yosemite-python-fixes.patch
 
@@ -74,8 +75,8 @@ post-patch {
 build.target        all
 
 # test_cmd_line fails
-# see http://bugs.python.org/issue4388 and
-#     http://bugs.python.org/issue4474
+# see https://bugs.python.org/issue4388 and
+#     https://bugs.python.org/issue4474
 test.run            yes
 test.target         test
 
@@ -119,7 +120,12 @@ post-destroot {
 
     # remove -arch flags from the config
     reinplace -E {s|-arch [a-z0-9_]+||g} \
-      ${destroot}${framewdir}/lib/python${branch}/$confdir/Makefile
+      ${destroot}${framewdir}/lib/python${branch}/${confdir}/Makefile \
+      ${destroot}${framewdir}/lib/python${branch}/_sysconfigdata.py
+    # also remove gettext overlinking
+    reinplace "s|-lintl||" \
+      ${destroot}${framewdir}/lib/python${branch}/${confdir}/Makefile \
+      ${destroot}${framewdir}/lib/python${branch}/_sysconfigdata.py
 }
 
 platform darwin {

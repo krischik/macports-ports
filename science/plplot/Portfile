@@ -9,7 +9,7 @@ name            plplot
 version         5.12.0
 revision        1
 platforms       darwin
-maintainers     takeshi openmaintainer
+maintainers     {takeshi @tenomoto} openmaintainer
 categories      science
 license         LGPL
 description     Scientific plotting package, double precision version
@@ -26,7 +26,7 @@ plotting contexts."
 long_description    ${description_base} This port uses double precision.
 
 compilers.choose    fc f90
-compilers.setup     -dragonegg
+compilers.setup
 
 depends_build-append \
                 port:pkgconfig

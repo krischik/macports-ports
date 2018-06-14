@@ -209,7 +209,7 @@ proc _check_require_active_variants {method} {
 				# with bin: dependencies)
 				if {$depname ne ""} {
 					# if the dependency isn't already in the list
-					if {[lsearch -exact $depends $depname] == -1} {
+					if {$depname ni $depends} {
 						# append it
 						lappend depends $depname
 					}
@@ -226,7 +226,7 @@ proc _check_require_active_variants {method} {
 		set required [lindex $_require_active_variant 1]
 		set forbidden [lindex $_require_active_variant 2]
 
-		if {[lsearch -exact $depends $port] == -1} {
+		if {$port ni $depends} {
 			ui_debug "Ignoring active_variants requirement for ${port} because ${method}-type install only considers ${deptypes} and those do not contain ${port}"
 			continue
 		}
@@ -265,13 +265,6 @@ proc _check_require_active_variants {method} {
 # register pre-configure handler that checks for all requested variants
 pre-configure {
 	_check_require_active_variants source
-}
-
-# register pre-archivefetch handler that checks for all requested variants
-# this is required when downloading binary archives for a package, because
-# pre-configure is never run for those
-pre-archivefetch {
-	_check_require_active_variants archivefetch
 }
 
 # be sure that a required variant was not changed since this port was built or fetched

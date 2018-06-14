@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pytest
-version             3.2.3
-revision            0
+version             3.5.0
+revision            1
 categories-append   devel
 platforms           darwin
 license             MIT
@@ -25,12 +25,23 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  b6774e77e0a36bae49d6fa86b92487fe68f2ac74 \
-                    sha256  27fa6617efc2869d3e969a3e75ec060375bfb28831ade8b5cdd68da3a741dc3c
+checksums           rmd160  ccf66ab8ba7125e7c565af48a8e4b6cd812470d7 \
+                    sha256  fae491d1874f199537fd5872b5e1f0e74a009b979df9d53d1553fd03da1703e1
 
 if {${name} ne ${subport}} {
+    depends_build-append \
+                        port:py${python.version}-setuptools_scm
+
     depends_lib-append  port:py${python.version}-setuptools \
-                        port:py${python.version}-py
+                        port:py${python.version}-py \
+                        port:py${python.version}-six \
+                        port:py${python.version}-attrs \
+                        port:py${python.version}-more-itertools \
+                        port:py${python.version}-pluggy
+
+    if {${python.version} < 30} {
+        depends_lib-append  port:py${python.version}-funcsigs
+    }
 
     patchfiles-append   patch-setup.py.diff
 

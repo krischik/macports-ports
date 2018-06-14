@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-ipywidgets
-version             7.0.1
+version             7.2.1
 revision            0
 platforms           darwin
 license             BSD
@@ -22,8 +22,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  fab3bedc777cc4c0b8d757d9a5466ec325911d20 \
-                    sha256  8692b6656c7f492ca3b08441fdd44ac311860282ca5eac7b4f68d1f1cbdef43d
+checksums           rmd160  0d5952fd929ab780c8afa5810bdd92d0fda26862 \
+                    sha256  ab9869cda5af7ba449d8f707b29b7e97a7db97d6366805d6b733338f51096f54
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-ipython \

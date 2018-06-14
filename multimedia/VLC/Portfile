@@ -5,18 +5,10 @@ PortGroup               compiler_blacklist_versions 1.0
 PortGroup               active_variants 1.1
 PortGroup               conflicts_build 1.0
 
-if {[file exists ${prefix}/etc/macports/locales.tcl]} {
-    # experimental feature to cut down the NLS/locale files, which take up over 50% of
-    # the install footprint for VLC. This feature loads the locale_select PortGroup
-    # if its configuration file exist; a variant is then added which prunes all translations from
-    # ${destroot}${prefix}/share/locale except those whitelisted in etc/macports/locales.tcl .
-    PortGroup           locale_select 1.0
-}
-
 name                    VLC
 
 categories              multimedia devel
-maintainers             gmail.com:rjvbertin openmaintainer
+maintainers             {gmail.com:rjvbertin @RJVB} openmaintainer
 
 description             VLC is a cross-platform media player and streaming server
 long_description        VLC media player is a highly portable multimedia player for \
@@ -28,7 +20,7 @@ long_description        VLC media player is a highly portable multimedia player 
 homepage                http://www.videolan.org
 
 subport lib${name} {
-    maintainers         gmail.com:rjvbertin openmaintainer
+    maintainers         {gmail.com:rjvbertin @RJVB} openmaintainer
     description         the core engine and interface to VLC's multimedia framework
     long_description    libVLC is the core engine and the interface to the multimedia \
                         framework on which VLC media player is based.  It allows developers \
@@ -56,8 +48,8 @@ supported_archs         x86_64
 ###################  ports VLC and libVLC  ###################
 ##
 if {(${subport} eq ${name}) || (${subport} eq "lib${name}")} {
-    version             2.2.6
-    revision            1
+    version             2.2.8
+    revision            3
     license             GPL-2+
 
     platforms           darwin
@@ -66,8 +58,8 @@ if {(${subport} eq ${name}) || (${subport} eq "lib${name}")} {
     distname            vlc-${version}
     use_xz              yes
 
-    checksums           rmd160  b2727834bcbbf0d274e3a0b4a3317f3b914f9ad4 \
-                        sha256  c403d3accd9a400eb2181c958f3e7bc5524fe5738425f4253d42883b425a42a8
+    checksums           rmd160  4434e91384520fe1fe129a52f5d66d61e4404a9a \
+                        sha256  9bf046848fb56d93518881b39099b8288ee005d5ba0ddf705b6f6643b8d562ec
 
     if {[info exist ::env(MACPORTS_COMPRESS_WORKDIR)] && $::env(MACPORTS_COMPRESS_WORKDIR)} {
         # Enable HFS compression.
@@ -147,6 +139,7 @@ if {(${subport} eq ${name}) || (${subport} eq "lib${name}")} {
                         port:readline \
                         port:schroedinger \
                         port:speex \
+                        port:speexDSP \
                         port:taglib \
                         port:tiff \
                         port:twolame \
@@ -213,7 +206,8 @@ if {(${subport} eq ${name}) || (${subport} eq "lib${name}")} {
                         patch-ffmpegVLC.diff
     } else {
         patchfiles-append \
-                        patch-ffmpeg3-compat.diff
+                        patch-ffmpeg3-compat.diff \
+                        patch-vda-ffmpeg34.diff
     }
 
     post-patch {
@@ -442,13 +436,13 @@ if {(${subport} eq ${name}) || (${subport} eq "lib${name}")} {
                                 --enable-realrtsp
     }
 
-    # FreeRDP currently doesn't build with CMake >= 3.1 (#47389)
+    # VLC is not currently compatible with FreeRDP 2
     variant freerdp description {Build the FreeRDP support; currently dysfunctional} {
         depends_lib-append          port:FreeRDP
         # access/rdp.c:45:11: fatal error: 'freerdp/version.h' file not found
         configure.cppflags-append   -DFREERDP_INTERFACE_VERSION \
-                                    -DFREERDP_VERSION_MAJOR=1 \
-                                    -DFREERDP_VERSION_MINOR=1
+                                    -DFREERDP_VERSION_MAJOR=2 \
+                                    -DFREERDP_VERSION_MINOR=0
         configure.args-replace      --disable-freerdp --enable-freerdp
     }
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           cmake 1.0
+PortGroup           cmake 1.1
 PortGroup           github 1.0
 
 name                glfw
@@ -60,10 +60,11 @@ platform darwin {
 
             # devel
 
-            github.setup    glfw glfw 56ecd62f58f0c988c017050a75c46953a30a7512
-            version         20171002
-            checksums       rmd160 98548455bab472ca4df1be02ff2288ddf2b8966e \
-                            sha256 81d73018dfbd4ba88987afd2c7a4ac8e4e1d857f2f9e4f43ba638ef14524b14d
+            github.setup    glfw glfw 7ef34eb06de54dd9186d3d21a401b2ef819b59e7
+            version         20180425
+            checksums       rmd160 63253cc4b3fc40df837595f609c2bbb2e866bf29 \
+                            sha256 e9ef1fb1a7008f780b545bbbc5cafa2ac75f1a2835a813ff7b33c66d262fa499 \
+                            size   752677
 
             conflicts       glfw
             long_description ${description}: \

@@ -5,10 +5,10 @@ PortSystem 1.0
 name			postgresql93-doc
 conflicts       postgresql90-doc postgresql91-doc postgresql92-doc \
     postgresql94-doc postgresql95-doc postgresql96-doc
-version			9.3.19
+version			9.3.22
 categories		databases
 platforms		darwin
-maintainers		{jwa @jyrkiwahlstedt}
+maintainers		nomaintainer
 license			Permissive
 description		Documentation for the postgresql database BETA release.
 long_description PostgreSQL is Object-Relational Database Management System. \
@@ -17,12 +17,12 @@ long_description PostgreSQL is Object-Relational Database Management System. \
 				logging means increased performance while retaining data \
 				integrity. This is the documentation.
 
-homepage		http://www.postgresql.org/
+homepage		https://www.postgresql.org/
 master_sites		postgresql:source/v${version}
 distname		postgresql-${version}
 
-checksums           rmd160  79293893f37e67e86c6ae1bb6408578d1fe809e8 \
-                    sha256  fb9e872cd9e927ba331690d86bc63dcb5a596acb7a536fa0518a3c7d43ac2fb5
+checksums           rmd160  29b7b0a536d812ebed711e8d7dcc09195063aab5 \
+                    sha256  1b18ed4aa59bab6283a0d8f3a00b9d896f4588bb2ba88ceef2816cb5c4cce91a
 
 use_bzip2		yes
 dist_subdir		postgresql93

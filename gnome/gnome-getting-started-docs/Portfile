@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                gnome-getting-started-docs
-version             3.26.1
+version             3.28.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 description         GNOME Help Getting Started
 long_description    This package adds getting started topics to \
@@ -15,13 +15,14 @@ license             CC-BY-SA-3
 installs_libs       no
 platforms           darwin
 supported_archs     noarch
-homepage            http://www.gnome.org/
+homepage            https://www.gnome.org/
 master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           sha256  effc11424f2e7320aa893a6b82c97602817fd7c862dbb8852f61e10c9d5c92a2 \
-                    rmd160  e4cd5d4e60053555de3105734452052716cb1d2b
+checksums           rmd160  b0cbfc91d3a2381b466d29cbcc5a835000636fa7 \
+                    sha256  8017cf2eabdb91d10857f661953a44d88a56aa34915ce223ed442da3b652c074 \
+                    size    114148436
 
 depends_build       port:pkgconfig \
                     port:itstool \

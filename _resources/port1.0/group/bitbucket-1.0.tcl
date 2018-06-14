@@ -1,6 +1,6 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 #
-# Copyright (c) 2013-2014 The MacPorts Project
+# Copyright (c) 2013-2014, 2016-2017 The MacPorts Project
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -76,14 +76,16 @@ proc bitbucket.livecheck_regex {} {
 }
 
 proc bitbucket.setup {bb_author bb_project bb_version {bb_tag_prefix ""}} {
-    global bitbucket.author bitbucket.homepage bitbucket.master_sites bitbucket.project bitbucket.tag_prefix bitbucket.version extract.suffix
+    global bitbucket.author bitbucket.homepage bitbucket.master_sites bitbucket.project bitbucket.tag_prefix bitbucket.version extract.suffix PortInfo
 
     bitbucket.author        ${bb_author}
     bitbucket.project       ${bb_project}
     bitbucket.version       ${bb_version}
     bitbucket.tag_prefix    ${bb_tag_prefix}
 
-    name                    ${bitbucket.project}
+    if {!([info exists PortInfo(name)] && (${PortInfo(name)} ne ${bitbucket.project}))} {
+        name                ${bitbucket.project}
+    }
     version                 ${bitbucket.version}
     homepage                ${bitbucket.homepage}
     hg.url                  ${bitbucket.homepage}
@@ -96,7 +98,7 @@ proc bitbucket.setup {bb_author bb_project bb_version {bb_tag_prefix ""}} {
         # Here be dragons.
         if {![file exists ${worksrcpath}] && \
             ${fetch.type} eq "standard" && \
-            [lsearch -exact ${master_sites} ${bitbucket.master_sites}] != -1 && \
+            ${bitbucket.master_sites} in ${master_sites} && \
             [llength ${distfiles}] > 0 && \
             [llength [glob -nocomplain ${workpath}/*]] > 0} {
             move [glob ${workpath}/*] ${worksrcpath}

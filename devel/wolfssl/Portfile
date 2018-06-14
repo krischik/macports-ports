@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                wolfssl
-version             3.12.0
+version             3.14.0
 categories          devel security
 platforms           darwin
 maintainers         yassl.com:chris
@@ -24,8 +24,8 @@ long_description    \
 master_sites        http://www.wolfssl.com/
 use_zip             yes
 
-checksums           rmd160  0fab24475e2efa9fa04b6c2d1c7f378aaf81e7db \
-                    sha256  5bb196056ac0086efbf07ecea7d3e73b1c31722eb52a88b85879f920428a9a0f
+checksums           rmd160  0d20b38343bb9a95186eb5253749e2b068b5740f \
+                    sha256  fbf5b5b2194caaa51cc0de4d3223ffa0ec55ff36bbea5a97e0032ed9d1aed866
 
 configure.args      --enable-distro
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 #
-# Copyright (c) 2012-2013, 2015 The MacPorts Project
+# Copyright (c) 2012-2013, 2015-2018 The MacPorts Project
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@
 # compiler.blacklist-delete clang
 #
 # This PortGroup was created following this discussion:
-# http://lists.macosforge.org/pipermail/macports-dev/2012-November/021103.html
+# https://lists.macosforge.org/pipermail/macports-dev/2012-November/021103.html
 
 option_proc compiler.blacklist compiler_blacklist_versions._set_compiler_blacklist
 
@@ -113,7 +113,7 @@ proc compiler_blacklist_versions._version_matches {compiler comparison_operator 
 }
 
 proc compiler_blacklist_versions._get_compiler_version {compiler} {
-    global compiler_blacklist_versions._compiler_versions
+    global compiler_blacklist_versions._compiler_versions os.major xcodeversion
     if {[info exists compiler_blacklist_versions._compiler_versions(${compiler})]} {
         return [set compiler_blacklist_versions._compiler_versions(${compiler})]
     }
@@ -122,10 +122,18 @@ proc compiler_blacklist_versions._get_compiler_version {compiler} {
             set re {clang(?:_.*)?-([0-9.]+)}
         }
         llvm-gcc-4.2 {
+            if {${os.major} > 12 || [vercmp $xcodeversion 5.0] >= 0 || [vercmp $xcodeversion 3.1] < 0} {
+                return ""
+            }
             set re {LLVM build ([0-9.]+)}
         }
+        gcc-4.2 {
+            if {${os.major} > 11 || [vercmp $xcodeversion 4.2] >= 0} {
+                return ""
+            }
+            set re {build ([0-9.]+)}
+        }
         gcc-4.0 -
-        gcc-4.2 -
         apple-gcc-4.2 {
             set re {build ([0-9.]+)}
         }

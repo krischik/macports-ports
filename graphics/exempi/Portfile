@@ -6,7 +6,7 @@ PortGroup           cxx11 1.1
 # requires libc++ as of 2.4.0
 
 name                exempi
-version             2.4.3
+version             2.4.5
 license             BSD
 categories          graphics
 maintainers         {devans @dbevans} openmaintainer
@@ -16,12 +16,13 @@ master_sites        https://libopenraw.freedesktop.org/download/
 
 use_bzip2           yes
 
-checksums           rmd160  dbdd79734e54401e8105cdc28fa805f6a484d602 \
-                    sha256  bfd1d8ebffe07918a5bfc7a5130ff82486d35575827cae8d131b9fa1c0c29c6e
+checksums           rmd160  80a9ee6b33894d60cfbe92b341c551e8d6970e41 \
+                    sha256  406185feb88e84ea1d4b4251370be2991205790d7113a7e28e192ff46a4f221e \
+                    size    3615134
 
 description         Exempi is an implementation of XMP.
 
-long_description    Exempi is an implementation of XMP. Version 2.x is based on Adobe XMP SDK 4.1.1.
+long_description    ${description} Version 2.4.x is based on Adobe XMP CC 2014.12.
 
 configure.args      --enable-unittest=no \
                     --disable-silent-rules

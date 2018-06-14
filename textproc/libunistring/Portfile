@@ -3,8 +3,7 @@
 PortSystem          1.0
 
 name                libunistring
-version             0.9.7
-revision            1
+version             0.9.9
 categories          textproc
 platforms           darwin
 license             GPL-3
@@ -20,11 +19,11 @@ long_description    Text files are nowadays usually encoded in Unicode, and may 
                     This library provides functions for manipulating Unicode strings and for \
                     manipulating C strings according to the Unicode standard.
 
-homepage            http://www.gnu.org/software/libunistring/
+homepage            https://www.gnu.org/software/libunistring/
 master_sites        gnu
 
-checksums           rmd160  71208e6cf2f8792e32199e7f49326b8bfeb1e476 \
-                    sha256  9ce081cbee1951b55597b30e7030bda9d7b2f034ef901a135ff3a020be5a41e5
+checksums           rmd160  9543eaac46d5d4880e6da6f02e93f04decce735d \
+                    sha256  f5e90c08f9e5427ca3a2c0c53f19aa38b25c500913510ad25afef86448bea84a
 
 depends_build       bin:perl:perl5 \
                     port:texinfo

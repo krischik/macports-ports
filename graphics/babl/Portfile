@@ -6,7 +6,7 @@ PortGroup           compiler_blacklist_versions 1.0
 
 name                babl
 conflicts           babl-devel
-version             0.1.32
+version             0.1.46
 license             LGPL-3+
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          graphics
@@ -21,12 +21,13 @@ master_sites        gimp:${name}/${branch}/
 
 use_bzip2           yes
 
-checksums           rmd160  109b89e8d760893ccb33c0bfaf7a3ab828cc1d76 \
-                    sha256  a50937d008a5d7417d08943ffaa2ee1fbb07b7a3e72c9debb0d30db653b11002
+checksums           rmd160  9c6a2fe80ae5d68b40c55ef0ed38d0436edd02c0 \
+                    sha256  bbc2403b1badf8014ec42200e65d7b1f46e68e627c33c6242fa31ac5dc869e5b \
+                    size    653887
 
 # In 0.1.12, i386 fails to compile with SL's gcc-4.2:
 #    babl-cpuaccel.c:169: error: ‘asm’ operand has impossible constraints
-compiler.blacklist-append *gcc*
+compiler.blacklist-append *gcc-3.* *gcc-4.*
 
 # additionally blacklist compilers that don't support C11 (typedef redefinition in C)
 # babl-icc.c:1031:25: error: redefinition of typedef 'UTF8' is invalid in C

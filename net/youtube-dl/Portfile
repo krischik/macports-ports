@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                youtube-dl
-version             2017.10.15.1
+version             2018.05.01
 categories          net
 platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -14,12 +14,12 @@ description         command-line program to download videos from YouTube.com and
 
 long_description    ${name} is a small ${description}.
 
-homepage            http://rg3.github.io/youtube-dl/
+homepage            https://rg3.github.io/youtube-dl/
 master_sites        https://yt-dl.org/downloads/${version}
 
-checksums           rmd160  d82322b510aa496ae87d077aa7902e9570f6dd64 \
-                    sha256  da6ae68b2fbe81da7cf4ac6b989fa7bf27b3beb214eed551d466cc6e41d7297f \
-                    size    2820437
+checksums           rmd160  ffe46e4159117117737232df1056842ca67cc7d2 \
+                    sha256  362cae0c99c0d685ae7a1fa368b42c475eb2945233488aac35aadc287dc3fed6 \
+                    size    2956847
 
 depends_build       bin:zip:zip
 
@@ -59,7 +59,7 @@ destroot.args       PREFIX=${prefix} \
 post-destroot {
     set docdir ${prefix}/share/doc/${name}
     xinstall -d ${destroot}${docdir}
-    xinstall -m 644 -W ${worksrcpath} LICENSE README.md ${destroot}${docdir}
+    xinstall -m 0644 -W ${worksrcpath} LICENSE README.md ${destroot}${docdir}
 }
 
 variant ffmpeg description {Add ffmpeg dependency, used to extract audio} {
@@ -68,32 +68,26 @@ variant ffmpeg description {Add ffmpeg dependency, used to extract audio} {
 
 default_variants    +ffmpeg
 
-variant python27 conflicts python34 python35 description {Use Python 2.7} {
+variant python27 conflicts python35 description {Use Python 2.7} {
     depends_run-append      port:python27
     depends_build-append    port:python27
     configure.python        ${prefix}/bin/python2.7
 }
 
-variant python34 conflicts python27 python35 python36 description {Use Python 3.4} {
-    depends_run-append      port:python34
-    depends_build-append    port:python34
-    configure.python        ${prefix}/bin/python3.4
-}
-
-variant python35 conflicts python27 python34 python36 description {Use Python 3.5} {
+variant python35 conflicts python27 python36 description {Use Python 3.5} {
     depends_run-append      port:python35
     depends_build-append    port:python35
     configure.python        ${prefix}/bin/python3.5
 }
 
-variant python36 conflicts python27 python34 python35 description {Use Python 3.6} {
+variant python36 conflicts python27 python35 description {Use Python 3.6} {
     depends_run-append      port:python36
     depends_build-append    port:python36
     configure.python        ${prefix}/bin/python3.6
 }
 
-if {![variant_isset python27] && ![variant_isset python34] && ![variant_isset python35] && ![variant_isset python36]} {
-    default_variants +python27
+if {![variant_isset python27] && ![variant_isset python35] && ![variant_isset python36]} {
+    default_variants +python36
 }
 
 livecheck.type      regex

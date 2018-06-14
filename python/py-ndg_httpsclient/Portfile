@@ -5,7 +5,7 @@ PortGroup           python 1.0
 
 set real_name       ndg_httpsclient
 name                py-${real_name}
-version             0.4.3
+version             0.5.0
 worksrcdir          ${real_name}-${version}
 distfiles           ${real_name}-${version}${extract.suffix}
 categories-append   net
@@ -22,8 +22,9 @@ master_sites        pypi:n/ndg-httpsclient
 
 python.versions     27 34 35 36
 
-checksums           rmd160  98e182a4aa9d8bfc20c9cf4a12a4026d0aca2d14 \
-                    sha256  7bfd8c5cfcbc241a93ca6a4e45f952650f5c7ecf7c49b1dbcf5f4d390240be0b
+checksums           rmd160  58d1e060ed8b12f3574ab7302f6e46c3715d862c \
+                    sha256  c009f5430790936b3a97eaf9f968516664d97e146ab2bda991f0caadb7cc088b \
+                    size    24254
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-asn1 \

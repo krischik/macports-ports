@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-cython
-version             0.27.1
+version             0.28.2
 revision            0
 categories-append   devel
 platforms           darwin
@@ -27,8 +27,8 @@ master_sites        pypi:C/Cython
 
 distname            Cython-${version}
 
-checksums           rmd160  e8bd824c3d29cd538c85b982f3846497dbd88962 \
-                    sha256  e6840a2ba2704f4ffb40e454c36f73aeb440a4005453ee8d7ff6a00d812ba176
+checksums           rmd160  7dfeace8945ba24df7155731d8024f9d82d49975 \
+                    sha256  634e2f10fc8d026c633cffacb45cd8f4582149fa68e1428124e762dbc566e68a
 
 if {${name} ne ${subport}} {
     depends_build-append \

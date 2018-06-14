@@ -3,7 +3,9 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        mongodb mongo-tools 3.4.9 r
+# Keep mongo-tools at the same version as mongodb.
+
+github.setup        mongodb mongo-tools 3.6.4 r
 categories          devel
 platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -23,18 +25,21 @@ long_description    mongo-tools is a collection of utilities for working with \
                     \n* mongorestore: Restore MongoDB backups in .BSON format to a live database \
                     \n* mongostat: Monitor live MongoDB servers, replica sets, or sharded clusters \
                     \n* mongofiles: Read, write, delete, or update files in GridFS \
-                    \n* mongooplog: Replay oplog entries between MongoDB servers \
                     \n* mongotop: Monitor read/write activity on a mongo server \
                     \n* mongoreplay: Inspect and record commands sent to a MongoDB instance, and then replay the commands back onto another host at a later time
 
-checksums           rmd160  90825a44d705a47a4498177f9d5ac98e86c43edc \
-                    sha256  fec54168bbf14df334710b3b3e4fd9e74ea78b464a4247b675bc322bc5083940
+checksums           rmd160  4641b75907a003c5261c2b5d9db3b1c7551415e2 \
+                    sha256  696b1635c310967b236fbc817327938dfcde452a8590ace6c8c4d316f418e0fc \
+                    size    4692979
 
 depends_build       port:go
+depends_lib         path:lib/libssl.dylib:openssl
 
 use_configure       no
 
 build.cmd           ./build.sh
+build.args          ssl sasl
+build.target
 
 destroot {
     copy {*}[glob ${worksrcpath}/bin/*] ${destroot}${prefix}/bin/
@@ -47,3 +52,5 @@ destroot {
         README.md \
         ${destroot}${docdir}
 }
+
+github.livecheck.regex  {(\d+\.\d*[02468]\.\d+)}

@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 epoch               2
-perl5.branches      5.24 5.26
-perl5.setup         DateTime 1.44
+perl5.branches      5.26
+perl5.setup         DateTime 1.48
 license             Artistic-2
 maintainers         nomaintainer
 description         A date and time object for Perl
@@ -16,8 +16,9 @@ long_description    DateTime is a class for the representation of \
 
 platforms           darwin
 
-checksums           rmd160  5bd0c43e3058343307f9c9d59b85fd5ca269bc47 \
-                    sha256  a7165a9b1bcef735e76ea44c184ea741840249dd1862b8465f3777cd8f0bd701
+checksums           rmd160  b28e53578d21c4b83912697b7d4dfe55aa5f0072 \
+                    sha256  5005446eabed6ac96c93e40d284987f0fd1bbfd41a1a7dd5e2abe646dfd68c3e \
+                    size    241461
 
 if {${perl5.major} != ""} {
     depends_build-append \

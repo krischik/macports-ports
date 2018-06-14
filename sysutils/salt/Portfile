@@ -3,10 +3,10 @@
 PortSystem        1.0
 
 name               salt
-version            2017.7.1
+version            2017.7.4
 categories         sysutils python
 platforms          darwin
-maintainers        {@aphor gmail.com:jeremy.mcmillan}
+maintainers        {@aphor gmail.com:jeremy.mcmillan} openmaintainer
 license            Apache-2
 supported_archs    noarch
 description        Salt is a Python-based remote execution, automation, \
@@ -21,76 +21,87 @@ if {$subport eq $name} {
     PortGroup               python 1.0
 
     github.setup            saltstack salt ${version} v
+    revision                1
 
     python.versions         27 34 35 36
     categories              sysutils python
 
-    checksums           rmd160  fe86b7cb73d1836301796f62e8a5fc4e200d43ad \
-                        sha256  ea256ee31f7fd9057f843fa1f496a535cf0a41a02d190319d6fb66ea202fe4ee
+    checksums           rmd160  ddb1cbf6f26890360cc06592bb4ba17decf4b772 \
+                        sha256  2698745b572541ccf2e2b1cec48c0c1646b6cad5f56d372a29c4a2a93655e592
 
     notes    "Salt startupitems are installed by subports salt-minion, salt-master, salt-syndic, salt-api."
-    
-    default_variants    +python27
-    
-    variant python27 conflicts python34 python35 python36 description {experimental python-2.7 support} {
+
+    if {![variant_isset python34] && ![variant_isset python35] && ![variant_isset python36]} {
+        default_variants +python27
+    }
+
+    variant python27 conflicts python34 python35 python36 description {python-2.7 support} {
         python.default_version 27
         depends_build       port:py${python.version}-setuptools
-    
+
         depends_lib-append  port:py${python.version}-yaml \
                             port:py${python.version}-jinja2 \
                             port:py${python.version}-msgpack \
               port:py${python.version}-tornado \
               port:py${python.version}-zmq
-                            
+
+        destroot.cmd-append --with-salt-version=${version}
+
         notes    "Salt startupitems are installed by subports salt-minion, salt-master, salt-syndic, salt-api."
     }
-    
-    variant python34 conflicts python27 python35 python36 description {experimental python-3.4 support} {
+
+    variant python34 conflicts python27 python35 python36 description {python-3.4 support} {
         python.default_version 34
         depends_build       port:py${python.version}-setuptools
-    
+
         depends_lib-append  port:py${python.version}-yaml \
                             port:py${python.version}-jinja2 \
                             port:py${python.version}-msgpack \
               port:py${python.version}-tornado \
               port:py${python.version}-zmq
-                            
-        notes    "Salt startupitems are installed by subports salt-minion, salt-master, salt-syndic, salt-api. " \
-                "Support for Python 3 versions is experimental."
+
+        destroot.cmd-append --with-salt-version=${version}
     }
-    
-    variant python35 conflicts python27 python34 python36 description {experimental python-3.5 support} {
+
+    variant python35 conflicts python27 python34 python36 description {python-3.5 support} {
         python.default_version 35
         depends_build       port:py${python.version}-setuptools
-    
+
         depends_lib-append  port:py${python.version}-yaml \
                             port:py${python.version}-jinja2 \
                             port:py${python.version}-msgpack \
               port:py${python.version}-tornado \
               port:py${python.version}-zmq
-                            
-        notes    "Salt startupitems are installed by subports salt-minion, salt-master, salt-syndic, salt-api. " \
-                "Support for Python 3 versions is experimental."
+
+        destroot.cmd-append --with-salt-version=${version}
     }
-    
-    variant python36 conflicts python27 python34 python35 description {experimental python-3.6 support} {
+
+    variant python36 conflicts python27 python34 python35 description {python-3.6 support} {
         python.default_version 36
         depends_build       port:py${python.version}-setuptools
-    
+
         depends_lib-append  port:py${python.version}-yaml \
                             port:py${python.version}-jinja2 \
                             port:py${python.version}-msgpack \
               port:py${python.version}-tornado \
               port:py${python.version}-zmq
-                            
-        notes    "Salt startupitems are installed by subports salt-minion, salt-master, salt-syndic, salt-api. " \
-                "Support for Python 3 versions is experimental."
+
+        destroot.cmd-append --with-salt-version=${version}
+    }
+
+    patchfiles patch-macports_syspaths.diff
+
+    post-patch {
+        reinplace "s|@@PREFIX@@|${prefix}|g" ${worksrcpath}/setup.cfg
     }
 }
 
 test {
+    system -W ${worksrcpath}/build "cp -r ${worksrcpath}/conf ${worksrcpath}/test"
+    system -W ${worksrcpath}/build "mkdir ${worksrcpath}/test/cache"
+    system -W ${worksrcpath}/build "echo cachedir: ${worksrcpath}/test/cache >> ${worksrcpath}/test/minion"
     system -W ${worksrcpath}/build \
-        "PYTHONPATH=${worksrcpath}/build/lib ${python.bin} scripts-${python.branch}/salt-call --log-file=${worksrcpath}/build/minion.log --config-dir=${worksrcpath}/conf --local test.versions_information"
+        "PYTHONPATH=${worksrcpath}/build/lib ${python.bin} scripts-${python.branch}/salt-call --log-file=${worksrcpath}/build/minion.log --config-dir=${worksrcpath}/test --hard-crash --local --id=local test.versions_information"
 }
 
 foreach daemon [list minion master syndic api] {

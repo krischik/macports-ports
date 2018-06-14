@@ -2,10 +2,9 @@
 
 PortSystem          1.0
 PortGroup           muniversal 1.0
-PortGroup           compiler_blacklist_versions 1.0
 
 name                libressl-devel
-version             2.6.1
+version             2.7.2
 distname            libressl-${version}
 
 categories          security devel
@@ -24,8 +23,8 @@ homepage            https://www.libressl.org
 conflicts           openssl libressl
 
 master_sites        openbsd:LibreSSL
-checksums           rmd160  ebf5fdbf83c81625d78afd473e83dcbd89ae139d \
-                    sha256  c293b3b5f1fc1d6349c019c3905355d577df32734b631d7e656503894e09127e
+checksums           rmd160 71b2479da15af6800dc0bd18141e3fe211e96828 \
+                    sha256 917a8779c342177ff3751a2bf955d0262d1d8916a4b408930c45cef326700995
 
 patchfiles \
     openssldir-cert.pem.patch
@@ -38,9 +37,6 @@ post-patch {
     reinplace "s|@OPENSSLDIR@|${prefix}/etc/ssl|" ${worksrcpath}/include/openssl/opensslconf.h
 }
 
-# gcc-4.2 from Xcode 3.2.6 fails to handle some of the asm
-compiler.blacklist *gcc-4.2* {clang < 100}
-
 # HOST_ASM_MACOSX_X86_64 gets set when building i386 on x86_64
 set merger_configure_args(i386)     --disable-asm
 
@@ -51,5 +47,5 @@ platform darwin {
 }
 
 livecheck.type      regex
-livecheck.url       ${homepage}
-livecheck.regex     "latest development release is (\\d+\\.\\d+(?:\\.\\d+)*)"
+livecheck.url       https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/
+livecheck.regex     "(\\d+\\.\\d+\\.\\d+)"

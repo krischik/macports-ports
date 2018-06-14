@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-notebook
-version             5.2.0
+version             5.4.1
 revision            0
 categories-append   devel science
 platforms           darwin
@@ -23,8 +23,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  a24edc21a0ea5d403e961b0abef399edc8fe993a \
-                    sha256  7fafcd1ae638bd70bca3621982a69ccdc47ea19b234694073b617f59e79403ea
+checksums           rmd160  b13485d07a53f8e5a9f21002457daddf1866c6fa \
+                    sha256  7d6143d10e9b026df888e0b2936ceff1827ef2f2087646b4dd475c8dcef58606
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-jinja2 \
@@ -36,7 +36,8 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-nbformat \
                         port:py${python.version}-nbconvert \
                         port:py${python.version}-ipykernel \
-                        port:py${python.version}-terminado
+                        port:py${python.version}-terminado \
+                        port:py${python.version}-send2trash
 
     livecheck.type      none
 }

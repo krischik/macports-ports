@@ -18,9 +18,10 @@ if {${subport} eq ${name}} {
 
     # release
 
-    github.setup    zeromq cppzmq 4.2.2 v
-    checksums       rmd160 4d3ab1a389e82e028ae3f96f39e0adc7057d537a \
-                    sha256 9c4ce9f94fec4f198a3ad56cd8b337fe1c72c3202e763301f2410e12cb383c8e
+    github.setup    zeromq cppzmq 4.2.3 v
+    checksums       rmd160 2018c5ef1e282cdd8f271c7435b4f60c497291f5 \
+                    sha256 8986a12bf838ba952a0048264a5a3dbc160d140ebdc476db979b3d2407e412f1 \
+                    size   10907
 
     # bump the epoch because I moved the version from 20170720 to 4.2.2
 
@@ -34,10 +35,11 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    github.setup    zeromq cppzmq 80553147229806e7c0aff9ddb29682bf56f20282
-    version         20171010
-    checksums       rmd160 41c922deb653670450fca96e0bb39f96654adea2 \
-                    sha256 3b25535b8e07d9a9e0ed3ed17a0d80d26de5d202419f9b961a22c1be6c97c298
+    github.setup    zeromq cppzmq faf6671d38273f7fcf8b8a4ac6e5a997980f862a
+    version         20180503
+    checksums       rmd160 149192949a03639588e7d65432c933d81619ab63 \
+                    sha256 fbfba7bcf84570a5bf760aec06406dd4b2b71b76b7ed186d115d9ee29c4e0f2b \
+                    size   19540
 
     conflicts       ${name}
     long_description ${description}: \

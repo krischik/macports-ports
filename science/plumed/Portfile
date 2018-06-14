@@ -2,18 +2,17 @@
 
 PortSystem          1.0
 PortGroup           github 1.0
+# Notice that this rules out gcc variants.
+# See https://github.com/macports/macports-ports/pull/1252
+PortGroup           cxx11 1.1
 PortGroup           mpi 1.0
 PortGroup           linear_algebra 1.0
 PortGroup           debug 1.0
 
-# github.setup        plumed plumed2 2.3.3 v
-# include a fix that was commited just after 2.3.3
-# this hack will be removed at the next plumed release 
-github.setup        plumed plumed2 8fd0d4e37f0f35053cb5a48e2f76a73ea1128eaf
-version             2.3.3
-revision            1
-
+github.setup        plumed plumed2 2.4.1 v
 name                plumed
+
+revision            1
 
 categories          science
 
@@ -31,9 +30,8 @@ platforms           darwin
 
 homepage            http://www.plumed.org/
 
-checksums           rmd160  2475ff31da9dc0a227656ad8ff8dd41caf94c662 \
-                    sha256  351135cbbe3327d378d1f807eaefca6878a8dcf71d8da371be7636ccf085a584
-
+checksums           rmd160  8762d5c2f28c5281da0410691b0ede4575b73c82 \
+                    sha256  1cf9a2fda224b1c12c64b966c81c9a0e52c1468cf35dfbbe7dad51f3e976b102
 
 # Disable additional features.
 # --disable-doc:          Do not create documentation, and avoid searching for Doxygen.
@@ -63,7 +61,17 @@ mpi.setup
 # To enable mpi, replace a configure flag
 if {[mpi_variant_isset]} {
     configure.args-replace --disable-mpi --enable-mpi
+# command should be included in a pre-configure block to access properly the mpi.exec variable
+    pre-configure {
+# MPIEXEC is stored so that it can be used to perform tests
+        configure.args-append MPIEXEC="${mpi.exec}"
+    }
 }
+
+# Optimization flags.
+# Notice that plumed is computationally heavy and that
+# this change has a significant impact in plumed performances
+configure.cxxflags-replace -Os -O3
 
 # Libraries.
 # Library names are specified here to make sure that
@@ -75,9 +83,20 @@ depends_lib-append  port:gsl \
                     port:xdrfile \
                     port:zlib
 
+# C++ library
+# Required in order to use clang with gcc library on old OSX versions.
+# See https://github.com/macports/macports-ports/pull/1254
+if [string match *clang* ${configure.compiler}] {
+    configure.ldflags-append -stdlib=${configure.cxx_stdlib}
+}
+
 # This variant enables optional modules in PLUMED.
+# Notice that one of the optional modules (drr) requires boost_serialization
 variant allmodules description {Enable all optional modules} {
     configure.args-append --enable-modules=all
+    configure.args-append --enable-boost-serialization
+    configure.ldflags-append -lboost_serialization-mt
+    depends_lib-append port:boost
 }
 
 # Link lapack/blas libraries
@@ -89,18 +108,22 @@ pre-configure {
 # plumed-devel subport
 # This subport installs the developer version
 subport plumed-devel {
-    github.setup        plumed plumed2 2.4b v
-    revision            0
+    github.setup        plumed plumed2 f0eab70af62be7797ed007565d42a2ab88c6303b
+    version             2.5-20180302
+    revision            1
     description         ${description} (development version)
     long_description    ${long_description} (development version)
     conflicts plumed
-    checksums           rmd160  1c4eac7da0ba1cc954e271c4514010955502d1d6 \
-                        sha256  b057fe5654649b4866fd3009e013e082d0806bed6f61ecc8c3631edc6f85f99b
-    if {[variant_isset allmodules]} {
-# one of the optional modules installed within the +allmodules variant
-# requires boost_serialization
-      configure.args-append --enable-boost-serialization
-      configure.ldflags-append -lboost_serialization-mt
-      depends_lib-append port:boost
-    }
+    checksums           rmd160  ae098ee9a8c2aee503d6c174f9d21bd30cc9c4e5 \
+                        sha256  7f28caafbae93fb81ec3cf17c1a2929313f5b5d79adf9adee6c443cf3826e16d
+    configure.ldflags-delete -lmatheval
+    depends_lib-delete       port:libmatheval
+# plumed 2.5 supports python. However, I disable it here since it is
+# not correctly integrated with MacPorts yet
+    configure.args-append --disable-python
 }
+
+# Allow running tests from MacPorts
+test.run yes
+test.target check
+

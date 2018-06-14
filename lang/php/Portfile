@@ -109,40 +109,48 @@ switch ${subport_branch} {
     }
     5.6 {
         epoch           2
-        version         5.6.31
+        version         5.6.36
         use_xz          yes
-        checksums       rmd160  68960936685b6b96bcfd6ac6c69c537143274537 \
-                        sha256  c464af61240a9b7729fabe0314cdbdd5a000a4f0c9bd201f89f8628732fe4ae4 \
-                        size    12461268
+        checksums       rmd160  35aa0814e2704da51cc798fed58a000b1e2e381f \
+                        sha256  18f536bf548e909b4e980379d0c4e56d024b2b1eb1c9768fd169360491f1d6dd \
+                        size    12467560
     }
     7.0 {
         epoch           2
-        version         7.0.24
+        version         7.0.30
         use_xz          yes
-        checksums       rmd160  ba6ceb57c8829de19bc44193c786d7a3887a9b2a \
-                        sha256  4dba7aa365193c9229f89f1975fad4c01135d29922a338ffb4a27e840d6f1c98 \
-                        size    11959232
+        checksums       rmd160  cc1dcf0bb8185dab5ead4ad44312f8240e411cdc \
+                        sha256  c90892fb68ab9b8476519658d3f78f6388f2609ae1309bdc2a2e1cc9f92dd686 \
+                        size    12030228
     }
     7.1 {
         epoch           2
-        version         7.1.10
+        version         7.1.17
         use_xz          yes
-        checksums       rmd160  9333e9980f5a742cda6abecc86f39bc4b79e674d \
-                        sha256  2b8efa771a2ead0bb3ae67b530ca505b5b286adc873cca9ce97a6e1d6815c50b \
-                        size    12166036
+        checksums       rmd160  f36bb353e3916f04284c85eeaccaa8b45a49b65f \
+                        sha256  1a784806866e06367f7a5c88775d239d6f30041c7ce65a8232d03a3d4de56d56 \
+                        size    12213536
     }
     7.2 {
+        epoch           2
+        version         7.2.5
+        use_xz          yes
+        checksums       rmd160  e440b821098d18e96c01d60f6de02518c720cca1 \
+                        sha256  af70a33b3f7a51510467199b39af151333fbbe4cc21923bad9c7cf64268cddb2 \
+                        size    12034928
+    }
+    7.3 {
         # When this becomes a stable version, remove the overrides for homepage,
         # master_sites and livecheck, and update php.latest_stable_branch in the
         # php-1.1 portgroup.
-        epoch           1
-        version         7.2.0RC4
+        epoch           0
+        version         7.3.0alpha1
         homepage        https://qa.php.net/
-        master_sites    https://downloads.php.net/~remi/
+        master_sites    https://downloads.php.net/~pollita/
         use_xz          yes
-        checksums       rmd160  5cb44236f4fa60539f074f5fd7501f273d619c5b \
-                        sha256  08ee9e764891224d73f157e01594605fc85c63ffc9d4773d9ac29b0e3160c68f \
-                        size    11980436
+        checksums       rmd160  0 \
+                        sha256  0 \
+                        size    0
         livecheck.url   ${homepage}
         livecheck.regex php-([strsed ${subport_branch} {g/\\./\\./}](?:\\.\[0-9.\]+)*(?:(?:alpha|beta|RC)\\d+|-latest))\\.tar
     }
@@ -188,6 +196,10 @@ if {[is_sapi_subport]} {
     patch.pre_args      -p1
     patchfiles          patch-${php}-scripts-php-config.in.diff
 
+    if {[vercmp ${branch} 5.3] <= 0} {
+        patchfiles-append \
+                        patch-${php}-configure.diff
+    }
     if {[vercmp ${branch} 5.2] <= 0} {
         patchfiles-append \
                         patch-${php}-libxml-2.9.diff \
@@ -233,6 +245,11 @@ if {[is_sapi_subport]} {
                         --disable-cgi \
                         --disable-cli
     
+    # Ensure we don't regenerate the parsers even if flex/re2c/bison are installed.
+    configure.env       LEX=true \
+                        RE2C=true \
+                        YACC=true
+    
     if {[vercmp ${branch} 5.3] >= 0} {
         configure.args-append \
                         --enable-fileinfo \
@@ -253,7 +270,7 @@ if {[is_sapi_subport]} {
     
     test.run            yes
     
-    destroot.args       INSTALL_ROOT=${destroot}
+    destroot.destdir    INSTALL_ROOT=${destroot}
     
     variant debug description {Enable debug support (useful to analyze a PHP-related core dump)} {
         configure.args-append   --enable-debug
@@ -300,19 +317,25 @@ if {[is_sapi_subport]} {
 ### CLI SAPI ###
 
 subport ${php} {
+    PortGroup               muniversal 1.0
     PortGroup               select 1.0
     
     switch -- ${version} {
-        5.2.17              {revision 12}
-        5.3.29              {revision 2}
-        5.4.45              {revision 1}
-        5.5.38              {revision 1}
+        5.2.17              {revision 13}
+        5.3.29              {revision 3}
+        5.4.45              {revision 2}
+        5.5.38              {revision 2}
     }
     
     depends_run             port:php_select
     
     select.group            php
     select.file             ${filespath}/${subport}
+    
+    post-patch {
+        # Ensure the build date is the same for all universal archs.
+        reinplace "s|^PHP_BUILD_DATE=.*$|PHP_BUILD_DATE=[clock format [clock seconds] -format {%Y-%m-%d}]|g" ${worksrcpath}/configure
+    }
     
     configure.args-replace  --disable-cli --enable-cli
     
@@ -366,7 +389,7 @@ subport ${php} {
         notes-append "
 PHP ${branch} has reached end-of-life. Please upgrade to PHP ${php.oldest_supported_branch} or newer. The newest stable version is ${php.latest_stable_branch}.
 
-To learn how to update your code, please read the following guides:
+To learn how to update your code, please read the following guide:
 
     http://php.net/manual/en/migration[php.suffix_from_branch ${php.latest_stable_branch}].php
 
@@ -375,7 +398,7 @@ To learn how to update your code, please read the following guides:
     }
     
     if {[vercmp ${branch} ${php.latest_stable_branch}] > 0} {
-        notes-append "${php} @${version}_${revision} is a development preview—do not use it in production!\n\n\n"
+        notes-append "${php} @${version} is a development preview—do not use it in production!\n\n\n"
     }
     
     if {![file exists ${phpinidir}/php.ini]} {
@@ -427,10 +450,6 @@ subport ${php}-apache2handler {
         5.3.29              {revision 2}
         5.4.45              {revision 2}
         5.5.38              {revision 2}
-        5.6.31              {revision 2}
-        7.0.24              {revision 2}
-        7.1.10              {revision 2}
-        7.2.0RC4            {revision 2}
     }
     
     description             ${php} Apache 2 Handler SAPI
@@ -790,6 +809,8 @@ subport ${php}-mbstring {
 }
 
 if {[vercmp ${branch} 7.2] < 0} {
+# mcrypt was evicted from PHP core in version 7.2; php72-mcrypt and later
+# subports are found in the separate php-mcrypt Portfile.
 subport ${php}-mcrypt {
     categories-append       security
     

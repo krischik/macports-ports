@@ -1,6 +1,6 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 #
-# Copyright (c) 2009-2016 The MacPorts Project
+# Copyright (c) 2009-2017 The MacPorts Project
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ default categories              php
 # built. For unified extension ports (name begins with "php-") setting
 # php.branches is mandatory; there is no default. Example:
 #
-#   php.branches                5.3 5.4 5.5 5.6 7.0 7.1
+#   php.branches                5.3 5.4 5.5 5.6 7.0 7.1 7.2
 #
 # For unified ports, setting php.branches will create the subports.
 #
@@ -130,7 +130,7 @@ proc php._set_name {option action args} {
 # when the php port is updated.
 
 options php.latest_stable_branch
-default php.latest_stable_branch 7.1
+default php.latest_stable_branch 7.2
 
 
 # php.default_branch: the branch of PHP for which the port should be installed
@@ -140,7 +140,7 @@ default php.latest_stable_branch 7.1
 # not need to change this.
 
 options php.default_branch
-default php.default_branch      {[expr {[lsearch -exact ${php.branches} ${php.latest_stable_branch}] != -1 ? ${php.latest_stable_branch} : [lindex ${php.branches} end]}]}
+default php.default_branch      {[expr {${php.latest_stable_branch} in ${php.branches} ? ${php.latest_stable_branch} : [lindex ${php.branches} end]}]}
 option_proc php.default_branch  php._set_default_branch
 
 proc php._set_default_branch {option action args} {
@@ -458,7 +458,7 @@ proc php.add_port_code {} {
         }
 
         foreach extension [concat ${php.extensions} ${php.extensions.zend}] {
-            if {-1 == [lsearch -exact ${installed_extensions} ${extension}]} {
+            if {${extension} ni ${installed_extensions}} {
                 ui_error "Cannot list extension \"${extension}\" in ${php.extension_ini} because the port only installed the extensions \"[join ${installed_extensions} "\", \""]\""
                 return -code error "invalid extension name"
             }

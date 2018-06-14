@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-rasterio
-version             1.0a10
+version             1.0a12
 revision            0
 categories-append   gis
 platforms           darwin
@@ -22,8 +22,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  9b318bfb31b98f344e694cf758c03340415cec35 \
-                    sha256  33bb76ca13d3fa177ac0ffebad6522c514a38d2b5d55b6db9997c8d1e7ec864a
+checksums           rmd160  17930032359fa6217e61ab9a620e61fa1b0353a9 \
+                    sha256  47d460326e04c64590ff56952271a184a6307f814efc34fb319c12e690585f3c
 
 if {${name} ne ${subport}} {
     depends_build-append \

@@ -20,9 +20,9 @@ subport jsoncpp-devel {}
 if {${subport} eq ${name}} {
 
     # release
-    github.setup    open-source-parsers jsoncpp 1.8.3
-    checksums       rmd160 999e36b8c70eb401c0e073d1ab9c4de0e65afa4d \
-                    sha256 eada72bcb0356748d8928d12ccc46c18b6068a460032432eff49c0550a7c8aad
+    github.setup    open-source-parsers jsoncpp 1.8.4
+    checksums       rmd160 46ddb792a25c1ac62967adef604d760e68c084f9 \
+                    sha256 9c2370371a76337e4afe3128cceec943620f97d12c720c3046f39eae6f85f4cd
 
     conflicts       jsoncpp-devel
 
@@ -30,10 +30,11 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    github.setup    open-source-parsers jsoncpp 42a161fc80b32cc63c1a3e7ab1c9ed588a83edaa
-    version         20171003
-    checksums       rmd160 c96ebf3f217397fff50d98cd731ae0aba5ac2bd8 \
-                    sha256 3c768fdfcc313b3286f55a4f4c8cd98427df0c339bb45e989a029453ebd1db10
+    github.setup    open-source-parsers jsoncpp 02211117f18b9469d632b71f112cf3211331587d
+    version         20180420
+    checksums       rmd160 294d8a4c6e9f60b7aaf894bbab350e0377a0f02b \
+                    sha256 72511be0e1d10043b4a19bb2b133a5f57e542f1c96ca43e5ae3e6c493f4fb9d1 \
+                    size   201534
 
     conflicts       jsoncpp
     long_description ${description}: \

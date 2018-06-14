@@ -18,9 +18,9 @@ long_description \
     but can be used to create bindings for any \
     C or C++ library.
 
-homepage            http://www.riverbankcomputing.co.uk/software/sip/intro
+homepage            https://www.riverbankcomputing.com/software/sip/intro
 
-version             4.19.3
+version             4.19.8
 
 # from siplib/sip.h.in:
 #
@@ -31,6 +31,8 @@ version             4.19.3
 # removed or the order changed then the major number must be
 # incremented and the minor number set to 0.
 #
+# SIP 4.19.8 provides SIP API 12.4
+# SIP 4.19.[4-7] provides SIP API 12.3
 # SIP 4.19.3 provides SIP API 12.2
 # SIP 4.19.[1-2] provides SIP API 12.1
 # SIP 4.19.0 provides SIP API 12.0
@@ -58,12 +60,14 @@ if {${name} ne ${subport}} {
         distname        sip-${version}
     }
 
-    checksums           rmd160 1d4489c3313a3ef12f50e5897be122fc391ea3e1 \
-                        sha256 740df844f80cc45dcc9b23294a92492923bc403ce88e68c35783f27c177c4b74
+    checksums           rmd160 064948f2cd178191a00fd691f292a85b7360f2a5 \
+                        sha256 7eaf7a2ea7d4d38a56dd6d2506574464bddf7cf284c960801679942377c297bc \
+                        size 1024548
 
     patchfiles          patch-siputils.py.diff \
                         patch-specs_macx-g++.diff \
-                        patch-configure.py.diff
+                        patch-configure.py.diff \
+                        patch-add_ppc64.diff
 
     use_configure       yes
     pre-configure {
@@ -167,7 +171,7 @@ if {[string last devel ${subport}] != -1} {
 } else {
 
     livecheck.type   regex
-    livecheck.url       http://www.riverbankcomputing.co.uk/software/sip/download
-    livecheck.regex     sip-(\\d+(\\.\\d+)+)${extract.suffix}
+    livecheck.url    https://www.riverbankcomputing.com/software/sip/download
+    livecheck.regex  sip-(\\d+(\\.\\d+)+)${extract.suffix}
 
 }

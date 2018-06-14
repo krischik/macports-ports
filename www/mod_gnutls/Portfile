@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                mod_gnutls
-version             0.8.2
+version             0.8.4
 categories          www security crypto
 license             Apache-2
 platforms           darwin
@@ -21,8 +21,8 @@ long_description    \
 homepage            https://mod.gnutls.org
 master_sites        ${homepage}/downloads/
 
-checksums           rmd160  8a3c82f20fe6012e540040bb0161838acacd04ab \
-                    sha256  05eeb78e41f1fd6780607a17d705b1965ce5c3ce6223a9a8a86ba9288d22e683
+checksums           rmd160  d4c6e4eec5de32441236c73ef9714d5e5c8eb458 \
+                    sha256  f2dbd0d9a329568a166a1fc1eafc81ab955bdebd36b9546a9466f248c3adcdf7
 
 depends_build       port:pkgconfig
 

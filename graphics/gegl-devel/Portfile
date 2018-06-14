@@ -6,11 +6,11 @@ PortGroup           compiler_blacklist_versions 1.0
 PortGroup           gobject_introspection 1.0
 
 name                gegl-devel
-conflicts           gegl gegl-0.3
+conflicts           gegl-0.4
 set git_name        gegl
-set git_commit      a40f4f530754d60d9775a4770015d8c83167c556
-set git_date        20170906
-version             0.3.21-${git_date}
+set git_commit      1263d1e8dba0c8f4da8665bc3fbfc9f35c303c65
+set git_date        20180505
+version             0.4.1-${git_date}
 license             {GPL-3+ LGPL-3+}
 categories          graphics
 maintainers         {devans @dbevans}
@@ -28,15 +28,12 @@ master_sites        https://git.gnome.org/browse/${git_name}/snapshot/
 
 distname            ${git_name}-${git_commit}
 
-checksums           rmd160  671239a960cb33ab503bbbf41b7a2a18863f5094 \
-                    sha256  2b415ab848e79e8e68745e6e805d89b87889fdc850ce5aae6cae1b1b9c019bab
+checksums           rmd160  2c08444f13a3aa4d68ceddbc42abb0502325a872 \
+                    sha256  403267ffd43d2d3987a3eef951a875c6d97bb369b47b21af11804af8a6de0260 \
+                    size    24913435
 
 depends_build       port:pkgconfig \
-                    port:intltool \
                     port:w3m \
-                    port:autoconf \
-                    port:automake \
-                    port:libtool \
                     port:python27
 
 depends_lib         port:babl-devel \
@@ -50,6 +47,8 @@ depends_lib         port:babl-devel \
                     port:gexiv2 \
                     port:jasper \
                     port:json-glib \
+                    port:lcms2 \
+                    port:lensfun \
                     port:libraw \
                     port:librsvg \
                     path:lib/libavcodec.dylib:ffmpeg \
@@ -57,26 +56,28 @@ depends_lib         port:babl-devel \
                     port:vala \
                     port:webp
 
-patchfiles          patch-configure.ac.diff \
-                    patch-force-intltoolize.diff
+patchfiles          patch-configure.ac.diff
+
+# disable external operation ff-save for now
+# AVFMT_RAWPICTURE removed in ffmpeg-devel
+# https://trac.macports.org/ticket/55389
+patchfiles-append  disable-broken-ffsave.patch
 
 post-patch {
     # http://trac.macports.org/ticket/35148
     if {${os.major} < 10} {
         reinplace "s|OpenGL/CGLDevice.h|OpenGL/CGLTypes.h|" ${worksrcpath}/gegl/opencl/cl_gl.h
     }
-
-    # Not sure what they expected by using these macros... they only belong in system headers...
-    reinplace "s/AVAILABLE_MAC_OS_X_VERSION_10_6_AND_LATER//" ${worksrcpath}/gegl/opencl/cl_platform.h
 }
 
 gobject_introspection yes
 
-compiler.blacklist-append gcc-4.0 *gcc-4.2
+# blacklist compilers that do not support C11 (redefinition of typedef 'GeglDownscale2x2Fun' in gegl-algorithms.h at line 51)
+# tweak gcc blacklisting for 10.5 ppc
+compiler.blacklist  *gcc-3.* *gcc-4.* {clang < 300}
 
-# reconfigure using upstream autogen.sh for intltool 0.51 compatibility
-
-configure.cmd       ./autogen.sh
+use_autoreconf      yes
+autoreconf.args     -fvi
 
 configure.python    ${prefix}/bin/python2.7
 
@@ -85,16 +86,26 @@ configure.args      --disable-docs \
                     --without-sdl \
                     --without-umfpack
 
+# use version specific binary suffix to avoid conflict with gegl, gegl-0.3
+
+post-destroot {
+    set suffix "-0.4"
+    foreach bin [glob -nocomplain -tails -directory "${destroot}${prefix}/bin" *] {
+        move ${destroot}${prefix}/bin/${bin} \
+             ${destroot}${prefix}/bin/${bin}${suffix}
+    }
+}
+
 platform darwin {
     if {[variant_isset universal]} {
         # In order to build universal on Leopard, you need MacPorts 2.1
         set merger_configure_args(x86_64) --build=${build_arch}-apple-${os.platform}${os.version}
         set merger_configure_cflags(ppc) -fno-altivec
         set merger_configure_cxxflags(ppc) -fno-altivec
-    } elseif {${build_arch} == "ppc"} {
+    } elseif {${build_arch} eq "ppc"} {
         configure.cflags-append -fno-altivec
         configure.cxxflags-append -fno-altivec
-    } elseif {${build_arch} == "x86_64"} {
+    } elseif {${build_arch} eq "x86_64"} {
         configure.args-append --build=${build_arch}-apple-${os.platform}${os.version}
     }
 }

@@ -2,12 +2,10 @@
 
 PortSystem          1.0
 PortGroup           github 1.0
-PortGroup           cmake 1.0
-
-cmake.out_of_source yes
+PortGroup           cmake 1.1
 
 # don't forget to update py-pygit2 and libgit2-glib as well
-github.setup        libgit2 libgit2 0.26.0 v
+github.setup        libgit2 libgit2 0.26.3 v
 epoch               1
 categories          devel
 platforms           darwin
@@ -24,8 +22,9 @@ long_description    libgit2 is a portable, pure C implementation of the \
 
 homepage            http://libgit2.github.com/
 
-checksums           rmd160  2f8ee1ed0e71855d6326f658a020eae60e6a79d1 \
-                    sha256  4fcea9c8e6bf61718744a5dd70aff9946ea8e40c6711718d78583f7150a675e2
+checksums           rmd160  39ea46693e33c805b2f5de21fc1f6cde1884d998 \
+                    sha256  60440169295a6a719164d53b999004e9d90629ff50dffe40fb9e4c4f0717068e \
+                    size    4730780
 
 depends_build-append \
                     port:pkgconfig

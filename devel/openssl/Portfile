@@ -5,12 +5,12 @@ PortGroup           muniversal 1.0
 
 name                openssl
 epoch               1
-version             1.0.2l
+version             1.0.2o
+revision            1
 
 # Please revbump these ports when updating OpenSSL.
 #  - freeradius (#43461)
 #  - openssh (#54990)
-#  - tor, tor-devel (#44256)
 
 categories          devel security
 platforms           darwin
@@ -42,13 +42,15 @@ master_sites        ${homepage}/source \
                     ftp://ftp.linux.hr/pub/openssl/source/ \
                     ftp://guest.kuria.katowice.pl/pub/openssl/source/
 
-checksums           sha1    b58d5d0e9cea20e571d903aafa853e2ccd914138 \
-                    rmd160  fece6681e6fd5423daf82e54116b39fd0217c6d2 \
-                    sha256  ce07195b659e75f4e1db43552860070061f156a98bb37b672b101ba6e3ddf30c
+checksums           sha1    a47faaca57b47a0d9d5fb085545857cc92062691 \
+                    rmd160  aac1564f006766e66f5a319def41e5d99122915d \
+                    sha256  ec3f5c9714ba0fd45cb4e087301eb1336c317e0d20b575a125050470e8089e4d \
+                    size    5329472
 
 patchfiles          install-headers-HFS+.patch \
                     parallel-building.patch \
-                    remove-duplicate-bn_print-doc.patch
+                    remove-duplicate-bn_print-doc.patch \
+                    349a41da1ad88ad87825414752a8ff5fdd6a6c3f.patch
 
 configure.ccache    no
 configure.perl      /usr/bin/perl

@@ -4,9 +4,10 @@ PortSystem          1.0
 PortGroup           active_variants 1.1
 PortGroup           compiler_blacklist_versions 1.0
 PortGroup           conflicts_build 1.0
+PortGroup           cxx11 1.1
 PortGroup           github 1.0
 
-github.setup        arvidn libtorrent 1_1_4 libtorrent-
+github.setup        arvidn libtorrent 1_1_7 libtorrent-
 name                libtorrent-rasterbar
 version             [string map {_ .} ${version}]
 license             BSD
@@ -20,8 +21,9 @@ description         A C++ bittorrent library (not the same as port libtorrent)
 long_description    A C++ bittorrent library designed to run on anything from embedded systems to large scale \
                     seed servers. It comes with python bindings and detailed documentation.
 
-checksums           rmd160  8665500ee27673af15589f0faa16d015f58cd62d \
-                    sha256  12e2515e85b1a5fc2b521d6ac23b3d6815d6c7596b57b425a01f61d8c7c084b3
+checksums           rmd160  490ecc78da17d48e638366ecae8c56159600e12d \
+                    sha256  aae208968af39d27169ef16682458963c700534e3b26a9ef9a1793bf115c39f8 \
+                    size    2901621
 
 depends_build       port:pkgconfig \
                     port:autoconf \
@@ -56,7 +58,7 @@ variant python27 description {Build bindings for Python 2.7} {
         depends_lib-append port:python27
         configure.python ${prefix}/bin/python2.7
         configure.env-append \
-                "PYTHON_INSTALL_PARAMS=--prefix=${destroot}${prefix}/Library/Frameworks/Python.framework/Versions/2.7" \
+                "PYTHON_INSTALL_PARAMS=--prefix=${destroot}${frameworks_dir}/Python.framework/Versions/2.7" \
                 PYTHON_EXTRA_LIBS=' '
 }
 

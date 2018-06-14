@@ -5,7 +5,7 @@ PortGroup           active_variants 1.1
 PortGroup           gobject_introspection 1.0
 
 name                gnome-desktop
-version             3.26.1
+version             3.28.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 maintainers         {devans @dbevans} openmaintainer
 categories          gnome
@@ -19,13 +19,14 @@ long_description    ${description} The libgnome-desktop library provides API sha
                     in the platform for various reasons. Documentation for the API \
                     is available with gtk-doc.
 
-homepage            http://www.gnome.org/
+homepage            https://www.gnome.org/
 master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  ee372c5f63c7383b1da2b628526530119869c4b7 \
-                    sha256  92fa697af986fb2c6bc6595f0155c968c17e5d1981a50584ff4fb6fd60124e2f
+checksums           rmd160  b1cf3b8f02ba1508aa61240c99c5fef08b5d4fc8 \
+                    sha256  78a397a2be47586e6dc075d6a7fc5659aae3d10713d76994ce1b46086e7ecb9a \
+                    size    1077368
 
 depends_build       port:pkgconfig \
                     port:intltool \
@@ -38,8 +39,6 @@ depends_build       port:pkgconfig \
 
 depends_lib         port:desktop-file-utils \
                     port:gsettings-desktop-schemas \
-                    port:gnome-themes-standard \
-                    port:adwaita-icon-theme \
                     port:gtk3 \
                     port:iso-codes \
                     port:xorg-libXext \

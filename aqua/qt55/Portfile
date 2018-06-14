@@ -142,8 +142,8 @@ array set modules {
         ""
         {"Qt Core" "Qt GUI" "Qt Network" "Qt SQL" "Qt Test" "Qt Widgets" "Qt Concurrent" "Qt D-Bus" "Qt OpenGL" "Qt Platform Headers" "Qt Print Support" "Qt XML"}
         ""
-        "variant overrides: ~docs"
-        "revision 10"
+        "variant overrides: "
+        "revision 12"
         "License: "
     }
     qtcanvas3d {
@@ -203,7 +203,7 @@ array set modules {
         {"Qt Reference Documentation"}
         "requires all documentation"
         "variant overrides: ~examples ~tests ~debug noarch ~docs"
-        "revision 1"
+        "revision 2"
         "License: "
     }
     qtgraphicaleffects {
@@ -395,7 +395,7 @@ array set modules {
         {"Qt WebKit" "Qt WebKit Widgets"}
         "community support only (use Qt WebEngine)"
         "variant overrides: "
-        "revision 3"
+        "revision 4"
         "License: "
     }
     qtwebkit-examples {
@@ -522,6 +522,15 @@ build.env-append \
     PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
     PKG_CONFIG_ALLOW_SYSTEM_LIBS=1
 
+# Qt uses CFRunLoopTimerCreateWithHandler, which was not introduced until Mac OS X 10.7
+# see https://developer.apple.com/reference/corefoundation/1542555-cfrunlooptimercreatewithhandler?language=objc
+if { ${os.major} < 11 } {
+    pre-fetch {
+        ui_error "${subport} requires OS X 10.7 or later"
+        return -code error "incompatible OS version"
+    }
+}
+
 foreach {module module_info} [array get modules] {
 
     set revision_string [string trim [lindex ${module_info} 8]]
@@ -547,7 +556,7 @@ foreach {module module_info} [array get modules] {
         set license_string [string trim  ${license_string}]
 
         if { ${license_string} ne "" } {
-            eval license ${license_string}
+            license {*}${license_string}
         }
 
         foreach deps [lindex ${module_info} 2] {
@@ -598,15 +607,6 @@ foreach {module module_info} [array get modules] {
                         ui_warn "32-bit mode is not a Reference Configuration for Qt."
                         ui_warn "See http://doc.qt.io/qt-5/supported-platforms.html#reference-configurations"
                     }
-                }
-            }
-
-            # Qt uses CFRunLoopTimerCreateWithHandler, which was not introduced until Mac OS X 10.7
-            # see https://developer.apple.com/reference/corefoundation/1542555-cfrunlooptimercreatewithhandler?language=objc
-            if { ${os.major} < 11 } {
-                pre-fetch {
-                    ui_error "${subport} requires OS X 10.7 or later"
-                    return -code error "incompatible OS version"
                 }
             }
 
@@ -662,6 +662,20 @@ foreach {module module_info} [array get modules] {
 
             # see https://bugreports.qt.io/browse/QTBUG-62266
             patchfiles-append patch-sdk10_13.diff
+
+            # avoid non-standard C++ that Xcode Clang accepts but other compilers do not
+            # see http://lists.llvm.org/pipermail/llvm-bugs/2017-January/053481.html
+            # see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=11764
+            patchfiles-append patch-qualified_reference.diff
+
+            # find the Rez program
+            patchfiles-append patch-find_rez.diff
+            post-patch {
+                reinplace \
+                    "s|__MACPORTS_Rez__|[exec xcrun --find Rez]|g" \
+                    mkspecs/common/mac.conf \
+                    mkspecs/features/mac/rez.prf
+            }
 
             #-----------------------------------------------------------------------------
             # qtbase is used for:
@@ -727,9 +741,16 @@ foreach {module module_info} [array get modules] {
             }
 
             post-patch {
+
+                if {${configure.cxx_stdlib} eq "macports-libstdc++" && ${os.major} < 13} {
+                    set cxx_abi " -D_GLIBCXX_USE_CXX11_ABI=0"
+                } else {
+                    set cxx_abi ""
+                }
+
                 # respect configure.cxx_stdlib
                 reinplace \
-                    "s|__MACPORTS_CXX_STDLIB__|${configure.cxx_stdlib}|g" \
+                    "s|__MACPORTS_CXX_STDLIB__|${configure.cxx_stdlib}${cxx_abi}|g" \
                     ${worksrcpath}/mkspecs/common/clang-mac.conf
 
                 # respect macosx_deployment_target
@@ -903,8 +924,13 @@ foreach {module module_info} [array get modules] {
                 -framework           \
                 -securetransport
 
+            # do not use ${configure.sdk_version}
+            # SDK is recorded in ${qt_mkspecs_dir}/qdevice.pri
+            # SDK may then be removed if Xcode is updated
+            # see https://trac.macports.org/ticket/54044
+            # see https://trac.macports.org/ticket/55195
             configure.args-append \
-                -sdk macosx${configure.sdk_version}
+                -sdk macosx
 
             # configure options that don't show up in configure --help
             configure.args-append \
@@ -917,6 +943,7 @@ foreach {module module_info} [array get modules] {
             # For consistency, clear MacPorts environment.
             #configure.cxx_stdlib
             proc portconfigure::should_add_stdlib {} {return false}
+            proc register_gcc_dependents {} {}
             configure.sdkroot
             configure.cc_archflags
             configure.cxx_archflags
@@ -990,7 +1017,7 @@ foreach {module module_info} [array get modules] {
 
                 # see https://trac.macports.org/ticket/51358
                 #     for why not a path dependency
-                depends_lib-append port:openssl
+                depends_lib-append path:lib/libssl.dylib:openssl
             }
             default_variants-append +openssl
 

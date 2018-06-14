@@ -4,7 +4,10 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           bitbucket 1.0
 
-bitbucket.setup     seanfarley mercurial 4.3.1
+name                mercurial
+# don't forget to update dependents for mercurial:
+# port echo rdepends:mercurial and \( name:hg or name:mercurial \) | grep -v 'py[[:digit:]]'
+version             4.5.3
 categories          devel python
 license             GPL-2+
 maintainers         sean openmaintainer
@@ -25,8 +28,10 @@ long_description    Mercurial is a fast, lightweight Source Control Management \
 
 homepage            http://www.mercurial-scm.org
 platforms           darwin
-checksums           rmd160  611dfa60549dde8cde55caa7f1a2e7199d3412f6 \
-                    sha256  f62345de8d4737a67279a186a12a6546a55996cf4e77de96b3322a8e490c1309
+master_sites        https://www.mercurial-scm.org/release/
+checksums           rmd160  4a3d8673053c439b3571b358854273a4e0029ef1 \
+                    sha256  9c4cb257ef1e59e9aba693cc285a6136f7bb4e8300f598ff50ff8b6fc77808fc \
+                    size    5884837
 
 depends_build       port:py27-docutils
 
@@ -42,14 +47,15 @@ build.cmd           make
 build.target        all PYTHON=${python.bin}
 
 subport mercurial-devel {
-    bitbucket.setup     seanfarley mercurial 1814ca418b30
+    bitbucket.setup     seanfarley mercurial f1a0933ce59e
     name                mercurial-devel
-    version             4.3.99
-    revision            1
+    version             4.5.99
+    revision            0
 
     conflicts           mercurial
-    checksums           rmd160  d931ffffbac0f5dd8ee6493a7af91d9ebb8ea0b2 \
-                        sha256  d11b7de04443a33416acdf4fad16e5ad1288e4c4ff449dea51e8e4410a4819b3
+    master_sites        ${bitbucket.master_sites}
+    checksums           rmd160  6035b11e2e037b824b61231a49e8a53f1a69d3a9 \
+                        sha256  0812e74014fdc15b4f0b61e1528c30461bd6efc2f64e40059d047139faffe838
 }
 
 # chg is not installed by default yet

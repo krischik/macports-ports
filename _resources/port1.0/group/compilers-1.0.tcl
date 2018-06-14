@@ -47,8 +47,8 @@
 #   Add specified variants to the conflicts list of all variants created by this PortGroup.
 #   Useful if another compiler variant is created explicitly in the Portfile. Must come before compilers.setup.
 # compilers.setup {args}
-#   Possible arguments: any compiler variant name with a minus removes it from the list of variants, e.g. -llvm.
-#   -gcc, -dragonegg, -clang remove all compilers of that category. -fortran removes gfortran and g95.
+#   Possible arguments: any compiler variant name with a minus removes it from the list of variants, e.g. -clang.
+#   -gcc, -clang remove all compilers of that category. -fortran removes gfortran and g95.
 #   Blacklisted compilers are automatically removed, as are ones that do not support the compilers in compilers.choose:
 #   e.g. if choose is just f90, clang variants will not be added.
 #   List "default_fortran" to make a Fortran variant be selected by default.
@@ -76,7 +76,7 @@
 #
 # The compilers.gcc_default variable may be useful for setting a default compiler variant
 # even in ports that do not use this PortGroup's automatic creation of variants.
-# compilers.libfortran is for use in linking Fortran code with the C or C++ compiler
+# compilers.libfortran is for use in linking Fortran code with the C or C++ compiler.
 
 PortGroup active_variants 1.1
 
@@ -85,7 +85,6 @@ default compilers.variants {}
 default compilers.fortran_variants {}
 default compilers.gcc_variants {}
 default compilers.clang_variants {}
-default compilers.dragonegg_variants {}
 default compilers.require_fortran 0
 default compilers.default_fortran 0
 default compilers.setup_done 0
@@ -97,7 +96,7 @@ default compilers.libfortran {}
 default compilers.clear_archflags yes
 
 # also set a default gcc version
-if {${os.arch} eq "powerpc"} {
+if {${build_arch} eq "ppc" || ${build_arch} eq "ppc64"} {
     # see https://trac.macports.org/ticket/54215#comment:36
     set compilers.gcc_default gcc6
 } else {
@@ -140,7 +139,7 @@ foreach v ${gcc_versions} {
     set cdb(gcc$v,f90)      ${prefix}/bin/gfortran-mp-$version
 }
 
-set clang_versions {33 34 35 36 37 38 39 40 50}
+set clang_versions {33 34 37 38 39 40 50 60}
 foreach v ${clang_versions} {
     # if the string is more than one character insert a '.' into it: e.g 33 -> 3.3
     set version $v
@@ -166,46 +165,7 @@ foreach v ${clang_versions} {
     set cdb(clang$v,f90)      ""
 }
 
-# dragonegg versions match the corresponding clang version until 3.5
-set dragonegg_versions {3 4}
-foreach v ${dragonegg_versions} {
-    lappend compilers.dragonegg_variants dragonegg3$v
-    set cdb(dragonegg3$v,variant)  dragonegg3$v
-    set cdb(dragonegg3$v,compiler) macports-dragonegg-3.$v
-    set cdb(dragonegg3$v,descrip)  "MacPorts dragonegg 3.$v"
-    set cdb(dragonegg3$v,depends)  path:bin/dragonegg-3.$v-gcc:dragonegg-3.$v
-    set cdb(dragonegg3$v,dependsl) path:lib/libgcc/libgcc_s.1.dylib:libgcc
-    set cdb(dragonegg3$v,libfortran) ${prefix}/lib/gcc46/libgfortran.dylib
-    set cdb(dragonegg3$v,dependsd) port:g95
-    set cdb(dragonegg3$v,dependsa) dragonegg-3.$v
-    set cdb(dragonegg3$v,conflict) "gfortran g95"
-    set cdb(dragonegg3$v,cc)       ${prefix}/bin/dragonegg-3.$v-gcc
-    set cdb(dragonegg3$v,cxx)      ${prefix}/bin/dragonegg-3.$v-g++
-    set cdb(dragonegg3$v,cpp)      ${prefix}/bin/dragonegg-3.$v-cpp
-    set cdb(dragonegg3$v,objc)     ""
-    set cdb(dragonegg3$v,fc)       ${prefix}/bin/dragonegg-3.$v-gfortran
-    set cdb(dragonegg3$v,f77)      ${prefix}/bin/dragonegg-3.$v-gfortran
-    set cdb(dragonegg3$v,f90)      ${prefix}/bin/dragonegg-3.$v-gfortran
-}
-
-set cdb(llvm,variant)  llvm
-set cdb(llvm,compiler) llvm-gcc-4.2
-set cdb(llvm,descrip)  "Apple native llvm-gcc 4.2"
-set cdb(llvm,depends)  bin:llvm-gcc-4.2:llvm-gcc42
-set cdb(llvm,dependsl) ""
-set cdb(llvm,libfortran) ""
-set cdb(llvm,dependsd) ""
-set cdb(llvm,dependsa) ""
-set cdb(llvm,conflict) ""
-set cdb(llvm,cc)       llvm-gcc-4.2
-set cdb(llvm,cxx)      llvm-g++-4.2
-set cdb(llvm,cpp)      llvm-cpp-4.2
-set cdb(llvm,objc)     llvm-gcc-4.2
-set cdb(llvm,fc)       ""
-set cdb(llvm,f77)      ""
-set cdb(llvm,f90)      ""
-
-# and lastly we add a gfortran and g95 variant for use with clang* and llvm; note that
+# and lastly we add a gfortran and g95 variant for use with clang*; note that
 # we don't need gfortran when we are in an "only-fortran" mode
 set cdb(gfortran,variant)  gfortran
 set cdb(gfortran,compiler) gfortran
@@ -215,7 +175,7 @@ set cdb(gfortran,dependsl) $cdb(${compilers.gcc_default},dependsl)
 set cdb(gfortran,libfortran) $cdb(${compilers.gcc_default},libfortran)
 set cdb(gfortran,dependsd) $cdb(${compilers.gcc_default},dependsd)
 set cdb(gfortran,dependsa) $cdb(${compilers.gcc_default},dependsa)
-set cdb(gfortran,conflict) $cdb(${compilers.gcc_default},conflict)
+set cdb(gfortran,conflict) g95
 set cdb(gfortran,cc)       ""
 set cdb(gfortran,cxx)      ""
 set cdb(gfortran,cpp)      ""
@@ -254,16 +214,16 @@ foreach variant ${compilers.variants} {
 proc compilers.set_variants_conflict {args} {
     global compilers.variants_conflict
 
-    lappend compilers.variants_conflict $args
+    lappend compilers.variants_conflict {*}$args
 }
 
-proc compilers.setup_variants {args} {
+proc compilers.setup_variants {variants} {
     global cdb compilers.variants compilers.clang_variants compilers.gcc_variants
-    global compilers.dragonegg_variants compilers.fortran_variants compilers.list
+    global compilers.fortran_variants compilers.list
     global compilers.variants_conflict
     global compilers.clear_archflags
 
-    foreach variant [split $args] {
+    foreach variant $variants {
         if {$cdb($variant,f77) ne ""} {
             lappend compilers.fortran_variants $variant
         }
@@ -275,13 +235,13 @@ proc compilers.setup_variants {args} {
             set c [lreplace ${compilers.variants} $i $i]
 
             # Fortran compilers do not conflict with C compilers.
-            # thus, llvm and clang do not conflict with g95 and gfortran
+            # thus clang does not conflict with g95 and gfortran
             if {$variant eq "gfortran" || $variant eq "g95"} {
-                foreach clangcomp [concat ${compilers.clang_variants} {llvm}] {
+                foreach clangcomp ${compilers.clang_variants} {
                     set i [lsearch -exact $c $clangcomp]
                     set c [lreplace $c $i $i]
                 }
-            } elseif {[string match clang* $variant] || $variant == "llvm"} {
+            } elseif {[string match clang* $variant]} {
                 set i [lsearch -exact $c gfortran]
                 set c [lreplace $c $i $i]
                 set i [lsearch -exact $c g95]
@@ -291,43 +251,42 @@ proc compilers.setup_variants {args} {
             # only add conflicts from the compiler database (set above) if we
             # actually have the compiler in the list of allowed variants
             foreach j $cdb($variant,conflict) {
-                if {[lsearch -exact $j ${compilers.variants}] > -1} {
+                if {$j in ${compilers.variants}} {
                     lappend c $j
                 }
             }
 
+            set body "
+                depends_build-append   $cdb($variant,depends)
+                depends_lib-append     $cdb($variant,dependsl)
+                depends_lib-delete     $cdb($variant,dependsd)
+                depends_skip_archcheck $cdb($variant,dependsa)
+
+                set compilers.libfortran $cdb($variant,libfortran)
+            "
+            # TODO: all the compilers are in portconfigure now, so see if below
+            # is even needed now;
             # for each compiler, set the value if not empty; we can't use
             # configure.compiler because of dragonegg and possibly other new
             # compilers that aren't in macports portconfigure.tcl
-            set comp ""
             foreach compiler ${compilers.list} {
                 if {$cdb($variant,$compiler) ne ""} {
-                    append comp [subst {
+                    append body "
                         configure.$compiler $cdb($variant,$compiler)
 
                         # disable archflags
-                        if {${compilers.clear_archflags} && "[info command configure.${compiler}_archflags]" ne ""} {
+                        if {\${compilers.clear_archflags} && \[info commands configure.${compiler}_archflags\] ne {}} {
                             configure.${compiler}_archflags
                             configure.ld_archflags
                         }
-                    }]
+                    "
                 }
             }
 
-            eval [subst {
-                variant ${variant} description \
-                    {Build using the $cdb($variant,descrip) compiler} \
-                    conflicts $c ${compilers.variants_conflict} {
-
-                    depends_build-append   $cdb($variant,depends)
-                    depends_lib-append     $cdb($variant,dependsl)
-                    depends_lib-delete     $cdb($variant,dependsd)
-                    depends_skip_archcheck $cdb($variant,dependsa)
-
-                    set compilers.libfortran $cdb($variant,libfortran)
-                    $comp
-                }
-            }]
+            variant ${variant} description \
+                "Build using the $cdb($variant,descrip) compiler" \
+                conflicts {*}$c {*}${compilers.variants_conflict} \
+                ${body}
         }
     }
 }
@@ -414,16 +373,9 @@ proc fortran_variant_name {} {
 }
 
 proc clang_variant_name {} {
-    global compilers.clang_variants compilers.dragonegg_variants variations
+    global compilers.clang_variants variations
 
     foreach c ${compilers.clang_variants} {
-        # we need to check the default_variants so we can't use variant_isset
-        if {[info exists variations($c)] && $variations($c) eq "+"} {
-            return $c
-        }
-    }
-
-    foreach c ${compilers.dragonegg_variants} {
         # we need to check the default_variants so we can't use variant_isset
         if {[info exists variations($c)] && $variations($c) eq "+"} {
             return $c
@@ -478,7 +430,7 @@ proc fortran_variant_isset {} {
 # remove all elements in R from L
 proc remove_from_list {L R} {
     foreach e $R {
-        set idx [lsearch $L $e]
+        set idx [lsearch -exact $L $e]
         set L [lreplace $L $idx $idx]
     }
     return $L
@@ -507,7 +459,7 @@ proc compilers.is_fortran_only {} {
     global compilers.list
 
     foreach c {cc cxx cpp objc} {
-        if {[lsearch -exact ${compilers.list} $c] >= 0} {
+        if {$c in ${compilers.list}} {
             return 0
         }
     }
@@ -519,7 +471,7 @@ proc compilers.is_c_only {} {
     global compilers.list
 
     foreach c {f77 f90 fc} {
-        if {[lsearch -exact ${compilers.list} $c] >= 0} {
+        if {$c in ${compilers.list}} {
             return 0
         }
     }
@@ -529,14 +481,12 @@ proc compilers.is_c_only {} {
 
 proc compilers.enforce_c {args} {
     global compilers.required_c
-    foreach portname $args {
-        lappend compilers.required_c $portname
-    }
+    lappend compilers.required_c {*}$args
 }
 
-proc compilers.action_enforce_c {args} {
-    ui_debug "compilers.enforce_c list: ${args}"
-    foreach portname $args {
+proc compilers.action_enforce_c {ports} {
+    ui_debug "compilers.enforce_c list: ${ports}"
+    foreach portname $ports {
         if {![catch {set result [active_variants $portname "" ""]}]} {
             set otcomp  [c_active_variant_name $portname]
             set mycomp  [c_variant_name]
@@ -556,31 +506,28 @@ proc compilers.action_enforce_c {args} {
 
 proc compilers.enforce_fortran {args} {
     global compilers.required_f
-    foreach portname $args {
-        lappend compilers.required_f $portname
-    }
+    lappend compilers.required_f {*}$args
 }
 
 proc compilers.enforce_some_fortran {args} {
     global compilers.required_some_f
-    foreach portname $args {
-        lappend compilers.required_some_f $portname
-    }
+    lappend compilers.required_some_f {*}$args
 }
 
-proc compilers.action_enforce_f {args} {
-    ui_debug "compilers.enforce_fortran list: ${args}"
-    foreach portname $args {
+proc compilers.action_enforce_f {ports} {
+    ui_debug "compilers.enforce_fortran list: ${ports}"
+    foreach portname $ports {
         if {![catch {set result [active_variants $portname "" ""]}]} {
             set otf  [fortran_active_variant_name $portname]
             set myf  [fortran_variant_name]
+            set myf_compiler [fortran_compiler_name $myf]
 
             if {$otf ne "" && $myf eq ""} {
                 default_variants +$otf
-            } elseif {[fortran_compiler_name $otf] ne [fortran_compiler_name $myf]} {
+            } elseif {[fortran_compiler_name $otf] ne $myf_compiler} {
                 # what if $portname does not have that variant? e.g. maybe it has only gcc5 and we are asking for gfortran.
-                ui_error "Install $portname +$myf"
-                return -code error "$portname +$myf not installed"
+                ui_error "Install $portname +$myf_compiler"
+                return -code error "$portname +$myf_compiler not installed"
             }
         } else {
             ui_error "Internal error: compilers.enforce_fortran: '$portname' is not an installed port."
@@ -589,9 +536,9 @@ proc compilers.action_enforce_f {args} {
     }
 }
 
-proc compilers.action_enforce_some_f {args} {
-    ui_debug "compilers.enforce_some_fortran list: ${args}"
-    foreach portname $args {
+proc compilers.action_enforce_some_f {ports} {
+    ui_debug "compilers.enforce_some_fortran list: ${ports}"
+    foreach portname $ports {
         if {![catch {set result [active_variants $portname "" ""]}]} {
             if {[fortran_active_variant_name $portname] eq ""} {
                 ui_error "Install $portname with a Fortran variant (e.g. +gfortran, +gccX, +g95)"
@@ -606,7 +553,7 @@ proc compilers.action_enforce_some_f {args} {
 
 proc compilers.setup {args} {
     global cdb compilers.variants compilers.clang_variants compilers.gcc_variants
-    global compilers.dragonegg_variants compilers.fortran_variants
+    global compilers.fortran_variants
     global compilers.require_fortran compilers.default_fortran compilers.setup_done compilers.list
     global compilers.gcc_default
     global compiler.blacklist
@@ -615,9 +562,9 @@ proc compilers.setup {args} {
         set add_list {}
         set remove_list ${compilers.variants}
 
-        # if we are only setting fortran compilers, then we are in "only fortran
-        # mode", i.e. we just need +gccXY and +dragoneggXY for the fortran
-        # compilers so we remove +clangXY and +llvm
+        # if we are only setting fortran compilers, then we are in "only
+        # fortran mode", i.e. we just need +gccXY for the fortran compilers so
+        # we remove +clangXY
         if {[compilers.is_fortran_only]} {
             # remove gfortran since that only exists to "complete" clang/llvm
             set remove_list [remove_from_list ${compilers.fortran_variants} gfortran]
@@ -640,20 +587,17 @@ proc compilers.setup {args} {
             # handle special cases, such as 'gcc' -> all gcc variants
             switch -exact $v {
                 gcc {
-                    set ${mode}_list [${mode}_from_list [expr $${mode}_list] ${compilers.gcc_variants}]
-                }
-                dragonegg {
-                    set ${mode}_list [${mode}_from_list [expr $${mode}_list] ${compilers.dragonegg_variants}]
+                    set ${mode}_list [${mode}_from_list [set ${mode}_list] ${compilers.gcc_variants}]
                 }
                 fortran {
                     # here we just check gfortran and g95, not every fortran
                     # compatible variant since it makes more sense to specify
                     # 'fortran' to mean add just the +gfortran and +g95 variants
-                    set ${mode}_list [${mode}_from_list [expr $${mode}_list] {gfortran g95}]
+                    set ${mode}_list [${mode}_from_list [set ${mode}_list] {gfortran g95}]
 
                 }
                 clang {
-                    set ${mode}_list [${mode}_from_list [expr $${mode}_list] ${compilers.clang_variants}]
+                    set ${mode}_list [${mode}_from_list [set ${mode}_list] ${compilers.clang_variants}]
                 }
                 require_fortran {
                     # this signals that fortran is required and not optional
@@ -667,7 +611,7 @@ proc compilers.setup {args} {
                     if {[info exists cdb($v,variant)] == 0} {
                         return -code error "no such compiler: $v"
                     }
-                    set ${mode}_list [${mode}_from_list [expr $${mode}_list] $cdb($v,variant)]
+                    set ${mode}_list [${mode}_from_list [set ${mode}_list] $cdb($v,variant)]
                 }
             }
         }
@@ -690,13 +634,13 @@ proc compilers.setup {args} {
         # remove duplicates
         set duplicates {}
         foreach foo $remove_list {
-            if {[lsearch $add_list $foo] != -1} {
+            if {$foo in $add_list} {
                 lappend duplicates $foo
             }
         }
 
         set compilers.variants [lsort [concat [remove_from_list $remove_list $duplicates] $add_list]]
-        eval compilers.setup_variants ${compilers.variants}
+        compilers.setup_variants ${compilers.variants}
 
         # reverse the gcc list so that the higher numbered ones are default
         set ordered_variants {gfortran}
@@ -718,7 +662,7 @@ proc compilers.setup {args} {
         if {${compilers.default_fortran} && ![fortran_variant_isset]} {
             foreach fv $ordered_variants {
                 # if the variant exists, then make it default
-                if {[lsearch -exact ${compilers.variants} $fv] > -1} {
+                if {$fv in ${compilers.variants}} {
                     default_variants-append +$fv
                     break
                 }
@@ -734,7 +678,7 @@ pre-fetch {
     if {${compilers.require_fortran} && [fortran_variant_name] eq ""} {
         return -code error "must set at least one Fortran variant (e.g. +gfortran, +gccX, +g95)"
     }
-    eval compilers.action_enforce_c ${compilers.required_c}
-    eval compilers.action_enforce_f ${compilers.required_f}
-    eval compilers.action_enforce_some_f ${compilers.required_some_f}
+    compilers.action_enforce_c ${compilers.required_c}
+    compilers.action_enforce_f ${compilers.required_f}
+    compilers.action_enforce_some_f ${compilers.required_some_f}
 }

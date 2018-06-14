@@ -5,18 +5,18 @@ PortSystem              1.0
 PortGroup               xcode 1.0
 
 name                    free42
-version                 2.0.6
+version                 2.0.20
 platforms               darwin
 categories              emulators
 license                 GPL-2
-maintainers             openmaintainer {schenkel.net:leonardo @lbschenkel}
+maintainers             {lbschenkel @lbschenkel} openmaintainer
 description             a HP-42s Simulator
 long_description        Free42 is a complete re-implementation of the HP-42S    \
                         calculator and the HP-82240 printer. Free42 was written \
                         from scratch, without using any HP code. You do not     \
                         need any ROM images in order to use it, yet it is fully \
                         HP-42S compatible.
-supported_archs         i386
+supported_archs         x86_64
 
 homepage                http://thomasokken.com/free42
 
@@ -24,8 +24,9 @@ master_sites            http://thomasokken.com/free42/upstream:upstream
 distname                ${name}-macports-${version}
 distfiles               ${distname}.tgz:upstream
 checksums               ${distname}.tgz \
-                        rmd160  f240c8bacf59edccf45d4d13d525129f282f1b3c \
-                        sha256  a72198c5b6cd2ccfbed7209f7c2e9deefcf864863fd575fe6a482581678e5be2
+                        rmd160  16b8b3b2833db2a419ea058b35409444298c480b \
+                        sha256  fcb69c991544ffc4696ed09e58c4309bad4758c5f9dddf73ac00c83041f18e15 \
+                        size    9069325
 
 extract.only            ${distname}.tgz
 patchfiles              patch-Free42.xcodeproj.diff
@@ -53,4 +54,4 @@ variant logo description {Use skin with logo} {
 
 livecheck.type          regex
 livecheck.url           ${homepage}/upstream/
-livecheck.regex         free42-macports-(\\d\\.\\d\\.\\d)\\.tgz
+livecheck.regex         free42-macports-(\\d+\\.\\d+\\.\\d+)\\.tgz

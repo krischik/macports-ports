@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-s3fs
-version             0.1.2
+version             0.1.4
 revision            0
 categories-append   devel
 platforms           darwin
@@ -19,13 +19,13 @@ maintainers         stromnov openmaintainer
 description         Convenient Filesystem interface over S3
 long_description    ${description}
 
-homepage            http://github.com/dask/s3fs/
+homepage            https://github.com/dask/s3fs/
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  c477a3a3bf31929686093cebaec74b1abbd37130 \
-                    sha256  fba2471624b9840f050afb6d83eaec5e9b463dc497206532fa2b5590b7b58117
+checksums           rmd160  6812ca7474eb9d105e3b6568ba4102c2b2d02d33 \
+                    sha256  f19b2e81cfcf6f2849fa8195c366c6e81d2378400bab0611f461c4e55d4f6bed
 
 if {${name} ne ${subport}} {
     depends_build-append \

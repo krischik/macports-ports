@@ -5,7 +5,7 @@ PortSystem          1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 name                MoarVM
-version             2017.07
+version             2018.04
 categories          lang devel
 platforms           darwin
 license             Artistic-2 MIT BSD ISC public-domain
@@ -16,8 +16,9 @@ long_description    MoarVM is a virtual machine built especially for \
 homepage            http://moarvm.org/
 master_sites        http://moarvm.org/releases/
 
-checksums           rmd160  d3a6dbd0c60a44943bbc50a7f187e67717081863 \
-                    sha256  21c6c85464bcc012af4fa3ed5fe2a54262439f197c5141cfc71f57e2841ba67a
+checksums           rmd160  9cd2ae9a8f3c0471e1e516b36dc44c0c6e3b0033 \
+                    sha256  575fe8545943c39d083c6f433171bf8411e44204944b49dcf4fe0f31f8645dd5 \
+                    size    4966390
 
 # TODO: https://github.com/MoarVM/MoarVM/issues/321
 # conflicts         dyncall libtommath libuv

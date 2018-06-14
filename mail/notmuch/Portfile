@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           conflicts_build 1.0
 
 name                notmuch
-version             0.25.1
+version             0.26.2
 categories          mail
 platforms           darwin
 license             GPL-3+
@@ -16,11 +16,12 @@ long_description    \"Not much mail\" is what Notmuch thinks about your email \
                     Regardless, Notmuch will be able to quickly search all of it. It’s just \
                     plain not much mail.
 
-homepage            http://notmuchmail.org/
+homepage            https://notmuchmail.org/
 master_sites        ${homepage}releases/
 
-checksums           rmd160  e895fb214049e2f34704cd9bf4260aef4c7bae28 \
-                    sha256  b4bf09ec9b7b64180704faa26d66cad5f911a5a00ef812da34cb02c3f8872831
+checksums           rmd160  a0b43b3c6db643a6fb8584d70bf4997d2c15d362 \
+                    sha256  109c1865db7a035d08707421d13e9b6b82ee8e9f1534db70c28c51bc39370e3b \
+                    size    907187
 
 depends_build       port:pkgconfig
 

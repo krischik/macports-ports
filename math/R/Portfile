@@ -5,16 +5,11 @@ PortGroup compilers 1.0
 PortGroup active_variants 1.1
 
 name                        R
-
-set major 3
-set minor 4
-set point 2
-
 #Remember to remove revision line when bumping version
-version                     ${major}.${minor}.${point}
-
+version                     3.4.3
+set branch                  [join [lrange [split ${version} .] 0 1] .]
 categories                  math science
-maintainers                 me.com:kjell.konis
+maintainers                 {me.com:kjell.konis @kjellpk}
 license                     {GPL-2 GPL-3}
 platforms                   macosx
 
@@ -32,8 +27,8 @@ homepage                    http://www.r-project.org/
 master_sites                http://cran.rstudio.com/src/base/R-3/ \
                             http://cran.r-project.org/src/base/R-3/
 
-checksums           rmd160  b903e20a1cfa3819d739a823bd8c016781b8fcae \
-                    sha256  971e30c2436cf645f58552905105d75788bd9733bddbcb7c4fbff4c1a6d80c64
+checksums                   rmd160  e7c7f17f8c39a8ea7ce253e32d248e9779b62227 \
+                            sha256  7a3cb831de5b4151e1f890113ed207527b7d4b16df9ec6b35e0964170007f426
 
 compilers.choose            fc f77
 compilers.setup             require_fortran
@@ -48,7 +43,7 @@ depends_lib                 port:readline \
 
 universal_variant           no
 
-set resources ${frameworks_dir}/R.framework/Versions/${major}.${minor}/Resources
+set resources               ${frameworks_dir}/R.framework/Versions/${branch}/Resources
 
 post-patch {
     reinplace "s|R_HOME|\"${resources}\"|" "${worksrcpath}/src/unix/Rscript.c"

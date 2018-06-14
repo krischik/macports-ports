@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pymongo
-version             3.5.1
+version             3.6.1
 revision            0
 categories-append   databases
 platforms           darwin
@@ -24,8 +24,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  98918531be0e3944685cb4e3eae27ccaf1e07876 \
-                    sha256  e820d93414f3bec1fa456c84afbd4af1b43ff41366321619db74e6bc065d6924
+checksums           rmd160  8438e67bd6f1180eb21fc8f7f4fb2536a29c4bd5 \
+                    sha256  f7ebcb846962ee40374db2d9014a89bea9c983ae63c1877957c3a0a756974796
 
 if {${name} ne ${subport}} {
     conflicts               py${python.version}-bson

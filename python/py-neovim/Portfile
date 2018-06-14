@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        neovim python-client 0.1.13
+github.setup        neovim python-client 0.2.4
 name                py-neovim
 revision            1
 maintainers         g5pw openmaintainer
@@ -30,8 +30,8 @@ if { ${name} ne ${subport} } {
         depends_lib-append  port:py${python.version}-trollius
     }
 
-    checksums			rmd160  3f6f68d2ce2fec967ea2467a67cc618528c4dc72 \
-                        sha256  5f3cf3ccc7d01775f5cee7721d4d3743f29158fbcb3f9ca73c5755587228f5a2
+    checksums           rmd160  de9fcf0868ce1eb5fa1a83c5563484febf2e4724 \
+                        sha256  ddf7c6753a75d7388d178331a07c81f1accdd5b374deccef98b641798c6496ab
 
     livecheck.type      none
 }

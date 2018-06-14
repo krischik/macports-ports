@@ -1,10 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           meson 1.0
 
 name                libhttpseverywhere
-version             0.6.1
-license             LGPL-3
+version             0.8.3
+license             LGPL-3+
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          www
 maintainers         nomaintainer
@@ -21,17 +22,17 @@ long_description    ${description}. HTTPSEverywhere is a browser plugin \
                     GLib-based library you can link/bind against \
                     in almost all languages
 
-homepage            https://git.gnome.org//browse/${name}
+homepage            https://git.gnome.org/browse/${name}
 master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  1ac9bc6cbd8544bda7bf0780e3e269c8e34002d0 \
-                    sha256  a5989ef99681cf051381bf9dcea9836c1e898b2caef875fa8569b1b56a81965f
+checksums           rmd160  67ecbcfbfe5eba4eba47b38099ddc4ebae847403 \
+                    sha256  1c006f5633842a2b131c1cf644ab929556fc27968a60da55c00955bd4934b6ca \
+                    size    1139192
 
-depends_build       port:pkgconfig \
-                    port:meson \
-                    port:ninja
+depends_build-append \
+                    port:pkgconfig
 
 depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
                     port:json-glib \
@@ -42,28 +43,13 @@ depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
                     port:libxml2 \
                     port:vala
 
-configure.cmd       meson
-configure.post_args . build
-
-# meson requires builds be in build subdir
-build.dir           ${worksrcpath}/build
-build.cmd           ninja
-build.target
-
 test.run            yes
-test.dir            ${worksrcpath}/build
-test.cmd            ./httpseverywhere_test
+test.cmd            test/httpseverywhere_test
 test.target
 
-# DESTDIR must come before ninja command rather than after
-destroot.dir        ${worksrcpath}/build
-destroot.cmd        DESTDIR=${destroot} ninja
-destroot.destdir
-
-# meson ninja backend improperly sets shared library install name
-# based on build_dir rather than install_dir
+# override @rpath in installed library's install name
 post-destroot {
-    set libname ${prefix}/lib/${name}-0.6.0.dylib
+    set libname ${prefix}/lib/${name}-0.8.0.dylib
     system "install_name_tool -id ${libname} ${destroot}${libname}"
 }
 

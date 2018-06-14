@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                adwaita-icon-theme
-version             3.26.0
+version             3.28.0
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          gnome
 maintainers         {devans @dbevans} openmaintainer
@@ -11,16 +11,17 @@ license             LGPL-3
 platforms           darwin
 description         Adwaita icon theme
 
-long_description    Fullcolor, symbolic and cursor assets for the $description. Previously \
-                    part of gnome-themes-standard
+long_description    Fullcolor, symbolic and cursor assets for the $description, \
+                    the default icon theme for GTK+ 3.
 
-homepage            http://www.gnome.org/
+homepage            https://www.gnome.org/
 master_sites        gnome:sources/$name/$branch/
 
 use_xz              yes
 
-checksums           rmd160  223592f61d596d2aa429610834426effac70a891 \
-                    sha256  9cad85de19313f5885497aceab0acbb3f08c60fcd5fa5610aeafff37a1d12212
+checksums           rmd160  fb4b84dfd22a468ccb2a00508da6fd14b2b42291 \
+                    sha256  7aae8c1dffd6772fd1a21a3d365a0ea28b7c3988bdbbeafbf8742cda68242150 \
+                    size    19992224
 
 depends_build       port:pkgconfig \
                     port:icon-naming-utils

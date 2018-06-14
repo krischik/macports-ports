@@ -1,0 +1,30 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+# normally update mediainfo port at the same time
+github.setup        MediaArea MediaInfoLib 18.03.1 v
+checksums           rmd160  2cbb24d81338684f29200d2c8c0eb303b1b675fd \
+                    sha256  388ccfea0e7a977dd579430d7ab0f986bfd4024aa3297d08adfa0a2d7104fbe3 \
+                    size    2322684
+
+name                mediainfolib
+description         Supplies technical and tag information about a video or audio file
+long_description    ${description}
+homepage            https://mediaarea.net
+categories          devel multimedia
+platforms           darwin
+maintainers         ctreleaven openmaintainer
+license             BSD
+
+use_autoreconf      yes
+autoreconf.args-append  --force --install
+configure.args      --with-libcurl
+
+depends_build-append    port:pkgconfig
+depends_lib-append      port:curl \
+                        port:zenlib \
+                        port:zlib
+
+set worksrcpath     ${worksrcpath}/Project/GNU/Library

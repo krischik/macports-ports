@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                chromedriver
-version             2.33
+version             2.38
 categories          www
 platforms           darwin
 maintainers         nomaintainer
@@ -24,8 +24,9 @@ dist_subdir         ${name}/${version}
 distname            ${name}_mac64
 use_zip             yes
 
-checksums           rmd160  a0bc29dbd3fc98ca13b3c16c6ada0c415315a2ee \
-                    sha256  064b243c4236380cc705f183e100d7a229815db7b143f6ad3eaae072a48cc827
+checksums           rmd160  f095e0f56f1d5fc6420dab720c932bdf6219a205 \
+                    sha256  6da3e8e3604d332b73f961495cb6d01d79d995b456778a3bda87df236c138462 \
+                    size    5577956
 
 extract.mkdir       yes
 

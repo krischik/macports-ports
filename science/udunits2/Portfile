@@ -6,7 +6,7 @@ PortGroup           cmake 1.0
 
 github.setup        Unidata UDUNITS-2 2.2.25 v
 name                udunits2
-maintainers         takeshi
+maintainers         {takeshi @tenomoto}
 license             UCAR-Unidata
 platforms           darwin
 categories          science
@@ -36,7 +36,7 @@ cmake.out_of_source yes
 worksrcdir          UDUNITS-2-${version}
 
 post-destroot {
-    xinstall -d 644 ${destroot}${prefix}/include/${name}
+    xinstall -d ${destroot}${prefix}/include/${name}
     foreach f [glob ${destroot}${prefix}/include/*.h] {
         file rename ${f} ${destroot}${prefix}/include/${name}
     }

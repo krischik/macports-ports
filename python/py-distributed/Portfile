@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-distributed
-version             1.19.2
+version             1.21.6
 revision            0
 categories-append   devel
 platforms           darwin
@@ -25,8 +25,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  b4a2bb8b8b7b9cf15796b9cddf17f79f60b41e16 \
-                    sha256  9238a3bea80a72877c6e4362eb3e79200eadd4c9f53f52f924cfcf229a0ba432
+checksums           rmd160  2c717af57dba72b331d5c20eb843229e9edcc2d0 \
+                    sha256  0fa6057c9b7aa0235ba240e7eb66ffbf5fc9d25a5c4b5cf1169d93bc582b8687
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \
@@ -37,7 +37,6 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-six \
                         port:py${python.version}-psutil \
                         port:py${python.version}-msgpack \
-                        port:py${python.version}-locket \
                         port:py${python.version}-dask \
                         port:py${python.version}-cloudpickle \
                         port:py${python.version}-click \

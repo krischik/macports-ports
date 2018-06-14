@@ -3,13 +3,13 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        usbids usbids 7b14f90dc9376342ed421ea9dd8a9350d0b0346f
+github.setup        usbids usbids 05807f86fbe46e75b0e49a617b5812c01b72b591
 name                usbids
-version             2017.09.10
+version             2018.04.14
 categories          sysutils
 platforms           darwin
 license             {GPL-2+ BSD}
-maintainers         schenkel.net:leonardo openmaintainer
+maintainers         {lbschenkel @lbschenkel} openmaintainer
 supported_archs     noarch
 
 description         The USB ID Repository
@@ -21,8 +21,9 @@ long_description    This is a public repository of all known ID's used \
                     cryptic numeric codes.
 homepage            http://www.linux-usb.org/usb-ids.html
 
-checksums           rmd160  678be778e63a2b263fd1a8cdacb6d7d98c2f16d0 \
-                    sha256  10ac092b31efe8a6089e99da1ca2f7b9898df03fcf8610e03da1bae26f408b19
+checksums           rmd160  29c5a85bea34556e41061d9634935fb2d2fca505 \
+                    sha256  53caa5d7940aa738622d8756bff8fcaea19849cd35e06bb2b3b9327d6250a7fc \
+                    size    219909
 
 use_configure       no
 build {}

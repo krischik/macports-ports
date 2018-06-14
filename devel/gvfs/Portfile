@@ -4,7 +4,7 @@ PortSystem          1.0
 
 name                gvfs
 epoch               1
-version             1.34.1
+version             1.36.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 maintainers         {devans @dbevans} openmaintainer
 categories          devel
@@ -33,10 +33,14 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  510a5864ddd52296db8e4faf4fd236e3454b3e69 \
-                    sha256  7ef9b2aec234004271a575118a0e35b3c36ce3309e5f9da109635651843372b4
+checksums           rmd160  af4b0b39e02398771f84eb5ca3fb215b7f967d8f \
+                    sha256  3840dff386c2c8a445337bea4ade0eb71339efaff8602767659fa2896792f026 \
+                    size    1250568
 
 depends_build       port:pkgconfig \
+                    port:autoconf \
+                    port:automake \
+                    port:libtool \
                     port:gtk-doc \
                     port:pidof \
                     port:gsed
@@ -56,12 +60,13 @@ depends_lib         port:gtk3 \
 patchfiles          patch-test-run-in-tree.sh.diff \
                     patch-test-gvfs-test.diff
 
+configure.cmd       ./autogen.sh
+
 configure.args      --disable-avahi \
                     --disable-fuse \
                     --disable-cdda \
                     --disable-gphoto2 \
                     --disable-samba \
-                    --disable-udev \
                     --disable-gdu \
                     --disable-udisks2 \
                     --disable-libsystemd-login \
@@ -91,16 +96,7 @@ post-destroot {
         ${destroot}${docdir}
 }
 
-variant python34 conflicts python35 python36 description {Use Python 3.4 for testing} {
-    depends_build-append port:py34-gobject3
-    post-patch {
-        reinplace "s|^#!.*|#!${prefix}/bin/python3.4|" \
-            ${worksrcpath}/test/gvfs-test \
-            ${worksrcpath}/test/test_polkitd.py
-    }
-}
-
-variant python35 conflicts python34 python36 description {Use Python 3.5 for testing} {
+variant python35 conflicts python36 description {Use Python 3.5 for testing} {
     depends_build-append port:py35-gobject3
     post-patch {
         reinplace "s|^#!.*|#!${prefix}/bin/python3.5|" \
@@ -109,7 +105,7 @@ variant python35 conflicts python34 python36 description {Use Python 3.5 for tes
     }
 }
 
-variant python36 conflicts python34 python35  description {Use Python 3.6 for testing} {
+variant python36 conflicts python35  description {Use Python 3.6 for testing} {
     depends_build-append port:py36-gobject3
     post-patch {
         reinplace "s|^#!.*|#!${prefix}/bin/python3.6|" \
@@ -118,7 +114,7 @@ variant python36 conflicts python34 python35  description {Use Python 3.6 for te
     }
 }
 
-if {![variant_isset python34] && ![variant_isset python35]} {
+if {![variant_isset python35]} {
    default_variants +python36
 }
 

@@ -4,10 +4,10 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        Calysto metakernel 0.20.7 v
+github.setup        Calysto metakernel 0.20.14 v
 set real_name       metakernel
 name                py-${real_name}
-license             BSD-3-Clause
+license             BSD
 maintainers         {mps @Schamschula} openmaintainer
 description         A Jupyter/IPython kernel template
 long_description    ${description} which includes core magic functions (including \
@@ -15,8 +15,8 @@ long_description    ${description} which includes core magic functions (includin
                     processing, downloads, and much more).
 platforms           darwin
 
-checksums           rmd160  060d911adf09d810118b6d70b8a53881a9c56940 \
-                    sha256  af1acb6426bce3e6a2ebc6afe5a74c077035acd72c87da890f2aa8e4e8389b76
+checksums           rmd160  63d8bab762baf792a5a97f3ea8e3dc051bc7d27c \
+                    sha256  1ebe1bfc83a7112d30992e799d39783e47ae1fd0d77c188b8667bec97a0a0465
 
 python.versions     27 34 35 36
 

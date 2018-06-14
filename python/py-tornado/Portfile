@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-tornado
-version             4.5.2
+version             5.0.2
 revision            0
 categories-append   www
 platforms           darwin
@@ -28,8 +28,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  1b1cc432002aa2941b10212664268e4537bd46cb \
-                    sha256  1fb8e494cd46c674d86fac5885a3ff87b0e283937a47d74eb3c02a48c9e89ad0
+checksums           rmd160  8f045608b9cb04e5620a9b08106b7f6db345dfee \
+                    sha256  1b83d5c10550f2653380b4c77331d6f8850f287c4f67d7ce1e1c639d9222fbc7
 
 if {${name} ne ${subport}} {
     if {${python.version} == 26} {
@@ -49,7 +49,9 @@ if {${name} ne ${subport}} {
         depends_build-append \
                              port:py${python.version}-setuptools
         if {${python.version} == 27} {
-            depends_lib-append  port:py${python.version}-monotonic
+            revision            1
+            depends_lib-append  port:py${python.version}-monotonic \
+                                port:py${python.version}-futures
         }
         if {${python.version} < 34} {
             depends_lib-append  port:py${python.version}-singledispatch \

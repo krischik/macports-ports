@@ -148,8 +148,8 @@ array set modules {
         ""
         {"Qt Core" "Qt GUI" "Qt Network" "Qt SQL" "Qt Test" "Qt Widgets" "Qt Concurrent" "Qt D-Bus" "Qt OpenGL" "Qt Platform Headers" "Qt Print Support" "Qt XML"}
         ""
-        "variant overrides: ~docs"
-        "revision 2"
+        "variant overrides: "
+        "revision 4"
         "License: "
     }
     qtcanvas3d {
@@ -221,7 +221,7 @@ array set modules {
         {"Qt Reference Documentation"}
         "requires all documentation"
         "variant overrides: ~examples ~tests ~debug noarch ~docs"
-        "revision 0"
+        "revision 1"
         "License: "
     }
     qtgamepad {
@@ -497,7 +497,7 @@ array set modules {
         {"Qt WebKit" "Qt WebKit Widgets"}
         "community support only (use Qt WebEngine)"
         "variant overrides: "
-        "revision 0"
+        "revision 1"
         "License: "
     }
     qtwebkit-examples {
@@ -645,6 +645,15 @@ build.env-append \
     PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
     PKG_CONFIG_ALLOW_SYSTEM_LIBS=1
 
+# the Qt 5.8 requires NSWindowDidChangeOcclusionStateNotification, which was introduced in 10.9
+# see https://developer.apple.com/library/content/releasenotes/General/APIDiffsMacOSX10_9/AppKit.html
+if { ${os.major} < 13 } {
+    pre-fetch {
+        ui_error "${subport} requires OS X 10.9 or later"
+        return -code error "incompatible OS version"
+    }
+}
+
 foreach {module module_info} [array get modules] {
 
     set revision_string [string trim [lindex ${module_info} 8]]
@@ -670,7 +679,7 @@ foreach {module module_info} [array get modules] {
         set license_string [string trim  ${license_string}]
 
         if { ${license_string} ne "" } {
-            eval license ${license_string}
+            license {*}${license_string}
         }
 
         foreach deps [lindex ${module_info} 2] {
@@ -724,15 +733,6 @@ foreach {module module_info} [array get modules] {
                 }
             }
 
-            # the Qt 5.8 requires NSWindowDidChangeOcclusionStateNotification, which was introduced in 10.9
-            # see https://developer.apple.com/library/content/releasenotes/General/APIDiffsMacOSX10_9/AppKit.html
-            if { ${os.major} < 13 } {
-                pre-fetch {
-                    ui_error "${subport} requires OS X 10.9 or later"
-                    return -code error "incompatible OS version"
-                }
-            }
-
             # https://codereview.qt-project.org/#/c/141654/
             patchfiles-append patch-add_sdk.diff
 
@@ -764,6 +764,20 @@ foreach {module module_info} [array get modules] {
 
             # see https://bugreports.qt.io/browse/QTBUG-62266
             patchfiles-append patch-sdk10_13.diff
+
+            # avoid non-standard C++ that Xcode Clang accepts but other compilers do not
+            # see http://lists.llvm.org/pipermail/llvm-bugs/2017-January/053481.html
+            # see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=11764
+            patchfiles-append patch-qualified_reference.diff
+
+            # find the Rez program
+            patchfiles-append patch-find_rez.diff
+            post-patch {
+                reinplace \
+                    "s|__MACPORTS_Rez__|[exec xcrun --find Rez]|g" \
+                    mkspecs/common/mac.conf \
+                    mkspecs/features/mac/rez.prf
+            }
 
             #-----------------------------------------------------------------------------
             # qtbase is used for:
@@ -1011,8 +1025,13 @@ foreach {module module_info} [array get modules] {
                 -framework           \
                 -securetransport
 
+            # do not use ${configure.sdk_version}
+            # SDK is recorded in ${qt_mkspecs_dir}/qdevice.pri
+            # SDK may then be removed if Xcode is updated
+            # see https://trac.macports.org/ticket/54044
+            # see https://trac.macports.org/ticket/55195
             configure.args-append \
-                -sdk macosx${configure.sdk_version}
+                -sdk macosx
 
             # configure options that don't show up in configure --help
             configure.args-append \
@@ -1087,7 +1106,7 @@ foreach {module module_info} [array get modules] {
 
                 # see https://trac.macports.org/ticket/51358
                 #     for why not a path dependency
-                depends_lib-append port:openssl
+                depends_lib-append path:lib/libssl.dylib:openssl
             }
             default_variants-append +openssl
 
@@ -1202,9 +1221,7 @@ foreach {module module_info} [array get modules] {
                 #    requires qtdoc depend on all the documentation modules
                 foreach {module_doc module_doc_info} [array get modules] {
                     if { [lsearch -exact [lindex ${module_doc_info} 7] "~docs"] == -1 } {
-                        if { ${os.major} >= 13 || (${module_doc} ne "qtwebengine" && ${module_doc} ne "qtwebview") } {
-                            depends_lib-append port:${name}-${module_doc}-docs
-                        }
+                        depends_lib-append port:${name}-${module_doc}-docs
                     }
                 }
             }
@@ -1290,12 +1307,7 @@ foreach {module module_info} [array get modules] {
                 # see http://doc.qt.io/qt-5/qtwebengine-platform-notes.html
                 PortGroup           xcodeversion 1.0
                 minimum_xcodeversions   {13 5.1}
-                if { ${os.major} < 13 } {
-                    pre-fetch {
-                        ui_error "${subport} requires OS X 10.9 or later"
-                        return -code error "incompatible OS version"
-                    }
-                } elseif { ${os.major} == 13 } {
+                if { ${os.major} == 13 } {
                     # see https://bugreports.qt.io/browse/QTBUG-54486
                     configure.sdk_version 10.10
                 }
@@ -1797,26 +1809,3 @@ post-destroot {
 livecheck.type      regex
 livecheck.url       http://download.qt.io/archive/qt/${branch}/
 livecheck.regex     (\\d+(\\.\\d+)+)
-
-foreach {component component_info} [array get qt5pg::qt5_component_lib] {
-
-    set suffix [lindex ${component_info} 3]
-
-    set qt_version            ${version}
-    set qt_version_introduced [lindex ${component_info} 0]
-    set qt_version_removed    [lindex ${component_info} 1]
-
-    if { [vercmp ${qt_version_removed} ${qt_version}] <= 0 } {
-        subport ${name}-${component}${suffix} {
-            PortGroup obsolete 1.0
-            #revision 0
-        }
-
-        if { ${component} ne "qtquick1" && ${component} ne "qtwebkit-examples" && ${component} ne "qtdoc" && ${suffix} ne "-plugin" } {
-            subport ${name}-${component}${suffix}-docs {
-                PortGroup obsolete 1.0
-                #revision 0
-            }
-        }
-    }
-}

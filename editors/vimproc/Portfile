@@ -38,16 +38,16 @@ build {
 }
 
 destroot {
-	xinstall -d ${destroot}${applications_dir}/Contents/Resources/vim/runtime/lib
-	xinstall -d ${destroot}${applications_dir}/Contents/Resources/vim/runtime/doc
-	xinstall -d ${destroot}${applications_dir}/Contents/Resources/vim/runtime/plugin
-	xinstall -d ${destroot}${applications_dir}/Contents/Resources/vim/runtime/autoload/vimproc
+	xinstall -d ${destroot}${applications_dir}/MacVim.app/Contents/Resources/vim/runtime/lib
+	xinstall -d ${destroot}${applications_dir}/MacVim.app/Contents/Resources/vim/runtime/doc
+	xinstall -d ${destroot}${applications_dir}/MacVim.app/Contents/Resources/vim/runtime/plugin
+	xinstall -d ${destroot}${applications_dir}/MacVim.app/Contents/Resources/vim/runtime/autoload/vimproc
 
-	xinstall		  ${worksrcpath}/lib/vimproc_mac.so			${destroot}${applications_dir}/Contents/Resources/vim/runtime/lib
-	xinstall		  ${worksrcpath}/doc/vimproc.txt			${destroot}${applications_dir}/Contents/Resources/vim/runtime/doc
-	xinstall		  ${worksrcpath}/plugin/vimproc.vim			${destroot}${applications_dir}/Contents/Resources/vim/runtime/plugin
-	xinstall		  ${worksrcpath}/autoload/vimproc.vim		${destroot}${applications_dir}/Contents/Resources/vim/runtime/autoload
-	xinstall {*}[glob ${worksrcpath}/autoload/vimproc/*.vim]	${destroot}${applications_dir}/Contents/Resources/vim/runtime/autoload/vimproc
+	xinstall		  ${worksrcpath}/lib/vimproc_mac.so			${destroot}${applications_dir}/MacVim.app/Contents/Resources/vim/runtime/lib
+	xinstall		  ${worksrcpath}/doc/vimproc.txt			${destroot}${applications_dir}/MacVim.app/Contents/Resources/vim/runtime/doc
+	xinstall		  ${worksrcpath}/plugin/vimproc.vim			${destroot}${applications_dir}/MacVim.app/Contents/Resources/vim/runtime/plugin
+	xinstall		  ${worksrcpath}/autoload/vimproc.vim		${destroot}${applications_dir}/MacVim.app/Contents/Resources/vim/runtime/autoload
+	xinstall {*}[glob ${worksrcpath}/autoload/vimproc/*.vim]	${destroot}${applications_dir}/MacVim.app/Contents/Resources/vim/runtime/autoload/vimproc
 }
 
 ############################################################ {{{1 ###########

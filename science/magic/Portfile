@@ -8,7 +8,7 @@ PortGroup           conflicts_build 1.0
 
 name                magic
 conflicts           magic-devel
-version             8.1.189
+version             8.1.211
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          science
 # mostly very permissively licensed, but includes a copy of GNU readline
@@ -37,15 +37,13 @@ depends_lib         port:blt \
 
 require_active_variants tk x11
 
-checksums           rmd160  c9f27e698342a771add392f8a7d96721e8eab20e \
-                    sha256  f687484069470d286341ab238fe36fc837067d72e176ab73bfd95a8ab0bf2dd1 \
-                    size    3943880
+checksums           rmd160  db5c3467d92cbb121e9d04bd2e2f1e0e8b43b0e7 \
+                    sha256  9738452e08dc47298b728c555344addd4ab078bb7d466ac093c767f815c15d49 \
+                    size    3935713
 
 universal_variant   no
 
 conflicts_build     gnome-keyring
-
-patchfiles          patch-scripts-configure.in.diff
 
 use_autoreconf      yes
 autoreconf.dir      ${worksrcpath}/scripts

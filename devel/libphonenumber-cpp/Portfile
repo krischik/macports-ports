@@ -1,14 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           cmake 1.0
+PortGroup           cmake 1.1
 PortGroup           github 1.0
 
-cmake.out_of_source yes
-
-github.setup        googlei18n libphonenumber 8.8.3 v
-
+github.setup        googlei18n libphonenumber 8.9.4 v
 name                libphonenumber-cpp
+revision            1
 license             Apache-2
 description         Google's C++ library for parsing, formatting, storing \
                     and validating international phone numbers.
@@ -17,8 +15,9 @@ maintainers         {devans @dbevans} openmaintainer
 categories          devel
 platforms           darwin
 
-checksums           rmd160  c2c30974ee583629a2bd6ad8687395cbcbd457b9 \
-                    sha256  9dc8585b2be91012b5ef5736665e554562a1ddbfbb825ce6bd44c6f6368e0c8d
+checksums           rmd160  36fe5596d117a2623b053a1e027842f7eaf89cd8 \
+                    sha256  60bb9b8dfe0e3fdec4330e319975182befec449b6209dc9be691daba4c96f496 \
+                    size    6854859
 
 worksrcdir          ${worksrcdir}/cpp
 
@@ -39,8 +38,10 @@ depends_build-append \
                     port:pkgconfig
 
 depends_lib-append  port:boost \
-                    port:icu \
-                    port:protobuf-cpp
+                    port:icu
+
+# enable build with either protobuf-cpp or protobuf3-cpp
+depends_lib-append  path:${prefix}/lib/libprotobuf.dylib:protobuf3-cpp
 
 configure.args-append \
                     -DGTEST_SOURCE_DIR=${gtest_srcdir} \

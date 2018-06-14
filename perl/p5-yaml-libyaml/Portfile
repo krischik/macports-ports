@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24 5.26
-perl5.setup         YAML-LibYAML 0.66
+perl5.branches      5.26
+perl5.setup         YAML-LibYAML 0.69
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         Perl YAML Serialization using XS and libyaml
@@ -12,5 +12,7 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  1af8bd6188974510b8b13dad4028911e77688e0d \
-                    sha256  63361faa4ed7caf059bf90bd9091afdd1551bbe3a9bc584e5fbb12a1d641f68c
+checksums           rmd160  f7533ce6d63aabbb33a270f337a550694f203641 \
+                    sha256  6348ba03ff04d22330f05397d55ed26d4e40e921efcc207fa15fcbba87dcba1a
+
+# builds using embedded copy of libyaml source, no dependencies required

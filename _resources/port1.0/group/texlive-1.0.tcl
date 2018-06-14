@@ -157,19 +157,20 @@ options texlive.use_mktexlsr_on_deactivate
 default texlive.use_mktexlsr_on_deactivate yes
 
 proc texlive.texmfport {} {
-    homepage        http://www.tug.org/texlive/
+    homepage        https://www.tug.org/texlive/
     platforms       darwin
 
     supported_archs noarch
     installs_libs   no
 
-    master_sites    http://giraffe.cs.washington.edu/texlive/ \
-                    http://alpaca.cs.washington.edu/texlive/
+    master_sites    https://giraffe.cs.washington.edu/texlive/ \
+                    https://alpaca.cs.washington.edu/texlive/ \
+                    https://www.ambulatoryclam.net/texlive/
     use_xz          yes
 
     global name master_sites distname extract.suffix
     livecheck.type  regex
-    livecheck.url   ${master_sites}
+    livecheck.url   [lindex ${master_sites} 0]
     livecheck.regex ${name}-(\\d+)-run\\.tar
 
     depends_lib-append port:texlive-common port:texlive-bin
@@ -308,7 +309,7 @@ proc texlive.texmfport {} {
                     "$fmtprefix$fmtname\t$fmtengine\t$fmtpatterns\t$fmtoptions"
 
                 # Simulate texlinks
-                if {[lsearch -exact ${texlive.binaries} $fmtname] != -1} {
+                if {$fmtname in ${texlive.binaries}} {
                     # Decide what to link. Use the specified engine
                     # unless a binary with the same name as the
                     # format exists (this can happen for metafont;

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-rpy2
-version             2.9.0
+version             2.9.2
 revision            0
 categories-append   science
 platforms           darwin
@@ -26,8 +26,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  94f55b341b47f2a29e785c72a0596ef6014b7cf2 \
-                    sha256  d1e6c109093965f717293b6c3a8d22d9c172c3721b6a8360c84572dcb284112f
+checksums           rmd160  542f977edb572de49f9fb7eaaff1c912adf95e15 \
+                    sha256  5510f6f2f934b3e659ab24b22d9473f6e999a22ee20c542f33cc88d49c63ceed
 
 if {${name} ne ${subport}} {
     if {${python.version} == 27} {

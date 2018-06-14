@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        atom atom 1.21.0 v
+github.setup        atom atom 1.26.1 v
 categories          editors
 platforms           darwin
 license             MIT
@@ -14,8 +14,10 @@ long_description    ${description}
 
 homepage            https://atom.io
 
-checksums           rmd160  1191c7be642e3ecb1079184ed88b6d46b326819c \
-                    sha256  67b92611a43b453d62a8701e1c0ebc514e546b101097a0d6e6f3629e4bc19c5f
+checksums           rmd160  cc729ea42bcf3ebc2e93cedea4bc6403b2f31951 \
+                    sha256  5e0cbd79f97efb3d88f491d894e00071caa76ca6c335e3c5fa2308d6e764adf6
+
+patchfiles          patch-install-prefix.diff
 
 depends_lib-append  path:bin/npm:npm5 \
                     port:git \
@@ -30,8 +32,17 @@ build.target-delete all
 
 universal_variant   no
 
+post-patch {
+    # Adjust command installer link even though we are creating the links below
+    reinplace "s|@@PREFIX@@|${prefix}|" ${worksrcpath}/src/command-installer.js
+}
+
 destroot {
     file copy ${worksrcpath}/out/Atom.app ${destroot}${applications_dir}/Atom.app
+
+    # Add these so they are tracked by macports instead of atom creating them
+    ln -s "${applications_dir}/Atom.app/Contents/Resources/app/atom.sh" ${destroot}${prefix}/bin/atom
+    ln -s "${applications_dir}/Atom.app/Contents/Resources/app/apm/node_modules/.bin/apm" ${destroot}${prefix}/bin/apm
 }
 
 livecheck.regex     {archive/v([0-9.]+).tar.gz}

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           gobject_introspection 1.0
 
 name                gexiv2
-version             0.10.6
+version             0.10.8
 revision            1
 license             GPL-2
 set branch          [join [lrange [split ${version} .] 0 1] .]
@@ -22,8 +22,9 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  c90b0edbed9d2d1af9f3a0bb40eab6d9dcc8c215 \
-                    sha256  132788919667254b42c026ab39ab3c3a5be59be8575c05fa4b371ca8aed55825
+checksums           rmd160  0add27365ba86b6afd6c5b1f3a7571ec76ccbce3 \
+                    sha256  81c528fd1e5e03577acd80fb77798223945f043fd1d4e06920c71202eea90801 \
+                    size    634696
 
 depends_build       port:pkgconfig
 
@@ -32,6 +33,8 @@ depends_lib         path:lib/pkgconfig/glib-2.0.pc:glib2 \
                     port:exiv2
 
 gobject_introspection yes
+
+patchfiles          fix-darwin-check.patch
 
 use_autoreconf      yes
 autoreconf.args     -fvi
@@ -48,22 +51,17 @@ variant python27 description {Build Python2 bindings using Python 2.7} {
 
 default_variants +python27
 
-variant python34 conflicts python35 python36 description {Build Python3 bindings using Python 3.4} {
-    depends_lib-append      port:py34-gobject3
-    configure.env-append    PYTHON3_PATH=${prefix}/bin/python3.4
-}
-
-variant python35 conflicts python34 python36 description {Build Python3 bindings using Python 3.5} {
+variant python35 conflicts python36 description {Build Python3 bindings using Python 3.5} {
     depends_lib-append      port:py35-gobject3
     configure.env-append    PYTHON3_PATH=${prefix}/bin/python3.5
 }
 
-variant python36 conflicts python34 python35 description {Build Python3 bindings using Python 3.6} {
+variant python36 conflicts python35 description {Build Python3 bindings using Python 3.6} {
     depends_lib-append      port:py36-gobject3
     configure.env-append    PYTHON3_PATH=${prefix}/bin/python3.6
 }
 
-if {![variant_isset python34] && ![variant_isset python35]} {
+if {![variant_isset python35]} {
     default_variants +python36
 }
 

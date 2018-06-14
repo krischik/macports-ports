@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                libgphoto2
-version             2.5.15
+version             2.5.17
 categories          devel
 platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -18,9 +18,9 @@ homepage            http://www.gphoto.org/proj/libgphoto2/
 master_sites        sourceforge:project/gphoto/libgphoto/${version}
 use_bzip2           yes
 
-checksums           rmd160  0c6f2fbd9edfb3d75a72e3c012abc2039fb9d644 \
-                    sha256  b5f87bed3b53eaa610620f792e44c48193585ec68f902b8e6b2e8ca3205a7d61 \
-                    size    7005261
+checksums           rmd160  dc3aecd7749d6dda05c122108c78c078a60069cf \
+                    sha256  417464f0a313fa937e8a71cdf18a371cf01e750830195cd63ae31da0d092b555 \
+                    size    7299062
 
 depends_build       port:pkgconfig
 

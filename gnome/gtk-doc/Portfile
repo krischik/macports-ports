@@ -3,7 +3,8 @@
 PortSystem          1.0
 
 name                gtk-doc
-version             1.26
+version             1.28
+revision            1
 categories          gnome devel
 license             GPL-2+
 installs_libs       no
@@ -22,13 +23,14 @@ master_sites        gnome:sources/${name}/${version}/
 
 use_xz              yes
 
-checksums           rmd160  133a3d66d02ddf901dd4d514f15f7dff1b54a070 \
-                    sha256  bff3f44467b1d39775e94fad545f050faa7e8d68dc6a31aef5024ba3c2d7f2b7
+checksums           rmd160  cbf70474d838612da096ec98af69d3cfffe3da78 \
+                    sha256  911e29e302252c96128965ee1f4067d5431a88e00ad1023a8bc1d6b922af5715 \
+                    size    725972
 
 # set 'pbranch' to the desired perl version to use
-# currently 5.24 (#52081)
+# currently 5.26 (#55208)
 
-set pbranch         5.24
+set pbranch         5.26
 
 depends_build       port:pkgconfig \
                     path:lib/pkgconfig/glib-2.0.pc:glib2
@@ -36,32 +38,29 @@ depends_build       port:pkgconfig \
 depends_lib         port:libxml2 \
                     port:libxslt \
                     port:perl${pbranch} \
-                    port:python27 \
-                    port:py27-six \
-                    port:openjade \
-                    port:fop \
+                    port:python36 \
+                    port:py36-anytree \
+                    port:py36-lxml \
+                    port:py36-pygments \
+                    port:py36-six \
+                    port:dblatex \
                     port:docbook-xml \
-                    port:docbook-xsl \
+                    port:docbook-xsl-nons \
                     port:itstool \
                     port:source-highlight
 
-depends_test        port:py27-mock
+depends_test        port:py36-mock
 
 configure.perl      ${prefix}/bin/perl${pbranch}
-# gtk-doc now requires python 2.7 minimum, some perl and shell scripts converted to python
-# python 3 still not completely supported
-# use macports python 2.7 due to need for external modules
-configure.python    ${prefix}/bin/python2.7
+configure.python    ${prefix}/bin/python3.6
 configure.env-append XSLTPROC=${prefix}/bin/xsltproc
 configure.args      --with-xml-catalog=${prefix}/etc/xml/catalog \
                     --with-highlight=source-highlight \
                     --disable-silent-rules
 
 post-configure {
-    reinplace "s|^#!.*|#!${configure.python}|" \
-        ${worksrcpath}/tests/check.py \
-        ${worksrcpath}/tests/common.py \
-        ${worksrcpath}/tests/mk_to_db.py
+    reinplace "s|^#!.*|#!${configure.perl} -w|" \
+        ${worksrcpath}/tools/docpercentages.pl
 }
 
 test.run            yes

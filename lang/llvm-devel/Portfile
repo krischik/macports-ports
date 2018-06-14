@@ -9,11 +9,10 @@ PortGroup cmake         1.0
 
 set llvm_version        devel
 set llvm_version_no_dot devel
-set clang_executable_version 6.0
-set lldb_executable_version 6.0.0
+set clang_executable_version 7
+set lldb_executable_version 7.0.0
 name                    llvm-${llvm_version}
-revision                0
-subport                 clang-${llvm_version} { revision 3 }
+subport                 clang-${llvm_version} {}
 subport                 lldb-${llvm_version} {}
 set suffix              mp-${llvm_version}
 set sub_prefix          ${prefix}/libexec/llvm-${llvm_version}
@@ -82,7 +81,7 @@ if {${subport} eq "llvm-${llvm_version}"} {
 }
 
 fetch.type              svn
-svn.revision            314087
+svn.revision            329027
 
 depends_extract-append  port:subversion
 
@@ -95,7 +94,7 @@ svn.url                 https://llvm.org/svn/llvm-project/llvm/trunk
 #worksrcdir              release_${llvm_version_no_dot}
 #svn.url                 https://llvm.org/svn/llvm-project/llvm/branches/release_${llvm_version_no_dot}
 default_variants-append +assertions
-default_variants-append +debug
+#default_variants-append +debug
 
 #version                 ${llvm_version}.0
 #epoch                   1
@@ -122,7 +121,8 @@ patchfiles \
     0001-Set-the-Mach-O-CPU-Subtype-to-ppc7400-when-targeting.patch \
     0002-Define-EXC_MASK_CRASH-and-MACH_EXCEPTION_CODES-if-th.patch \
     0003-MacPorts-Only-Don-t-embed-the-deployment-target-in-t.patch \
-    0004-Fix-build-issues-pre-Lion-due-to-missing-a-strnlen-d.patch
+    0004-Fix-build-issues-pre-Lion-due-to-missing-a-strnlen-d.patch \
+    0005-Threading-Only-call-pthread_setname_np-on-SnowLeopar.patch
 
 if {${subport} eq "clang-${llvm_version}"} {
     patchfiles-append \
@@ -133,6 +133,8 @@ if {${subport} eq "clang-${llvm_version}"} {
         1005-Default-to-fragile-ObjC-runtime-when-targeting-darwi.patch \
         1006-Fixup-libstdc-header-search-paths-for-older-versions.patch \
         1007-Fix-build-issues-pre-Lion-due-to-missing-a-strnlen-d.patch \
+        2001-tsan-Fix-builds-against-older-macOS-SDKs-that-don-t-.patch \
+        2002-xray-Define-O_CLOEXEC-for-older-SDKs-that-don-t-have.patch \
         3001-Fix-local-and-iterator-when-building-with-Lion-and-n.patch \
         3002-Fix-missing-long-long-math-prototypes-when-using-the.patch \
         3003-implement-atomic-using-mutex-lock_guard-for-64b-ops-.patch \
@@ -162,7 +164,6 @@ if {${subport} eq "lldb-${llvm_version}"} {
         1006-Fixup-libstdc-header-search-paths-for-older-versions.patch \
         1007-Fix-build-issues-pre-Lion-due-to-missing-a-strnlen-d.patch \
         4001-https-llvm.org-bugs-show_bug.cgi-id-31433.patch \
-        4002-Fix-build-on-Mountain-Lion.patch \
         openmp-locations.patch
 
     # https://llvm.org/bugs/show_bug.cgi?id=25681
@@ -189,13 +190,12 @@ cmake.install_prefix ${sub_prefix}
 #     https://github.com/macports/macports-ports/pull/103
 # Also see:
 #     https://llvm.org/bugs/show_bug.cgi?id=31425
+#     https://trac.macports.org/ticket/53299
 configure.args-delete \
     -DCMAKE_INSTALL_NAME_DIR=${prefix}/lib \
     -DCMAKE_INSTALL_RPATH=${prefix}/lib \
     -DCMAKE_SYSTEM_PREFIX_PATH="${prefix}\;/usr"
 configure.args-append \
-    -DCMAKE_INSTALL_NAME_DIR=${cmake.install_prefix}/lib \
-    -DCMAKE_INSTALL_RPATH=${cmake.install_prefix}/lib \
     -DCMAKE_SYSTEM_PREFIX_PATH="${cmake.install_prefix}\;${prefix}\;/usr"
 
 configure.args-append \
@@ -235,6 +235,12 @@ if {${subport} eq "llvm-${llvm_version}"} {
         configure.args-append \
             -DCOMPILER_RT_BUILD_SANITIZERS=OFF
     }
+
+    if {${os.major} <= 11} {
+        # libfuzzer uses TLS, so disable it on Snow Leopard and earlier
+	configure.args-append \
+	    -DCOMPILER_RT_BUILD_LIBFUZZER=OFF
+    }
 } elseif {${subport} eq "lldb-${llvm_version}"} {
     #select.group        lldb
     #select.file         ${filespath}/mp-${subport}
@@ -263,6 +269,11 @@ compiler.blacklist *gcc* {clang < 602}
 if {${subport} eq "clang-${llvm_version}"} {
     # clang older than 3.5 fail due to https://llvm.org/bugs/show_bug.cgi?id=25753
     compiler.blacklist-append macports-clang-3.3 macports-clang-3.4
+}
+
+if {${subport} eq "lldb-${llvm_version}"} {
+    # Xcode 6.4's clang (602.0.53) fails to build lldb with 'thread-local storage is not supported for the current target'
+    compiler.blacklist-append {clang < 700}
 }
 
 # blacklist current and future versions if they're not available in order to
@@ -336,6 +347,10 @@ platform darwin {
 
     if {${subport} eq "clang-${llvm_version}" && ${os.major} <= 9} {
         patchfiles-append leopard-no-blocks.patch
+    }
+
+    if {${subport} eq "clang-${llvm_version}" && ${os.major} <= 14} {
+        patchfiles-append yosemite-no-clangd.patch
     }
 
     if {${os.major} < 11} {
@@ -418,6 +433,8 @@ if {${subport} eq "clang-${llvm_version}"} {
 
         delete ${destroot}${sub_prefix}/bin/clang
         file rename ${destroot}${sub_prefix}/bin/clang-${clang_executable_version} ${destroot}${sub_prefix}/bin/clang
+        reinplace "s|/bin/clang-${clang_executable_version}|/bin/clang|g" \
+            "${destroot}${sub_prefix}/lib/cmake/clang/ClangTargets-release.cmake"
     }
 }
 
@@ -456,7 +473,13 @@ post-destroot {
         set bin_filename [string map "${sub_prefix} ${prefix}" ${bin}]-${suffix}
         set exec_path [string map "${destroot}${sub_prefix} ${sub_prefix}" ${bin}]
 
-        xinstall -m 755 "${filespath}/llvm-bin" "${bin_filename}"
+        # see https://trac.macports.org/ticket/54985
+        if {${os.platform} eq "darwin" && [vercmp ${xcodeversion} 4.6] < 0} {
+             xinstall -m 755 "${filespath}/llvm-bin-compat" "${bin_filename}"
+        } else {
+             xinstall -m 755 "${filespath}/llvm-bin" "${bin_filename}"
+        }
+
         reinplace "s:EXEC_PATH:${exec_path}:" "${bin_filename}"
     }
 
@@ -466,9 +489,6 @@ post-destroot {
         #    set basename [string map "${destroot}${sub_prefix}/share/man/man1/ {}" ${man}]
         #    file rename ${man} ${destroot}${prefix}/share/man/man1/[string map ".1 -${suffix}.1" ${basename}]
         #}
-
-        # https://trac.macports.org/ticket/53673
-        ln -s llvm-dsymutil ${destroot}${sub_prefix}/bin/dsymutil
 
         # https://llvm.org/bugs/show_bug.cgi?id=19465
         if {[variant_isset polly]} {

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-paramiko
-version             2.3.1
+version             2.4.1
 revision            0
 categories-append   net security
 platforms           darwin
@@ -29,8 +29,8 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  2cfde831d73b708050969b5c0aedae9f3629f4e4 \
-                    sha256  fa6b4f5c9d88f27c60fd9578146ff24e99d4b9f63391ff1343305bfd766c4660
+checksums           rmd160  bb44b3ed135910faf5980b6421a4e3e2fae0d571 \
+                    sha256  33e36775a6c71790ba7692a73f948b329cf9295a72b0102144b031114bd2a4f3
 
 if {${name} ne ${subport}} {
     depends_build-append \

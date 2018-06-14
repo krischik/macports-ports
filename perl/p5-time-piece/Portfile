@@ -3,15 +3,16 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24 5.26
-perl5.setup         Time-Piece 1.3202
+perl5.branches      5.26
+perl5.setup         Time-Piece 1.3204
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 
 description         Object-oriented time objects
 long_description    ${description}
 
-checksums           rmd160  ce56ff61c40aed3ae2257bb4bbdb2c4e55ee0523 \
-                    sha256  1f682a1c8938a80c1bccfcecdc1edd8c226e2509157e7d6370f70412dd6452e1
+checksums           rmd160  eb515d0844bf4e66f10cf52a3b6808a55aa9b07c \
+                    sha256  d7485ea520f913c932032a37ea1d4611ac34bbfbef10a00d392748f744adeabd \
+                    size    34475
 
 platforms           darwin

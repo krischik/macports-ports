@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.24 5.26
-perl5.setup         Math-MPFR 3.36
+perl5.branches      5.26
+perl5.setup         Math-MPFR 4.03
 maintainers         nomaintainer
 categories-append   math
 license             {Artistic-1 GPL}
@@ -15,8 +15,9 @@ long_description    This module wraps the MPFR library functions. The  \
 
 platforms           darwin
 
-checksums           rmd160  49435140c587184ecebe090a3cc871fc7da8700a \
-                    sha256  7f0c0e1f95663b4e9ae8db576df82d6e2f6616456182424a264a43250cc45c03
+checksums           rmd160  8276548f76a262fb0e70dc1c908b2569a73c7f4b \
+                    sha256  5573b4fad0995aaa4a5b28a806a108085b131f0ecf2da20dfa245b67701cfd3a \
+                    size    154443
 
 if {${perl5.major} != ""} {
     depends_build-append \

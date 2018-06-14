@@ -7,7 +7,7 @@ PortGroup           muniversal 1.0
 name                OpenBLAS
 categories          math science
 license             BSD
-maintainers         nicos {michaelld @michaelld} openmaintainer
+maintainers         {nicos @NicosPavlov} {michaelld @michaelld} openmaintainer
 description         OpenBLAS is an optimized BLAS library based on GotoBLAS2
 long_description    ${description}
 platforms           darwin
@@ -19,10 +19,11 @@ archive_sites
 subport OpenBLAS-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    xianyi OpenBLAS c460027dbeadc3babd6a1e7161a87264a060ee44
-    version         20171010
-    checksums       rmd160 cc3053b216ec05091b4b67e0fd45d68a03b61649 \
-                    sha256 43d6698ddbb0b7bba660bae23501a6a7fe87aa3045c364b23df786d062b94d8b
+    github.setup    xianyi OpenBLAS dbafe6357bf072eb648c00550fd0a920f8e4bd6e
+    version         20180502
+    checksums       rmd160 afb200a2c9e243129ca9c4d24c92662442282b92 \
+                    sha256 dd0c34299373b4d8113c68aaa1ff9518e5af3441b7a09445f4292c204a693131 \
+                    size   11789045
 
     name            ${github.project}-devel
     conflicts       OpenBLAS
@@ -30,7 +31,7 @@ if {[string first "-devel" $subport] > 0} {
     patchfiles      patch-libnoarch.devel.diff \
                     patch-linkLib.devel.diff
 
-    livecheck.url   ${github.homepage}/commits/develop.atom
+    github.livecheck.branch develop
 
 } else {
 
@@ -70,11 +71,9 @@ foreach this_gcc_version_no_dot ${GCC_VERSIONS_NO_DOT} {
     } else {
         set this_description "Use gcc${this_gcc_version_no_dot} for the compiler suite"
     }
-    eval [subst {
-        variant gcc${this_gcc_version_no_dot} \
-            conflicts ${this_conflicts} \
-            description ${this_description} {}
-    }]
+    variant gcc${this_gcc_version_no_dot} \
+        conflicts {*}${this_conflicts} \
+        description ${this_description} {}
 }
 
 # set default +gcc* variant: default to +gcc6 if not other +gcc*
@@ -118,6 +117,9 @@ if {[variant_isset clang]} {
 
     # use selected +gcc* for Fortran only
     depends_build-append    port:gcc${GCC_VER_NO_DOT}
+    # add libgcc as a runtime dependency
+    depends_lib-append      port:libgcc
+
     configure.fc            ${prefix}/bin/gfortran-mp-${GCC_VER_DOT}
 
     if {[vercmp $xcodeversion 5.0] >= 0} {

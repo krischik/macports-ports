@@ -3,10 +3,10 @@
 PortSystem          1.0
 
 name                qore
-version             0.8.13
+version             0.8.13.4
 categories          lang
 license             {LGPL-2.1 MIT}
-maintainers         davidnichols
+maintainers         {davidnichols @davidnich}
 use_bzip2           yes
 description         multi-threaded embedable scripting language
 long_description    Qore is a scripting language designed for multi-threading and SMP scalability
@@ -15,9 +15,9 @@ platforms           darwin
 master_sites        https://github.com/qorelanguage/qore/releases/download/release-${version}
 conflicts           qore-devel
 
-checksums           md5 9ad5fff3ca5f46f95f100e2e3c83b6ab \
-                    sha1 0056aaae57f7fadd87a63a6e8f2bbc161b0c40b6 \
-                    rmd160 d25bb8a9a3ef30c8e960a9a61fca079ac78503ac
+checksums           md5 7a0885930afba0cf84e99b8d87900f4f \
+                    sha1 577fccbb68eaf48a7270f268a32811c25329c558 \
+                    rmd160 294c1c5229c34767263e98f2b954782c0e2d73ae
 
 depends_build       port:flex \
                     port:bison

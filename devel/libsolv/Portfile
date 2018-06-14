@@ -4,10 +4,10 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           cmake 1.0
 
-github.setup        openSUSE libsolv 0.6.29
+github.setup        openSUSE libsolv 0.6.34
 
-checksums           rmd160  85527f649ee9de4888bf4b8a3cb922c3477d0e69 \
-                    sha256  7506adfdddd87ce50a0aff8237a30d43c60442b03575fd3a8e0b2cf7322b6e4f
+checksums           rmd160  c42a451250dc06fb183fb3cf5a6c197671d70e44 \
+                    sha256  66193bb3a6ab6ec39e90cb6c6cfb799d47abfe60627452696f9b89a7ad1a9981
 
 maintainers         cal {ijackson @JacksonIsaac} openmaintainer
 categories          devel math

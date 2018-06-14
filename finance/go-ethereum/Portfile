@@ -1,45 +1,28 @@
-# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
-PortSystem 1.0
+PortSystem          1.0
+PortGroup           github 1.0
 
-name				go-ethereum
-version				1.7.2
-revision			0
-categories			finance crypto
-license				GPL-3
-platforms			darwin
-maintainers			openmaintainer krischik
-description			Official golang implementation of the Ethereum protocol.
-long_description	Official golang implementation of the Ethereum protocol.
+github.setup        ethereum go-ethereum 1.8.2 v
 
-homepage			https://github.com/ethereum/${name}
-master_sites		${homepage}/archive/
-distfiles			v${version}.tar.gz
-distname			go-ethereum-${version}
+categories          finance
+platforms           darwin
+license             GPL-3+ LGPL-3+
+maintainers         {umeshksingla @umeshksingla} openmaintainer
+description         Official Go implementation of the Ethereum protocol
+long_description    Ethereum is a public, blockchain-based distributed \
+                    computing platform and operating system that runs \
+                    smart contracts. Go Ethereum is one of the three \
+                    original implementations of the Ethereum protocol.
+homepage            https://geth.ethereum.org/
 
-checksums			md5		edcf8b254bfd0e5902ccbbab3a1920e0 \
-					sha1	efc1ca9f2bb91b3c49a96543368ba70ed322e2de \
-					rmd160	85a81a059fd70595d4955673b891cd0ef48b943d \
-					sha256	456ff0e6f495a69b4df11618156010d6f26ccbaba39e544c95108942b10897dc
+checksums           rmd160  516ba93add884fad6194bc4726214080c0ebfcd7 \
+                    sha256  95db57b811a676d820ab2ad7d3cbc3da40481724ec35e5171309c3f67e5f2d15
 
-depends_build		port:go
+depends_build       port:go
 
-use_configure		no
-build.cmd			make all
+use_configure       no
 
 destroot {
-	xinstall -d ${destroot}${prefix}/bin
-	xinstall -m 755 ${worksrcpath}/build/bin/abigen		${destroot}${prefix}/bin/abigen
-	xinstall -m 755 ${worksrcpath}/build/bin/bootnode	${destroot}${prefix}/bin/bootnode
-	xinstall -m 755 ${worksrcpath}/build/bin/evm		${destroot}${prefix}/bin/evm
-	xinstall -m 755 ${worksrcpath}/build/bin/faucet		${destroot}${prefix}/bin/faucet
-	xinstall -m 755 ${worksrcpath}/build/bin/geth		${destroot}${prefix}/bin/geth
-	xinstall -m 755 ${worksrcpath}/build/bin/puppeth	${destroot}${prefix}/bin/puppeth
-	xinstall -m 755 ${worksrcpath}/build/bin/rlpdump	${destroot}${prefix}/bin/rlpdump
-	xinstall -m 755 ${worksrcpath}/build/bin/swarm		${destroot}${prefix}/bin/swarm
-	xinstall -m 755 ${worksrcpath}/build/bin/wnode		${destroot}${prefix}/bin/wnode
+    xinstall -W ${worksrcpath}/build/bin evm geth rlpdump puppeth swarm ${destroot}${prefix}/bin
 }
-
-############################################################ {{{1 ###########
-# vim: set nowrap tabstop=4 shiftwidth=4 softtabstop=4 noexpandtab :
-# vim: set textwidth=0 filetype=tcl foldmethod=marker nospell :

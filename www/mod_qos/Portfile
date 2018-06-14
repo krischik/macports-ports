@@ -3,8 +3,7 @@
 PortSystem          1.0
 
 name                mod_qos
-version             11.43
-revision            2
+version             11.54
 categories          www
 license             Apache-2
 maintainers         nomaintainer
@@ -15,8 +14,8 @@ platforms           darwin
 homepage            http://mod-qos.sourceforge.net/index.html
 master_sites        sourceforge:project/mod-qos/
 
-checksums           rmd160  bfbcc9831dd1256e8060f20ddc49fc5a31082fa6 \
-                    sha256  323ad4879c4574aa6b73cf40afaf945bd2915d7ac71733ea03cc9b416a1679d9
+checksums           rmd160  af4300621d5a3e67601f8428c0966429bc09e946 \
+                    sha256  3f1816f93beab7e9d839a8578d9f0c64c31774469904a9e2950d90962dc9a4d6
 
 depends_build       port:autoconf \
                     port:automake
@@ -24,7 +23,7 @@ depends_build       port:autoconf \
 depends_lib         port:apache2 \
                     port:db46 \
                     port:libpng \
-                    path:${prefix}lib/libssl.dylib:openssl \
+                    path:lib/libssl.dylib:openssl \
                     port:pcre
 
 patchfiles          patch-tools-Makefile.in.diff
@@ -32,6 +31,8 @@ patchfiles          patch-tools-Makefile.in.diff
 configure.dir       ${worksrcpath}/tools
 configure.env       LDFLAGS=-L${prefix}/lib/db46
 build.dir           ${configure.dir}
+
+pre-configure { copy ${filespath}/aclocal.m4 ${worksrcpath}/tools }
 
 if {[variant_isset apache22]} {
     set apxs        ${prefix}/apache22/bin/apxs
@@ -63,3 +64,7 @@ post-destroot {
     xinstall -m 644 {*}[glob ${worksrcpath}/doc/images/*] \
         ${destroot}${prefix}/share/doc/${name}/images
 }
+
+livecheck.type      regex
+livecheck.url       https://sourceforge.net/projects/mod-qos/rss
+livecheck.regex     ${name}-(\[0-9.\]+)${extract.suffix}

@@ -22,7 +22,7 @@ if {${subport} eq "gnss-sdr"} {
         This port is kept up with the GNSS-SDR release, which is typically updated every few months. This version compiles against the gnuradio port, which represents the current GNU Radio release.
 
     github.setup        gnss-sdr gnss-sdr 0.0.9 v
-    revision            3
+    revision            7
     checksums           rmd160 695cab70f3fe597e53cc772bfb96096e6fe0d139 \
                         sha256 5110f66c8b8a63ee5db5569f0b1f8040f36e3541a3a249d08f3154bc05317184
     github.tarball_from tags
@@ -48,7 +48,7 @@ subport gnss-sdr-devel {
     name                gnss-sdr-devel
     github.setup        gnss-sdr gnss-sdr 32e4d227af032365cfd7f9291d9f2c2fca57d99d
     version             20170225
-    revision            3
+    revision            7
     checksums           rmd160 695cab70f3fe597e53cc772bfb96096e6fe0d139 \
                         sha256 5110f66c8b8a63ee5db5569f0b1f8040f36e3541a3a249d08f3154bc05317184
 
@@ -70,10 +70,11 @@ subport gnss-sdr-next {
         This port is kept up with the GNSS-SDR GIT next branch, which is typically updated daily to weekly.  This version of GNSS-SDR generally contains fixes and new features that will be incorporated in an upcoming release, and compiles against the gnuradio-next port, which represents GNU Radio GIT next branch.  This port may or not compile or function correctly, as it represents a work in progress.  If it does not work, check back in a few days.  Or try deactivating the currently active gnss-sdr and gnuradio ports, cleaning any current builds, and trying again.
 
     name                gnss-sdr-next
-    github.setup        gnss-sdr gnss-sdr e352978777f88f3dd7ff9539d6a872277799d92f
-    version             20171003
-    checksums           rmd160 549133d74487e8c184d0379a12d4df311d14208b \
-                        sha256 a20f22a012b9068323f3f7d8dbc3183c5d74e6dff3d9350088c4d538f97f1f66
+    github.setup        gnss-sdr gnss-sdr 8b7bca9ea56a7ff1ab2dc77ce1547f803756923d
+    version             20180423
+    checksums           rmd160 bd46c5e78b411a56937aa2a9966f027b65eeae2c \
+                        sha256 ecfdb1ab6278b82038d3dea1446804bfb9c39c6693aa6f49d5395e3e0f3aeb2e \
+                        size   3410167
 
     conflicts           gnss-sdr gnss-sdr-devel
 
@@ -81,9 +82,28 @@ subport gnss-sdr-next {
 
     require_active_variants port:gnuradio-next uhd
 
-    # overload the github livecheck URL with the next branch.
+    # add matio as a dependency
 
-    livecheck.url   ${github.homepage}/commits/next.atom
+    depends_lib-append  \
+        port:matio
+
+    configure.args-append \
+        -DMATIO_INCLUDE_DIR=${prefix}/include \
+        -DMATIO_LIBRARY=${prefix}/lib/libmatio.dylib
+
+    # patch to allow specification of version info
+
+    patchfiles-append   patch-CMakeLists.txt.diff
+
+    # specify version info
+
+    configure.args-append \
+        -DGIT_BRANCH="next-MacPorts" \
+        -DGIT_COMMIT_HASH="[string range ${github.version} 0 7](${version})"
+
+    # overload the github livecheck branch
+
+    github.livecheck.branch next
 
 }
 
@@ -91,14 +111,19 @@ subport gnss-sdr-next {
 
 homepage            http://gnss-sdr.org
 
-depends_build-append port:pkgconfig
+depends_build-append \
+    port:pkgconfig \
+    port:swig-python
 
 depends_lib-append  \
+    port:boost \
     port:armadillo \
     port:google-glog \
     path:lib/libuhd.dylib:uhd \
-    port:boost \
     port:gnutls
+
+depends_test-append \
+    port:cppunit
 
 # require specific variants
 
@@ -118,6 +143,31 @@ configure.args-append \
     -DENABLE_OWN_GLOG=OFF \
     -DENABLE_GENERIC_ARCH=OFF
 
+# disable building unit tests, which errors out as of 2018-01-18.
+# see also: https://trac.macports.org/ticket/55714
+
+configure.args-append \
+    -DENABLE_UNIT_TESTING=OFF
+
+# specify dependency arguments
+
+configure.args-append \
+    -DARMADILLO_INCLUDE_DIR=${prefix}/include \
+    -DARMADILLO_LIBRARY=${prefix}/lib/libarmadillo.dylib \
+    -DBoost_INCLUDE_DIR=${prefix}/include \
+    -DBoost_LIBRARY_DIR_RELEASE=${prefix}/lib \
+    -DGLOG_INCLUDE_DIR=${prefix}/include/glog \
+    -DGLOG_LIBRARY=${prefix}/lib/libglog.dylib \
+    -DGNUTLS_INCLUDE_DIR=${prefix}/include \
+    -DGNUTLS_LIBRARY=${prefix}/lib/libgnutls.dylib \
+    -DGNUTLS_OPENSSL_LIBRARY=${prefix}/lib/libgnutls-openssl.dylib \
+    -DMATIO_INCLUDE_DIR=${prefix}/include \
+    -DMATIO_LIBRARY=${prefix}/lib/libmatio.dylib \
+    -DUHD_INCLUDE_DIR=${prefix}/include \
+    -DUHD_LIBRARIES=${prefix}/lib/libuhd.dylib \
+    -DVOLK_GNSSSDR_INCLUDE_DIR=${prefix}/include \
+    -DVOLK_GNSSSDR_LIBRARIES=${prefix}/lib/libvolk_gnsssdr.dylib
+
 # specify the Python version to use
 
 configure.args-append \
@@ -126,14 +176,7 @@ configure.args-append \
 # enable default variants: all except +docs, +debug, and +universal
 # do not enable +docs because it requires a non-standard variant for doxygen.
 
-default_variants +opencl
-
-# release and devel can use use gr-osmosdr, while next can't
-# (because gr-osmosdr can't use gnuradio-next)
-
-if {${subport} ne "gnss-sdr-next"} {
-    default_variants +osmosdr
-}
+default_variants +opencl +osmosdr
 
 variant docs description "Install ${name} documentation" {
 
@@ -179,22 +222,14 @@ if {![variant_isset opencl]} {
 
 }
 
-variant osmosdr description "Install ${name} with support for OsmoSDR and other front-ends (RTL-based dongles, HackRF, bladeRF, etc.) as signal source (experimental). NOTE: Does not work with gnss-sdr-next." {
+variant osmosdr description "Install ${name} with support for OsmoSDR and other front-ends (RTL-based dongles, HackRF, bladeRF, etc.) as signal source." {
 
-    if {${subport} ne "gnss-sdr-next"} {
+    depends_build-append \
+        port:gr-osmosdr
 
-        depends_build-append \
-            port:gr-osmosdr
+    configure.args-append \
+        -DENABLE_OSMOSDR=ON
 
-        configure.args-append \
-            -DENABLE_OSMOSDR=ON
-
-    } else {
-
-        ui_error "$subport variant +osmosdr is not viable because port:gr-osmosdr cannot use port:gnuradio-next."
-        error "unsupported variant"
-
-    }
 }
 
 if {![variant_isset osmosdr]} {

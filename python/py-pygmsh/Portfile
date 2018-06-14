@@ -6,7 +6,8 @@ PortGroup           python 1.0
 
 name                py-pygmsh
 set real_name       pygmsh
-github.setup        nschloe pygmsh 4.0.3 v
+github.setup        nschloe pygmsh 4.1.7 v
+supported_archs     noarch
 
 worksrcdir          ${real_name}-${version}
 distfiles           ${real_name}-${version}${extract.suffix}
@@ -23,8 +24,8 @@ python.versions     27 35 36
 
 platforms           darwin
 
-checksums           rmd160  1c6036b54b4eda3d5f2e27a7ce303e679c7ea973 \
-                    sha256  9bd2bc7738ddad5906778d05f77d92fd7a9c89e066870e2f841c4cf95cf96376
+checksums           rmd160  fd08fab52c43578fd5372f8e5fff092b27b7a4c7 \
+                    sha256  bc720965adbbd363fc857cb52bf080f06fc11db40ac07db89ea6f2fba85dae68
 
 if {${name} ne ${subport}} {
     depends_lib-append  \

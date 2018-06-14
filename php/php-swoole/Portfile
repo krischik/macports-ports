@@ -3,26 +3,38 @@
 PortSystem              1.0
 PortGroup               php 1.1
 
+epoch                   1
 name                    php-swoole
-version                 1.9.21
-revision                2
 categories-append       net devel
 platforms               darwin
 maintainers             {ryandesign @ryandesign} openmaintainer
 license                 Apache-2
 
-php.branches            5.3 5.4 5.5 5.6 7.0 7.1
+php.branches            5.3 5.4 5.5 5.6 7.0 7.1 7.2
 php.pecl                yes
 
-checksums               rmd160  d5bf1d1a6b1bc4853fc0dbabae11bf8a75bcdd7a \
-                        sha256  4e8dbd491693c2cc34e8af657f759ca661db3a25860f96242f6c62db8008b70b
+if {[vercmp ${php.branch} 7] >= 0} {
+    version             2.1.3
+    revision            0
+    checksums           rmd160  44f46102a220fcde458e10fd5d8cc0f9198e45ef \
+                        sha256  84a3af11d3424224c5814e67765a5a5687710a156bc9ad6ec8d9382452568c82 \
+                        size    830565
+} else {
+    version             1.10.4
+    revision            0
+    checksums           rmd160  7b0a1ffd4c65de73c57be0dae42ba86d3aa9ea85 \
+                        sha256  015121fb9439ec92e23ddd99d61481ab3aacbec2beb678e2e726f1b5b699913b \
+                        size    729676
+}
 
 description             an event-driven asynchronous & concurrent & coroutine networking engine with high performance for PHP
 
 long_description        ${name} is ${description}.
 
-patchfiles              clockid_t.patch
+if {${name} ne ${subport}} {
+    depends_lib-append  port:zlib
 
-use_parallel_build      yes
+    compiler.blacklist  *gcc-4.0 *gcc-4.2
 
-compiler.blacklist      *gcc-4.0 *gcc-4.2
+    use_parallel_build  yes
+}

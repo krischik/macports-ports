@@ -64,8 +64,8 @@ pre-configure {
         } else {
             if {[variant_exists universal] && [variant_isset universal]} {
                 global merger_configure_args
-                eval lappend merger_configure_args(i386)   ${qt5.spec_cmd}${qt_qmake_spec_32}
-                eval lappend merger_configure_args(x86_64) ${qt5.spec_cmd}${qt_qmake_spec_64}
+                lappend merger_configure_args(i386)   {*}${qt5.spec_cmd}${qt_qmake_spec_32}
+                lappend merger_configure_args(x86_64) {*}${qt5.spec_cmd}${qt_qmake_spec_64}
             } else {
                 configure.args-append "${qt5.spec_cmd}${qt_qmake_spec}"
             }
@@ -219,13 +219,13 @@ pre-configure {
     # determine of qmake's default and user requests are compatible; override qmake if necessary
     if { ${this_debug} && !${base_debug}  } {
         puts ${cache} "QT_CONFIG+=debug_and_release build_all debug"
-        puts ${cache} "CONFIG+=debug"
+        puts ${cache} "CONFIG+=debug_and_release build_all"
         puts ${cache} "CONFIG-=release"
     }
 
     if { !${this_debug} && ${base_debug}  } {
         puts ${cache} "QT_CONFIG-=debug_and_release build_all debug"
-        puts ${cache} "CONFIG-=debug"
+        puts ${cache} "CONFIG-=debug debug_and_release build_all"
         puts ${cache} "CONFIG+=release"
     }
 
