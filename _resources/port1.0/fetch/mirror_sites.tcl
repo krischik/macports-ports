@@ -50,7 +50,6 @@ set portfetch::mirror_sites::sites(cpan) {
     ftp://xyz.csail.mit.edu/pub/CPAN/modules/by-module/
     http://mirrors.mit.edu/CPAN/modules/by-module/
     http://mirror.ox.ac.uk/sites/www.cpan.org/modules/by-module/
-    ftp://ftp.sunet.se/pub/lang/perl/CPAN/modules/by-module/
     http://mirror.uoregon.edu/CPAN/modules/by-module/
     http://mirror.uta.edu/CPAN/modules/by-module/
     http://cpan.cs.utah.edu/modules/by-module/
@@ -262,7 +261,7 @@ set portfetch::mirror_sites::sites(gnu) {
     http://mirror.cc.columbia.edu/pub/software/gnu/
     http://mirror.facebook.net/gnu/
     ftp://ftp.funet.fi/pub/gnu/prep/
-    http://ftp.gnu.org/gnu/
+    https://ftp.gnu.org/gnu/
     ftp://ftp.gnu.org/old-gnu/
     ftp://ftp.informatik.hu-berlin.de/pub/gnu/gnu/
     http://mirrors.ibiblio.org/gnu/ftp/gnu/

@@ -4,10 +4,10 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           bitbucket 1.0
 
-bitbucket.setup     ruamel yaml 0.15.40
-checksums           rmd160 aef27302c55a3dc19a6a02304d51c791a7ac04ad \
-                    sha256 7349193b7f6b3f88f84fc91a98989542e75c1d6d015eebd9f9ae8343c331bb04 \
-                    size   361673
+bitbucket.setup     ruamel yaml 0.15.44
+checksums           rmd160 78118aa687fac59d7046e5100e07a7ced1e8a8b3 \
+                    sha256 51d9435dfccf55e679456181869019221daf409b1e74640d5dfa97d5976f823b \
+                    size   363021
 
 name                py-ruamel-yaml
 license             MIT
@@ -20,7 +20,7 @@ long_description    ${description}. \
 
 homepage            http://yaml.readthedocs.io/
 
-python.versions     27 36
+python.versions     27 36 37
 
 if {${name} ne ${subport}} {
     depends_build-append    port:py${python.version}-setuptools

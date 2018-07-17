@@ -3,10 +3,10 @@
 PortSystem          1.0
 
 name                gradle
-version             4.8
+version             4.9
 categories          devel java groovy
 license             Apache-2
-maintainers         {@amake madlon-kay.com:aaron+macports} openmaintainer
+maintainers         {amake @amake} openmaintainer
 
 description         An open-source build system that is based on the Groovy language
 long_description    Gradle is a build system which offers you ease, power and freedom. \
@@ -20,9 +20,9 @@ platforms           darwin
 distname            ${name}-${version}-bin
 master_sites        https://services.gradle.org/distributions
 
-checksums           rmd160  317bd8d2b67ae5b665638f55844c93bcaacd5b9a \
-                    sha256  f3e29692a8faa94eb0b02ebf36fa263a642b3ae8694ef806c45c345b8683f1ba \
-                    size    75885015
+checksums           rmd160  4d1022a54c08e75c46aa2eb7c733e30583c7597b \
+                    sha256  e66e69dce8173dd2004b39ba93586a184628bc6c28461bc771d6835f7f9b0d28 \
+                    size    76334709
 
 worksrcdir          ${name}-${version}
 
@@ -52,11 +52,6 @@ destroot    {
     # Symlink gradle into the bin directory
     ln -s ${prefix}/share/java/${name}/bin/gradle ${destroot}${prefix}/bin
 }
-
-notes "
-Remember to set the environment variable GRADLE_HOME to the path to the gradle\
-distribution: ${prefix}/share/java/${name}
-"
 
 livecheck.type  regex
 livecheck.url   ${master_sites}

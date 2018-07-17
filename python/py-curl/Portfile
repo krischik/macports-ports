@@ -2,13 +2,14 @@
 
 PortSystem          1.0
 PortGroup           python 1.0
+PortGroup           active_variants 1.1
 
 name                py-curl
 version             7.43.0.2
 categories-append   net devel
 platforms           darwin
 license             {MIT LGPL}
-maintainers         {gmail.com:yan12125 @yan12125}
+maintainers         {yan12125 @yan12125} openmaintainer
 
 description         python interface to libcurl
 long_description    Python module interface to the cURL library which \
@@ -34,6 +35,10 @@ if {${name} ne ${subport}} {
         port:coreutils
 
     depends_lib-append  port:curl
+
+    # pycurl accepts curl with OpenSSL/GnuTLS/NSS or no SSL, but not other SSL
+    # implementations
+    require_active_variants curl {} {darwinssl wolfssl}
 
     patchfiles-append \
         patch-allow-disable-tests.diff \

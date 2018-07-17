@@ -35,11 +35,11 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    github.setup    zeromq cppzmq 837c0c9a97e9d5a8d4b9a4035c1a1e495d85d512
-    version         20180615
-    checksums       rmd160 788f3d9a869a33d7977ce8aafa1eedec119737d5 \
-                    sha256 448a0ff58fdf38da6177b5858c9a6cb409aad9aa7495d98369f13aaad7806703 \
-                    size   22771
+    github.setup    zeromq cppzmq 213da0b04ae3b4d846c9abc46bab87f86bfb9cf4
+    version         20180715
+    checksums       rmd160 2841b8395b290cd895885881864b34e399be7d10 \
+                    sha256 5634462ee21a9dad3baf0db68812a8ac1262353d2039e2af402ff2d356b26ca2 \
+                    size   22897
 
     conflicts       ${name}
     long_description ${description}: \
