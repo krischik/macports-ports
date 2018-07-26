@@ -46,16 +46,11 @@ subport gnss-sdr-devel {
         This port is kept up with the GNSS-SDR GIT master branch, which is typically updated daily to weekly.  This version of GNSS-SDR generally contains fixes and new features that will be incorporated in an upcoming release, and compiles against the gnuradio-devel port, which represents GNU Radio GIT master branch.  This port may or not compile or function correctly, as it represents a work in progress.  If it does not work, check back in a few days.  Or try deactivating the currently active gnss-sdr and gnuradio ports, cleaning any current builds, and trying again.
 
     name                gnss-sdr-devel
-    github.setup        gnss-sdr gnss-sdr 32e4d227af032365cfd7f9291d9f2c2fca57d99d
-    version             20170225
-    revision            8
-    checksums           rmd160 695cab70f3fe597e53cc772bfb96096e6fe0d139 \
-                        sha256 5110f66c8b8a63ee5db5569f0b1f8040f36e3541a3a249d08f3154bc05317184
-
-    # github changed the way tarballs are generated
-    # remove this at next update
-    # see also: https://trac.macports.org/ticket/54839
-    dist_subdir         ${name}/${version}_1
+    github.setup        gnss-sdr gnss-sdr 31311aef7c4602a4118aa0d7eb154720fd969fc0
+    version             20170906
+    checksums           rmd160 37e9c1d77b09c82634f2c37c292177e280fe291d \
+                        sha256 2e0ec9cb1d159043913ac596cec563bbde3a229d4cc05423b5ae010ff50db0ae \
+                        size   3310525
 
     conflicts           gnss-sdr gnss-sdr-next
 
@@ -70,11 +65,11 @@ subport gnss-sdr-next {
         This port is kept up with the GNSS-SDR GIT next branch, which is typically updated daily to weekly.  This version of GNSS-SDR generally contains fixes and new features that will be incorporated in an upcoming release, and compiles against the gnuradio-next port, which represents GNU Radio GIT next branch.  This port may or not compile or function correctly, as it represents a work in progress.  If it does not work, check back in a few days.  Or try deactivating the currently active gnss-sdr and gnuradio ports, cleaning any current builds, and trying again.
 
     name                gnss-sdr-next
-    github.setup        gnss-sdr gnss-sdr ee90b739b5fffbb219eff152e45a8025e3dc68c5
-    version             20180714
-    checksums           rmd160 a4db2cdbe348f427ed2cc94901cd40a8f20de562\
-                        sha256 cea4c59da732a2685d34fd9736ce9862f644bde6fc67865fb24eadc57aea7b08\
-                        size   3448548
+    github.setup        gnss-sdr gnss-sdr 23a036f58f8af54598a7aa5c9a2d2cc69be44519
+    version             20180720
+    checksums           rmd160 243e8642a6fb5576e931c4a19029cfe80692c9a1 \
+                        sha256 9445ac98fec73e469981eb3ff8b24891bca9f377c49abdc6c23a0afa2ea33457 \
+                        size   3450483
 
     conflicts           gnss-sdr gnss-sdr-devel
 
