@@ -32,11 +32,11 @@ if {${name} eq ${subport}} {
 
 subport direnv-devel {
 
-    github.setup        direnv direnv dbbe5def087a208bcdc2d267239e855ace0d0016
-    version             20180709
-    checksums           rmd160 57fa49012ab734032360d21f58fe5d6a22aefc85 \
-                        sha256 bbd10a9d4a013b9a867dc570cb86216ba20cd107df213aa878949b2243724a67 \
-                        size   94228
+    github.setup        direnv direnv 51b0874b09f8a04f504ef834ee955498fe4e951e
+    version             20180731
+    checksums           rmd160 0f8ea8bcf0e249b62c35f3b23fc67db1bcbe3b71 \
+                        sha256 c816ede8ebf115883e04a8f3b409da5d3f0f48e3d5ef6fd9877ba203c0fb5270 \
+                        size   94274
 
     conflicts           direnv
     long_description ${long_description}: \

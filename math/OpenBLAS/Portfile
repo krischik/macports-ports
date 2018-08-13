@@ -19,11 +19,11 @@ archive_sites
 subport OpenBLAS-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    xianyi OpenBLAS 66fcdd5be8621b532d80f9d60269eb33405794eb
-    version         20180722
-    checksums       rmd160 63a5fda3030c5164d86f03c03c38265a6c7182e2\
-                    sha256 d2c79e43160f26d4819c114d1d0fa7a9e8166c9626f95b724eb425290b2bd8fc\
-                    size   11816807
+    github.setup    xianyi OpenBLAS ee955757f9e86aed417ba4b8d2fa0ce8c917e9b2
+    version         20180805
+    checksums       rmd160 e4985b47cd2d89556c5339cd1ec94bf9cb3c2a47\
+                    sha256 78b4a13d511e17a541c5b7faf039007d0c11a0d678f728ca26582fc989ff33f4\
+                    size   11815663
 
     name            ${github.project}-devel
     conflicts       OpenBLAS
@@ -35,10 +35,10 @@ if {[string first "-devel" $subport] > 0} {
 
 } else {
 
-    github.setup    xianyi OpenBLAS 0.3.1 v
-checksums           rmd160 ce8a4c0501b468ce847c60259e5f7c2c782bea9e \
-                    sha256 39f9231746231c4dd7deefdd17d49cd87d27a12fb607eeee7d19f8c61e38c1d3 \
-                    size   11814036
+    github.setup    xianyi OpenBLAS 0.3.2 v
+    checksums       rmd160 710b33345a795d95b9f3ca6fa9d5cd848dc66afe \
+                    sha256 58a27233e6c1ae5731cc28d731cca2b1ce6ab7c070d34c7dc4a69e2d459d402c \
+                    size   11816662
 
     conflicts       OpenBLAS-devel
 

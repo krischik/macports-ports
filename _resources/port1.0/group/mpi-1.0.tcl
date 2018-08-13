@@ -155,7 +155,7 @@ proc mpi_variant_name {} {
 
 proc mpi.enforce_variant {args} {
     global mpi.required_variants
-    set mpi.required_variants $args
+    lappend mpi.required_variants $args
 }
 
 proc mpi.action_enforce_variants {ports} {
@@ -177,8 +177,6 @@ proc mpi.action_enforce_variants {ports} {
                 ui_error "Install $portname +$mympi"
                 return -code error "$portname +$mympi not installed"
             }
-
-            compilers.action_enforce_c $portname
         } else {
             ui_error "Internal error: '$portname' does not refer to an installed port."
         }

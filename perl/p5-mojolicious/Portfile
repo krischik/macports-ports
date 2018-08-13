@@ -5,35 +5,20 @@ PortGroup           perl5 1.0
 
 perl5.branches      5.26
 
-perl5.setup         Mojolicious 7.88 ../../authors/id/S/SR/SRI
+perl5.setup         Mojolicious 7.93 ../../authors/id/S/SR/SRI
 epoch               2
 categories-append   www
 platforms           darwin
 maintainers         nomaintainer
-# Contains content licensed under all of these licenses (no choosing)
-license             Artistic-2 CC-BY-SA-4 MIT Apache-2
-homepage            http://mojolicio.us/
+license             Artistic-2
+homepage            https://mojolicious.org/
 
-description         An MVC web framework emphasizing minimalism and simplicity
+description         A real-time MVC web framework emphasizing minimalism and simplicity
+long_description    ${description}
 
-long_description    The Mojolicious MVC web framework is all about minimalism \
-                    and simplicity.  Features include: A simplified single \
-                    file mode through Mojolicious::Lite * Very clean, \
-                    portable and Object Oriented pure Perl API without any \
-                    hidden magic * Full stack HTTP 1.1 and WebSocket client/server \
-                    implementation with TLS, Bonjour, IDNA, Comet, chunking \
-                    and multipart support * Builtin async IO web server \
-                    supporting epoll, kqueue, UNIX domain sockets and hot \
-                    deployment, perfect for embedding * Automatic CGI, \
-                    FastCGI and PSGI detection * Powerful out of the box \
-                    with RESTful routes, plugins, Perl-ish templates, \
-                    session management, signed cookies, testing framework, \
-                    static file server, I18N, first class Unicode support \
-                    and much more for you to discover.
-
-checksums           rmd160  6a86943a62797251dd5822a525d498a9a442ec9a \
-                    sha256  4c4c9c05131fcd175cd6370e15d2586baec1a3ec882cb6971e1f5f52b5e0d785 \
-                    size    725095
+checksums           rmd160  7e8ca7e1d29ff6a7d3fd294c6791da1c0fe92ad3 \
+                    sha256  00c30fc566fee0823af0a75bdf4f170531655df14beca6d51f0e453a43aaad5d \
+                    size    747195
 
 if {${perl5.major} != ""} {
     depends_lib-append \

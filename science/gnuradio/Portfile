@@ -54,12 +54,12 @@ subport gnuradio-devel {
     name                gnuradio-devel
     conflicts           gnuradio gnuradio-next
 
-    github.setup        gnuradio gnuradio b9b126c3a97196b5837f8520feb8bb986b62c015
-    version             20180717
+    github.setup        gnuradio gnuradio 219eae9a9c2ef7644450e71d19f8f54c12e1f9cc
+    version             20180726
     checksums \
-        rmd160 e106bbf9df841df68987311ee6a61b45f8d920cf \
-        sha256 a5dbf7aca7007db3af91cd64a54ddbbbd601fcc15943201cdef830157a486b59 \
-        size   4422214
+        rmd160 0a2954e440bdac4affa98acc27d46d7c9cf8265a \
+        sha256 7cacc6e4a0ba83afbe5ddcea74449d4d3e7a44253f834b41892528b7e15863b2 \
+        size   4422399
 
     # set the version override string
 
@@ -75,12 +75,12 @@ subport gnuradio-next {
     name                gnuradio-next
     conflicts           gnuradio gnuradio-devel
 
-    github.setup        gnuradio gnuradio 89736b31397330861dcaa550b7891ce6e7a5536f
-    version             20180713
+    github.setup        gnuradio gnuradio b9c8c6c3dad2c864655786c8f6ce22910c82e174
+    version             20180730
     checksums \
-        rmd160 f804bcd315d3ffe63275600708a3fae1d5b20746 \
-        sha256 b612a0c85ccaffe01fd9d8b9fa48178f8b18d429ab7e0779076b39cafc892648 \
-        size   3628589
+        rmd160 ac44a2a7b73d3fc0a5ee1e8e2da81590e4f7e9fc \
+        sha256 10f08721df90cd639ef0257047698426349d5d05ee44128c23a4804e20019e17 \
+        size   3629856
 
     # set the version override string
 

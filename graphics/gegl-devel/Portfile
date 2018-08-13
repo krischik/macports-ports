@@ -8,8 +8,8 @@ PortGroup           gobject_introspection 1.0
 name                gegl-devel
 conflicts           gegl-0.4
 set git_name        gegl
-set git_commit      2e0f4234e43618a02c76539b9189361469b56954
-set git_date        20180723
+set git_commit      da936eceee1fce32e27ed13ec3adcc9da2022b96
+set git_date        20180731
 version             0.4.7-${git_date}
 license             {GPL-3+ LGPL-3+}
 categories          graphics
@@ -30,9 +30,9 @@ distname            ${git_name}-${git_commit}
 
 use_bzip2           yes
 
-checksums           rmd160  0984b720f0ff4bdae49cfdcfcc0fce8af83cbd3e \
-                    sha256  61fe3d52c7c11b29fb85d32d3dc84863c6057d4cf9b30aa7f3db8367b5bb015e \
-                    size    23942803
+checksums           rmd160  380632825ff610c950a677fd8c9e90f79111cce5 \
+                    sha256  941a22ee63e2c76ad44b6ef6766058312131738fe1bc5117a84fa952086cd57b \
+                    size    23952538
 
 depends_build       port:pkgconfig \
                     port:w3m \

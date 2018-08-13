@@ -19,11 +19,11 @@ if {${subport} eq ${name}} {
     long_description ${description}: \
 Provides the release version, which is typically updated every month or so.
 
-    github.setup    EttusResearch uhd 3.13.0.0 v
+    github.setup    EttusResearch uhd 3.13.0.1 v
     conflicts       uhd-devel uhd-39lts
-    checksums       rmd160 912d5abc155d45fec259598c1af62019fcbde2c6 \
-                    sha256 7f04ddd331ad27556399470075275573dcfa00abaeb97b3f33d43c330c3b29cf \
-                    size   9409461
+    checksums       rmd160 5fc8411ea3ff1807a5f910e480662bf0d0cd6dce \
+                    sha256 b3ba5750ebf7f55f9353d96396d530d6c47f14606cca4ffc28e0d4ad115f20be \
+                    size   9410040
 
     # set the version override string
 
@@ -72,16 +72,11 @@ Provides the UHD GIT maint or master branch, depending on which is more advanced
 
     name            uhd-devel
     conflicts       uhd uhd-39lts
-    github.setup    EttusResearch uhd f114cfa0ddf70228d10462758c2b8e878c993f5d
-    version         20180724
-    checksums       rmd160 1d4a30c4024b8ef7266ddcee0bbb3374515b0bf1 \
-                    sha256 61bfbd6abbfe8b33556d58c0a93bc1ec0b44e43c24c1d3c39241557cd77129e5 \
-                    size   9409482
-
-    # overload the github livecheck branch.
-    # when master is more advanced, comment this out.
-
-    # github.livecheck.branch maint
+    github.setup    EttusResearch uhd f2914ff43752724bc46deb73374339ae97a33f61
+    version         20180810
+    checksums       rmd160 08d4c56d88a562a3626a8db0e1874708e539e760 \
+                    sha256 3f693ef918ad4dcbde04ad9ac729400c51f0706dab7769f37ac69c32dca34536 \
+                    size   9430159
 
     # set the version override string
 
@@ -92,13 +87,20 @@ Provides the UHD GIT maint or master branch, depending on which is more advanced
     patchfiles-append patch-host_CMakeLists.txt.devel.diff
     patch.pre_args -p1
 
+    # set the variable UHD_VERSION_DEVEL to TRUE, no matter its current setting
+    post-patch {
+        reinplace "s@^SET\(UHD_VERSION_DEVEL\[^\)\]*@SET(UHD_VERSION_DEVEL TRUE@1" \
+            ${worksrcpath}/host/cmake/Modules/UHDVersion.cmake
+    }
+
     variant python_api \
         description {enable Python API support (experimental)} {
         depends_lib-append port:py${PythonVersionNoDot}-numpy
         configure.args-append \
             -DENABLE_PYTHON_API=ON \
             -DPYTHON_INCLUDE_DIR=${frameworks_dir}/Python.framework/Versions/${PythonVersionWithDot}/Headers \
-            -DPYTHON_LIBRARY=${frameworks_dir}/Python.framework/Versions/${PythonVersionWithDot}/Python
+            -DPYTHON_LIBRARY=${frameworks_dir}/Python.framework/Versions/${PythonVersionWithDot}/Python \
+            -DUHD_PYTHON_DIR=${frameworks_dir}/Python.framework/Versions/${PythonVersionWithDot}/lib/python${PythonVersionWithDot}/site-packages
     }
 
     if {![variant_isset python_api]} {
