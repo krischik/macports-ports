@@ -6,10 +6,11 @@ PortGroup                   conflicts_build 1.0
 PortGroup                   compilers 1.0
 
 compilers.choose            fc f77 f90
-compilers.setup             -clang -gfortran
+compilers.setup             require_fortran
 
 name                        ncarg
 version                     6.5.0
+epoch                       1
 set version_no_dot [join [split ${version} "."] ""]
 categories                  science
 platforms                   darwin
@@ -70,6 +71,7 @@ depends_run                 bin:ESMF_RegridWeightGen:esmf \
 conflicts_build             ncarg
 
 universal_variant           no
+compilers.enforce_c         hdf5
 
 set usedap y
 
@@ -89,7 +91,6 @@ if {[variant_isset accelerate]} {
     patchfiles-append       patch-config-Project.diff
 }
 
-configure.cflags-append     -DH5_USE_18_API
 pre-configure {
     if {[file exists ${prefix}/bin/h5pcc]} {
         configure.cc        ${prefix}/bin/h5pcc
@@ -211,6 +212,7 @@ post-build {
     }
 }
 
+default_variants            +accelerate
 if {![fortran_variant_isset]} {
     default_variants-append +gcc7
 }
