@@ -3,10 +3,10 @@
 PortSystem              1.0
 
 name                    web-ext
-version                 2.8.0
-checksums               rmd160  307471180bb99bcf125c760f8167f09aac417669 \
-                        sha256  5dd29019b6645c8eb065e9761d59c60dbff4d530680c46bb73111ac25f344e2f \
-                        size    291653
+version                 2.9.1
+checksums               rmd160  8d54819c092c9fb7d6caeaa2473bb1e8753e6900 \
+                        sha256  c9a0502df328f40a26457c31b59c3986497bec18d5f99c4272f7e2d6aa100ba8 \
+                        size    293278
 
 categories              devel
 maintainers             {yan12125 @yan12125} openmaintainer

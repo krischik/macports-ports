@@ -229,9 +229,15 @@ default python.pkgd     {[python_get_defaults pkgd]}
 default python.libdir   {${python.prefix}/lib/python${python.branch}}
 default python.include  {[python_get_defaults include]}
 
-default build.cmd       {"${python.bin} setup.py [python_get_defaults setup_args]"}
-default destroot.cmd    {"${python.bin} setup.py [python_get_defaults setup_args]"}
-default destroot.destdir {"--prefix=[python_get_defaults setup_prefix] --root=${destroot}"}
+if {[vercmp [macports_version] 2.5.3] <= 0} {
+    default build.cmd       {"${python.bin} setup.py [python_get_defaults setup_args]"}
+    default destroot.cmd    {"${python.bin} setup.py [python_get_defaults setup_args]"}
+    default destroot.destdir {"--prefix=[python_get_defaults setup_prefix] --root=${destroot}"}
+} else {
+    default build.cmd       {${python.bin} setup.py [python_get_defaults setup_args]}
+    default destroot.cmd    {${python.bin} setup.py [python_get_defaults setup_args]}
+    default destroot.destdir {--prefix=[python_get_defaults setup_prefix] --root=${destroot}}
+}
 
 proc python_get_defaults {var} {
     global python.version python.branch prefix python.prefix
@@ -276,7 +282,7 @@ proc python_get_defaults {var} {
             if {${python.version} != 24 && ${python.version} != 25} {
                 return "${python.prefix}/Python"
             } else {
-                return "${prefix}/lib/lib${python.branch}.dylib"
+                return "${prefix}/lib/libpython${python.branch}.dylib"
             }
         }
         pkgd {

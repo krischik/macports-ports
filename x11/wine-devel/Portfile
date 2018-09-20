@@ -14,7 +14,7 @@ PortGroup                   compiler_blacklist_versions 1.0
 name                        wine-devel
 conflicts                   wine wine-crossover
 set my_name                 wine
-version                     3.13
+version                     3.16
 set branch                  [lindex [split ${version} .] 0].x
 license                     LGPL-2.1+
 categories                  x11
@@ -59,9 +59,9 @@ distfiles                   ${wine_distfile}:winesource \
                             ${wine_mono_distfile}:winemono
 
 checksums                   ${wine_distfile} \
-                            rmd160  beecc07593cef11234e8203900eff56a395602b3 \
-                            sha256  0785d74852232c1f6e07ac081875e92219a4428ddcc8931632fcf1924941bbd4 \
-                            size    20551460 \
+                            rmd160  527967c355520b60d93af6239bbd300341b13c5b \
+                            sha256  ad43bcf8f790c70a4d72e93c5bb818ed0d004c6a1fc6341d5d8fc7ab02a1a53c \
+                            size    21432308 \
                             ${wine_gecko_distfile} \
                             rmd160  abf7cc78b49dd0623bc8fe87ae0e32bb8694e13d \
                             sha256  3b8a361f5d63952d21caafd74e849a774994822fb96c5922b01d554f1677643a \
@@ -179,7 +179,7 @@ variant x11 {
                                 port:xorg-libXrandr \
                                 port:xorg-libXxf86vm \
                                 port:xorg-libsm \
-                                port:xorg-xf86vidmodeproto \
+                                port:xorg-xorgproto \
                                 port:xrender
 
     configure.args-delete       --without-osmesa \
@@ -254,7 +254,7 @@ if {[variant_isset universal]} {
                                 macports-clang-3.6 \
                                 macports-clang-3.7
     compiler.fallback-append    macports-clang-5.0 \
-                                macports-clang-3.8
+                                macports-clang-3.9
 
     if {${os.platform} eq "darwin" && [vercmp ${macosx_version} 10.7] < 0} {
         # clang-5.0 on Mac OS X 10.6 emits objects that cannot be read by cctools from Xcode.
@@ -273,6 +273,18 @@ platform darwin {
     depends_lib-delete          port:gnutls
     configure.args-delete       --with-gnutls
     configure.args-append       --without-gnutls
+
+    # Vulkan is supported on macOS through MoltenVK since Wine 3.13, but because
+    # it uses Metal it only works on 64-bit, and because it only builds with
+    # Xcode 9 or later it requires Sierra or later.
+    if {${os.major} >= 16 && [variant_exists universal] && [variant_isset universal]} {
+        depends_lib-append                      port:MoltenVK
+        depends_skip_archcheck-append           MoltenVK
+        lappend merger_configure_args(x86_64)   --with-vulkan
+        lappend merger_configure_args(i386)     --without-vulkan
+    } else {
+        configure.args-append   --without-vulkan
+    }
 
     if {${os.major} < 10} {
         configure.args-delete   --with-opencl

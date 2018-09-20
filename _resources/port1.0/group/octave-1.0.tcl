@@ -58,7 +58,11 @@ proc octave.set_module {opt action args} {
     }
 }
 
-default categories   {math science}
+if {[vercmp [macports_version] 2.5.3] <= 0} {
+    default categories   {"math science"}
+} else {
+    default categories   "math science"
+}
 default master_sites {sourceforge:octave}
 default distname     {${octave.module}-${version}}
 default worksrcdir   {${octave.module}}
@@ -67,7 +71,7 @@ default worksrcdir   {${octave.module}}
 default use_parallel_build {no}
 default livecheck.type     {regex}
 default livecheck.url      {https://octave.sourceforge.io/${octave.module}/}
-default livecheck.regex    {"Package Version:</td><td>(\\\\d+(.\\\\d+)*)</td>"}
+default livecheck.regex    {"package=${octave.module}-(\\\\d+(.\\\\d+)*)"}
 
 depends_lib-append   path:bin/octave:octave
 # do not force all Portfiles to switch from depends_lib to depends_lib-append

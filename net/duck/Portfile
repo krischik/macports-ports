@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                duck
-version             6.6.2.28219
+version             6.7.1.28683
 
 categories          net
 platforms           darwin
@@ -21,9 +21,9 @@ long_description    The universal file transfer tool 'duck' which runs \
 homepage            https://duck.sh/
 master_sites        https://dist.duck.sh/
 
-checksums           rmd160  5f162774112830c8ebf7033363442e6f7c9a483c \
-                    sha256  beecb6b18b1488d98ef3ac9562fd344be548a32b5f394c98e0b7835675731f18 \
-                    size    86895871
+checksums           rmd160  c6fbabc435b721944411ff499efc1bf12c2eacb5 \
+                    sha256  59b508b36f63938fa070347bde15bac1c4ca8f1f8c37c004e9145cb53bd5c70e \
+                    size    92402196
 
 use_configure       no
 

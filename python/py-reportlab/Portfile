@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-reportlab
-version             3.5.2
+version             3.5.6
 revision            0
 categories-append   textproc
 platforms           darwin
@@ -25,9 +25,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname} 
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  307f26f0c74fd565681e3d0ae966097f9203ca9c \
-                    sha256  08986267eaf25d62c3802512f0a97dc3426d0c82f52c8beb576689582eb85b7f \
-                    size    2806003
+checksums           rmd160  5c5ace439cd2cae973fb666e54ff9ad1e9484b7d \
+                    sha256  3836a49e7ea7bce458f437cbc094633c7fd4ac027180565875c18ecc726f261e \
+                    size    2836697
 
 if {${name} ne ${subport}} {
     depends_build-append    port:py${python.version}-setuptools

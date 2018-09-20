@@ -10,7 +10,7 @@ PortGroup           select 1.0
 PortGroup           xcodeversion 1.0
 PortGroup           cxx11 1.1
 
-github.setup        root-project root 6-14-02 v
+github.setup        root-project root 6-14-04 v
 version             [string map {- .} ${github.version}]
 revision            0
 livecheck.version   ${github.version}
@@ -22,11 +22,15 @@ livecheck.version   ${github.version}
 #livecheck.version   6-14-00
 #revision            1
 
+livecheck.type      regex
+livecheck.url       ${github.homepage}/tags
+livecheck.regex     {v(6[-.]\d[02468][-.]\d{2})}
+
 set version_major   [lindex [split ${version} .] 0]
 
-checksums           rmd160  3eb951062d76b202be8afc0d9ffad2487be5ea7c \
-                    sha256  868af41d2cc37038a7626cce3d8bd6c2d203181898b591772a81c9d555ccded6 \
-                    size    162470018
+checksums           rmd160  6bb8cb0728bd78ac5c1c6691e168fb1c2f2d084f \
+                    sha256  44c5fd15a7f42ac96f93648195e9122c1ad0e3849f220a12ad41a3a667d2e775 \
+                    size    162475294
 
 name                root${version_major}
 categories          science
@@ -72,16 +76,11 @@ select.file         ${filespath}/${name}
 
 # Force a compatible compiler
 compiler.blacklist-append *gcc* {clang < 900} macports-clang-3.3 macports-clang-3.4 \
-                          macports-clang-3.5 macports-clang-3.6 macports-clang-3.7 \
-                          macports-clang-3.8 macports-clang-4.0 macports-clang-3.9
+                          macports-clang-3.7 macports-clang-4.0 macports-clang-3.9
 compiler.whitelist clang macports-clang-6.0 macports-clang-5.0
 
 # port specific location
 set install_prefix ${prefix}/libexec/root${version_major}
-
-# Patch to disable hsimple macro running during build.
-# To be removed once MacPorts allows access to /dev/random in the build sandbox.
-#patchfiles-append patch-disable-hsimple-macro.diff
 
 configure.args-append \
                     -Dgnuinstall=ON \
@@ -249,6 +248,9 @@ post-destroot {
     # uncoment some settings
     reinplace "s|#\*\.\*\.Root\.TTFontPath|\*\.\*\.Root\.TTFontPath|g" ${rootsystemrcfile}
     reinplace "s|#Unix\.\*\.Gui.IconPath|Unix\.\*\.Gui\.IconPath|g" ${rootsystemrcfile}
+    # Workaround for https://trac.macports.org/ticket/57007
+    delete ${destroot}${install_prefix}/include/root/RConfig.h
+    ln -s ${install_prefix}/include/root/ROOT/RConfig.h ${destroot}${install_prefix}/include/root/RConfig.h
 }
 
 set run_port_select "No"
@@ -747,6 +749,4 @@ foreach gcc_ver ${gcc_versions} {
 #     depends_lib-append  port:R
 # }
 
-livecheck.type      regex
-livecheck.url       ${github.homepage}/tags
-livecheck.regex     {archive/v(6[-.]\d[02468][-.]\d{2}).tar.gz}
+

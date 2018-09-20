@@ -7,7 +7,7 @@
 
 global available_qt_versions
 array set available_qt_versions {
-    qt5  {qt5-qtbase  5.10}
+    qt5  {qt5-qtbase  5.11}
     qt59 {qt59-qtbase 5.9}
     qt58 {qt58-qtbase 5.8}
     qt57 {qt57-qtbase 5.7}
@@ -593,11 +593,15 @@ compiler.blacklist-append *gcc*
 
 if {[vercmp ${qt5.version} 5.10]>=0} {
     # see https://bugreports.qt.io/browse/QTBUG-58401
-    default supported_archs {"x86_64"}
+    default supported_archs x86_64
 } else {
     # no PPC support in Qt 5
     #     see http://lists.qt-project.org/pipermail/interest/2012-December/005038.html
-    default supported_archs {"i386 x86_64"}
+    if {[vercmp [macports_version] 2.5.3] <= 0} {
+        default supported_archs {"i386 x86_64"}
+    } else {
+        default supported_archs "i386 x86_64"
+    }
 }
 
 if {[vercmp ${qt5.version} 5.9]>=0} {

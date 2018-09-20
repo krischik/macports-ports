@@ -24,12 +24,14 @@ checksums           rmd160  de3c0f507cc647190c21656d7770cf0b9ab4fb12 \
                     sha256  67dc4359d3cadd905e76490e8c2aaa24982dc062c3d9091e692d68ee8b24d80e \
                     size    2922924
 
+github.livecheck.regex {(\d+(?:\_U)+(?:\d+)*)}
+
 use_configure       no
 
 # Force a compatible compiler
 compiler.blacklist-append *gcc* {clang < 602} macports-clang-3.3 macports-clang-3.4 \
-                          macports-clang-3.5 macports-clang-3.6 macports-clang-3.7
-compiler.whitelist clang macports-clang-3.9 macports-clang-3.8
+                          macports-clang-3.7
+compiler.whitelist clang macports-clang-3.9
 
 set tbb_arch(i386)      ia32
 set tbb_arch(ppc)       ppc32

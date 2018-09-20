@@ -92,7 +92,7 @@ platform darwin {
 
 configure.dir       ${workpath}/build
 configure.cmd       ${worksrcpath}/configure
-# 'java' and 'go' lead to compilation errors on 10.5/XCode 3.x
+# 'java' and 'go' lead to compilation errors on 10.5/Xcode 3.x
 configure.args      --enable-languages=c,c++,objc,obj-c++,lto,fortran \
                     --libdir=${prefix}/lib/${name} \
                     --includedir=${prefix}/include/${name} \
@@ -140,12 +140,12 @@ configure.env-append \
                     OTOOL=${prefix}/bin/otool \
                     OTOOL64=${prefix}/bin/otool
 
-if {${os.platform} eq "darwin" && ${os.major} > 16} {
+if {${os.platform} eq "darwin" && ([vercmp $xcodeversion 9.0] > 0)} {
     depends_lib
     depends_run
     archive_sites
     pre-fetch {
-        ui_error "${name} is not supported on macOS High Sierra and newer"
+        ui_error "building ${name} is not supported with Xcode 9 or greater"
         return -code error {unsupported platform}
     }
 }

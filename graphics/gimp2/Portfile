@@ -7,7 +7,7 @@ PortGroup           cxx11 1.1
 name                gimp2
 conflicts           gimp2-devel gimp3-devel
 # please remember to update the gimp metapackage to match
-version             2.10.4
+version             2.10.6
 revision            1
 license             GPL-3+
 categories          graphics
@@ -28,9 +28,9 @@ distname            gimp-${version}
 
 use_bzip2           yes
 
-checksums           rmd160  40120b1488579dc1fc54402ac4947c9ec2ace70b \
-                    sha256  ffb0768de14a2631b3d7ed71f283731441a1b48461766c23f0574dce0706f192 \
-                    size    31064613
+checksums           rmd160  ad8f381e837ad305a7d52a2da0d8a8c422e7d98b \
+                    sha256  4ec8071f828e918384cf7bc7d1219210467c84655123f802bc55a8bf2415101f \
+                    size    31447973
 
 set perl_version    5.26
 
@@ -58,6 +58,7 @@ depends_lib         port:desktop-file-utils \
                     port:libpng \
                     port:libmng \
                     port:openexr \
+                    port:openjpeg \
                     port:gexiv2 \
                     port:aalib \
                     port:xpm \
@@ -65,7 +66,6 @@ depends_lib         port:desktop-file-utils \
                     port:poppler \
                     port:curl \
                     port:libwmf \
-                    port:jasper \
                     port:libmypaint \
                     port:mypaint-brushes \
                     port:lcms2 \
@@ -90,7 +90,6 @@ compiler.blacklist-append  *gcc-3.* *gcc-4.* {clang < 700}
 
 patchfiles          patch-configure.ac.diff \
                     patch-etc-gimprc.in.diff \
-                    patch-app-widgets-gimpcriticaldialog.c.diff \
                     patch-quartz-32bit.diff
 
 use_autoreconf      yes

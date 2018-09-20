@@ -23,7 +23,7 @@ default github.master_sites {${github.homepage}/tarball/${git.branch}}
 default master_sites {${github.master_sites}}
 
 options github.tarball_from
-default github.tarball_from {tags}
+default github.tarball_from tags
 option_proc github.tarball_from handle_tarball_from
 proc handle_tarball_from {option action args} {
     global github.author github.project github.master_sites git.branch github.homepage
@@ -48,10 +48,14 @@ proc handle_tarball_from {option action args} {
 }
 
 options github.livecheck.branch
-default github.livecheck.branch {master}
+default github.livecheck.branch master
 
 options github.livecheck.regex
-default github.livecheck.regex {{([^"]+)}}
+if {[vercmp [macports_version] 2.5.3] <= 0} {
+    default github.livecheck.regex {{([^"]+)}}
+} else {
+    default github.livecheck.regex {(\[^"]+)}
+}
 
 proc github.setup {gh_author gh_project gh_version {gh_tag_prefix ""} {gh_tag_suffix ""}} {
     global extract.suffix github.author github.project github.version github.tag_prefix github.tag_suffix

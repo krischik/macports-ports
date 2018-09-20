@@ -4,8 +4,7 @@ PortSystem          1.0
 
 name                sqlite3
 # don't forget to update the checksums for sqlite3-tools when updating sqlite3
-version             3.24.0
-revision            1
+version             3.25.1
 categories          databases
 platforms           darwin
 license             public-domain
@@ -28,9 +27,9 @@ master_sites        ${homepage}2018
 set padded_ver      [string range [subst [regsub -all {\.([0-9]+)} "${version}.0.0" {[format %02d \1]}]] 0 6]
 distname            sqlite-autoconf-${padded_ver}
 
-checksums           rmd160  e1d3566adf3c61065420bc02956e37fe8b3e546e \
-                    sha256  d9d14e88c6fb6d68de9ca0d1f9797477d82fc3aed613558f87ffbdbbc5ceb74a \
-                    size    2699252
+checksums           rmd160  882b3f6ec4ad51a7294c4c8477f08a3a29241dd0 \
+                    sha256  96ed46bd87f093073ca8afd613020def847009b611c89f397bc24bd932ec6fd1 \
+                    size    2763831
 
 depends_lib         port:libedit \
                     port:ncurses \
@@ -42,40 +41,54 @@ configure.args      --enable-threadsafe \
                     --enable-editline \
                     AWK=/usr/bin/awk
 
-if {${subport} eq ${name}} {
-    post-patch {
-        reinplace "s|-ltinfo||" ${worksrcpath}/configure
-    }
-}
-
-# search in worksrcpath for sqlite3.h first -- dont pick up an installed one!
-configure.cppflags-prepend  -DSQLITE_DISABLE_INTRINSIC \
-                            -DSQLITE_ENABLE_COLUMN_METADATA \
-                            -DSQLITE_ENABLE_FTS3_PARENTHESIS \
-                            -DSQLITE_ENABLE_FTS4 \
-                            -DSQLITE_ENABLE_FTS5 \
-                            -DSQLITE_ENABLE_JSON1 \
-                            -DSQLITE_ENABLE_RTREE \
-                            -DSQLITE_SECURE_DELETE \
-                            -DSQLITE_ENABLE_STAT4 \
-                            -DSQLITE_ENABLE_UNLOCK_NOTIFY \
-                            -DSQLITE_SOUNDEX \
-                            -I${worksrcpath}
-
 build.type          gnu
 
 livecheck.type      regex
 livecheck.url       http://www.sqlite.org/news.html
 livecheck.regex     (3(?:\\.\[0-9\]+)+)
 
-post-destroot {
-    if {${subport} eq ${name}} {
-        xinstall -m 644 ${worksrcpath}/${name}.1 ${destroot}${prefix}/share/man/man1
+platform darwin 8 {
+    # See http://trac.macports.org/ticket/32930 for why this is needed.
+    configure.cppflags-append -DSQLITE_WITHOUT_ZONEMALLOC
+}
+
+if {${subport} eq ${name}} {
+    post-patch {
+        reinplace "s|-ltinfo||" ${worksrcpath}/configure
+    }
+
+    # search in worksrcpath for sqlite3.h first -- dont pick up an installed one!
+    configure.cppflags-prepend  -DSQLITE_DISABLE_INTRINSIC \
+                                -DSQLITE_ENABLE_COLUMN_METADATA \
+                                -DSQLITE_ENABLE_FTS3_PARENTHESIS \
+                                -DSQLITE_ENABLE_FTS4 \
+                                -DSQLITE_ENABLE_FTS5 \
+                                -DSQLITE_ENABLE_JSON1 \
+                                -DSQLITE_ENABLE_RTREE \
+                                -DSQLITE_SECURE_DELETE \
+                                -DSQLITE_ENABLE_STAT4 \
+                                -DSQLITE_ENABLE_UNLOCK_NOTIFY \
+                                -DSQLITE_SOUNDEX \
+                                -I${worksrcpath}
+
+    post-destroot {
+        if {${subport} eq ${name}} {
+            xinstall -m 644 ${worksrcpath}/${name}.1 ${destroot}${prefix}/share/man/man1
+        }
     }
 }
 
-platform darwin 8 {
-    configure.cppflags-append -DSQLITE_WITHOUT_ZONEMALLOC
+subport ${name}-tcl {
+    depends_lib     port:tcl
+
+    configure.dir   ${worksrcpath}/tea
+    build.dir       ${configure.dir}
+
+    configure.args  --exec-prefix=${prefix} \
+                    --with-tcl=${prefix}/lib \
+                    --with-tclinclude=${prefix}/include
+
+    configure.cppflags-prepend  -I${worksrcpath}
 }
 
 subport ${name}-tools {
@@ -87,9 +100,11 @@ subport ${name}-tools {
                               database files, including the sqldiff program and the \
                               sqlite3_analyzer program.
 
-    checksums       rmd160  be4281044f05b6ebfe87cc7304d47fd854ad29c4 \
-                    sha256  72a302f5ac624079a0aaf98316dddda00063a52053f5ab7651cfc4119e1693a5 \
-                    size    10980065
+    checksums       rmd160  1ceee5f53d4b2321d042ed723df6c801e4db116b \
+                    sha256  e62f41c0b4de6ea537b70dc24efc37bd56e39bf6ceefcef20a0542fd912d7fae \
+                    size    11377008
+
+
 
     use_zip                   yes
     depends_lib               port:tcl \

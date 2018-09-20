@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-atomicwrites
-version             1.1.5
+version             1.2.1
 platforms           darwin
 license             MIT
 maintainers         {yan12125 @yan12125} openmaintainer
@@ -16,9 +16,9 @@ homepage            https://github.com/untitaker/python-atomicwrites
 master_sites        pypi:a/atomicwrites
 distname            atomicwrites-${version}
 
-checksums           rmd160  117bf8ef21093908639500c95dd3232cc1b0113e \
-                    sha256  240831ea22da9ab882b551b31d4225591e5e447a68c5e188db5b89ca1d487585 \
-                    size    18951
+checksums           rmd160  773073f277b78f544242d395e903ce8655138355 \
+                    sha256  ec9ae8adaae229e4f8446952d204a3e4b5fdd2d099f9be3aaf556120135fb3ee \
+                    size    11660
 
 python.versions     27 34 35 36 37
 

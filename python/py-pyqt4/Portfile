@@ -18,7 +18,6 @@ long_description \
 homepage        http://www.riverbankcomputing.co.uk/software/pyqt/intro
 
 version         4.12.1
-revision        2
 
 set branch      [join [lrange [split ${version} .] 0 1] .]
 set patch       [lindex [split ${version} .] 2]
@@ -44,8 +43,16 @@ if {${name} ne ${subport}} {
         distname    PyQt4_gpl_mac-${version}
     }
 
-    checksums       rmd160 07125dd79a1d76dd83680a4f940f267f792486aa \
-                    sha256 3224ab2c4d392891eb0abbc2bf076fef2ead3a5bb36ceae2383df4dda00ccce5
+    # bump the epoch to revert the version back to 4.12.1
+    epoch              1
+
+    # bump the revision back to 2, where it was
+    # before the updates to 4.12.[23].
+    revision           2
+
+    checksums   rmd160 07125dd79a1d76dd83680a4f940f267f792486aa \
+                sha256 3224ab2c4d392891eb0abbc2bf076fef2ead3a5bb36ceae2383df4dda00ccce5 \
+                size   11324734
 
     patchfiles-append  patch-configure.py.diff \
                        patch-add_ppc64.diff

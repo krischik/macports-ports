@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           github 1.0
 
 # UPDATE THESE IN SYNC!
-set version         2018-08-02T17-39-44Z
-set commit          9998e077dfd70a0c1189f1a9b5d7ab25a6e01b79 
+set version         2018-09-10T23-39-12Z
+set commit          c352cadd4be2c6bed64884c78d1e8a8ac6efaf3f 
 
 set relversion      [regsub {(T..)-(..)-(..Z)} $version {\1:\2:\3}]
 # This is not used for fetching, but is compiled into the executable
@@ -23,9 +23,9 @@ long_description \
 license             Apache-2
 
 checksums \
-    rmd160  8cf58ee5fbfd53cf692c2bce6f4745bdeed067ba \
-    sha256  8542515b9bfed74781073402c2bfed4e77a5e172d84509ce2811cdbd6e8ea27c \
-    size    1671368
+    rmd160  21d987174a607e7ea75e195c4850f8f4375bddf6 \
+    sha256  d6f987e4341264597e6093a2126213435b54c25f0118b65d89aecb1d5a8e7fe6 \
+    size    1723265
 
 set goproj          github.com/${github.author}/${github.project}
 
@@ -34,6 +34,7 @@ depends_lib         port:go
 platforms           darwin
 use_configure       no
 worksrcdir          src/${goproj}
+patchfiles          cgo.patch
 
 post-extract {
     xinstall -d ${workpath}/src/github.com/${github.author}

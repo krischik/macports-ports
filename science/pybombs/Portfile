@@ -22,11 +22,12 @@ subport ${name}-devel {}
 
 if {${subport} eq ${name}} {
 
-    github.setup    pybombs pybombs 2.3.2 v
-    checksums       rmd160 a19b3071d02d705872c9b0cbdecd5bf6f16a88a2 \
-                    sha256 88c8ad3550df8990e2f56857c7cb27f15eadcbcfc35a59ffd1f4a6dbf7639af6
+    github.setup    pybombs pybombs 2.3.3 v
+    checksums       rmd160 f772af0354ca39acd550da11109956492d395385 \
+                    sha256 cf3bdb8e82a326696cf6210824e18b755e01554a5d3e9c1ce8463e63b4503e3f \
+                    size    98647
 
-    worksrcdir      gnuradio-pybombs-1cbd8cd
+    worksrcdir      gnuradio-pybombs-4923226
     conflicts       ${name}-devel
 
     # fix the version to be more explicit
@@ -36,11 +37,11 @@ if {${subport} eq ${name}} {
 
 } else {
 
-    github.setup    pybombs pybombs f8a198a3aa8abb4c68aba3158c2c6f82013d05db
-    version         20180716
-    checksums       rmd160 f9efec2366262ca770ac1de462bd984fe00984a2 \
-                    sha256 aca748892855f02660a3b7bdad667a15e9f58b2aeb548d0f89a942daa8a637ae \
-                    size   98541
+    github.setup    pybombs pybombs 49f6d6114e4c4c53428798cd38a9688c6a311785
+    version         20180918
+    checksums       rmd160 3f846d165c7995b371994b22774d71ca2c4755a8 \
+                    sha256 5cb80a497115b50b95c2bc016ef0c34c7519a090a4470748582d00c342fd306c \
+                    size   99093
 
     worksrcdir      gnuradio-${github.project}-[string range ${github.version} 0 6]
     long_description    ${long_description} \
@@ -49,7 +50,9 @@ if {${subport} eq ${name}} {
 
     # fix the version to be very explicit
     post-patch {
-        reinplace "s@2.3.3a@2.3.3a-git-[string range ${github.version} 0 7] MacPorts@g" ${worksrcpath}/pybombs/__init__.py
+        set mps "git-[string range ${github.version} 0 7] MacPorts"
+        reinplace "/__version__/s@\\\"\\\(.*\\\)*\\\"@\\\"\\1-${mps}\\\"@g" \
+            ${worksrcpath}/pybombs/__init__.py
     }
 }
 
@@ -57,10 +60,12 @@ if {${subport} eq ${name}} {
 
 foreach this_py_version_no_dot ${pythons_suffixes} {
     set ndx [lsearch -exact ${pythons_suffixes} ${this_py_version_no_dot}]
-    set this_conflicts [lreplace ${pythons_suffixes} ${ndx} ${ndx}]
-    set this_description "Use python${this_py_version_no_dot}"
+    set this_conflicts_no_dot [lreplace ${pythons_suffixes} ${ndx} ${ndx}]
+    set this_conflicts [join ${this_conflicts_no_dot} " python"]
+    set py_version_with_dot [join [split ${this_py_version_no_dot} ""] "."]
+    set this_description "Use Python ${py_version_with_dot}"
     variant python${this_py_version_no_dot} \
-        conflicts {*}${this_conflicts} \
+        conflicts python${this_conflicts} \
         description ${this_description} "
             python.default_version ${this_py_version_no_dot}
             depends_build-append \

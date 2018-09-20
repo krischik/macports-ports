@@ -4,8 +4,8 @@ PortSystem      1.0
 PortGroup       active_variants 1.1
 
 name            claws-mail
-version         3.16.0
-revision        2
+version         3.17.1
+revision        1
 categories      mail news
 platforms       darwin
 license         GPL-3+
@@ -23,8 +23,9 @@ long_description Currently, many features are supported in Claws Mail \
 homepage        http://www.claws-mail.org/
 master_sites    ${homepage}releases/
 
-checksums           rmd160  2a1f1e29e1d2d12a674cda42189292ef98f97492 \
-                    sha256  c212133d3d962129d8c7995c1c7d973faef2a8914481c0c74578217bf4c897ab
+checksums       rmd160  f6b9e526ba9ed67768db6f422690a9e496b15854 \
+                sha256  757b5f4163fb44f772b1453d1cc0b83387bb6b67ad55cc0694bdd4eff9ea76f2 \
+                size    4746940
 
 use_xz          yes
 
