@@ -3,10 +3,10 @@
 PortSystem                  1.0
 
 name                        lighttpd
-version                     1.4.50
-checksums                   rmd160  47010dd82ea2baf93de6236ea7d9c36788768591 \
-                            sha256  29378312d8887cbc14ffe8a7fadef2d5a08c7e7e1be942795142346ad95629eb \
-                            size    718480
+version                     1.4.52
+checksums                   rmd160  7c12e8cc63ccb64a928a27348d8172cf8c22eba2 \
+                            sha256  27bc0991c530b7c6335e6efff2181934d3c1a1c516f7401ea71d8302cefda764 \
+                            size    728668
 
 set branch                  [join [lrange [split ${version} .] 0 1] .]
 categories                  www

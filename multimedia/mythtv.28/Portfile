@@ -12,7 +12,7 @@ set shorthash       8238e839
 set majorversion    .28
 set minorversion    .2
 set lastcommit      20180201
-set corerev         2
+set corerev         4
 set pluginsrev      1
 set metarev         0
 github.setup        MythTV mythtv ${shorthash}
@@ -125,8 +125,8 @@ if {$subport eq "mythtv-core${majorversion}"} {
     
     pre-fetch {
         if {${os.platform} eq "darwin" && ${os.major} < 13} {
-            ui_error "${name} ${version} requires Mac OS X 10.9 or greater."
-            return -code error "incompatible Mac OS X version"
+            ui_error "${name} @${version} requires OS X 10.9 or greater."
+            return -code error "incompatible OS X version"
         }
     }
     

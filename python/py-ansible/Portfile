@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-ansible
-version             2.5.6
+version             2.7.5
 license             GPL-3+
 
 categories-append   sysutils
@@ -19,9 +19,9 @@ homepage            https://github.com/ansible/ansible
 description         SSH-based configuration management and deployment system
 
 distname            ansible-${version}
-checksums           rmd160  359995810671777c3ebd24362993b8875eb2012c \
-                    sha256  65ef5952f4e319343c5ffb9d000f0f4b974fcc55812df392863f9423ffb91dd7 \
-                    size    10157989
+checksums           rmd160  5a9b09898e19f77f562cab7b302ecbbf1a887038 \
+                    sha256  aaf9e1974bd12840ca055ac156f37601c08d73d726a3a6b98a2fe759a57051bb \
+                    size    11781337
 
 conflicts           ansible
 
@@ -33,7 +33,7 @@ long_description \
     be written in any language and are transferred to managed machines \
     automatically.
 
-python.versions 27 35 36
+python.versions 27 35 36 37
 
 if {${name} ne ${subport}} {
     patch {

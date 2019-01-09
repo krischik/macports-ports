@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                mod_qos
-version             11.58
+version             11.61
 categories          www
 license             Apache-2
 maintainers         nomaintainer
@@ -14,15 +14,15 @@ platforms           darwin
 homepage            http://mod-qos.sourceforge.net/index.html
 master_sites        sourceforge:project/mod-qos/
 
-checksums           rmd160  6e1c84e08f10893759daa87ed5c9e6c5ff1f8376 \
-                    sha256  3a5d11aeda647720e7ad45d11170daf7ecaea7b85de1cae63f67b4a0e4ef32e3 \
-                    size    972540
+checksums           rmd160  f2f1502dab4b93c2564cb279421c320aeeb5d388 \
+                    sha256  c056d8b7cdc7b6921970c3faa0cd6acfc7a102856eb7de71e02a52990caad751 \
+                    size    1242978
 
 depends_build       port:autoconf \
                     port:automake
 
 depends_lib         port:apache2 \
-                    port:db46 \
+                    port:db48 \
                     port:libpng \
                     path:lib/libssl.dylib:openssl \
                     port:pcre
@@ -30,7 +30,7 @@ depends_lib         port:apache2 \
 patchfiles          patch-tools-Makefile.in.diff
 
 configure.dir       ${worksrcpath}/tools
-configure.env       LDFLAGS=-L${prefix}/lib/db46
+configure.env       LDFLAGS=-L${prefix}/lib/db48
 build.dir           ${configure.dir}
 
 pre-configure { copy ${filespath}/aclocal.m4 ${worksrcpath}/tools }

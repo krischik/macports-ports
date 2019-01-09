@@ -52,6 +52,7 @@ if {${os.platform} eq "darwin" && ${os.major} == 10} {
         github.setup    glfw glfw 3.2.1
         checksums       rmd160 5fb5988736a0a2812426907ab8d64b94eeacc010 \
                         sha256 34bc25f8111501eec35a52fd39fa50336a0c2e812d4a14454c7c946458ab015c
+        revision        0
 
         # bump the epoch because I moved the version from 20151012 to 3.1.2
 
@@ -65,15 +66,20 @@ if {${os.platform} eq "darwin" && ${os.major} == 10} {
 
         patchfiles-append patch-CMakeLists.txt.release.diff
 
+        # patch to fix install name of library
+
+        patchfiles-append patch-src_CMakeLists.txt.release.diff
+
     } else {
 
         # devel
 
-        github.setup    glfw glfw 15cad0223543745d13d4ce2de040d3b7defb3870
-        version         20180911
-        checksums       rmd160 6b474694943d56837f5fb2ce0ee4d788b0f7d969 \
-                        sha256 313e2cb8b6020aa389906733a05bb8fefc061e3dc0abbf92444d7e701616ab2b \
-                        size   773837
+        github.setup glfw glfw c90c7b97109db909577e3bf540b5f884422b7e14
+        version      20181226
+        checksums    rmd160 69ebb3bb30ea1ed4d83afd0d22e30761a9c1a370 \
+                     sha256 ceffb61bba9b30ab02428392e4518fffafecef93ba8c6d512faf1ad17197882f \
+                     size   767199
+        revision     0
 
         conflicts       glfw
         long_description ${description}: \
@@ -82,12 +88,12 @@ if {${os.platform} eq "darwin" && ${os.major} == 10} {
         # patch to fix install directory for cmake files and docs
 
         patchfiles-append patch-CMakeLists.txt.devel.diff
+
+        # patch to fix install name of library
+
+        patchfiles-append patch-src_CMakeLists.txt.devel.diff
+
     }
-
-    # patch to fix install name of library
-
-    patchfiles-append patch-src_CMakeLists.txt.diff
-
 }
 
 # use the real home page, not github's

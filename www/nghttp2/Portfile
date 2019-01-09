@@ -1,11 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           compiler_blacklist_versions 1.0
 PortGroup           cxx11 1.1
 PortGroup           github 1.0
-PortGroup           snowleopard_fixes 1.0
+PortGroup           legacysupport 1.0
 
-github.setup        tatsuhiro-t nghttp2 1.33.0 v
+github.setup        tatsuhiro-t nghttp2 1.35.1 v
 categories          www
 platforms           darwin
 maintainers         {mps @Schamschula} openmaintainer
@@ -19,9 +20,12 @@ long_description    ${description} Included are a HTTP/2 client, server and prox
 github.tarball_from releases
 use_xz              yes
 
-checksums           rmd160  255991dff0f61d6c287e399f4b6487e5386ccf8c \
-                    sha256  4879ce9ff3320f5344b910ee1c46ed5e366edc2272620cf17d8e762724d7df1e \
-                    size    1554776
+checksums           rmd160  658cc250e8d2e3b0da0b6cb171351bba137d0bab \
+                    sha256  9b7f5b09c3ca40a46118240bf476a5babf4bd93a1e4fde2337c308c4c5c3263a \
+                    size    1614460
+
+# nghttp2 requires C++14
+compiler.blacklist-append {clang < 602}
 
 if {![variant_isset python34] && ![variant_isset python35] && ![variant_isset python36] && ![variant_isset python37]} { default_variants +python27 }
 

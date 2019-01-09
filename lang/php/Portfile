@@ -109,48 +109,56 @@ switch ${subport_branch} {
     }
     5.6 {
         epoch           2
-        version         5.6.38
+        version         5.6.39
         use_xz          yes
-        checksums       rmd160  f8f61b7369b4cdeb65645be08a5c96a0c42a7cb8 \
-                        sha256  c2fac47dc6316bd230f0ea91d8a5498af122fb6a3eb43f796c9ea5f59b04aa1e \
-                        size    12467408
+        checksums       rmd160  3985a1d959dadb88f65bd146c10fa5a6c9cb682b \
+                        sha256  8147576001a832ff3d03cb2980caa2d6b584a10624f87ac459fcd3948c6e4a10 \
+                        size    12467096
     }
     7.0 {
         epoch           2
-        version         7.0.32
+        version         7.0.33
         use_xz          yes
-        checksums       rmd160  4852fe0fda5988ce042bc767f4bb494f2cff603a \
-                        sha256  ff6f62afeb32c71b3b89ecbd42950ef6c5e0c329cc6e1c58ffac47e6f1f883c4 \
-                        size    12030780
+        checksums       rmd160  621c2459c182de0a071f591eec45e4a3c32d8bdd \
+                        sha256  ab8c5be6e32b1f8d032909dedaaaa4bbb1a209e519abb01a52ce3914f9a13d96 \
+                        size    12033040
     }
     7.1 {
         epoch           2
-        version         7.1.22
+        version         7.1.25
         use_xz          yes
-        checksums       rmd160  54490ed9de07f7d79c02e177988b1fbbf806e5d6 \
-                        sha256  9194c9b3a592d8376fde837dde711ec01ee26f8607fc2884047ef6f7c089b15d \
-                        size    12227848
+        checksums       rmd160  115b6522e718bbe152b8ddb354707ba7783d16af \
+                        sha256  0fd8dad1903cd0b2d615a1fe4209f99e53b7292403c8ffa1919c0f4dd1eada88 \
+                        size    12205972
     }
     7.2 {
         epoch           2
-        version         7.2.10
+        version         7.2.13
         use_xz          yes
-        checksums       rmd160  68c8ea0d1c2f1d9987db0e98c23e53a51436e01d \
-                        sha256  01c2154a3a8e3c0818acbdbc1a956832c828a0380ce6d1d14fea495ea21804f0 \
-                        size    12160864
+        checksums       rmd160  455521b51b541d608d3fa29e1ae58fdf42ee5daa \
+                        sha256  14b0429abdb46b65c843e5882c9a8c46b31dfbf279c747293b8ab950c2644a4b \
+                        size    12116484
     }
     7.3 {
+        epoch           2
+        version         7.3.0
+        use_xz          yes
+        checksums       rmd160  f2852744182cdff213d108f3c05cd63e553a3ea1 \
+                        sha256  7d195cad55af8b288c3919c67023a14ff870a73e3acc2165a6d17a4850a560b5 \
+                        size    11928820
+    }
+    7.4 {
         # When this becomes a stable version, remove the overrides for homepage,
         # master_sites and livecheck, and update php.latest_stable_branch in the
         # php-1.1 portgroup.
-        epoch           1
-        version         7.3.0RC1
+        epoch           0
+        version         7.4.0alpha1
         homepage        https://qa.php.net/
         master_sites    https://downloads.php.net/~cmb/
         use_xz          yes
-        checksums       rmd160  617cae2b694f1912688790cac1305d547027a296 \
-                        sha256  f6af9e4e2376f1aadee8d1b4b7a60c5080bf53fe8816e141c78d4f72c93c5075 \
-                        size    11920364
+        checksums       rmd160  0 \
+                        sha256  0 \
+                        size    0
         livecheck.url   ${homepage}
         livecheck.regex php-([strsed ${subport_branch} {g/\\./\\./}](?:\\.\[0-9.\]+)*(?:(?:alpha|beta|RC)\\d+|-latest))\\.tar
     }
@@ -195,11 +203,12 @@ if {[is_sapi_subport]} {
         depends_lib-append  port:pcre
     } else {
         depends_lib-append  port:pcre2
+        patchfiles-append   patch-${php}-Zend-zend_cpuinfo.c.diff
     }
     
     # Use -p1 to accommodate the Suhosin patch
     patch.pre_args      -p1
-    patchfiles          patch-${php}-scripts-php-config.in.diff
+    patchfiles-append   patch-${php}-scripts-php-config.in.diff
 
     if {[vercmp ${branch} 5.3] <= 0} {
         patchfiles-append \
@@ -1237,6 +1246,13 @@ subport ${php}-pspell {
 }
 
 subport ${php}-snmp {
+    switch -- ${version} {
+        5.2.17              {revision 1}
+        5.3.29              {revision 1}
+        5.4.45              {revision 1}
+        5.5.38              {revision 1}
+    }
+
     categories-append       sysutils
     
     description             a PHP interface to the Simple Network Management \

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-distributed
-version             1.23.2
+version             1.25.1
 revision            0
 categories-append   devel
 platforms           darwin
@@ -25,9 +25,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  58a1744a2d08702a287ed07aa1f0ea06b115ecbb \
-                    sha256  803af56bdc755bcb351bd93b25c4f4ded48d684aa9e591d877f751080ad2f898 \
-                    size    515222
+checksums           rmd160  3455c79f175c12a1e12460845990e57cae118d67 \
+                    sha256  8f226e14953736ea8c51e7da2a33d0f5974a0a5e0778c82b3513e85e15495ee1 \
+                    size    519990
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \

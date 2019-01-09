@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                gradle
-version             4.10.2
+version             5.1
 categories          devel java groovy
 license             Apache-2
 maintainers         {amake @amake} openmaintainer
@@ -20,27 +20,25 @@ platforms           darwin
 distname            ${name}-${version}-bin
 master_sites        https://services.gradle.org/distributions
 
-checksums           rmd160  91ddb4be28b859e39166526228d39bbaabf91100 \
-                    sha256  b49c6da1b2cb67a0caf6c7480630b51c70a11ca2016ff2f555eaeda863143a29 \
-                    size    78420037
+checksums           rmd160  f7c38be1b496d892486666af41ba4bccfcbcf5e0 \
+                    sha256  7506638a380092a0406364c79d6c87d03d23017fc25a5770379d1ce23c3fcd4d \
+                    size    85783841
 
 worksrcdir          ${name}-${version}
 
 use_zip             yes
 use_configure       no
 
-build.cmd           true
+build {}
 
 pre-destroot {
     # Remove extraneous bat files
-    foreach f [glob -directory ${worksrcpath}/bin *.bat] {
-        delete $f
-    }
+    delete {*}[glob ${worksrcpath}/bin/*.bat]
 }
 
 destroot    {
     # Create the target java directory
-    xinstall -m 755 -d ${destroot}${prefix}/share/java/${name}
+    xinstall -m 0755 -d ${destroot}${prefix}/share/java/${name}
 
     # Copy over the needed elements of our directory tree
     copy ${worksrcpath}/bin \

@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         Mojolicious-Plugin-CHI 0.18
+perl5.branches      5.26 5.28
+perl5.setup         Mojolicious-Plugin-CHI 0.20
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         Mojolicious::Plugin::CHI - Use CHI Caches in Mojolicious
@@ -12,9 +12,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  8ce5e67262ff7129eb689ba49fe0e1858aef224b \
-                    sha256  de2be908b3270231e0d6ba8e3db87cc33e2c35aae692354188a7ec5d240dbc69 \
-                    size    12878
+checksums           rmd160  7bb3bd882b89075d8b1a8869973c61d0c0089f6d \
+                    sha256  d04a5ce98ec6cb8f675a37c19c4957796a9d97c98a3d7a5d178bbd7d5e9c5cfe \
+                    size    12960
 
 if {${perl5.major} != ""} {
     depends_build-append \

@@ -13,7 +13,7 @@ compiler.blacklist-append   {*gcc-4.6} {clang < 700}
 name                octave
 version             4.4.1
 set package_version 4.x.x
-#revision            0
+revision            2
 categories          math science
 platforms           darwin
 license             GPL-3+
@@ -239,9 +239,7 @@ compiler.blacklist-delete *gcc*
 #  as of Octave 4.4, GCC 6 also fails with
 #     error: call of overloaded 'abs(signed char)' is ambiguous
 #     see https://lists.gnu.org/archive/html/octave-maintainers/2016-02/msg00168.html
-compiler.blacklist macports-gcc-6
-
-compilers.clear_archflags no
+compiler.blacklist-append macports-gcc-6
 
 # for now, limit the number of variants
 # some of these compilers may work fine
@@ -440,7 +438,7 @@ if { ![variant_isset qt4] && ![variant_isset qt5] } {
     # a somewhat arbitrary cutoff for default values
     #    Mac OS X 10.7 (Darwin 11) was the last OS supported by Qt 4
     #       see http://doc.qt.io/qt-4.8/supported-platforms.html
-    #    Mac OS X 10.10 (Darwin 14) is the oldest OS supported by the current long-term support version of Qt 5 (Qt 5.9).
+    #    OS X 10.10 (Darwin 14) is the oldest OS supported by the current long-term support version of Qt 5 (Qt 5.9).
     #       see http://web.archive.org/web/20170702143426/https://doc.qt.io/qt-5/supported-platforms-and-configurations.html
     if {${os.major} >= 14} {
         default_variants-append +qt5
@@ -705,9 +703,12 @@ subport ${name}-devel {
     # The generated files, however, are currently corrupted.
     fetch.type          hg
     hg.url              http://hg.savannah.gnu.org/hgweb/octave/
-    hg.tag              d98d7df9fd15
+    hg.tag              ea5182364e5f
     version             5.0.0
-    revision            6
+    revision            9
+
+    # see https://trac.macports.org/ticket/57270
+    compiler.blacklist-append {clang < 802}
 
     conflicts-replace ${name}-devel ${name}
 
@@ -732,11 +733,18 @@ subport ${name}-devel {
     patchfiles-append \
         patch-undefined-devel.diff
 
+    # see https://trac.macports.org/ticket/57288
+    patchfiles-append \
+        patch-run-octave.diff
+
     pre-patch {
+        patchfiles-delete \
+            patch-figures.diff
+
         patchfiles-replace  \
+            patch-bsdtar.diff         patch-bsdtar-devel.diff \
             patch-versions.diff       patch-versions-devel.diff \
             patch-force_cxx.diff      patch-force_cxx-devel.diff \
-            patch-figures.diff        patch-figures-devel.diff \
             patch-iconsize.diff       patch-iconsize-devel.diff \
             patch-link.diff           patch-link-devel.diff \
             patch-arch_arg.diff       patch-arch_arg-devel.diff \

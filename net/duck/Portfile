@@ -3,10 +3,10 @@
 PortSystem          1.0
 
 name                duck
-version             6.8.0.28825
-checksums           rmd160  ddc518eb190155bd59dec274c5e7135fa740127f \
-                    sha256  17eb415d024f62812f308a32919c4b7d9a19b9eca0e71e5b93b7968925ac7f76 \
-                    size    92409932
+version             6.8.3.29107
+checksums           rmd160  6e137af63384d73193fa5ca815e34371fd1afbf4 \
+                    sha256  6d1e210ff5a88070ec8349e4ceee0dde9771b34202cf5d485d41af96049d9c28 \
+                    size    91889185
 
 categories          net
 platforms           darwin

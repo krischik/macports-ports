@@ -3,11 +3,11 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        jgaeddert liquid-dsp 1f9cf34521c10ab79f8fae79348b4c98bb0ad58e
-version             20180911
-checksums           rmd160 7628ecb92c87ceb74a096ab022510886796fe47e \
-                    sha256 f916cf519b9dfadde777f03ca005729821d7b7d2356374354c0a5b632db302bd \
-                    size   1083835
+github.setup        jgaeddert liquid-dsp 4d851ee0282644f465626180e3ec93292ee81cba
+version             20181205
+checksums           rmd160 b1c79af2c0f6ed58b8ffbffe92ec3894dbe8518c \
+                    sha256 fbbba7516e45407072ecf3d2fa84c592b0c77aac5230715a36cccfe96701e460 \
+                    size   1088471
 
 maintainers         {michaelld @michaelld} openmaintainer
 

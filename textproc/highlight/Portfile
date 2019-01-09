@@ -4,7 +4,12 @@ PortSystem          1.0
 PortGroup           cxx11 1.1
 
 name                highlight
-version             3.44
+version             3.48
+revision            0
+checksums           rmd160  b36dbf2deb4e86f52b7a970912c50a1d0a10845d \
+                    sha256  fdc5d20e4d4f3f3c68b04b7b979595a45e005e7c6bb3bf45c2153106518fa008 \
+                    size    1360467
+
 categories          textproc devel
 platforms           darwin
 license             GPL-3
@@ -15,10 +20,6 @@ long_description    ${description}
 homepage            http://www.andre-simon.de
 master_sites        ${homepage}/zip/
 use_bzip2           yes
-
-checksums           rmd160  d7997c545d98c21c2fd09f68989e3cb8cf3713da \
-                    sha256  53a1191f1b21130d9690e4c9a82947af11777d8e9569446b997c5a824e601fa4 \
-                    size    1335764
 
 depends_build       port:boost \
                     port:cctools \
@@ -32,7 +33,7 @@ use_configure       no
 build.target        cli lib
 
 if {[string match *clang* ${configure.cxx}]} {
-    configure.cxxflags-append -stdlib=${configure.cxx_stdlib}
+    configure.ldflags-append -stdlib=${configure.cxx_stdlib}
 }
 configure.cxxflags-append -std=c++11
 

@@ -6,7 +6,7 @@ PortGroup select 1.0
 name                python37
 
 # Remember to keep py37-tkinter and py37-gdbm's versions sync'd with this
-version             3.7.0
+version             3.7.2
 
 set major           [lindex [split $version .] 0]
 set branch          [join [lrange [split ${version} .] 0 1] .]
@@ -24,9 +24,9 @@ master_sites        ${homepage}ftp/python/${version}/
 
 distname            Python-${version}
 use_xz              yes
-checksums           md5 eb8c2a6b1447d50813c02714af4681f3 \
-                    rmd160 dfd13505dcd274e3307cd5ad3d233952ed90fa90 \
-                    sha256 0382996d1ee6aafe59763426cf0139ffebe36984474d0ec4126dd1c40a8b3549
+checksums           md5 df6ec36011808205beda239c72f947cb \
+                    rmd160 4117feee6360078efea9a09c154b753570154445 \
+                    sha256 d83fe8ce51b1bb48bbcf0550fd265b9a75cdfdfa93f916f9e700aef8444bf1bb
 
 patchfiles          patch-setup.py.diff \
                     patch-Lib-cgi.py.diff \
@@ -197,4 +197,4 @@ variant optimizations description {Compile with LTO and PGO. Build time greatly 
 
 livecheck.type      regex
 livecheck.url       ${homepage}downloads/source/
-livecheck.regex     Python (${branch}\[.0-9abrc\]+)
+livecheck.regex     Python (${branch}\[.0-9\]+)

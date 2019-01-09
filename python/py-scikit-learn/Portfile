@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-scikit-learn
-version             0.19.2
+version             0.20.2
 revision            0
 categories-append   science
 platforms           darwin
@@ -22,21 +22,24 @@ long_description    Scikit-learn integrates machine learning algorithms \
                     it provides versatile tools for data mining and analysis \
                     in any field of science and engineering.
 
-homepage            http://scikit-learn.org/
+homepage            https://scikit-learn.org/
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  c6ded64cadf7ba3d3a40abc28835d5d1b852e5cf \
-                    sha256  b276739a5f863ccacb61999a3067d0895ee291c95502929b2ae56ea1f882e888 \
-                    size    9680746
-
+checksums           rmd160  621e8593918b010a7ad18c7f54a8dc87cb3ac3dd \
+                    sha256  bc5bc7c7ee2572a1edcb51698a6caf11fae554194aaab9a38105d9ec419f29e6 \
+                    size    10275187
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                        port:py${python.version}-setuptools
+                        port:py${python.version}-setuptools \
+                        port:py${python.version}-cython
     depends_lib-append  port:py${python.version}-numpy \
                         port:py${python.version}-scipy
+
+    # force cythonize
+    patchfiles-append   patch-sklearn__build_utils___init__.py.diff
 
     livecheck.type      none
 }

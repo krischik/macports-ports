@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-llvmlite
-version             0.24.0
+version             0.27.0
 revision            0
 categories-append   devel science
 platforms           darwin
@@ -22,23 +22,22 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  d28d99da1e8b3a1f26dc7fd872568b88350e90ed \
-                    sha256  320de4c4a1c105b91629305be069d217f3a9d7fbe32cb22bcfb016361895fc07 \
-                    size    100833
+checksums           rmd160  976736a885118cec0fe3f93909ad2582d6bb699b \
+                    sha256  43aafc62a415d293fa2629b7fb2b114167b877dd1a4b00e9942c5b232a529bc9 \
+                    size    103752
 
 if {${name} ne ${subport}} {
-    patchfiles-append   patch-ffi_Makefile.osx.diff \
-                        patch-llvmlite_binding_targets.py.diff
+    patchfiles-append   patch-ffi_Makefile.osx.diff
 
     post-patch {
-        reinplace "s|%%CXX%%|clang++-mp-6.0|" ${worksrcpath}/ffi/Makefile.osx
+        reinplace "s|%%CXX%%|clang++-mp-7.0|" ${worksrcpath}/ffi/Makefile.osx
     }
 
     depends_build-append \
                         port:py${python.version}-setuptools \
-                        port:clang-6.0
+                        port:clang-7.0
 
-    depends_lib-append  port:llvm-6.0 \
+    depends_lib-append  port:llvm-7.0 \
                         port:zlib \
                         port:ncurses \
                         port:libxml2
@@ -47,8 +46,8 @@ if {${name} ne ${subport}} {
         depends_lib-append  port:py${python.version}-enum34
     }
 
-    build.env-append    LLVM_CONFIG=llvm-config-mp-6.0
-    destroot.env-append LLVM_CONFIG=llvm-config-mp-6.0
+    build.env-append    LLVM_CONFIG=llvm-config-mp-7.0
+    destroot.env-append LLVM_CONFIG=llvm-config-mp-7.0
 
     livecheck.type      none
 }

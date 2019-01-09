@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-numba
-version             0.39.0
+version             0.42.0
 revision            0
 categories-append   devel
 platforms           darwin
@@ -20,14 +20,14 @@ long_description    Numba is an Open Source NumPy-aware optimizing compiler \
                     for Python. It uses the remarkable LLVM compiler \
                     infrastructure to compile Python syntax to machine code.
 
-homepage            http://numba.github.com/
+homepage            https://numba.pydata.com/
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  ca9d02348334c8ec0d6a48bdb4455d33babedbb1 \
-                    sha256  07749d1ddac8c4c0ce8b22bf3dec52ef2fd4922174c71447126807f5f8dc2bae \
-                    size    1408098
+checksums           rmd160  5bec5024c9f9f00488bfaaefccaa3fdbc39d1ce0 \
+                    sha256  3de1dd3134d0b4c352b04362ab2c5e8ecb314b7ff6b2256266548402ba6b380f \
+                    size    1562387
 
 variant tbb description "Add support for TBB" {
     depends_lib-append  port:tbb

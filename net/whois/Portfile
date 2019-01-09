@@ -15,6 +15,7 @@ PortGroup                   perl5 1.0
 name                        whois
 conflicts                   bahamut expect ripe-whois
 version                     5.3.2
+revision                    1
 categories                  net
 maintainers                 {ryandesign @ryandesign}
 license                     GPL-2+
@@ -106,4 +107,4 @@ pre-activate {
 
 livecheck.type              regex
 livecheck.url               [lindex ${master_sites} 0]?C=M&O=D
-livecheck.regex             "${name}_(.+?)${extract.suffix}"
+livecheck.regex             "${name}_(\[^~\]+?)${extract.suffix}"

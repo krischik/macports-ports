@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-alembic
-version             1.0.0
+version             1.0.5
 revision            0
 categories-append   databases
 platforms           darwin
@@ -23,9 +23,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  07262b09db8ff1c6fd20bab3af79251cd066ca22 \
-                    sha256  52d73b1d750f1414fa90c25a08da47b87de1e4ad883935718a8f36396e19e78e \
-                    size    1017306
+checksums           rmd160  a429a1cfb96db51c78ccc33e595e19532a1c6cb0 \
+                    sha256  e9ffdece0eece55f4108b14b6b0f29ffc730d58e28446a434fe41a1cc5c5f266 \
+                    size    1020663
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \

@@ -1,7 +1,7 @@
 PortSystem 1.0
 
 name            groovy
-version         2.5.2
+version         2.5.5
 
 categories      lang java
 maintainers     {breun.nl:nils @breun} openmaintainer
@@ -37,9 +37,9 @@ master_sites    https://dl.bintray.com/${name}/maven/
 distname        apache-${name}-binary-${version}
 use_zip         yes
 
-checksums       rmd160  df19ea9526acd19b0b515c799366ff12f65435d9 \
-                sha256  495f96f1be35ef838abb5f1c10fc6f642460cacd94c7095eb3a9f1fbf62b282e \
-                size    29598793
+checksums       rmd160  bd62a7891012cfe5b1b6d3faddb453f9e730c94e \
+                sha256  8241668701c2a756eb93117129cd82b79ab03fe7364ebb5ec6432794cd16129a \
+                size    29903517
 
 worksrcdir      ${name}-${version}
 

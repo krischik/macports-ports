@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                LanguageTool
-version             4.2
+version             4.4
 categories          aqua textproc java
 license             LGPL-2.1
 maintainers         {amake @amake} openmaintainer
@@ -17,9 +17,9 @@ platforms           darwin
 supported_archs     noarch
 master_sites        https://languagetool.org/download/
 
-checksums           rmd160  f4995ca680633a25cfe16b7908b15131a2d5c068 \
-                    sha256  2621801fb4c62f78cc813c17d67c70d39229b8982040b927325754eb7e90135b \
-                    size    142803609
+checksums           rmd160  935cdc30900074c09bb16e0b88d53e1822c5e6a4 \
+                    sha256  8362ecd238d33866919516f69f440d12411a0ea509e0d54b1ff08aef3ebea5db \
+                    size    156949219
 
 depends_run         bin:java:kaffe
 

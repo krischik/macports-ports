@@ -7,7 +7,7 @@ PortGroup           mpi 1.0
 set realname        tables
 name                py-${realname}
 version             3.4.4
-revision            0
+revision            1
 categories-append   science
 platforms           darwin
 license             BSD
@@ -78,7 +78,7 @@ if {${name} ne ${subport}} {
     }
 
     post-patch {
-        reinplace "s:utils.h:xxx_utils.h:" {*}[glob ${worksrcpath}/{src,tables}/*.c]
+        reinplace -q "s:utils.h:xxx_utils.h:" {*}[glob ${worksrcpath}/{src,tables}/*.c]
     }
 
     post-destroot    {

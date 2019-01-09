@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           muniversal 1.0
 
 name                redis
-version             4.0.11
+version             5.0.3
 categories          databases
 platforms           darwin
 license             BSD
@@ -17,9 +17,9 @@ long_description    ${description}
 homepage            https://redis.io/
 master_sites        http://download.redis.io/releases/
 
-checksums           rmd160  30aff2b0b9250f5db6c074796bdc40feb1802e68 \
-                    sha256  fc53e73ae7586bcdacb4b63875d1ff04f68c5474c1ddeda78f00e5ae2eed1bbb \
-                    size    1739656
+checksums           rmd160  676d1db2d5e606047a8ed6a0ffdccbcea3aa89bc \
+                    sha256  e290b4ddf817b26254a74d5d564095b11f9cd20d8f165459efa53eb63cd93e02 \
+                    size    1959445
 
 patchfiles          patch-redis.conf.diff
 

@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup perl5     1.0
 
-perl5.branches      5.26
-perl5.setup         Net-DNS 1.17
+perl5.branches      5.26 5.28
+perl5.setup         Net-DNS 1.19
 license             MIT
 maintainers         {devans @dbevans} openmaintainer
 description         Perl interface to the DNS resolver
@@ -14,14 +14,15 @@ long_description    Net::DNS is a DNS resolver implemented in Perl.  It \
 
 platforms           darwin
 
-checksums           rmd160  294c6eb8c05d97571c217a8f5a75e91a8f1f03a2 \
-                    sha256  9a79fd8fea1a708726c18d193ae4437479206ccb20ffa7f0971371e172e2c2e0 \
-                    size    251924
+checksums           rmd160  84e512fa394453ae9d01c12b125ec5c080205880 \
+                    sha256  206278bdd9a538bec3e45b50e80cc5a9d7dc6e70ebf0889ef78254f0f710ccd7 \
+                    size    256408
 
 if {${perl5.major} != ""} {
     depends_lib-append \
                     port:p${perl5.major}-digest-bubblebabble \
                     port:p${perl5.major}-digest-hmac \
+                    port:p${perl5.major}-io \
                     port:p${perl5.major}-io-socket-ip \
                     port:p${perl5.major}-net-libidn2
 }

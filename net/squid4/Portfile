@@ -4,7 +4,7 @@ PortSystem 1.0
 PortGroup cxx11 1.1
 
 name            squid4
-version         4.2
+version         4.5
 categories      net
 platforms       darwin
 license         GPL-2+
@@ -32,13 +32,14 @@ master_sites    https://mirror.aarnet.edu.au/pub/squid/squid/ \
 
 distname        squid-${version}
 use_xz          yes
-checksums       md5 2cf3f5f183d04322d798f98ea5ead43f \
-                sha1 77fd6f06e6028780faf85ba7e7e9aef0922e9dc0 \
-                rmd160 74764965cb2e403b390ace00f7b86721ee04033f
+checksums       md5 8275da5846f9f2243ad2625e5aef2ee0 \
+                sha1 1249cf60f1ea2a0cd145f66a790d1e9e48333c51 \
+                rmd160 a978922c3a096db1a883f068ab6a3e15645a1596
 
 patchfiles      patch-cf.data.pre.diff \
                 patch-compat_types.h.diff \
-                patch-basic_pam_auth.cc.diff
+                patch-basic_pam_auth.cc.diff \
+                kerberos_ldap_group_Makefile.in.diff
 
 platform darwin 10 {
     # ticket #37102, /usr/include/rpcsvc/yp_prot.h tries to redefine bool

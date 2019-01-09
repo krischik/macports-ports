@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 name                unbound
-version             1.8.0
+version             1.8.3
 categories          net
 license             BSD
 maintainers         {snc @nerdling} openmaintainer
@@ -30,9 +30,9 @@ long_description    Unbound is a validating, recursive, and caching DNS \
 
 master_sites        http://unbound.net/downloads/
 
-checksums           rmd160  2ab5ea1f6495d358f2a3642e2589d7530d79687d \
-                    sha256  78f79d6d3b643fdcd74a14fc76542250da886c82f82bc55b51e189663d61b83f \
-                    size    5609213
+checksums           rmd160  fe0dc21e6404791d737aa68dfe8fec647797c9ed \
+                    sha256  2b692b8311edfad41e7d0380aac34576060d4176add81dc5db419c79b2a4cecc \
+                    size    5629180
 
 configure.args-append   --with-pidfile=${prefix}/var/run/${name}/${name}.pid \
                         --with-ssl=${prefix} \

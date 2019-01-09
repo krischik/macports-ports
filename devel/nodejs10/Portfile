@@ -1,10 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem              1.0
-PortGroup               compiler_blacklist_versions 1.0
+PortGroup               cxx11 1.1
 
 name                    nodejs10
-version                 10.11.0
+version                 10.15.0
 
 categories              devel net
 platforms               darwin
@@ -18,15 +18,15 @@ long_description        Node's goal is to provide an easy way to build scalable 
                         Machine or Python's Twisted. Node takes the event model a bit further-it \
                         presents the event loop as a language construct instead of as a library.
 
-conflicts               nodejs4 nodejs5 nodejs6 nodejs7 nodejs8 nodejs9
+conflicts               nodejs4 nodejs5 nodejs6 nodejs7 nodejs8 nodejs9 nodejs11
 
 homepage                http://nodejs.org/
 master_sites            ${homepage}dist/v${version}
 use_xz                  yes
 
-checksums               rmd160  f2967db4e1a55fd5a3ab22d870289b8c60d81254 \
-                        sha256  b91242c2599db23db9261673500969510fdc7e74426e8d80f1a679b12c7f8e9b \
-                        size    20144576
+checksums               rmd160  f0ba9b7937ddf939a94ce67457e605f054e0b33d \
+                        sha256  797ab34c74b83b21b7d6ea261b5ca235d34c61a7da5aebb32459a963097ede3e \
+                        size    20217588
 
 distname                node-v${version}
 
@@ -38,7 +38,7 @@ depends_lib             port:python27
 proc rec_glob {basedir pattern} {
     set files [glob -directory $basedir -nocomplain -type f $pattern]
     foreach dir [glob -directory $basedir -nocomplain -type d *] {
-        eval lappend files [rec_glob $dir $pattern]
+        lappend files {*}[rec_glob $dir $pattern]
     }
     return $files
 }
@@ -50,7 +50,6 @@ patchfiles              patch-common.gypi.diff
 post-patch {
     foreach f [concat ${worksrcpath}/configure \
                    ${worksrcpath}/tools/gyp/gyp \
-                   ${worksrcpath}/deps/cares/gyp_cares \
                    ${worksrcpath}/deps/v8/gypfiles/gyp_v8 \
                    ${worksrcpath}/deps/v8/tools/objdump-v8 \
                    [rec_glob ${worksrcpath} *.py]] {
@@ -88,6 +87,8 @@ switch $build_arch {
         configure.args-append   --dest-cpu=x64
     }
 }
+
+compiler.blacklist-append {clang < 800}
 
 build.args-append   CC=${configure.cc} \
                     CXX=${configure.cxx} \
@@ -180,7 +181,6 @@ destroot {
         src/node_win32_etw_provider.h \
         src/node_win32_perfctr_provider.h \
         src/node_worker.h \
-        src/node_wrap.h \
         src/pipe_wrap.h \
         src/req_wrap-inl.h \
         src/req_wrap.h \
@@ -242,8 +242,6 @@ destroot {
         ${docdir}
 }
 
-compiler.blacklist *gcc* {clang < 500}
-
 if {${os.major} < 11} {
     pre-fetch {
         ui_error "${name} ${version} requires Mac OS X 10.7 or greater."
@@ -253,4 +251,4 @@ if {${os.major} < 11} {
 
 livecheck.url       ${homepage}dist/
 livecheck.type      regex
-livecheck.regex     {v(\d+\.\d+\.\d+)}
+livecheck.regex     {v(10\.\d+\.\d+)}

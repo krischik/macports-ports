@@ -5,7 +5,11 @@ PortGroup           compiler_blacklist_versions 1.0
 PortGroup           cxx11 1.1
 
 name                dar
-version             2.5.16
+version             2.5.18
+checksums           rmd160  16a49ffd747393615a6be7d24c66527139b0e4f0 \
+                    sha256  73d21f47983d01aed98b90a48f24d7d47bf487ee2fabf83e6b20ca4ea2120090 \
+                    size    1931746
+
 categories          archivers
 platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -18,10 +22,6 @@ long_description    dar is a shell command that backs up directory trees \
 
 homepage            http://dar.sourceforge.net/
 master_sites        sourceforge:project/dar/dar/${version}
-
-checksums           rmd160  d033c8875dd75e5c7b9d0798a9b1ea8aa409a46f \
-                    sha256  e957c97101a17dc91dca00078457f225d2fa375d0db0ead7a64035378d4fc33b \
-                    size    1905306
 
 depends_build       port:doxygen
 

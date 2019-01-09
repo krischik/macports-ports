@@ -129,6 +129,8 @@ switch ${build_arch} {
     default { set goarch {} }
 }
 
+default universal_variant no
+
 default use_configure   no
 default dist_subdir     go
 
@@ -256,6 +258,7 @@ proc handle_set_go_vendors {vendors_str} {
 #
 # - GitHub: ${author}-${project}-${7-digit hash}
 # - Bitbucket: ${author}-${project}-${12-digit hash}
+# - GitLab: ${project}-${ref}
 #
 # Support for additional hosts not conforming to this pattern will take some
 # work.
@@ -265,7 +268,14 @@ post-extract {
         # as the result will not be accurate when go.package has been
         # customized.
         file mkdir [file dirname ${worksrcpath}]
-        move [glob ${workpath}/${go.author}-${go.project}-*] ${worksrcpath}
+        if [file exists [glob -nocomplain ${workpath}/${go.author}-${go.project}-*]] {
+            # GitHub and Bitbucket follow this path
+            move [glob ${workpath}/${go.author}-${go.project}-*] ${worksrcpath}
+        } else {
+            # GitLab follows this path
+            move [glob ${workpath}/${go.project}-*] ${worksrcpath}
+        }
+        # If the above fails then something went wrong and we should error out.
     }
 
     foreach vlist ${go.vendors_internal} {
@@ -281,7 +291,7 @@ destroot {
     ui_msg "Here is an example destroot phase:"
     ui_msg
     ui_msg "destroot {"
-    ui_msg {    xinstall -m 755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/}
+    ui_msg {    xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/}
     ui_msg "}"
     ui_msg
     ui_msg "Please check if there are additional files (configuration, documentation, etc.) that need to be installed."

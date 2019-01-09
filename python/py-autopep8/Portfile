@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-autopep8
-version             1.4
+version             1.4.3
 categories-append   devel
 platforms           darwin
 supported_archs     noarch
@@ -26,9 +26,9 @@ homepage            https://github.com/hhatto/autopep8
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  faadbda8660fe14c088533a062dc53851601df42 \
-                    sha256  655e3ee8b4545be6cfed18985f581ee9ecc74a232550ee46e9797b6fbf4f336d \
-                    size    107925
+checksums           rmd160  a0e2afcd494dd0f149d31bb9ed59be0b96483686 \
+                    sha256  33d2b5325b7e1afb4240814fe982eea3a92ebea712869bfd08b3c0393404248c \
+                    size    113940
 
 python.versions     27 34 35 36 37
 

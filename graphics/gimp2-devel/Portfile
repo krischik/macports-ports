@@ -7,10 +7,10 @@ PortGroup           cxx11 1.1
 name                gimp2-devel
 conflicts           gimp2 gimp3-devel
 set git_name        gimp
-set git_commit      7baedf02d99fd42f736d2675e66cb568bafae21b
-set git_date        20180821
-version             2.10.7-${git_date}
-revision            2
+set git_commit      6f61a7d431e46b3fa985c22124e6640ce42143b2
+set git_date        20181115
+version             2.10.9-${git_date}
+revision            3
 license             GPL-3+
 categories          graphics
 maintainers         {devans @dbevans}
@@ -31,11 +31,11 @@ distname            ${git_name}-${git_commit}
 
 use_bzip2           yes
 
-checksums           rmd160  28837c4381f4f1bc3a937c94e47e123a4f856951 \
-                    sha256  6f584223e9fe81d7e27454f5c800ed523e43021a1824aff0ada0a59453c3d3b9 \
-                    size    81612439
+checksums           rmd160  44961affa5c1d5940bd46d777845956099c4c1ba \
+                    sha256  c43e0af066f31c0ffb44fa74c8d3467b3cb12fda6136d686e5b57f1b55bc3932 \
+                    size    82059689
 
-set perl_version    5.26
+set perl_version    5.28
 
 depends_build       port:pkgconfig \
                     port:appstream-glib \
@@ -98,6 +98,14 @@ patchfiles          patch-configure.ac.diff \
                     patch-etc-gimprc.in.diff \
                     patch-quartz-32bit.diff
 
+if {${os.platform} eq "darwin" && ${os.major} < 11} {
+    # avoid Cursor type conflict between X11 and Quickdraw
+    # error: typedef redefinition with different types ('struct Cursor' vs 'XID' (aka 'unsigned long'))
+    # not an issue on 10.7 and later
+    patchfiles-append \
+                    patch-x11-widgets-fix.diff
+}
+
 pre-configure {
     if {[file exists ${prefix}/lib/gtk-2.0/include/gdkconfig.h]} {
         set gtk_not_quartz [catch {exec grep -q GDK_WINDOWING_QUARTZ ${prefix}/lib/gtk-2.0/include/gdkconfig.h}]
@@ -113,6 +121,17 @@ pre-configure {
 }
 
 configure.perl      ${prefix}/bin/perl${perl_version}
+
+configure.env       CC_FOR_BUILD=${configure.cc}
+
+if {[vercmp $xcodeversion 4.3] < 0 && [string match "*macports*" ${configure.compiler}]} {
+    # Xcode 4.2 fails with load commands in the newer toolchain
+    depends_build-append port:cctools
+
+    configure.env-append \
+        AR=${prefix}/bin/ar \
+        RANLIB=${prefix}/bin/ranlib
+}
 
 configure.cmd       ./autogen.sh
 
@@ -130,7 +149,6 @@ configure.args      --build=${configure.build_arch}-apple-${os.platform}${os.ver
                     --without-gudev \
                     --without-webkit \
                     ac_cv_path_INTLTOOL_PERL=${configure.perl}
-configure.env       CC_FOR_BUILD=${configure.cc}
 
 # keep empty GIMP font directory
 # silences warning message on startup:

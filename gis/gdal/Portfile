@@ -10,6 +10,7 @@ PortGroup           compiler_blacklist_versions 1.0
 mpi.setup
 
 github.setup        OSGeo gdal 2.3.2 v
+revision            2
 categories          gis
 license             MIT BSD
 platforms           darwin
@@ -38,7 +39,8 @@ patchfiles          patch-gdalwarpkernel_opencl_cpp.diff \
                     patch-apps_GNUmakefile.diff \
                     patch-ogr_p_h.diff \
                     patch-ogr_api_cpp.diff \
-                    patch-scripts-GNUmakefile.diff
+                    patch-scripts-GNUmakefile.diff \
+                    patch-poppler.diff
 
 platform darwin {
     # see https://trac.macports.org/ticket/55752
@@ -89,7 +91,7 @@ configure.args-append \
                     --with-proj=${prefix}/lib/proj5 \
                     --with-qhull=yes \
                     --with-pam \
-                    --with-sqlite3=yes \
+                    --with-sqlite3=${prefix} \
                     --with-spatialite=${prefix} \
                     --with-curl=${prefix}/bin/curl-config \
                     --with-geos=${prefix}/bin/geos-config \
@@ -175,7 +177,7 @@ variant grass description {Enable GRASS 7 GIS I/O} {
     } 
 
     configure.args-delete   --without-grass
-    configure.args-append   --with-grass=${prefix}/share/grass-7.4.1
+    configure.args-append   --with-grass=${prefix}/share/grass-7.4.3
 }
 
 variant mrsid description {Enable MrSID file format} {
@@ -319,7 +321,7 @@ variant xerces description {Enable xerces XML support for GML file format} {
 }
 
 # Database variants
-set postgresql_suffixes {95 96 10}
+set postgresql_suffixes {95 96 10 11}
 
 set portsgresql_variants {}
 foreach s ${postgresql_suffixes} {
