@@ -278,9 +278,13 @@ platform darwin {
 
 
 # Shameless copy from ipe-tools.
-set python.versions         {27 36}
-# Remove after 07-30-2018.
-dict set python.legacy_versions 35 36
+set python.versions         {27 37}
+dict set python.legacy_versions 36 37
+# After Python 3.8 is released, and mpv can be built with it,
+# replace with the above lines with the following:
+#set python.versions         {27 38}
+#dict set python.legacy_versions 37 38
+
 set python.default_version  27
 set python.version          ""
 
@@ -423,17 +427,6 @@ variant libarchive description {Enable transparent handling of Zip files and oth
     depends_lib-append      port:libarchive
     configure.args-replace  --disable-libarchive \
                             --enable-libarchive
-}
-
-# Remove after 07-30-2018
-variant enca requires uchardet description {Legacy compatibility variant for enable encoding support via ENCA. Will be removed soon.} {
-    notes-append {
-                    You have enabled the legacy enca variant.
-
-                    Upstream removed support for ENCA in version 0.23.0 in favor of uchardet.
-
-                    The uchardet variant has been enabled automatically.
-    }
 }
 
 variant rubberband description {Enable support for the Rubber Band library, adding audio pitch and speed control} {
