@@ -77,18 +77,21 @@ if {${subport} eq ${name}} {
                             -DWITH_XC_HTTP=ON
 } else {
     # devel
-    github.setup            keepassxreboot keepassxc dd5665c6563f6185532c4dc76896f4220fd3c8e3
-    version                 20181229
+    github.setup            keepassxreboot keepassxc b21936f94d81df1c34abd3310600f67a548308ee
+    version                 20190122
 
     conflicts               KeePassXC
 
-    checksums               rmd160  e76c5b50f0e5c0f8584089e9d477e6962c2a13ae \
-                            sha256  f48bc710eee5d26d47ff9bbc475f52e85cc4862303292ec93347e1fa51b89ebd \
-                            size    4905466
+    checksums               rmd160  09bfcfdafaedc23e4d03795471fdf9917dcdb458 \
+                            sha256  b194b2e47fd96c9ab353da37fdb8b1d22f0071c89ae67aa8ba23d5bdf9f94936 \
+                            size    4897376
 
     patchfiles              devel/patch-no-deployqt.diff
 
-    depends_lib-append      port:qrencode
+    depends_lib-append      port:qrencode \
+                            port:quazip
+
+    qt5.depends_component   qtsvg
 
     # In the future the Touch ID feature may require Darwin 17 (10.13)
     # https://github.com/keepassxreboot/keepassxc/issues/2484
@@ -96,6 +99,18 @@ if {${subport} eq ${name}} {
         configure.pre_args-append \
                                 -DWITH_XC_TOUCHID=ON
     }
+
+    configure.pre_args-append   -DWITH_XC_KEESHARE=ON \
+                                -DWITH_XC_KEESHARE_SECURE=ON
+
+    # KeePassXC now requires a compiler with C++ defect report 253 (DR 253)
+    # corrected[1]. AppleClang 8.0.0 is known to be broken[2] and
+    # AppleClang 9.0.0 is known to work[3].
+    # [1] https://stackoverflow.com/a/47368753/3786245
+    # [2] https://build.macports.org/builders/ports-10.11_x86_64-builder/builds/77570/steps/install-port/logs/stdio
+    # [3] https://build.macports.org/builders/ports-10.12_x86_64-builder/builds/82949/steps/install-port/logs/stdio
+    # TODO: merge this with the main blacklist when the next version of KeePassXC is out
+    compiler.blacklist-append {clang < 900}
 }
 
 if {${configure.cxx_stdlib} eq "libstdc++"} {
