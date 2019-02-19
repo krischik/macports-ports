@@ -37,10 +37,10 @@ if {${subport} eq ${name}} {
 
     # release
 
-    version         ${branch}.3
-    checksums       rmd160 e45ff33c04a084d09d7547bc12e0193c9e920cc3 \
-                    sha256 665f905036b1f731a2a16f83fb298b1fb9d0f98c382625d023097151ad016b25 \
-                    size   8616403
+    version         ${branch}.4
+    checksums       rmd160 6211b5315071015d2a949af077e4301c47e36fd4 \
+                    sha256 fdd928fee35f472920071d1c7f1a6a2b72c9b25e04f7a37b409349aef3f20e9b \
+                    size   8617881
     revision        0
 
     master_sites    ${homepage}/files/v${branch}/
@@ -54,8 +54,8 @@ if {${subport} eq ${name}} {
         patch-Modules-noArchCheck.release.diff \
         patch-CMakeFindFrameworks.cmake.release.diff \
         patch-Source_CMakeVersionCompute.cmake.release.diff \
-        patch-Source_CMakeLists.txt.release.diff \
-        patch-Source_Modules_FindLibUV.cmake.release.diff
+        patch-Source_Modules_FindLibUV.cmake.release.diff \
+        patch-fix_cxx14_17_checks.release.diff
 
     livecheck.type  regex
     livecheck.regex ${name}-(\[0-9.\]+)${extract.suffix}
@@ -65,11 +65,11 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    version         20190114
-    set commit      4541c914b587125048c8e82bc3cd687f573f753a
-    checksums       rmd160 cd48decef8bf62d76eb86ae041ced7a7dfaf98a0 \
-                    sha256 f6a33db7c0c0b12472b1d0c957331600861d69e2b4e7ca0d816ca8c2eda97144 \
-                    size   6585671
+    version         20190218
+    set commit      75b45956e044701c0ebe6dbc433f629e0558bdb8
+    checksums       rmd160 d2a7666b7b8413db0341c55f8651e2b40d465bab \
+                    sha256 9a6d4278c4e20ddbd234e8ac922d03f38d1abcfa2c990ba59e6d7e10420a40cd \
+                    size   6614890
     revision        0
 
     use_bzip2       yes
@@ -86,8 +86,8 @@ if {${subport} eq ${name}} {
         patch-Modules-noArchCheck.devel.diff \
         patch-CMakeFindFrameworks.cmake.devel.diff \
         patch-Source_CMakeVersionCompute.cmake.devel.diff \
-        patch-Source_CMakeLists.txt.devel.diff \
-        patch-Source_Modules_FindLibUV.cmake.devel.diff
+        patch-Source_Modules_FindLibUV.cmake.devel.diff \
+        patch-fix_cxx14_17_checks.devel.diff
 
     livecheck.type  regex
     livecheck.regex data-clipboard-text=\"(\[0-9a-g\]+)\"

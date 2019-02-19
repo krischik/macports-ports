@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pandas
-version             0.23.4
+version             0.24.1
 categories-append   science
 license             BSD
 platforms           darwin
@@ -22,9 +22,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  57efaf345b3ce33099c9d56ecd973ca7d39bc345 \
-                    sha256  5b24ca47acf69222e82530e89111dd9d14f9b970ab2cd3a1c2c78f0c4fbba4f4 \
-                    size    10490077
+checksums           rmd160  703c563bc0cd5cf7bda6f23aa63101dc49aefd71 \
+                    sha256  435821cb2501eabbcee7e83614bd710940dc0cf28b5afbc4bdb816c31cec71af \
+                    size    11832827
 
 if {${name} ne ${subport}} {
     depends_build-append \

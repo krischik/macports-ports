@@ -5,7 +5,7 @@ PortGroup           github 1.0
 PortGroup           python 1.0
 PortGroup           select 1.0
 
-github.setup        palantir python-language-server 0.22.0
+github.setup        palantir python-language-server 0.23.2
 revision            0
 name                py-language-server
 categories-append   devel
@@ -17,13 +17,13 @@ long_description    ${description}
 platforms           darwin
 supported_archs     noarch
 
-checksums           rmd160  16e9e422cc96ce97eb1f72676065f3b97abb1f93 \
-                    sha256  7a6890115d1b833a7914150a98d9def6ef00f2a2bf27900d0bdc8042210e4f0c \
-                    size    439631
+checksums           rmd160  f1656749ad0260f484f9098505d401d1746f12c3 \
+                    sha256  af8f5573009e70d1e3314b196b412ee7ebdf8ba637b81ccd51ebb5c9ab0f1956 \
+                    size    440961
 
 python.versions     27 35 36 37
 
-if {$subport ne $name} {
+if {${subport} ne ${name}} {
     depends_lib-append \
                     port:py${python.version}-autopep8 \
                     port:py${python.version}-codestyle \

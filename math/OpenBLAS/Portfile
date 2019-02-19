@@ -4,6 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           muniversal 1.0
 PortGroup           compilers 1.0
+PortGroup           compiler_blacklist_versions 1.0
 
 name                OpenBLAS
 categories          math science
@@ -17,14 +18,19 @@ platforms           darwin
 # for the user processor
 archive_sites
 
+# block compilers that do not support thread-local storage. it would
+# be better to use the cxx11 1.1 PG, but it conflicts with the
+# compilers 1.0 PG & so just block compilers instead.
+compiler.blacklist-append cc {*gcc-3*} {*gcc-4.[0-7]} {clang < 800.0.38}
+
 subport OpenBLAS-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    xianyi OpenBLAS 5be61f4b478968ae7bfab7ca75a6e74204bb1a2d
-    version         20190128
-    checksums       rmd160  a6f366fdbd3887f7c1929dd9c4ea5d3bcf902c02 \
-                    sha256  4631f78beca6ef3d9836e58a9ca95c40811984ea67153dfb35f6be114f221307 \
-                    size    11862855
+    github.setup    xianyi OpenBLAS e12cdf58ef032376bbb5fc850d642488b339c7ae
+    version         20190217
+    checksums       rmd160 fb8a4845ad86c148f82f5150c68d727bc4fefbe0 \
+                    sha256 68bd1cd7b65fd4691eb46f79ff294903d614b4bc0ca43d10ff1ae27eaaf424a8 \
+                    size   11901312
     revision        0
 
     name            ${github.project}-devel
@@ -131,10 +137,10 @@ pre-build {
         close $makeINC
     }
 }
-# Using system ones as default is set to bin/gcc-ar which does not
-# exist, and using gcc-mp ones end up in an error about a missing
-# plugin. (see ticket #38551 for example)
-build.args          "AR=/usr/bin/ar RANLIB=/usr/bin/ranlib"
+
+depends_build-append port:cctools
+build.args          "AR=${prefix}/bin/ar RANLIB=${prefix}/bin/ranlib"
+
 destroot.args       "PREFIX=${prefix}"
 
 if {[variant_isset universal]} {

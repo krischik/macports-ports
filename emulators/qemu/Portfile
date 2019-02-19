@@ -2,6 +2,7 @@ PortSystem 1.0
 
 name                    qemu
 version                 3.0.0
+revision                1
 categories              emulators
 license                 GPL-2+
 platforms               darwin
@@ -54,6 +55,7 @@ configure.args-append   --iasl=/usr/bin/false
 # Select features
 configure.args-append   --disable-cocoa \
                         --disable-curses \
+                        --disable-capstone \
                         --disable-sdl \
                         --disable-gtk \
                         --disable-opengl \
@@ -102,9 +104,6 @@ foreach t {i386 x86_64 alpha {arm aarch64} cris lm32 m68k {microblaze microblaze
     variant target_[lindex $t 0] description "Add target support for [join $t {, }]" "append target_list \",[join $t -softmmu,]-softmmu\""
 }
 default_variants-append +target_i386 +target_x86_64
-
-# Compatiblity variant, remove after 2018-12-31
-variant target_or32 description "Compatibility variant, renamed to +target_or1k" requires target_or1k {}
 
 if {![variant_isset curses]} {
     default_variants-append +cocoa

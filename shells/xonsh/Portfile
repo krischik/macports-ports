@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        xonsh xonsh 0.8.8
+github.setup        xonsh xonsh 0.8.10
 revision            0
 github.tarball_from tags
 categories          shells
@@ -22,9 +22,9 @@ long_description    ${description} \
                     macOS, and Windows. Xonsh is meant for the daily use of \
                     experts and novices alike.
 
-checksums           rmd160  d2e5eefade91c305c6fae7d4b83de7224115f11e \
-                    sha256  dd57a111e09bdcdf86ecdc38321633a9bb1526ea1f321453f30d73cb89c111e9 \
-                    size    1969696
+checksums           rmd160  e85a2289dc18689bb49d0a2f8eb942ec08657b90 \
+                    sha256  9a7120033aa2e090cc924008d7f75f551954b695829675ca59b39e7cfa4a974b \
+                    size    2013202
 
 python.versions     34 35 36 37
 
