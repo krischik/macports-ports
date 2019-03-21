@@ -30,11 +30,11 @@ if {${subport} eq ${name}} {
 
 subport libuv-devel {
 
-    github.setup    libuv libuv bcef1c16fb5a36b499b46d6b0a22d625fefdaeed
-    version         20190223
-    checksums       rmd160 6a50be96978777a6d0c27e12bcd6a2fc1c7327b6 \
-                    sha256 4a6c89524f337cd89e722b07ad3af05aaa49f3f7a5ea86af5cb81a5abce9fd5f \
-                    size   1210471
+    github.setup    libuv libuv bdb5838eac6c159939455285955e3bf7d860ffd6
+    version         20190303
+    checksums       rmd160 00178e44b434c7be91198a9fc38406fd7c141668 \
+                    sha256 288c0eded8951b3e83ea061fb1f419966d4fccf3dec17731d477932392bb6f9c \
+                    size   1211011
     revision        0
 
     long_description    ${long_description} \
