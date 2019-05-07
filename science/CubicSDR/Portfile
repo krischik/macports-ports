@@ -1,0 +1,65 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:filetype=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           cmake 1.1
+PortGroup           cxx11 1.1
+PortGroup           github 1.0
+PortGroup           wxWidgets 1.0
+
+name                CubicSDR
+categories          science comms
+platforms           darwin macosx
+license             GPL-2
+maintainers         {@ra1nb0w irh.it:rainbow} {michaelld @michaelld} openmaintainer
+description         Cross-Platform Software-Defined Radio Application
+long_description    CubicSDR is the software portion of Software Defined \
+    Radio. By Using hardware that converts RF spectrum into a digital \
+    stream we are able to build complex radios to do many types of \
+    functions in software instead of traditional hardwre.
+homepage            https://www.cubicsdr.com
+
+github.setup        cjcliffe CubicSDR 61f6eac8cfd9779385f9af8504fca0a0ef0ec1ef
+version             20190402
+checksums           rmd160  eb2ba8f5a8dd5c4b6fb0c6b6bcdd7a54e0009d90 \
+                    sha256  251ac3e344fa307af5c183f38dfa4252aa89e6922d8b56f8e412776573f3ea3d \
+                    size    36066046
+revision            0
+
+wxWidgets.use       wxWidgets-3.2
+
+depends_lib-append \
+    port:liquid-dsp \
+    port:${wxWidgets.port} \
+    port:SoapySDR
+
+configure.args-append \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DwxWidgets_CONFIG_EXECUTABLE=${wxWidgets.wxconfig}
+
+variant hamlib description {Support hamlib for radio control functions} {
+    depends_lib-append      port:hamlib
+    configure.args-append   -DUSE_HAMLIB=1
+}
+
+variant bundle description {Enable the optional macOS bundle of CubicSDR} {
+    configure.args-append   -DBUNDLE_APP=1 \
+        -DCPACK_BINARY_DRAGNDROP=0
+
+    # avoid cpack
+    destroot {}
+
+    post-destroot {
+        xinstall -d -m 0755 ${destroot}${applications_dir}
+        copy ${workpath}/build/x64/CubicSDR.app ${destroot}${applications_dir}
+    }
+}
+
+default_variants-append +bundle
+
+# from documentation
+if {${os.platform} eq "darwin" && ${os.major} < 13} {
+    pre-fetch {
+        ui_error "${subport} @${version} requires OS X 10.9 or newer"
+        return -code error "unsupported Mac OS X version"
+    }
+}

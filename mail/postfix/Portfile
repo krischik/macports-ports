@@ -1,7 +1,7 @@
 PortSystem  1.0
 
 name            postfix
-version         3.4.1
+version         3.4.5
 categories      mail
 license         {IBMPL-1 EPL-2}
 maintainers     {jmr @jmroot} openmaintainer
@@ -13,8 +13,8 @@ long_description    Postfix attempts to be fast, easy to administer, and \
             Postfix act as delivery daemon for ezmlm-idx.
 homepage        http://www.postfix.org/
 platforms       darwin
-checksums       rmd160 ab7541c8b9b0d3dd505b19e2c7ccad20a5d19f2c \
-                sha256 8c9763f7a8ec70d499257b7f25bb50e1f3da8a4c43e59826ba8a26c4a778d0ce
+checksums       rmd160 77c4455f6493020c8d591496322f943f14e4ed1e \
+                sha256 8b2ba54f9d2a049582a0ed3ee2dbe96ba57e278feea9cb4f80e1a61844e6319f
 
 master_sites    https://archive.mgm51.com/mirrors/postfix-source/official/ \
                 http://de.postfix.org/ftpmirror/official/ \

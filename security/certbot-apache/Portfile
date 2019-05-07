@@ -5,7 +5,7 @@ PortGroup           active_variants 1.1
 PortGroup           python 1.0
 
 name                certbot-apache
-version             0.32.0
+version             0.33.1
 revision            0
 categories          security
 license             Apache-2
@@ -18,9 +18,9 @@ master_sites        pypi:c/certbot-apache
 
 python.versions     27 36 37
 
-checksums           rmd160  3efedc5f82313d11938030d149e07c2776b93af1 \
-                    sha256  68072775f1bb4bc9fc64cabe051a761f6dbf296012512eff7819144ac8b9ec97 \
-                    size    163549
+checksums           rmd160  e03727bc160bf2ffd2bf15a1927b65dc3150ea3c \
+                    sha256  659db7335d919fee52ae707567994e13c31ed25109c94b246c60c97d21c46f3a \
+                    size    182811
 
 depends_lib-append  port:certbot \
                     port:py${python.version}-acme \

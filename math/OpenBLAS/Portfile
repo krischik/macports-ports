@@ -30,11 +30,11 @@ platform darwin i386 {
 subport OpenBLAS-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    xianyi OpenBLAS f18ab6c17b262f617b5bbad87555bca3b490b079
-    version         20190309
-    checksums       rmd160 3c9f8f95685c46ff290764e3388d2d842535b049 \
-                    sha256 97e6b6baf99edb9ef637dc032b0a31de32fe4933240a0bc8fbe789d63edf0552 \
-                    size   11898036
+    github.setup    xianyi OpenBLAS e06b8438b478f94f516fc9cde8943be29e0a7867
+    version         20190402
+    checksums       rmd160 a0cc14c7366cda0d697d0fd191347a21bf1780d0 \
+                    sha256 848f288e6492a3bdd0f4e1185d722f5d453de533a06dadc084617fd099c9bf5e \
+                    size   11912955
     revision        0
 
     name            ${github.project}-devel

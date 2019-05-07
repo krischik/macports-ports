@@ -5,7 +5,7 @@ PortGroup           active_variants 1.1
 PortGroup           python 1.0
 
 name                certbot-nginx
-version             0.32.0
+version             0.33.1
 revision            0
 categories          security
 license             Apache-2
@@ -18,9 +18,9 @@ master_sites        pypi:c/certbot-nginx
 
 python.versions     27 36 37
 
-checksums           rmd160  9072895906709103bc96266c331c3ade64159607 \
-                    sha256  82c43cd26aacc2eb0ae890be6a2f74d726b6dcb4ee7b63c0e55ec33e576f3e84 \
-                    size    79096
+checksums           rmd160  7a4838b7d8e6717ea77431ffc6794b9660a1ec16 \
+                    sha256  b3201eee03be74fc743c21c721d3b5586c3323db63e78b68583a6250ad680cff \
+                    size    75629
 
 depends_lib-append  port:certbot \
                     port:py${python.version}-acme \

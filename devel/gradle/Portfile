@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                gradle
-version             5.2.1
+version             5.3.1
 categories          devel java groovy
 license             Apache-2
 maintainers         {amake @amake} openmaintainer
@@ -17,12 +17,14 @@ long_description    Gradle is a build system which offers you ease, power and fr
 
 homepage            https://gradle.org/
 platforms           darwin
+supported_archs     noarch
 distname            ${name}-${version}-bin
 master_sites        https://services.gradle.org/distributions
 
-checksums           rmd160  3e67c0ba3f27884538782687134fa756ba76cc1a \
-                    sha256  748c33ff8d216736723be4037085b8dc342c6a0f309081acf682c9803e407357 \
-                    size    87430521
+# Update checksums for variant when updating these!
+checksums           rmd160  53fcd62e97fafd3af53a202238f2b8be9bf7dd23 \
+                    sha256  1c59a17a054e9c82f0dd881871c9646e943ec4c71dd52ebc6137d17f82337436 \
+                    size    87237494
 
 worksrcdir          ${name}-${version}
 
@@ -36,7 +38,7 @@ pre-destroot {
     delete {*}[glob ${worksrcpath}/bin/*.bat]
 }
 
-destroot    {
+destroot {
     # Create the target java directory
     xinstall -m 0755 -d ${destroot}${prefix}/share/java/${name}
 
@@ -49,6 +51,24 @@ destroot    {
 
     # Symlink gradle into the bin directory
     ln -s ${prefix}/share/java/${name}/bin/gradle ${destroot}${prefix}/bin
+}
+
+variant all description {Install supplemental documentation and source code} {
+    distname        ${name}-${version}-all
+
+    checksums       rmd160  74e03875a798e54e1806deb8fdf06e26b3075906 \
+                    sha256  b018a7308cb43633662363d100c14a3c41c66fd4e32b59e1dfc644d6fd2109f6 \
+                    size    132932668
+
+    post-destroot {
+        xinstall -m 0755 -d ${destroot}${prefix}/share/doc/${name}
+        copy ${worksrcpath}/getting-started.html \
+            ${worksrcpath}/media \
+            ${worksrcpath}/src \
+            ${worksrcpath}/docs \
+            ${worksrcpath}/samples \
+            ${destroot}${prefix}/share/doc/${name}
+    }
 }
 
 livecheck.type  regex

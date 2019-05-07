@@ -6,3 +6,4 @@ Portfile~
 **/.backups
 **/*.swp
 *.backup
+.DS_Store

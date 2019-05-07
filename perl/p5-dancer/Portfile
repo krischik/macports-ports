@@ -1,16 +1,16 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
-PortSystem         1.0
-PortGroup          perl5 1.0
+PortSystem          1.0
+PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28
-perl5.setup        Dancer 1.3500 ../../authors/id/B/BI/BIGPRESH
-platforms          darwin
-maintainers        {di.uminho.pt:jpo @jpoliv} openmaintainer
-supported_archs    noarch
-license            {Artistic-1 GPL}
+perl5.setup         Dancer 1.3512 ../../authors/id/B/BI/BIGPRESH
+platforms           darwin
+maintainers         {di.uminho.pt:jpo @jpoliv} openmaintainer
+supported_archs     noarch
+license             {Artistic-1 GPL}
 
-description        Lightweight yet powerful web application framework
+description         Lightweight yet powerful web application framework
 
 long_description \
     Dancer aims to provide the simplest way for writing web applications, \
@@ -19,9 +19,9 @@ long_description \
     way up to a more complex fully-fledged web application with session \
     support, templates for views and layouts, etc.
 
-checksums           rmd160  d0b3d2f33e70af111e2d244bdd3c06225d20931b \
-                    sha256  58042aa46dfea864e4a591dc80f46d901bd2e7128de242e3e577463d13995cdc \
-                    size    392695
+checksums           rmd160  0794787af6197b828fc05bb5b300aa7583d0be15 \
+                    sha256  b1f644df05a7db57d8a4e077826e875835b31f4456f855110e8cf45a66715590 \
+                    size    394458
 
 if {${perl5.major} != ""} {
     depends_build-append \

@@ -9,9 +9,10 @@ PortGroup       legacysupport 1.0
 PortGroup       active_variants 1.1
 
 name            gnutls
-version         3.6.6
-revision        1
+version         3.6.7.1
+revision        0
 set branch      [join [lrange [split ${version} .] 0 1] .]
+set major       [join [lrange [split ${version} .] 0 2] .]
 categories      devel security
 # yes, some of the libs are GPL only
 license         LGPL-2.1+ GPL-3+
@@ -29,11 +30,14 @@ long_description \
 master_sites    https://www.gnupg.org/ftp/gcrypt/gnutls/v${branch}/ \
                 http://mirrors.dotsrc.org/gcrypt/gnutls/v${branch}/
 
-checksums       rmd160  b83342901fc4d0f597d4d97e1d853431a27cc162 \
-                sha256  bb9acab8af2ac430edf45faaaa4ed2c51f86e57cb57689be6701aceef4732ca7 \
-                size    8257612
+checksums       rmd160  9a32e04aa76da39391ea42f16838bd8aee6c0220 \
+                sha256  881b26409ecd8ea4c514fd3fbdb6fae5fab422ca7b71116260e263940a4bbbad \
+                size    8155512
 
 use_xz          yes
+
+# deal with minor updates that extract to major version number
+worksrcdir      ${name}-${major}
 
 # see: https://trac.macports.org/ticket/57958 for autoconf-archive
 # see: https://trac.macports.org/ticket/57893

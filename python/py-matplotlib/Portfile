@@ -12,7 +12,7 @@ license             {PSF BSD}
 
 python.versions     27 34 35 36 37
 
-maintainers         {gmail.com:ottenr.work @reneeotten} openmaintainer
+maintainers         {reneeotten @reneeotten} openmaintainer
 
 description         Matplotlib is a python plotting library
 
@@ -78,7 +78,7 @@ if {${name} ne ${subport}} {
                             port:py27-subprocess32
     }
 
-    build.env           PKG_CONFIG_PATH="${python.prefix}/lib/pkgconfig"
+    build.env           PKG_CONFIG_PATH=${python.prefix}/lib/pkgconfig
 
     post-patch {
         reinplace "s|@@PREFIX@@|${prefix}|" ${worksrcpath}/setup.cfg

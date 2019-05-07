@@ -3,11 +3,11 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        jgaeddert liquid-dsp 8183ee51ab5c90588bff987b1b5d36a8aec2e63e
-version             20190309
-checksums           rmd160 7a78ebaa15e37d2ea420a736cd75d51e7ef3f95f \
-                    sha256 b516617127076b63533820354dc55d1ab07045ff8abf0bdc6962ecf56050d62c \
-                    size   1091346
+github.setup        jgaeddert liquid-dsp 4c7bd534b89e56741adddc3b8a4ceb2fa5e53aad
+version             20190402
+checksums           rmd160 78488ba074f28fce1d1712883ea75751021f828d \
+                    sha256 b97352e148d79f1d84c577182f78ebbde98b6f9e5e29db7706c199a0c20a1d62 \
+                    size   1105150
 revision            0
 
 maintainers         {michaelld @michaelld} openmaintainer
@@ -39,11 +39,17 @@ pre-configure {
 }
 
 # make sure MP programs are used
-
+if {[vercmp [macports_version] 2.5.99] >= 0} {
+configure.env-append \
+    SED=${prefix}/bin/gsed \
+    GREP=${prefix}/bin/ggrep \
+    "EGREP=${prefix}/bin/ggrep -E"
+} else {
 configure.env-append \
     SED=${prefix}/bin/gsed \
     GREP=${prefix}/bin/ggrep \
     EGREP="${prefix}/bin/ggrep -E"
+}
 
 # remove top-level include path, such that internal headers are used
 # instead of any already-installed ones.

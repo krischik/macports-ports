@@ -5,8 +5,10 @@ PortGroup select 1.0
 PortGroup compiler_blacklist_versions 1.0
 
 name                gcc7
-epoch               2
+epoch               3
 version             7.4.0
+# warning : Due to past problems avoid revisions 1 and 2 with 7.4.0.
+# If this version needs to be bumped in the future, go to 3.
 revision            0
 subport             libgcc7 { revision 0 }
 platforms           darwin
@@ -329,12 +331,21 @@ variant universal {
     configure.args-delete --disable-multilib
 }
 # the generated compiler doesn't accept -arch
+if {[vercmp [macports_version] 2.5.99] >= 0} {
+configure.env-append \
+    "CPP=${configure.cc} -E" \
+    "CXXCPP=${configure.cxx} -E"
+build.env-append \
+    "CPP=${configure.cc} -E" \
+    "CXXCPP=${configure.cxx} -E"
+} else {
 configure.env-append \
     CPP="${configure.cc} -E" \
     CXXCPP="${configure.cxx} -E"
 build.env-append \
     CPP="${configure.cc} -E" \
     CXXCPP="${configure.cxx} -E"
+}
 configure.cc-append [get_canonical_archflags]
 configure.cc_archflags
 configure.cxx-append ${configure.cxx_archflags}

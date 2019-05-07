@@ -57,11 +57,11 @@ if {${subport} eq ${name}} {
     conflicts           gpsd
 
     revision            0
-    version             20190312
-    set commit          ed23183bb27873b6623cefa3aa09a67a71171a82
-    checksums           rmd160 f7820b1716d8c4f829cf5052407380e466b462e2 \
-                        sha256 38b8a58f6487d4fd61134c28c5a28b26595c7f8bd6073c0e2ec1de2104e66f1d \
-                        size   10119281
+    version             20190402
+    set commit          c8e33e1c5f2b0817a110a51a2a6a6b7d8e3c3bf4
+    checksums           rmd160 d187631a378251a418c843852eab606b13c44231 \
+                        sha256 fa0781dfff880ed6dc90ad121bb17d340eb91ef5dab1502fd29d365af8790ecc \
+                        size   10157305
 
     master_sites        http://git.savannah.gnu.org/cgit/gpsd.git/snapshot
     distname            ${name}-${commit}
@@ -141,11 +141,19 @@ build.args              prefix=${prefix} \
                         strip=no \
                         dbus_export=no \
                         xgps=no
+if {[vercmp [macports_version] 2.5.99] >= 0} {
+build.env-append        "CC=${configure.cc} [get_canonical_archflags cc]" \
+                        CFLAGS=${configure.cflags} \
+                        "CXX=${configure.cxx} [get_canonical_archflags cxx] ${cxx_stdlibflags}" \
+                        CXXFLAGS=${configure.cxxflags} \
+                        LDFLAGS=${configure.ldflags}
+} else {
 build.env-append        CC="${configure.cc} [get_canonical_archflags cc]" \
                         CFLAGS="${configure.cflags}" \
                         CXX="${configure.cxx} [get_canonical_archflags cxx] ${cxx_stdlibflags}" \
                         CXXFLAGS="${configure.cxxflags}" \
                         LDFLAGS="${configure.ldflags}"
+}
 
 # Allow the regression tests to be run via "port test gpsd".
 #
@@ -212,7 +220,7 @@ variant qt description {Build Qt4 bindings} {
 
 variant libusb \
 description {Include support for better USB device discovery} {
-    depends_lib-append      port:libusb
+    depends_lib-append      path:lib/libusb-1.0.dylib:libusb
 
     build.args-replace      usb=no          usb=yes
     test.args-replace       usb=no          usb=yes
