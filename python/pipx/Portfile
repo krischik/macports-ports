@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        pipxproject pipx 0.12.3.3
+github.setup        pipxproject pipx 0.13.1.0
 categories          python sysutils
 license             MIT
 maintainers         {lbschenkel @lbschenkel} openmaintainer
@@ -14,9 +14,9 @@ platforms           darwin
 description         Execute binaries from Python packages in isolated environments
 long_description    ${description}
 
-checksums           rmd160  a9061be60dcc0cbf8954ba818c215b1e7a7bddfb \
-                    sha256  5837110a8f287201087590cdda29692790176016b14f30066251d14eb0c28f09 \
-                    size    261969
+checksums           rmd160  9dbe706de148fa8dbd51a7ec1160f051007fbdad \
+                    sha256  f8ca6988506cb19c8ba196f56bfed2dd7a32455262d26e688fe1e65618e46ff1 \
+                    size    261757
 
 python.default_version 37
 python.versions     36 37

@@ -74,14 +74,16 @@ if {${build_arch} eq "ppc" || ${build_arch} eq "ppc64"} {
 } elseif {${os.major} < 10} {
     # see https://trac.macports.org/ticket/57135
     set compilers.gcc_default gcc7
-} else {
+} elseif {${os.major} < 11} {
     set compilers.gcc_default gcc8
+} else {
+    set compilers.gcc_default gcc9
 }
 
 set compilers.list {cc cxx cpp objc fc f77 f90}
 
 # build database of gcc compiler attributes
-set gcc_versions {44 45 46 47 48 49 5 6 7 8}
+set gcc_versions {44 45 46 47 48 49 5 6 7 8 9}
 foreach v ${gcc_versions} {
     # if the string is more than one character insert a '.' into it: e.g 49 -> 4.9
     set compiler_version $v
@@ -116,7 +118,7 @@ foreach v ${gcc_versions} {
     set cdb(gcc$v,f90)      ${prefix}/bin/gfortran-mp-$compiler_version
 }
 
-set clang_versions {33 34 37 38 39 40 50 60 70}
+set clang_versions {33 34 37 39 40 50 60 70 80}
 foreach v ${clang_versions} {
     # if the string is more than one character insert a '.' into it: e.g 33 -> 3.3
     set compiler_version $v

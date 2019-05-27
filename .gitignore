@@ -6,4 +6,8 @@ Portfile~
 **/.backups
 **/*.swp
 *.backup
+*.tcl~
+*.diff~
+*.patch~
+
 .DS_Store

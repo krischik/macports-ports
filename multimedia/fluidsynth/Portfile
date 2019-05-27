@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           cmake 1.1
 PortGroup           github 1.0
 
-github.setup        FluidSynth fluidsynth 2.0.3 v
+github.setup        FluidSynth fluidsynth 2.0.5 v
 categories          multimedia audio
 maintainers         {gmail.com:rjvbertin @RJVB} {mojca @mojca} openmaintainer
 license             LGPL
@@ -19,9 +19,9 @@ platforms           darwin
 
 homepage            http://www.fluidsynth.org/
 
-checksums           rmd160  e277d4ff6a84cfc71434f3e636188fa2c89307e6 \
-                    sha256  e74e87f9a29b1f209125e581d931d5e7ae116c66acc36cf472ebb0b66d84b497 \
-                    size    1374923
+checksums           rmd160  aa16d4e0caec65819a574451525494084998c936 \
+                    sha256  af29985642f98f66345d47f852ce08cdbf0ac69aaf7b97cfe49ff086bfc72976 \
+                    size    1314639
 
 depends_build-append \
                     port:pkgconfig \

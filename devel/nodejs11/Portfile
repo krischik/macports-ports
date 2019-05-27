@@ -4,7 +4,8 @@ PortSystem              1.0
 PortGroup               cxx11 1.1
 
 name                    nodejs11
-version                 11.13.0
+version                 11.15.0
+revision                0
 categories              devel net
 platforms               darwin
 license                 {MIT BSD}
@@ -17,15 +18,15 @@ long_description        Node's goal is to provide an easy way to build scalable 
                         Machine or Python's Twisted. Node takes the event model a bit further-it \
                         presents the event loop as a language construct instead of as a library.
 
-conflicts               nodejs4 nodejs5 nodejs6 nodejs7 nodejs8 nodejs9 nodejs10
+conflicts               nodejs6 nodejs8 nodejs10 nodejs12
 
 homepage                http://nodejs.org/
 master_sites            ${homepage}dist/v${version}
 use_xz                  yes
 
-checksums               rmd160  dd464eee1f510399454eed2a8ea07dcd55c7e847 \
-                        sha256  7411952da11f6033d4ca5993d68f52b0d7eb90538099102c37d5221c445dc38a \
-                        size    22085284
+checksums               rmd160  17544480410399b4f9e74ed288fcd0d414bde1c7 \
+                        sha256  68a776c5d8b8b91a8f2adac2ca4ce4390ae1804883ec7ec9c0d6a6a64d306a76 \
+                        size    22115480
 
 distname                node-v${version}
 
@@ -252,4 +253,4 @@ if {${os.major} < 11} {
 
 livecheck.url       ${homepage}dist/
 livecheck.type      regex
-livecheck.regex     {v(\d+\.\d+\.\d+)}
+livecheck.regex     {v(11\.\d+\.\d+)}

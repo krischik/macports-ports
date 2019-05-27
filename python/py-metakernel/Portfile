@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        Calysto metakernel 0.20.14 v
+github.setup        Calysto metakernel 0.22.1 v
+revision            0
 set real_name       metakernel
 name                py-${real_name}
 license             BSD
@@ -15,10 +16,11 @@ long_description    ${description} which includes core magic functions (includin
                     processing, downloads, and much more).
 platforms           darwin
 
-checksums           rmd160  63d8bab762baf792a5a97f3ea8e3dc051bc7d27c \
-                    sha256  1ebe1bfc83a7112d30992e799d39783e47ae1fd0d77c188b8667bec97a0a0465
+checksums           rmd160  a101a76d7536b914fbf80c2e5d7116283493a7d1 \
+                    sha256  0dd3fe34544eb0721e5f2eed722fd1c94b6dcb133e8488360399977a27b1d31c \
+                    size    277063
 
-python.versions     27 34 35 36 37
+python.versions     27 36 37
 
 if {${name} ne ${subport}} {
     depends_lib-append  \

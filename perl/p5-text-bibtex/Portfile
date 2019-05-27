@@ -4,8 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28
-perl5.setup         Text-BibTeX 0.86
-revision            1
+perl5.setup         Text-BibTeX 0.88
 platforms           darwin
 maintainers         nomaintainer
 license             {Artistic-1 GPL}
@@ -16,9 +15,9 @@ long_description    Text::BibTeX is a Perl library for reading, parsing, and pro
                     BibTeX files.  It is the Perl half of btOOL, a pair of libraries for \
                     dealing with BibTeX data.
 
-checksums           rmd160  4b95fc91db4d4a989970e8b80a8d14754c32339d \
-                    sha256  b54746d27197909368e6fbb0667ea9c0dff7e28106700adb54f7e84cb1ac5399 \
-                    size    301824
+checksums           rmd160  e4e9049572e737b7c5b25f1bb1b43cb3022b5f05 \
+                    sha256  b014586e68bdbcafb0a2cfa0401eb0a04ea5de8c4d5bc36dd0f7faeab6acf42c \
+                    size    301812
 
 if {${perl5.major} != ""} {
     depends_build-append \
@@ -37,11 +36,6 @@ if {${perl5.major} != ""} {
     # patch temporarily makes the files writable before changing them
     patchfiles-append \
                     patch-permissions.diff
-
-    # add -std=c99 to compile flags to fix build for default compilers on 10.6 and earlier
-    # btparse/tests/namebug.c:193: error: ‘for’ loop initial declaration used outside C99 mode
-    patchfiles-append \
-                    patch-extra-flags.diff
 
     perl5.use_module_build
 }

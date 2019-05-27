@@ -20,11 +20,11 @@ homepage            https://myriadrf.org/projects/lime-suite/
 subport limesuite-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    myriadrf LimeSuite aa1aacdc316aa14ee39a50ff7e24840f16259d0b
-    version         20190404
-    checksums       rmd160  5ca2b4ba5491bdd47f200c10cd637400f9fcd621 \
-                    sha256  14e3bebd7df6d28df6b769ce60897c4b30fef68bbb075f5840a745ff4137bafd \
-                    size    5348349
+    github.setup    myriadrf LimeSuite d0fdb112fe687d7c2ce9482ce427698631fdcdea
+    version         20190502-[string range ${github.version} 0 7]
+    checksums       rmd160 6ee257b0ee58642d42537cdba8ed33620a7dba18 \
+                    sha256 30ace7ac2f95548893dc19a5d64e9945bd798496e8bc47d1e9fc12fcc8f59dc4 \
+                    size   5355559
     revision        0
 
     name            limesuite-devel
@@ -92,4 +92,3 @@ default_variants +wxgui +soapy
 # "$PREFIX/share/cmake/$PROJECT_NAME", not "$PREFIX/lib/cmake/$PROJECT_NAME".
 patchfiles-append patch-src_CMakeLists.txt.diff
 patch.pre_args -p1
-
