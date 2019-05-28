@@ -4,7 +4,7 @@ PortSystem          1.0
 
 name                tor-devel
 conflicts           tor
-version             0.4.0.4-rc
+version             0.4.1.1-alpha
 categories          security
 platforms           darwin
 maintainers         nomaintainer
@@ -23,9 +23,9 @@ homepage            https://www.torproject.org/
 master_sites        https://dist.torproject.org/
 distname            tor-${version}
 
-checksums           rmd160  cbef1f0b5ce7737d305525a1fcaad48d83003a7f \
-                    sha256  9ebac95bc9eed602d439ca3232e7ee74df338e643f1568fac798945de64ae963 \
-                    size    7193480
+checksums           rmd160  04c61763be4befaa689a084bed7569f82fc1b5c2 \
+                    sha256  60100c5cbed22a3e474452bb1b8ee941b98f4a268d7bbaa3ad04c7390ccb3e01 \
+                    size    7350019
 
 depends_lib         port:libevent \
                     path:lib/libssl.dylib:openssl \

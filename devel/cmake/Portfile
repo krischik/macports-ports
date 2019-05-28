@@ -47,10 +47,10 @@ if {${subport} eq ${name}} {
 
     # release
 
-    version         ${branch}.3
-    checksums       rmd160 49c605e8eba424c3becd36556153f678f138d73d \
-                    sha256 215d0b64e81307182b29b63e562edf30b3875b834efdad09b3fcb5a7d2f4b632 \
-                    size   8851085
+    version         ${branch}.4
+    checksums       rmd160 feffb7d6bd7ff7a68f37ea0bb1299ec9897fb6e6 \
+                    sha256 00b4dc9b0066079d10f16eed32ec592963a44e7967371d2f5077fd1670ff36d9 \
+                    size   8853821
     revision        0
 
     master_sites    ${homepage}/files/v${branch}/
@@ -65,7 +65,8 @@ if {${subport} eq ${name}} {
         patch-CMakeFindFrameworks.cmake.release.diff \
         patch-Source_CMakeVersionCompute.cmake.release.diff \
         patch-Source_Modules_FindLibUV.cmake.release.diff \
-        patch-fix_cxx14_17_checks.release.diff
+        patch-fix_cxx14_17_checks.release.diff \
+        patch-fix-system-prefix-path.release.diff
 
     livecheck.type  regex
     livecheck.regex ${name}-(\[0-9.\]+)${extract.suffix}
@@ -75,11 +76,11 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    set commit      d3a0582b0c0095ab95c3610ba93f3d38b5a13620
-    version         20190503-[string range ${commit} 0 7]
-    checksums       rmd160 09044ce13060c60c9f7cd52a1ed924231023eb6b \
-                    sha256 fe0bde09c94ad7a5e13b63459d6c6d82f3913c5d107f4165734952f921c682ec \
-                    size   6882093
+    set commit      94b2c757725b86a38b7934f9e1084debe6dbe2de
+    version         20190517-[string range ${commit} 0 7]
+    checksums       rmd160 07e88964daa24ddc760703bb28fc73c186b7f3aa \
+                    sha256 9e85a087d4388c743e3862aa9e6b4b3641f20b47ab9e230b38b0b98f0dd8f2f4 \
+                    size   6928161
     revision        0
 
     use_bzip2       yes
@@ -97,7 +98,8 @@ if {${subport} eq ${name}} {
         patch-CMakeFindFrameworks.cmake.devel.diff \
         patch-Source_CMakeVersionCompute.cmake.devel.diff \
         patch-Source_Modules_FindLibUV.cmake.devel.diff \
-        patch-fix_cxx14_17_checks.devel.diff
+        patch-fix_cxx14_17_checks.devel.diff \
+        patch-fix-system-prefix-path.devel.diff
 
     livecheck.type  regex
     livecheck.regex data-clipboard-text=\"(\[0-9a-g\]+)\"
@@ -193,8 +195,10 @@ post-patch {
     copy ${filespath}/macports.cmake ${worksrcpath}
 
     # patch PREFIX
-    reinplace "s|__PREFIX__|${prefix}|g" ${worksrcpath}/macports.cmake
-    reinplace "s|__PREFIX__|${prefix}|g" ${worksrcpath}/Modules/CMakeFindFrameworks.cmake
+    reinplace "s|__PREFIX__|${prefix}|g" \
+        ${worksrcpath}/macports.cmake \
+        ${worksrcpath}/Modules/CMakeFindFrameworks.cmake \
+        ${worksrcpath}/Modules/Platform/Darwin.cmake
 }
 
 post-destroot {

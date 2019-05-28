@@ -20,11 +20,11 @@ platform darwin {
 
     # which port version depends on which OS version
     if { ${os.major} == 8 } {
-        # peg at version 1.24.0 with patches for 10.4 Tiger, updated occasionally
-        github.setup libuv libuv 1.24.0 v
-        checksums    rmd160 4dae1e3af9188c0bb49380f304a75db7bf360f08 \
-                     sha256 b3a627b5a4f98edcac8e11adc92f5d21a04a82b363e625f3a7675615d57a34a7 \
-                     size   1201804
+        # peg at version 1.29.1 with patches for 10.4 Tiger, updated occasionally
+        github.setup libuv libuv 1.29.1 v
+        checksums rmd160 5f287d080d93fbc98d0cf8657fb25410d2c96403 \
+                  sha256 401f991c08df38e4239b08ea762e5de53de738952d44689a7f2c63dc95af3856 \
+                  size   1224239
         revision     0
 
         maintainers-prepend {kencu @kencu}
@@ -35,10 +35,11 @@ platform darwin {
         # prevent conflicting opentransport header from being pulled in
         configure.cppflags-append -D__OPENTRANSPORTPROVIDERS__
 
-        # delete any patchfiles that may be added above later
+        # this patch has been sent upstream (same as Leopard/SnowLeopard)
+        patchfiles-append patch-libuv-unix-core-close-nocancel.diff
 
         # Tiger unified patch
-        patchfiles patch-libuv-1-23-2-tiger.diff
+        patchfiles-append patch-libuv-1-23-2-tiger.diff
 
         # Tiger has no libutil
         patchfiles-append patch-makefile-am-no-libutil-on-Tiger.diff
@@ -54,16 +55,18 @@ platform darwin {
             depends_lib
         }
     } elseif { ${os.major} == 9 || ${os.major} == 10 } {
-
-        # peg at version 1.28.0 for 10.5 Leopard and 10.6 Snow Leopard
+        # peg at version 1.29.1, updated occasionally
         # see https://trac.macports.org/ticket/57926
-        github.setup libuv libuv 1.28.0 v
-        checksums    rmd160 021dfc555baec1572795c06b502228379146e580 \
-                     sha256 4a115f752fb8dd2f24f8ad5a3c1a975260b550c0fc3ef525c449eb382f182358 \
-                     size   1219212
-        revision     0
+        github.setup libuv libuv 1.29.1 v
+        checksums rmd160 5f287d080d93fbc98d0cf8657fb25410d2c96403 \
+                  sha256 401f991c08df38e4239b08ea762e5de53de738952d44689a7f2c63dc95af3856 \
+                  size   1224239
+        revision  0
 
-        patchfiles-append patch-libuv-fsevents-leopard.diff
+        # needed for the tests to compile correctly on Leopard
+        configure.cppflags-append -D__DARWIN_64_BIT_INO_T
+
+        patchfiles-append patch-libuv-unix-core-close-nocancel.diff
 
         # deprecate the devel port, if installed
         # can be removed after 20201010
@@ -81,23 +84,25 @@ platform darwin {
         # 10.7 Lion and newer use the current, with a devel version also!
         if {${subport} eq ${name}} {
 
-            github.setup libuv libuv 1.28.0 v
-            checksums rmd160 021dfc555baec1572795c06b502228379146e580 \
-                      sha256 4a115f752fb8dd2f24f8ad5a3c1a975260b550c0fc3ef525c449eb382f182358 \
-                      size   1219212
+            github.setup libuv libuv 1.29.1 v
+            checksums rmd160 5f287d080d93fbc98d0cf8657fb25410d2c96403 \
+                      sha256 401f991c08df38e4239b08ea762e5de53de738952d44689a7f2c63dc95af3856 \
+                      size   1224239
             revision  0
 
             conflicts libuv-devel
+
+            patchfiles-append patch-libuv-unix-core-close-nocancel.diff
 
         }
 
         subport libuv-devel {
 
-            github.setup libuv libuv 620be96fc4c7645b606348933c67dbc201f53d28
-            version      20190424-[string range ${github.version} 0 7]
-            checksums    rmd160 9ca957854bb80efe9a5dd7f7a38c16a80bd97fbc \
-                         sha256 9d3b646f8065f03e05d7dee872072e49cca473bc56aae0dcd6cfa84158eb58ec \
-                         size   1221479
+            github.setup libuv libuv 4a4c9a688fa2a7fad056f48304a583927044b935
+            version      20190521-[string range ${github.version} 0 7]
+            checksums    rmd160 a4542a379ab239b4a2522026ce35c572a2acc29e \
+                         sha256 52d6e261430ea5d30617b819191f075c5edcdc253ffbe0da62f5849fec114ad8 \
+                         size   1224244
             revision     0
 
             long_description ${long_description} \

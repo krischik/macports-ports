@@ -48,11 +48,11 @@ if {${subport} eq ${name}} {
 
 } else {
 
-    github.setup secdev scapy 4addf526df551ecc7ea04f79035f87675a6831a7
-    version      20190503-[string range ${github.version} 0 7]
-    checksums    rmd160 2aa95b47ecf372460626cc4bff45529dca08cd73 \
-                 sha256 ffad3ff35b016995ac5972926a2a2729623f3d4d61506318cc61ec05517f6746 \
-                 size   2734363
+    github.setup secdev scapy d532afd23767125bc5696982844763f8ccbb86ba
+    version      20190527-[string range ${github.version} 0 7]
+    checksums    rmd160 aa581f32d058f11a1bb8e17756ae4d8b577fcf09 \
+                 sha256 3dc438c06708e0594a2c7e82d132899e73c2efd4601ba8d4e5c66532fbce6ff8 \
+                 size   2762937
     revision     0
 
     long_description    ${long_description} \

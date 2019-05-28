@@ -20,11 +20,11 @@ homepage            https://myriadrf.org/projects/lime-suite/
 subport limesuite-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    myriadrf LimeSuite d0fdb112fe687d7c2ce9482ce427698631fdcdea
-    version         20190502-[string range ${github.version} 0 7]
-    checksums       rmd160 6ee257b0ee58642d42537cdba8ed33620a7dba18 \
-                    sha256 30ace7ac2f95548893dc19a5d64e9945bd798496e8bc47d1e9fc12fcc8f59dc4 \
-                    size   5355559
+    github.setup    myriadrf LimeSuite 0d5027fb1ec582970bcdcb5cb19b4ce430cfbd12
+    version         20190523-[string range ${github.version} 0 7]
+    checksums       rmd160 edbf0dba2adcf1c6c1139f3da304f70d8be94e6e \
+                    sha256 edff188470d5a5da4abfad91575dcb8a642d4cef5733d1fac657911884264251 \
+                    size   5361429
     revision        0
 
     name            limesuite-devel
@@ -34,19 +34,14 @@ if {[string first "-devel" $subport] > 0} {
 
 } else {
 
-    github.setup    myriadrf LimeSuite 19.01.0 v
-    checksums       rmd160  6286e1ec881b5944d9913f802cba2b8236908917 \
-                    sha256  bf0ca8225e9eacf44cee7383504e699eb9be5cc47293fb9c08baaf8d5e3163c9 \
-                    size    5347689
-    revision        4
+    github.setup    myriadrf LimeSuite 19.04.0 v
+    checksums       rmd160  9b702a15565df94169bb47538522c8cec3774645 \
+                    sha256  1e4d5ac1b6f81ba730e46411a32eb93878f1eb8874574eb01d3c981c918add92 \
+                    size    5357853
+    revision        0
 
     conflicts       limesuite-devel
     configure.args-append -DLIME_SUITE_EXTVER=release
-
-    # the REGEX used to determine image files to download is too broad;
-    # make it more restrictive so-as to get just image files.
-    # REMOVE with next release version
-    patchfiles-append patch-fix-images-download-regex.diff
 
 }
 

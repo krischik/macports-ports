@@ -1,11 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem              1.0
+PortGroup               legacysupport 1.0
 
 name                    mono
 # please update msbuild when updating mono
-version                 5.18.0.240
+version                 5.20.1.19
 revision                0
+epoch                   1
 categories              devel lang mono
 platforms               darwin
 license                 {GPL-2 LGPL-2 MIT}
@@ -19,9 +21,9 @@ master_sites            https://download.mono-project.com/sources/mono/
 use_bzip2               yes
 universal_variant       no
 
-checksums               rmd160  1636df0001c157e12cc5110e956269302b374f03 \
-                        sha256  143e80eb00519ff496742e78ee07403a3c3629437f3a498eee539de8108da895 \
-                        size    246571697
+checksums               rmd160  9df6ec7e93f0c6ac19342b87ba4cd9dc7c676669 \
+                        sha256  0574b61efb9bfc3364211d03d87a12c91dc7b03e8d6242cd4d8d953ef145d468 \
+                        size    246790204
 
 patchfiles-append       patch-aot-compiler.c.diff
 if {!${configure.ccache}} {

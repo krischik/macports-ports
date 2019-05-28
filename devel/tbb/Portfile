@@ -5,7 +5,7 @@ PortGroup           muniversal 1.0
 PortGroup           github 1.0
 PortGroup           compiler_blacklist_versions 1.0
 
-github.setup        01org tbb 2019_U5
+github.setup        intel tbb 2019_U7
 revision            0
 categories          devel
 platforms           darwin
@@ -21,9 +21,9 @@ long_description    ${description} \
 
 homepage            https://www.threadingbuildingblocks.org/
 
-checksums           rmd160  c215f539c4b53aa6196aff000ca05f0cbc24d5c7 \
-                    sha256  4096b8e3d775db251f3e6fc3feb036f3e7d2e40cb26a148eaf0bb19a60525197 \
-                    size    2564341
+checksums           rmd160  e61e8f01d1593247782497732118f45fcd8a087e \
+                    sha256  c4b68b93a5598b865f7267c1dae4ef7bc3a52d71adb9ad7c71ef3afc795eee38 \
+                    size    2580456
 
 github.livecheck.regex {(\d+(?:\_U)+(?:\d+)*)}
 
@@ -32,7 +32,7 @@ use_configure       no
 # Force a compatible compiler
 compiler.blacklist-append *gcc* {clang < 602} macports-clang-3.3 macports-clang-3.4 \
                           macports-clang-3.7
-compiler.whitelist clang macports-clang-5.0 macports-clang-3.9
+compiler.whitelist clang macports-clang-5.0
 
 set tbb_arch(i386)      ia32
 set tbb_arch(ppc)       ppc32
