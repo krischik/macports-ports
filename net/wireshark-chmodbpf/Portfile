@@ -4,6 +4,7 @@ PortSystem          1.0
 
 name                wireshark-chmodbpf
 version             1.0
+revision            2
 platforms           darwin macosx
 categories          net
 license             {GPL-2 GPL-3}
@@ -36,6 +37,12 @@ destroot {
     xinstall -m 0755 -o root -g wheel ${worksrcpath}/sbin/${name} ${destroot}${prefix}/sbin/${name}
 }
 
+# fix group creation if installed from the binary package
+post-install {
+    # create the group to access capture devices
+    addgroup ${bpf_group}
+}
+
 # create startup that run ${name} script
 startupitem.create      yes
 startupitem.name        wireshark.ChmodBPF
@@ -44,11 +51,11 @@ startupitem.executable  ${prefix}/sbin/${name}
 startupitem.pidfile     none
 
 notes "
-  To fully complete your installation and use Wireshare
-  with capture devices, like network interfaces, please run:
+  To fully complete your installation and use Wireshark
+  to capture from devices (like network interfaces) please run:
 
     sudo dseditgroup -q -o edit -a \[USER\] -t user ${bpf_group}
 
-  and change \[USER\] with the user that need access
-  to the hardware. Then reboot.
+  and change \[USER\] to the user that needs access to the devices.
+  A reboot should not be required for this to take effect.
 "
