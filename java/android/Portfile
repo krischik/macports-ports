@@ -20,28 +20,35 @@ set cmakeversion    3.10.2.4988404
 set patchversion    121820
 set internalversion 4333796
 set appbundles      ${name}-appbundles-r${patchversion}.tar.gz
+set swt             swt-4.7.1a-cocoa-macosx-x86_64.zip
 set prog            sdk-tools-darwin-${internalversion}.zip
 
-homepage            https://developer.${name}.com/
-master_sites        https://dl.google.com/android/repository:prog       \
+homepage            https://developer.${name}.com
+master_sites        https://dl.google.com/android/repository:prog                                                           \
+                    https://www.eclipse.org/downloads/download.php?file=/eclipse/downloads/drops4/R-4.7.1a-201710090410:swt \
                     macports:${name}:appbundles
-distfiles           ${prog}:prog                                        \
+distfiles           ${prog}:prog            \
+                    ${swt}:swt              \
                     ${appbundles}:appbundles
 distname            ${name}-sdk-macosx
 worksrcdir          ${name}-sdk-macosx
 default_variants    +platform_${platformversion}
 
-checksums           ${prog}                                                                  \
-                    md5     d912ced50eea9f9a842aef9892c956f1                                 \
-                    sha1    ed85ea7b59bc3483ce0af4c198523ba044e083ad                         \
-                    rmd160  b99bcbc28c11c17f676c7d79f8caa7a3fcb03168                         \
-                    sha256  ecb29358bc0f13d7c2fa0f9290135a5b608e38434aad9bf7067d0252c160853e \
-                    size    103022432                                                        \
-                    ${appbundles}                                                            \
-                    md5     d363cae627e4922da942a1c115965eca                                 \
-                    sha1    54468931ffa347540d8627a0addb54c844e2c9de                         \
-                    rmd160  623f21017f6d04c2a425f9e691fa138ad5ad2b7a                         \
-                    sha256  62fe92fc858bf1931823915af5c4f0edd83218c862809634300f0c3ea19bae1c \
+checksums           ${prog}                                                                     \
+                    md5     d912ced50eea9f9a842aef9892c956f1                                    \
+                    sha1    ed85ea7b59bc3483ce0af4c198523ba044e083ad                            \
+                    rmd160  b99bcbc28c11c17f676c7d79f8caa7a3fcb03168                            \
+                    sha256  ecb29358bc0f13d7c2fa0f9290135a5b608e38434aad9bf7067d0252c160853e    \
+                    size    103022432                                                           \
+                    ${swt}                                                                      \
+                    rmd160  583dc2b63ede56daf62b427f92230aadfbac07bd                            \
+                    sha256  d79bb527b7a27f166bf145370c00d0040271f7affb1fdd0c0a5c2254c5464007    \
+                    size    5666940                                                             \
+                    ${appbundles}                                                               \
+                    md5     d363cae627e4922da942a1c115965eca                                    \
+                    sha1    54468931ffa347540d8627a0addb54c844e2c9de                            \
+                    rmd160  623f21017f6d04c2a425f9e691fa138ad5ad2b7a                            \
+                    sha256  62fe92fc858bf1931823915af5c4f0edd83218c862809634300f0c3ea19bae1c    \
                     size    930653
 
 use_configure       no
@@ -62,8 +69,12 @@ destroot.keepdirs                                               \
 
 post-extract {
     system "
-        unzip -q ${distpath}/${prog} -d ${workpath}
+        mkdir -v -p ${workpath}/swt
         mkdir -v -p ${workpath}/android-sdk-macosx
+
+        unzip -q ${distpath}/${prog} -d ${workpath}
+        unzip -q ${distpath}/${swt}  -d ${workpath}/swt
+
         mv -v ${workpath}/tools ${workpath}/android-sdk-macosx
     "
 }
@@ -116,7 +127,9 @@ destroot {
 
     # file copy can not copy with rename and directory tree.
     #
-    system "cp -r ${worksrcpath}/. ${destroot}${prefix}/share/java/${distname}/."
+    system "
+        cp -r ${worksrcpath}/. ${destroot}${prefix}/share/java/${distname}/.
+    "
 
     xinstall -m 770 -d ${destroot}${prefix}/share/java/${distname}/samples
     xinstall -m 770 -d ${destroot}${prefix}/share/java/${distname}/temp
@@ -125,27 +138,38 @@ destroot {
         ${destroot}${prefix}/share/java/android-sdk-macosx/build-tools/28.0.3/zipalign  \
         ${destroot}${prefix}/share/java/android-sdk-macosx/tools/zipalign
 
-
-    system "
-        chgrp -R _developer ${destroot}${prefix}/share/java/${distname};
-        chmod -R g+w ${destroot}${prefix}/share/java/${distname};
-        chmod -R g+X ${destroot}${prefix}/share/java/${distname};
-    "
-
-    ui_info "####################################################################"
-    ui_info "# add-ons, docs, platforms, samples and temp have been made        #"
-    ui_info "# group _developer writable. You need to be member of the          #"
-    ui_info "# _developer group to use the android tools. If you are not use:   #"
-    ui_info "#                                                                  #"
-    ui_info "# sudo dscl . append /Groups/_developer GroupMembership <username> #"
-    ui_info "####################################################################"
 }
 
 platform macosx {
     post-destroot {
         xinstall -m 755 -d ${destroot}${applications_dir}/Developer
 
-        system "touch ${destroot}${applications_dir}/Developer/.localized"
+        system "
+            touch ${destroot}${applications_dir}/Developer/.localized
+        "
+
+        # file copy won't overwrite a file. But this is precisely what
+        # we want: override an old outdate java library.
+
+        system "
+            cp -v                       \
+                ${workpath}/swt/swt.jar \
+                ${destroot}${prefix}/share/java/android-sdk-macosx/tools/lib/monitor-x86_64/plugins/org.eclipse.swt.cocoa.macosx.x86_64_3.100.1.v4236b.jar
+        "
+
+        system "
+            chgrp -R _developer ${destroot}${prefix}/share/java/${distname}
+            chmod -R g+w        ${destroot}${prefix}/share/java/${distname}
+            chmod -R g+X        ${destroot}${prefix}/share/java/${distname}
+        "
+
+        ui_info "####################################################################"
+        ui_info "# add-ons, docs, platforms, samples and temp have been made        #"
+        ui_info "# group _developer writable. You need to be member of the          #"
+        ui_info "# _developer group to use the android tools. If you are not use:   #"
+        ui_info "#                                                                  #"
+        ui_info "# sudo dscl . append /Groups/_developer GroupMembership <username> #"
+        ui_info "####################################################################"
 
         foreach comp { Android-Emulator Android-Monitor} {
             copy                                                                                \
