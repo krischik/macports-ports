@@ -1,9 +1,11 @@
 /PortIndex
 /PortIndex.quick
-
-*/*/work
-
 Portfile~
+**/.DS_Store
+*/*/work
+**/.backups
+**/*.swp
+*.backup
 *.tcl~
 *.diff~
 *.patch~

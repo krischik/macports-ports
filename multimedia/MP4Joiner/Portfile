@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           wxWidgets 1.0
 
 name                MP4Joiner
-version             2.2
-revision            2
+version             3.4
+revision            1
 categories          multimedia aqua
 platforms           darwin
 maintainers         ryandesign openmaintainer
@@ -16,13 +16,16 @@ description         simple tool to join multiple MP4 files into one
 long_description    ${name} is a ${description}.
 
 homepage            http://www.mp4joiner.org/
-master_sites        sourceforge:project/mp4joiner/MP4Joiner/${version}/
+master_sites        https://www.fosshub.com/MP4Joiner.html
+
+# https://www.fosshub.com/MP4Joiner.html/MP4ToolsSourceCode-3.3.tar.bz2
+
 use_bzip2           yes
 
 checksums           rmd160  b219127b0e30ff99d039a868b0751b763452ea4f \
                     sha256  39428a63bb234c90800a261b3c1a7a19d887045bf8611ec185c1c7bdabfcaddf
 
-wxWidgets.use       wxWidgets-3.0
+wxWidgets.use       wxWidgets-3.2
 
 depends_build       port:pkgconfig
 
