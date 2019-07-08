@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-mercantile
-version             1.0.4
+version             1.1.1
 revision            0
 categories-append   devel gis
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     27 35 36
+python.versions     27 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -23,9 +23,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  3db7a2bd9c3038acf8f859b7a7518b1e275e70b3 \
-                    sha256  0278b393a05d17c3618c5f5da64488bb3707e14046fe36f594d7215db3b376c4 \
-                    size    9517
+checksums           rmd160  dc2bd49009e8a8348fa5aad52f352993f69f2bf5 \
+                    sha256  26735db7561e4fa534be31497533b30a41d5c279d7eb24ceb3469430eb0f1084 \
+                    size    12265
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \

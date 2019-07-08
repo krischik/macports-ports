@@ -7,8 +7,8 @@ PortGroup           cxx11 1.1
 name                gimp2-devel
 conflicts           gimp2 gimp3-devel
 set git_name        gimp
-set git_commit      f17e3b157d7e84efc7c40921aa8f314a92772157
-set git_date        20190613
+set git_commit      a3813876626dddf090cd63aa7e2e27782bf6c88a
+set git_date        20190629
 version             2.10.13-${git_date}
 license             GPL-3+
 categories          graphics
@@ -30,19 +30,19 @@ distname            ${git_name}-${git_commit}
 
 use_bzip2           yes
 
-checksums           rmd160  7d45a0b36f38bbc960aa83e7be9ef04657294514 \
-                    sha256  ec88f34ad4a16f823d8208df3360500df39067ff9c816ae8661d613e18721992 \
-                    size    82534318
+checksums           rmd160  6af8af0278981cc4e5377443b177f3f676b468af \
+                    sha256  442b414fe5b062ceb15b3f71c131764b48f013a759a031c33ca6798c264a280a \
+                    size    82496833
 
 set perl_version    5.28
 
 depends_build       port:pkgconfig \
-                    port:appstream-glib \
                     port:autoconf \
                     port:automake \
                     port:libtool \
                     port:intltool \
                     port:gtk-doc \
+                    port:appstream-glib \
                     port:perl${perl_version}
 
 depends_lib         port:desktop-file-utils \
@@ -82,6 +82,8 @@ depends_lib         port:desktop-file-utils \
                     port:xorg-libXmu \
                     port:xorg-libXext \
                     port:xorg-libXfixes
+
+depends_run         port:gimp-help-en
 
 # libgimpwidgets/gimpwidgetsmarshal.h can be referenced by a parallel
 # build before it is created

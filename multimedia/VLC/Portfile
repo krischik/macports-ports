@@ -160,16 +160,17 @@ platform darwin {
             xinstall -m 755 -d ${worksrcpath}/include/os
             xinstall -m 755 ${filespath}/lock.h ${worksrcpath}/include/os/lock.h
         }
+        # make the code build on 10.11 and earlier
+        patchfiles-append \
+                    patch-build-on-pre-1012.diff
     }
-    patchfiles-append \
-                    patch-build-on-pre-1014.diff
 }
 
 depends_lib-append  port:lua
 
 # VLC doesn't currently build for me using port:clang-3.8
 compiler.blacklist-append \
-                    gcc-4.2 llvm-gcc-4.2 macports-clang-3.8 {clang < 300}
+                    gcc-4.2 llvm-gcc-4.2 {clang < 300}
 
 patchfiles-append   configure.ac-no-arch.patch \
                     patch-soundfont-path.diff

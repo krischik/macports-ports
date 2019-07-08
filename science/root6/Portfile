@@ -11,7 +11,8 @@ PortGroup           xcodeversion                  1.0
 PortGroup           cxx11                         1.1
 PortGroup           legacysupport                 1.0
 
-github.setup        root-project root 6-16-00 v
+# Please also check if Gate needs a revbump after root6 update
+github.setup        root-project root 6-18-00 v
 version             [string map {- .} ${github.version}]
 revision            2
 livecheck.version   ${github.version}
@@ -23,15 +24,18 @@ livecheck.version   ${github.version}
 #livecheck.version   6-14-00
 #revision            0
 
-livecheck.type      regex
-livecheck.url       ${github.homepage}/tags
-livecheck.regex     {v(6[-.]\d[02468][-.]\d{2}).tar.gz}
-
+# extract major version
 set version_major   [lindex [split ${version} .] 0]
 
-checksums           rmd160  2f0a7290099087f29ca4808ad3ed6c3c04729075 \
-                    sha256  fe60cde3f3f909c6840781c4c46f3f040014bd1e65cc56634eccd820f9dbd7bf \
-                    size    164845858
+livecheck.type      regex
+livecheck.url       ${github.homepage}/tags
+# even numbered minor releases are production releases, odd are developmental so skip.
+# Also, skip anything with trailing rcX etc.
+livecheck.regex     {v(6[-.]\d[02468][-.]\d{2}).tar.gz}
+
+checksums           rmd160  62811d368040e06fd13a1c78c2fbd069d9f95f99 \
+                    sha256  3845a8244cc329cc5ede4d18908882a397719a507ff89adc244cca89f4526705 \
+                    size    165926785
 
 name                root${version_major}
 categories          science
@@ -56,7 +60,7 @@ configure.f90        ${prefix}/bin/gfortran-mp-${gcc_ver}
 depends_lib-append   path:lib/libgcc/libgcc_s.1.dylib:libgcc
 depends_build-append port:gcc${gcc_ver}
 compiler.blacklist-append *gcc* {clang < 920} macports-clang-3.3 macports-clang-3.4 \
-                          macports-clang-3.7 macports-clang-4.0 macports-clang-3.9
+                          macports-clang-3.7
 compiler.whitelist clang macports-clang-8.0 macports-clang-7.0 macports-clang-6.0 macports-clang-5.0
 
 depends_build-append port:pkgconfig
@@ -69,7 +73,6 @@ depends_lib-append  port:expat \
                     port:lzma \
                     port:pcre \
                     port:tiff \
-                    port:zlib \
                     port:xz \
                     port:gl2ps \
                     port:lz4 \
@@ -78,7 +81,10 @@ depends_lib-append  port:expat \
                     port:git \
                     path:lib/libopenblas.dylib:OpenBLAS \
                     path:lib/libssl.dylib:openssl
-# port:freetype
+
+# Use builtin zlib instead as upstream claims has better performance
+# https://root.cern/content/release-61800
+#                   port:zlib
 
 depends_run         port:root_select
 
@@ -106,7 +112,7 @@ configure.args-append \
                     -Dbuiltin_freetype=ON \
                     -Dbuiltin_glew=OFF \
                     -Dbuiltin_pcre=OFF \
-                    -Dbuiltin_zlib=OFF \
+                    -Dbuiltin_zlib=ON \
                     -Dbuiltin_lzma=OFF \
                     -Dbuiltin_tbb=OFF \
                     -Dbuiltin_afterimage=ON \
@@ -136,7 +142,6 @@ configure.args-append \
                     -Dtmva=OFF \
                     -Dqt=OFF \
                     -Dqtgsi=OFF \
-                    -Dbonjour=OFF \
                     -Dgviz=OFF \
                     -Dsoversion=ON \
                     -Dcxx11=ON \
@@ -149,7 +154,6 @@ configure.args-append \
                     -Dgenvector=ON \
                     -Dmemstat=ON \
                     -Dunuran=ON \
-                    -Dtable=ON \
                     -Dgdml=ON \
                     -Dhttp=ON \
                     -Dvc=OFF \
@@ -348,13 +352,6 @@ variant graphviz description {Build with graphviz support} {
     depends_lib-append      path:bin/dot:graphviz
 }
 
-variant avahi description {Build with avahi support} {
-    configure.args-replace  -Dbonjour=OFF -Dbonjour=ON
-#   configure.args-append   -DAVAHI_INCLUDE_DIR="${prefix}/include" \
-#                           -DAVAHI_client_LIBRARY="${prefix}/lib"
-    depends_lib-append      port:avahi
-}
-
 variant fftw3 description {Build with fftw3 support} {
     configure.args-replace  -Dfftw3=OFF -Dfftw3=ON
     configure.args-append   -DFFTW_INCLUDE_DIR="${prefix}/include" \
@@ -524,14 +521,14 @@ variant sqlite3 description {Build with sqlite3 support} {
     depends_lib-append      port:sqlite3
 }
 
-variant mysql conflicts mariadb percona description {Build with mysql 5.7 support} {
+variant mysql conflicts mariadb percona description {Build with mysql support} {
     set ver 57
     configure.args-replace  -Dmysql=OFF -Dmysql=ON
     configure.args-append   -DMYSQL_CONFIG_EXECUTABLE=${prefix}"/lib/mysql${ver}/bin/mysql_config"
     depends_lib-append      port:mysql${ver}
 }
 
-variant mariadb conflicts mysql percona description {Build with mariadb 10.2 support} {
+variant mariadb conflicts mysql percona description {Build with mariadb support} {
     set ver 10.2
     configure.args-replace  -Dmysql=OFF -Dmysql=ON
     configure.args-append   -DMYSQL_CONFIG_EXECUTABLE=${prefix}"/lib/mariadb-${ver}/bin/mysql_config"

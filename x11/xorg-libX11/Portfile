@@ -26,7 +26,7 @@ use_parallel_build      yes
 # Avoids errors like
 # makekeys.c:45: error: redefinition of typedef ‘KeySym’
 # /opt/local/include/X11/X.h:106: error: previous declaration of ‘KeySym’ was here
-compiler.blacklist  gcc-4.0 *gcc-4.2 {clang < 300}
+compiler.blacklist  *gcc-3.* *gcc-4.* {clang < 300}
 
 depends_build   port:pkgconfig \
                 port:xorg-xtrans \
@@ -74,5 +74,5 @@ variant docs description "Install extra documentation" {
 }
 
 livecheck.type  regex
-livecheck.url   http://xorg.freedesktop.org/archive/individual/lib/?C=M&O=D
+livecheck.url   https://xorg.freedesktop.org/archive/individual/lib/?C=M&O=D
 livecheck.regex libX11-(\\d+(?:\\.\\d+)*)
