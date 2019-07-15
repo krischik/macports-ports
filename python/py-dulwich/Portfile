@@ -4,10 +4,10 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        dulwich dulwich 0.19.2 dulwich-
+github.setup        dulwich dulwich 0.19.11 dulwich-
 name                py-dulwich
 categories-append   devel
-maintainers         {sean @seanfarley} openmaintainer
+maintainers         {lbschenkel @lbschenkel} openmaintainer
 platforms           darwin
 license             GPL-2+
 
@@ -18,9 +18,9 @@ long_description    Simple Pure-Python implementation of the Git file \
 
 homepage            https://www.dulwich.io
 
-checksums           rmd160  4c0eea88e4cd1ed41889ad3859feb126c1840492 \
-                    sha256  d0208f97211fa8932a8ae0d0c8ca340b4751c0358233526c86c1bb73f0c39b74 \
-                    size    341732
+checksums           rmd160  41daf28eb8f7e3147a80453b271eceb2274ec273 \
+                    sha256  9088a0e8bb6bef55e67571d6b75eb683f02e9760ed210bf5dffb6d5c86170b59 \
+                    size    358843
 
 python.versions     27
 

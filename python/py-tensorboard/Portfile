@@ -2,13 +2,15 @@
 
 PortSystem          1.0
 PortGroup           python 1.0
+PortGroup           conflicts_build 1.0
 
 name                py-tensorboard
-version             1.6.0
+version             1.14.0
+revision            0
 platforms           darwin
 supported_archs     noarch
 license             Apache-2
-maintainers         {emcrisostomo @emcrisostomo} openmaintainer
+maintainers         {emcrisostomo @emcrisostomo} {jonesc @cjones051073} openmaintainer
 
 description         TensorFlow's Visualization Toolkit
 long_description    TensorBoard is a suite of web applications for inspecting \
@@ -17,27 +19,32 @@ long_description    TensorBoard is a suite of web applications for inspecting \
 homepage            https://github.com/tensorflow/tensorboard
 
 if {${python.version} < 30} {
-    master_sites        https://pypi.python.org/packages/64/b8/7f64efd6aea9e21b836dc9acac60634ce9c41fe153ffd4df2acedc9a86e6
+    master_sites        https://files.pythonhosted.org/packages/f4/37/e6a7af1c92c5b68fb427f853b06164b56ea92126bcfd87784334ec5e4d42/
     distname            tensorboard-${version}-py2-none-any
-
-    checksums           rmd160 c9331fd9f32f463280b27a80fda6d4030186a588 \
-                        sha256 835ecbfee0ce505f8365435c23d1c7d6fd527fcad8a4829e4145b9f6f41d0ca2 \
-                        size   3042047
+    checksums           rmd160  f4da25dd38b8c63be0a30d6603904590738f3b58 \
+                        sha256  c35ba681a52d4922be6b225623cf77285033e7e4e68bac5c1d5490e47d129bb2 \
+                        size    3149160
 } else {
-    master_sites        https://pypi.python.org/packages/b0/67/a8c91665987d359211dcdca5c8b2a7c1e0876eb0702a4383c1e4ff76228d
+    master_sites        https://files.pythonhosted.org/packages/91/2d/2ed263449a078cd9c8a9ba50ebd50123adf1f8cfbea1492f9084169b89d9/
     distname            tensorboard-${version}-py3-none-any
-
-    checksums           rmd160 f0580f8d20f42f8aeffabf237d21418e4b17b737 \
-                        sha256 ab3e4568a277d4d06fc2928e6e5aa2a32ece073ad234a6b7ade08671dbf8f339 \
-                        size   3042047
+    checksums           rmd160  07082183d53ff9eb641fc0f022624401b3adb51c \
+                        sha256  50e0b1bdcd488dbe39fd9416976e089b2ff4df18d9f1fab47abf4c498209c3fc \
+                        size    3149160
 }
+
+livecheck.url   https://pypi.org/project/tensorboard/
+livecheck.type  regex
+livecheck.regex "tensorboard (\\d+(\\.\\d+)+)"
 
 extract.suffix      .whl
 extract.only
 
-python.versions     27 35 36
+python.versions        27 35 36 37
+python.default_version 37
 
 if {${name} ne ${subport}} {
+
+    conflicts_build ${subport}
 
     depends_build-append \
         port:py${python.version}-pip
@@ -69,4 +76,6 @@ if {${name} ne ${subport}} {
     destroot.post_args
 
     livecheck.type      none
+
 }
+

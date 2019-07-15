@@ -3,11 +3,11 @@
 PortSystem 1.0
 
 name            spring-boot-cli
-version         2.0.3
+version         2.1.6
 
 categories      java
 platforms       darwin
-maintainers     {@breun breun.nl:nils} openmaintainer
+maintainers     {breun.nl:nils @breun} openmaintainer
 license         Apache-2
 supported_archs noarch
 
@@ -28,9 +28,9 @@ master_sites    https://repo.spring.io/release/org/springframework/boot/${name}/
 
 distname        ${name}-${version}.RELEASE-bin
 
-checksums       rmd160  92c14502c701656c609c015cd71315cf836f0835 \
-                sha256  5a4bf071ed6509f5d915091573d2c1494f86c8ea915153d5e93dfdcc5ba75a44 \
-                size    9116513
+checksums       rmd160  8a8d1f527398d1552d5f1294eba1b6f041fb4fbb \
+                sha256  42bea1642d0bbac760944a6dd5848f440a40e1999ef493a20f0d7bc45cf3e37c \
+                size    11144964
 
 worksrcdir      spring-${version}.RELEASE
 

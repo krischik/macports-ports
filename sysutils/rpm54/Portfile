@@ -1,11 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           active_variants 1.1
 PortGroup           perl5 1.0
 
 name                rpm54
 version             5.4.15
-revision            6
+revision            7
 set date            20140824
 set branch          [join [lrange [split ${version} .] 0 1] .]
 platforms           darwin freebsd linux
@@ -20,12 +21,15 @@ long_description    The RPM Package Manager (RPM) is a powerful command line dri
                     package consists of an archive of files along with information about \
                     the package like its version, a description, etc.
 
-homepage            http://rpm5.org
-master_sites        ${homepage}/files/rpm/rpm-${branch}/
+# host rpm5.org no longer resolves, further updates unlikely
+# use substitute homepage and macports_distfiles for master_sites
+homepage            https://www.openhub.net/p/rpm5
+master_sites        macports_distfiles:${name}
 distname            rpm-${version}-0.${date}
 extract.suffix      .src.rpm
 checksums           rmd160  1b4af6831b864e485e6f9d9bee2c99f294e62cd8 \
-                    sha256  d4ae5e9ed5df8ab9931b660f491418d20ab5c4d72eb17ed9055b80b71ef6c4ee
+                    sha256  d4ae5e9ed5df8ab9931b660f491418d20ab5c4d72eb17ed9055b80b71ef6c4ee \
+                    size    15691310
 worksrcdir          rpm-${version}
 
 patchfiles          patch-rpmuuid.c.diff
@@ -61,12 +65,12 @@ extract.post_args   "| cpio -dvim"
 build.type          gnu
 
 # use perl5 port group to create variants to match dependency ossp-uuid
-# set default variant to perl5_24 (#52081)
+# ensure ossp-uuid uses same variant
 
 perl5.conflict_variants yes
-perl5.branches          5.26
-perl5.default_branch    5.26
+perl5.branches          5.26 5.28
 perl5.create_variants   ${perl5.branches}
+require_active_variants ossp-uuid ${perl5.variant}
 
 configure.args      --disable-nls \
                     --infodir=${prefix}/share/info \
@@ -143,8 +147,13 @@ platform darwin {
                     --with-glob
 
     # avoid bison-2.7 problems
+    if {[vercmp [macports_version] 2.5.99] >= 0} {
+    configure.env-append \
+                    "YACC=/usr/bin/bison -y"
+    } else {
     configure.env-append \
                     YACC='/usr/bin/bison -y'
+    }
 
     post-destroot {
         # Mac OS X specific changes
@@ -178,7 +187,5 @@ variant docs description "API documentation" {
 test.run            yes
 test.target         check
 
-livecheck.type      regex
-# get the last modified tarball
-livecheck.url       ${master_sites}
-livecheck.regex     rpm-(\[0-9\\.\]+)(-\[0-9\\.\]+)?${extract.suffix}
+# new releases unlikely
+livecheck.type      none

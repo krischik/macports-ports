@@ -4,7 +4,8 @@ PortSystem              1.0
 PortGroup               python 1.0
 PortGroup               github 1.0
 
-github.setup            lebigot uncertainties 3.0.2
+github.setup            lebigot uncertainties 3.1.1
+revision                0
 
 name                    py-uncertainties
 categories-append       math
@@ -12,16 +13,33 @@ license                 BSD
 maintainers             {gmail.com:jjstickel @jjstickel} openmaintainer
 description             The python uncertainties package.
 long_description        The uncertainties package transparently handles\
-                        calculations for numbers with\
-                        uncertainties.
+                        calculations for numbers with uncertainties.
 platforms               darwin
+supported_archs         noarch
 
-checksums               rmd160  4954e8e43e56322ad3d8ac888163d9c436e87a95 \
-                        sha256  4d5d7f0035ed13e78a123a04bd17bb8711d887220f0e2ae109274b33c5bb92ae \
-                        size    146359
+checksums               rmd160  d615a1e89fc708dbe133b392ef0d993f64c3fe55 \
+                        sha256  ce6cde393948e011023104d8b01fcae1dcaeadb70ab00f5fbcc9e31100358714 \
+                        size    148169
 
-python.versions         27 34 35 36
+python.versions         27 34 35 36 37
 
 if {${name} ne ${subport}} {
-    depends_build-append       port:py${python.version}-setuptools
+    depends_build-append  \
+                        port:py${python.version}-setuptools
+
+    depends_test-append port:py${python.version}-nose \
+                        port:py${python.version}-numpy
+    test.run            yes
+    test.cmd            ${python.bin} setup.py
+    test.target         nosetests
+    test.env            PYTHONPATH=${worksrcpath}/build/lib
+
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} README.rst LICENSE.txt \
+            INSTALL.txt ${destroot}${docdir}
+    }
+
+    livecheck.type      none
 }

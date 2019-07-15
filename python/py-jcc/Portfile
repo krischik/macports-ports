@@ -10,7 +10,7 @@ name                py-jcc
 version             3.0
 categories-append   devel
 platforms           darwin
-maintainers         gmail.com:petrus.hyvonen openmaintainer
+maintainers         nomaintainer
 license             Apache-2
 
 description         JCC is a C++ code generator for calling Java from C++/Python
@@ -26,7 +26,7 @@ long_description    JCC is a C++ code generator for producing the code \
                     property accessors. Iterators and mappings may also be\
                     declared to JCC.
 
-homepage            http://lucene.apache.org/pylucene/jcc/index.html
+homepage            https://lucene.apache.org/pylucene/jcc/index.html
 
 master_sites        pypi:${_n}/${_name}/
 distname            ${_name}-${version}

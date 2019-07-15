@@ -1,37 +1,47 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
-PortSystem          1.0
+PortSystem              1.0
 PortGroup               github 1.0
 
 # Download distfiles from GitHub mirror because fetching from svn keeps being
 # problematic.
-github.setup            chneukirchen netpbm-mirror 41940d88c082a27d5b52d584fc044d6fa832aabd
-name                netpbm
-version                 10.82.01
-svn.revision            3243
+github.setup            leahneukirchen netpbm-mirror b13ba8b9b606c916e0bda39348ee009e920df22e
+name                    netpbm
+version                 10.86.04
+svn.revision            3632
 set source_branch       advanced
-set userguide_branch    userguide
-set userguide_commit    42098725cc6d9484c2d8b5c0427f38754c0a17c8
-set userguide_revision  3205
-categories          graphics
-platforms           darwin freebsd linux
-maintainers         {ryandesign @ryandesign} openmaintainer
-license             {BSD GPL-2 IJG Permissive}
-
-description         Image manipulation
-
-long_description    A whole bunch of utilities for primitive manipulation \
-                    of graphic images. Wide array of converters from one \
-                    graphics format to another, e.g. from g3 fax format to \
-                    jpeg. Many basic graphics editing tools such as \
-                    magnifying and cropping.
-
-homepage            http://netpbm.sourceforge.net/
-
 distname                ${source_branch}-r${svn.revision}
 set source_distfile     ${distfiles}
+
+set userguide_commit    1df50958a6f3bd1ac849b03b44bb4ac00399f446
+set userguide_revision  3630
+set userguide_branch    userguide
 set userguide_distname  ${userguide_branch}-r${userguide_revision}
 set userguide_distfile  ${userguide_distname}${extract.suffix}
+
+checksums               ${source_distfile} \
+                        rmd160  12477f926b4e9170ab2ac196bc19f86ad650c678 \
+                        sha256  f23c804b00248924affdcfa18d3eea07ecd908d4ea2bea141f4e3f7208d85bba \
+                        size    2850859 \
+                        ${userguide_distfile} \
+                        rmd160  ee95ab01c0ff959f0a866d3caba28d8dea0897f3 \
+                        sha256  b6b894f03a89c74584f5b0cff67f71bc76fb5e443aa2bf7fef00b308df70b44d \
+                        size    1217895
+
+categories              graphics
+platforms               darwin freebsd linux
+maintainers             {ryandesign @ryandesign} openmaintainer
+license                 {BSD GPL-2 IJG Permissive}
+
+description             Image manipulation
+
+long_description        A whole bunch of utilities for primitive manipulation \
+                        of graphic images. Wide array of converters from one \
+                        graphics format to another, e.g. from g3 fax format to \
+                        jpeg. Many basic graphics editing tools such as \
+                        magnifying and cropping.
+
+homepage                http://netpbm.sourceforge.net/
 
 distfiles               ${source_distfile}:source \
                         ${userguide_distfile}:userguide
@@ -39,18 +49,22 @@ distfiles               ${source_distfile}:source \
 master_sites            ${github.master_sites}:source \
                         ${github.homepage}/tarball/${userguide_commit}:userguide
 
-checksums               ${source_distfile} \
-                        rmd160  5905bed477b0812f8c3884174043fb533e0ad2cc \
-                        sha256  35b3562affe0881aaed74a2fc10c164851249373d9fd66a874c6645fe83fcbd7 \
-                        size    2783392 \
-                        ${userguide_distfile} \
-                        rmd160  79ced0de9bfa0853d70ae1aef88020f78800652d \
-                        sha256  acf34f29905f065ef2ed81dd0a5e8da471c5c6d06225bf5ebb59cbab033ff5bb \
-                        size    722310
-
 post-extract {
     move ${workpath}/${github.author}-${github.project}-[string range ${git.branch} 0 6] ${workpath}/${distname}
     move ${workpath}/${github.author}-${github.project}-[string range ${userguide_commit} 0 6] ${workpath}/${userguide_distname}
+
+    set newest_mtime 0
+    fs-traverse item ${worksrcpath} {
+        if [file isfile ${item}] {
+            set item_mtime [file mtime ${item}]
+            if {${item_mtime} > ${newest_mtime}} {
+                set newest_mtime ${item_mtime}
+            }
+        }
+    }
+    set fp [open ${workpath}/mtime w]
+    puts ${fp} ${newest_mtime}
+    close ${fp}
 
     # Delete the manpages that aren't for this subport.
     set libmanpages {libnetpbm pam pbm pgm pnm ppm}
@@ -61,21 +75,22 @@ post-extract {
     }
 }
 
-patchfiles          patch-lib-Makefile.diff \
-                    patch-other-pamx-Makefile.diff
+patchfiles              patch-lib-Makefile.diff \
+                        patch-other-pamx-Makefile.diff
 
 variant universal {}
 
 configure.cflags-append -fno-common
 
-set jasperlib -ljasper
-set ldreloc NONE
-set ldshlib {-shared -Wl,-soname,$(SONAME)}
-set linker_can_do_explicit_library N
-set netpbmlibtype unixshared
-set netpbmlibsuffix so
-set want_sse N
-set want_x11 N
+set jasperlib           -ljasper
+set ldreloc             NONE
+set ldshlib             {-shared -Wl,-soname,$(SONAME)}
+set linker_can_do_explicit_library \
+                        N
+set netpbmlibtype       unixshared
+set netpbmlibsuffix     so
+set want_sse            N
+set want_x11            N
 
 configure {
     # The netpbm configure script is interactive, and appends its results to
@@ -130,10 +145,17 @@ platform freebsd {
     set ldshlib "${prefix}/lib/glibtool --mode=link gcc"
 }
 
-build.args          messages=yes
-build.type          gnu
+pre-build {
+    set fp [open ${workpath}/mtime r]
+    set mtime [read ${fp}]
+    close ${fp}
+    build.env-append    SOURCE_DATE_EPOCH=${mtime}
+}
 
-set pkgtargets      {}
+build.args              messages=yes
+build.type              gnu
+
+set pkgtargets          {}
 
 post-build {
     # Build manpages from html files.
@@ -197,7 +219,7 @@ if {${subport} eq ${name}} {
         # Install documentation.
         set docdir ${prefix}/share/doc/${subport}
         xinstall -d ${destroot}${docdir}
-        xinstall -m 644 -W ${worksrcpath} \
+        xinstall -m 0644 -W ${worksrcpath} \
             README \
             doc/COPYRIGHT.PATENT \
             doc/GPL_LICENSE.txt \
@@ -257,25 +279,13 @@ subport libnetpbm {
 
     post-destroot {
         # Install netpbm-config and netpbm.pc.
-        xinstall -m 755 ${build.dir}/netpbm-config ${destroot}${prefix}/bin/
-        xinstall -m 644 ${build.dir}/netpbm.pc ${destroot}${prefix}/lib/pkgconfig/
-
-        move {*}[glob ${destroot}${prefix}/link/*] ${destroot}${prefix}/lib/
+        xinstall -m 0755 ${build.dir}/netpbm-config ${destroot}${prefix}/bin/
+        xinstall -m 0644 ${build.dir}/netpbm.pc ${destroot}${prefix}/lib/pkgconfig/
 
         # Add symlinks for old library names that some old software still uses.
         set new_library [file readlink ${destroot}${prefix}/lib/libnetpbm.${netpbmlibsuffix}]
         foreach old_library {pbm pgm pnm ppm} {
             ln -s ${new_library} ${destroot}${prefix}/lib/lib${old_library}.${netpbmlibsuffix}
-        }
-    }
-
-    pre-activate {
-        # netpbm < 10.70.07 installed libnetpbm and associated files
-        if {![catch {set installed [lindex [registry_active netpbm] 0]}]} {
-            set installed_version [lindex ${installed} 1]
-            if {[vercmp ${installed_version} 10.70.07] < 0} {
-                registry_deactivate_composite netpbm "" [list ports_nodepcheck 1]
-            }
         }
     }
 }
@@ -284,6 +294,7 @@ subport libnetpbm {
 platform darwin 8 {
     depends_build-append port:gmake
     build.cmd ${prefix}/bin/gmake
+    use_parallel_build  no
     pre-configure {
         set fl [open "| ${configure.cc} --version"]
         set data [read $fl]
@@ -295,17 +306,18 @@ platform darwin 8 {
     }
 }
 
-patchfiles-append    patch-python.diff
+patchfiles-append       patch-python.diff
 if {${os.platform} eq "darwin" && ${os.major} < 10} {
     # the system python is too old to run scripts
-    depends_build-append port:python27
-    configure.python ${prefix}/bin/python2.7
+    depends_build-append \
+                        port:python27
+    configure.python    ${prefix}/bin/python2.7
 } else {
-    configure.python /usr/bin/python
+    configure.python    /usr/bin/python
 }
 post-patch {
     reinplace \
-        "s|__MACPORTS_PYTHON__|${configure.python}|g"  \
-        ${worksrcpath}/buildtools/makeman              \
+        "s|__MACPORTS_PYTHON__|${configure.python}|g" \
+        ${worksrcpath}/buildtools/makeman \
         ${worksrcpath}/buildtools/manpage.mk
 }

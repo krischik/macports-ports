@@ -6,11 +6,11 @@ name                    xymon-client
 set shortname           xymon
 conflicts               xymon-server
 version                 4.3.26
-revision                1
+revision                2
 categories              net
 platforms               darwin
 license                 {GPL-2 OpenSSLException}
-maintainers             free.fr:fclaire openmaintainer
+maintainers             nomaintainer
 
 description             Xymon network monitor Client
 

@@ -4,15 +4,16 @@ PortSystem          1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 name                unbound
-version             1.7.1
+version             1.9.2
 categories          net
 license             BSD
-maintainers         {snc @nerdling}
+maintainers         {snc @nerdling} openmaintainer
 
 description         Validating, recursive, and caching DNS resolver.
 
-homepage            http://unbound.net/
+homepage            https://nlnetlabs.nl/projects/unbound/
 platforms           darwin
+depends_build       port:flex
 depends_lib         path:lib/libssl.dylib:openssl port:expat
 
 set unbounduser     unbound
@@ -30,8 +31,9 @@ long_description    Unbound is a validating, recursive, and caching DNS \
 
 master_sites        http://unbound.net/downloads/
 
-checksums           rmd160  fd9ee1d94d475a84997d16e2e939c661d297fa6b \
-                    sha256  56e085ef582c5372a20207de179d0edb4e541e59f87be7d4ee1d00d12008628d
+checksums           rmd160  63411e761d70b5ce7c5e939dceebd8e7d4818c94 \
+                    sha256  6f7acec5cf451277fcda31729886ae7dd62537c4f506855603e3aa153fcb6b95 \
+                    size    5676395
 
 configure.args-append   --with-pidfile=${prefix}/var/run/${name}/${name}.pid \
                         --with-ssl=${prefix} \
@@ -68,10 +70,6 @@ startupitem.create  yes
 startupitem.name    unbound
 startupitem.start   "${prefix}/sbin/unbound-anchor -a ${prefix}/etc/${name}/root.key || : && chown ${unbounduser}:${unboundgroup} ${prefix}/etc/${name}/root.key && ${prefix}/sbin/unbound"
 startupitem.stop    "/bin/kill \$(cat ${prefix}/var/run/${name}/unbound.pid)"
-
-livecheck.type      regex
-livecheck.url       ${homepage}/download.html
-livecheck.regex     "The latest version of unbound \\(currently (\\d+\\.\\d+(\\.\\d+))\\)"
 
 use_parallel_build  no
 

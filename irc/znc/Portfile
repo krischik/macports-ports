@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           cxx11 1.1
 
 name                znc
-version             1.7.0
+version             1.7.3
 categories          irc
 platforms           darwin
 maintainers         nomaintainer
@@ -19,9 +19,9 @@ long_description    ZNC is an IRC bounce/proxy with many advanced features \
 homepage            https://znc.in/
 master_sites        ${homepage}releases/archive/
 
-checksums           rmd160  ca4da7be9e3eea04ce8cff412bd8d0358d40df8f \
-                    sha256  c07e31439ac6b948a577bd61a9d5f61a6d191d387423779b937aa1404051b96f \
-                    size    1853666
+checksums           rmd160  a52f7f8500dc3156dd3387f9450e8558132013d6 \
+                    sha256  1e4cc31837a1e8e6cc310873659a167cec16a3fd4281cbc3bf364e42352c113d \
+                    size    2084575
 
 universal_variant   no
 

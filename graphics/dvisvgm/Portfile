@@ -1,34 +1,100 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
-PortSystem          1.0
-PortGroup           cxx11 1.1
-PortGroup           github 1.0
+PortSystem       1.0
+PortGroup        cxx11 1.1
+PortGroup        github 1.0
 
-github.setup        mgieseki dvisvgm 2.3.4
-revision            1
-conflicts           texlive-bin-extra
-categories          graphics textproc
-platforms           darwin
-license             GPL-3+
-maintainers         nomaintainer
+name             dvisvgm
+categories       graphics textproc
+platforms        darwin
+license          GPL-3+
+maintainers      {michaelld @michaelld} openmaintainer
 
-description         DVI to SVG converter
-long_description    The command-line utility dvisvgm is a tool for TeX/LaTeX users. It \
-                    converts DVI files to the XML-based scalable vector graphics format SVG.
+description      DVI to SVG converter
+long_description ${description}. The command-line utility dvisvgm is a tool \
+    for TeX/LaTeX users. It converts DVI files to the XML-based scalable \
+    vector graphics format SVG.
 
-homepage            http://dvisvgm.bplaced.net/
-github.tarball_from releases
+subport dvisvgm-devel {}
 
-checksums           rmd160  a6b6bae339fb915b2c5f585b4f176a93fd901fc3 \
-                    sha256  5399f9ac2b254bc8a5c4862bc2126f2e8c6caec243c3205c0223564371100129
+if {${subport} eq ${name}} {
 
-depends_build       port:pkgconfig
+    github.setup mgieseki dvisvgm 2.7.2
+    checksums rmd160 65d21d8720e27aa922a28f957f9a86731be6d97c \
+              sha256 8bddcc480b68582fffc701573979c269367ffa592d7091f87b4a040d72b8ff4d \
+              size   2559427
+    revision  1
 
-depends_lib         port:freetype \
-                    port:ghostscript \
-                    port:potrace \
-                    port:texlive-bin \
-                    port:zlib
+    conflicts    ${name}-devel
 
-test.run            yes
-test.target         check
+    # deal moving from github release to tags; remove at next update
+    dist_subdir  ${name}/${version}_1
+
+    long_description ${description}: \
+        This port follows the release version of ${name}, which is typically \
+        updated every 6 months. If for some reason this port does not build or \
+        function as desired, try the ${name}-devel port.
+
+} else {
+
+    # devel
+
+    github.setup mgieseki dvisvgm 3abb2ec1ee3bfc3623f2a77d8dff4f6d71c7b409
+    version   20190607-[string range ${github.version} 0 7]
+    checksums rmd160 0572cf6ef863f63049bb262a1a24a760af0ae443 \
+              sha256 aa10270ecc3343877693e422aa4d6ebf7342b0cc523df1a231734a008650008b \
+              size   2559368
+    revision  1
+
+    conflicts    ${name}
+    long_description ${description}: \
+        This port follows the GIT master version of ${name}, which is typically \
+        updated every few days to weeks.
+
+}
+
+use_autoconf yes
+autoconf.cmd ${worksrcpath}/autogen.sh
+
+# Setting autoconf.cmd to a non-default value after setting 'use_autoconf yes'
+# removes the automatic dependencies, so re-add them.
+depends_build \
+    port:autoconf \
+    port:automake \
+    port:libtool
+
+# these are dependencies of the project itself
+depends_build-append \
+    port:asciidoc \
+    port:pkgconfig
+
+depends_lib \
+    port:brotli \
+    port:freetype \
+    port:ghostscript \
+    port:potrace \
+    port:texlive-bin \
+    port:woff2 \
+    port:zlib
+# dvisvgm also depends on xxhash which is not yet packaged by MacPorts
+# but the dependency is bundled with the sources & taken from there
+#   port:xxhash
+
+# prevent opportunistic dependency on gawk
+configure.env-append \
+    AWK=/usr/bin/awk
+
+# see https://trac.macports.org/ticket/57528
+use_parallel_build no
+
+test.run    yes
+test.target check
+
+pre-activate {
+    if {![catch {set vers [lindex [registry_active texlive-bin-extra] 0]}]
+        && ([vercmp [lindex $vers 1] 47446] < 0 ||
+            [vercmp [lindex $vers 1] 47446] == 0
+            && [vercmp [lindex $vers 2] 1] < 1)} {
+        registry_deactivate_composite texlive-bin-extra "" [list ports_nodepcheck 1]
+    }
+}

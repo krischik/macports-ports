@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-cloudpickle
-version             0.5.3
+version             1.2.1
 revision            0
 categories-append   science
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -23,10 +23,19 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  3899368f0abb327e01b3fcf5c1e67ad66efd1c34 \
-                    sha256  54858c7b7dc763ed894ff91059c1d0b017d593fe23850d3d8d75f47d98398197 \
-                    size    24452
+checksums           rmd160  fd7b139ad7ac2e26f490e07d99ae0df6ad87b5ff \
+                    sha256  603244e0f552b72a267d47a7d9b347b27a3430f58a0536037a290e7e0e212ecf \
+                    size    42138
 
 if {${name} ne ${subport}} {
+    if {${python.version} eq 34} {
+        version             0.8.1
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  15f1a75a76e2b0fc3bb6607e0efce4bb14fd5c39 \
+                            sha256  3ea6fd33b7521855a97819b3d645f92d51c8763d3ab5df35197cd8e96c19ba6f \
+                            size    30832
+    }
+
     livecheck.type      none
 }

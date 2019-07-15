@@ -5,10 +5,10 @@ PortGroup           conflicts_build 1.0
 name                OpenIPMI
 if {${os.platform} eq "darwin" && ${os.major} <= 15} {
     version             2.0.19
-    revision            4
+    revision            6
 } else {
-    version             2.0.24
-    revision            1
+    version             2.0.26
+    revision            0
 }
 set branch          [join [lrange [split ${version} .] 0 1] .]
 license             {GPL-2 LGPL-2}
@@ -38,14 +38,18 @@ if {${os.platform} eq "darwin" && ${os.major} <= 15} {
                         configure.in.patch
 } else {
     checksums \
-        rmd160  8323e56c414cca49ee1897b535d315e19ed470e2 \
-        sha256  bca39a27071278a8b74610181ede8df51e155e5e9031bc8eaa3699d1720292b4
+        rmd160  2ee3c26183e0765af83a13ed0eea0c7cd90c16f9 \
+        sha256  83986368c30a1158303435ad5a2b1bd3c6a39664b46d10fc0b8f9d2a78e2f524 \
+        size    3124706
     patchfiles          disable-lanserv.patch \
-                        unix_posix_thread_os_hnd.c.patch
+                        unix_posix_thread_os_hnd.c.patch \
+                        unix_selector.c.patch
 }
 
 # Grabs old headers from installed version during build...
 conflicts_build     ${name}
+
+depends_build       port:gsed
 
 depends_lib         port:popt \
                     path:lib/pkgconfig/glib-2.0.pc:glib2 \

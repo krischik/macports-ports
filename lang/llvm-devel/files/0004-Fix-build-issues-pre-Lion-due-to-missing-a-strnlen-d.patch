@@ -1,7 +1,7 @@
-From 0ffe84c579f75bb93a29453183d8ebd0595b25e7 Mon Sep 17 00:00:00 2001
+From e37fcfbad830c9bfe7375847f230f69899360444 Mon Sep 17 00:00:00 2001
 From: Jeremy Huddleston Sequoia <jeremyhu@apple.com>
 Date: Tue, 20 Dec 2016 12:41:21 -0800
-Subject: [PATCH 4/4] Fix build issues pre-Lion due to missing a strnlen
+Subject: [PATCH 4/6] Fix build issues pre-Lion due to missing a strnlen
  definition
 
 https://trac.macports.org/ticket/51520
@@ -14,10 +14,10 @@ Signed-off-by: Jeremy Huddleston Sequoia <jeremyhu@apple.com>
  2 files changed, 29 insertions(+), 1 deletion(-)
 
 diff --git llvm_master/lib/ObjectYAML/MachOYAML.cpp macports_master/lib/ObjectYAML/MachOYAML.cpp
-index e00a4ea9307..0daba44573c 100644
+index d12f12cf443..57464def3da 100644
 --- llvm_master/lib/ObjectYAML/MachOYAML.cpp
 +++ macports_master/lib/ObjectYAML/MachOYAML.cpp
-@@ -22,6 +22,20 @@
+@@ -21,6 +21,20 @@
  #include <cstdint>
  #include <cstring>
  
@@ -39,10 +39,10 @@ index e00a4ea9307..0daba44573c 100644
  
  MachOYAML::LoadCommand::~LoadCommand() = default;
 diff --git llvm_master/tools/obj2yaml/macho2yaml.cpp macports_master/tools/obj2yaml/macho2yaml.cpp
-index fa81ce974ec..1e86f820437 100644
+index 63e81686632..3c9b0cf8748 100644
 --- llvm_master/tools/obj2yaml/macho2yaml.cpp
 +++ macports_master/tools/obj2yaml/macho2yaml.cpp
-@@ -15,7 +15,21 @@
+@@ -14,7 +14,21 @@
  #include "llvm/Support/ErrorHandling.h"
  #include "llvm/Support/LEB128.h"
  
@@ -66,5 +66,5 @@ index fa81ce974ec..1e86f820437 100644
  using namespace llvm;
  
 -- 
-2.15.1
+2.21.0 (Apple Git-120)
 

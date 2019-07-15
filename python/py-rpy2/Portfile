@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-rpy2
-version             2.9.3
+version             3.0.4
 revision            0
 categories-append   science
 platforms           darwin
 license             {MPL-1.1 LGPL-2.1+}
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -26,9 +26,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  5415da7ae850b959f191334aa05faa0435464fb4 \
-                    sha256  1b72958e683339ea0c3bd9f73738e9ece2da8da8008a10e2e0c68fc7864e9361 \
-                    size    193487
+checksums           rmd160  3d243a160a1205f2a48ee606702364f031a0e0c6 \
+                    sha256  2af5158a5d56af7f7bf5e54d8d7e87b6f115ff40f056d82f93cad0cbf6acc0cb \
+                    size    117524
 
 if {${name} ne ${subport}} {
     if {${python.version} == 27} {
@@ -41,6 +41,11 @@ if {${name} ne ${subport}} {
                             sha256  004d13734a7b9a85cbc1e7a93ec87df741e28db1273ab5b0d9efaac04a9c5f98
 
         depends_lib-append  port:py${python.version}-singledispatch
+    } else {
+        depends_lib-append  port:py${python.version}-cffi \
+                            port:py${python.version}-pytest \
+                            port:py${python.version}-jinja2 \
+                            port:py${python.version}-simplegeneric
     }
 
     depends_build-append \

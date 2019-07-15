@@ -1,7 +1,9 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
 PortSystem          1.0
 
 name                xterm
-version             333
+version             347
 categories          x11
 license             X11
 platforms           darwin
@@ -12,15 +14,17 @@ long_description    The xterm program is a terminal emulator for the X \
                     including colors, Unicode, etc.
 
 homepage            https://invisible-island.net/xterm/
-master_sites        ftp://ftp.invisible-island.net/xterm/ \
+master_sites        ftp://ftp.invisible-island.net/pub/xterm/ \
                     https://invisible-mirror.net/archives/xterm/
-checksums           rmd160  bfbfd7157eb5deb82913bf58575bb2018881d1bb \
-                    sha256  2f1d42014e55c8036c6b29a847b31d3b5c1a3a35b126993ae6d3f05e8da0ef78 \
-                    size    1298897
+
+checksums           rmd160  0462d01ae4886d657d287a543df2e0b5a3566fb2 \
+                    sha256  400f73e1277ef96dfcb3885388525e6a13a3657a4032b83c1203e812b710b908 \
+                    size    1371955
+
 extract.suffix      .tgz
 
 depends_build \
-	port:xorg-xproto
+	port:xorg-xorgproto
 
 depends_run \
 	bin:luit:luit
@@ -39,6 +43,7 @@ patch.pre_args -p1
 configure.args      --mandir=${prefix}/share/man --enable-luit \
                     --enable-logging --enable-wide-chars \
                     --enable-256-color --enable-load-vt-fonts \
+                    --enable-double-buffer \
                     --x-include=${prefix}/include --x-lib=${prefix}/lib \
                     --with-app-defaults=${prefix}/share/X11/app-defaults
 

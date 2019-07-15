@@ -2,11 +2,10 @@
 PortSystem          1.0
 
 name                subversion-perlbindings
-version             1.10.0
-revision			1
+version             1.12.0
 categories          devel perl
 platforms           darwin
-maintainers         {geeklair.net:dluke @danielluke} {blair @blair}
+maintainers         {geeklair.net:dluke @danielluke}
 description         Perl bindings for the subversion version control system (svn)
 license             Apache-2
 
@@ -15,9 +14,9 @@ long_description    Subversion (svn) is a version control system designed to be 
                     outstanding problems with cvs(1). The perl bindings \
                     provide access to subversion API from perl.
 
-homepage            http://subversion.apache.org/
+homepage            https://subversion.apache.org/
 
-set perl5.branches {5.26}
+set perl5.branches {5.26 5.28}
 foreach branch ${perl5.branches} {
     set p_idx [lsearch ${perl5.branches} ${branch}]
     set other_perls [lreplace ${perl5.branches} $p_idx $p_idx]
@@ -44,16 +43,15 @@ if {${subport} eq ${name}} {
         system "echo $name is a stub port > ${destroot}${prefix}/share/doc/${name}/README"
     }
     livecheck.type  regex
-    livecheck.url   http://svn.apache.org/repos/asf/subversion/tags/
+    livecheck.url   https://svn.apache.org/repos/asf/subversion/tags/
     livecheck.regex "(\\d+\\.\\d+\\.\\d+)/"
 } else {
 
     master_sites    apache:subversion
     use_bzip2       yes
-	checksums	sha1	345bc84edc5fe72f70997d247230fd8d3a18d83b \
-			rmd160	ccde1df065be6c997967830053a03b6bdc68503e \
-			sha256	2cf23f3abb837dea0585a6b0ebd70e80e01f95bddef7c1aa097c18e3eaa6b584 \
-			size	8369823
+    checksums       rmd160  cd06e97d3e109796c3370cb7633081805ee4d957 \
+                    sha256  7fae7c73d8a007c107c0ae5eb372bc0bb013dbfe966fcd5c59cd5a195a5e2edf \
+                    size    8504473
 
     distname        subversion-${version}
     dist_subdir     subversion
@@ -66,7 +64,7 @@ if {${subport} eq ${name}} {
     depends_lib     port:apr \
                     port:apr-util \
                     port:cyrus-sasl2 \
-                    port:db46 \
+                    port:db48 \
                     port:expat \
                     port:gettext \
                     port:libcomerr \
@@ -82,7 +80,7 @@ if {${subport} eq ${name}} {
 
     depends_build   port:swig
 
-    configure.args  --with-berkeley-db=:${prefix}/include/db46:${prefix}/lib/db46:db-4.6 \
+    configure.args  --with-berkeley-db=:${prefix}/include/db48:${prefix}/lib/db48:db-4.8 \
                     --with-apr=${prefix}/bin/apr-1-config \
                     --with-apr-util=${prefix}/bin/apu-1-config --without-apxs \
                     --mandir=\\\${prefix}/share/man \
@@ -111,8 +109,8 @@ if {${subport} eq ${name}} {
     }
 
     variant no_bdb description {Build without support for BerkeleyDB repositories} {
-        depends_lib-delete      port:db46
-        configure.args-delete   --with-berkeley-db=:${prefix}/include/db46:${prefix}/lib/db46:db-4.6
+        depends_lib-delete      port:db48
+        configure.args-delete   --with-berkeley-db=:${prefix}/include/db48:${prefix}/lib/db48:db-4.8
         configure.args-append   --without-berkeley-db
     }
 

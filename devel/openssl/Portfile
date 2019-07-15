@@ -5,8 +5,7 @@ PortGroup           muniversal 1.0
 
 name                openssl
 epoch               1
-version             1.0.2o
-revision            1
+version             1.0.2s
 
 # Please revbump these ports when updating OpenSSL.
 #  - freeradius (#43461)
@@ -34,7 +33,6 @@ depends_lib         port:zlib
 # See https://www.openssl.org/source/mirror.html
 master_sites        ${homepage}/source \
                     ftp://gd.tuwien.ac.at/infosys/security/openssl/source/ \
-                    http://openssl.skazkaforyou.com/source/ \
                     http://mirror.switch.ch/ftp/mirror/openssl/source/ \
                     ftp://ftp.fi.muni.cz/pub/openssl/source/ \
                     ftp://ftp.pca.dfn.de/pub/tools/net/openssl/source/ \
@@ -42,15 +40,14 @@ master_sites        ${homepage}/source \
                     ftp://ftp.linux.hr/pub/openssl/source/ \
                     ftp://guest.kuria.katowice.pl/pub/openssl/source/
 
-checksums           sha1    a47faaca57b47a0d9d5fb085545857cc92062691 \
-                    rmd160  aac1564f006766e66f5a319def41e5d99122915d \
-                    sha256  ec3f5c9714ba0fd45cb4e087301eb1336c317e0d20b575a125050470e8089e4d \
-                    size    5329472
+checksums           sha1    cf43d57a21e4baf420b3628677ebf1723ed53bc1 \
+                    rmd160  6067f88e5f1ac797e189648386adb12ca4aba85d \
+                    sha256  cabd5c9492825ce5bd23f3c3aeed6a97f8142f606d893df216411f07d1abab96 \
+                    size    5349149
 
 patchfiles          install-headers-HFS+.patch \
                     parallel-building.patch \
-                    remove-duplicate-bn_print-doc.patch \
-                    349a41da1ad88ad87825414752a8ff5fdd6a6c3f.patch
+                    remove-duplicate-bn_print-doc.patch
 
 configure.ccache    no
 configure.perl      /usr/bin/perl

@@ -4,6 +4,7 @@ PortSystem          1.0
 
 name                gle-graphics
 version             4.2.5
+revision            1
 set major           [lindex [split ${version} .] 0]
 categories          graphics
 platforms           darwin
@@ -87,7 +88,7 @@ if {${name} eq ${subport}} {
 }
 
 subport QGLE {
-    revision                9
+    revision                12
     license                 GPL-2+
     
     description             graphical user interface of GLE

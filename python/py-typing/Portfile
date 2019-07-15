@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-typing
-version             3.6.4
+version             3.7.4
 categories-append   devel
 platforms           darwin
 supported_archs     noarch
@@ -24,17 +24,13 @@ homepage            https://pypi.python.org/pypi/${python.rootname}/
 
 master_sites        pypi:t/${python.rootname}
 distname            ${python.rootname}-${version}
-checksums           md5     5b2ade08d83be488f17b5fe587c27c74 \
-                    rmd160  0c03e1a2972bc8ed83494ef5a92f06a76d32e7d9 \
-                    sha256  d400a9344254803a2368533e4533a4200d21eb7b6b729c173bc38201a74db3f2
+checksums           rmd160  58663c5877a63ad0694f8e06b56829e844bdeb30 \
+                    sha256  53765ec4f83a2b720214727e319607879fec4acde22c4fbb54fa2604e79e44ce \
+                    size    77413
 
-python.versions     27 33 34
+# do not add subports for python 3.5 and later; module is in stdlib.
+python.versions     27 34
 
 if {${name} ne ${subport}} {
     depends_build   port:py${python.version}-setuptools
-
-    livecheck.type  none
-} else {
-    # Work around incorrect PyPI versioning (3.5.2 vs. 3.5.2.2).
-    livecheck.regex {typing-(\d+(?:\.\d+)*)}
 }

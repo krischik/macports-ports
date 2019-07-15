@@ -4,7 +4,7 @@ PortSystem          1.0
 
 set my_name         gnupg
 name                ${my_name}2
-version             2.2.8
+version             2.2.16
 categories          mail security
 maintainers         {jann @roederja} {ionic @Ionic} openmaintainer
 license             GPL-3+
@@ -23,9 +23,10 @@ master_sites        ${my_name}:${my_name}
 
 use_bzip2           yes
 
-checksums           rmd160  200fc5ee2f8c25ca1ce9c7ac10f7479bc4f30406 \
-                    sha256  777b4cb8ced21965a5053d4fa20fe11484f0a478f3d011cef508a1a49db50dcd \
-                    size    6632465
+checksums           rmd160  0c5107bbc6fa8e76e9dfbbbab7a59732c552b7ed \
+                    sha256  6cbe8d454bf5dc204621eed3016d721b66298fa95363395bb8eeceb1d2fd14cb \
+                    sha1    f956c8cebee3a6ddb2ce6e6e058d474d056dd9e0 \
+                    size    6699113
 
 platform darwin {
     if {![variant_isset pinentry] && ![variant_isset pinentry_mac]} {
@@ -55,12 +56,10 @@ depends_lib         port:libiconv           \
                     port:gettext            \
                     port:zlib               \
                     port:bzip2              \
-                    port:bison              \
                     port:libassuan          \
                     port:libksba            \
                     port:libgcrypt          \
                     port:libgpg-error       \
-                    port:openldap           \
                     port:readline           \
                     port:gnutls             \
                     port:libusb-compat      \
@@ -80,6 +79,14 @@ variant pinentry_mac conflicts pinentry description {Handle user input via pinen
     depends_lib-append      port:pinentry-mac
     configure.args-append   --with-pinentry-pgm=${applications_dir}/pinentry-mac.app/Contents/MacOS/pinentry-mac
 }
+
+configure.args-append --disable-openldap
+variant openldap description {Support openldap} {
+    depends_lib-append      port:openldap
+    configure.args-replace  --disable-openldap --enable-openldap
+}
+
+default_variants    +openldap
 
 test.run            yes
 test.dir            ${worksrcpath}/tests

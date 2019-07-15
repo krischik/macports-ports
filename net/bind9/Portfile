@@ -1,7 +1,7 @@
 PortSystem 1.0
 
 name			bind9
-version			9.12.1-P2
+version			9.14.3
 categories		net
 maintainers		{geeklair.net:dluke @danielluke}
 platforms		darwin freebsd sunos
@@ -23,18 +23,21 @@ homepage		https://www.isc.org/
 distname		bind-${version}
 master_sites		isc:${name}/${version}
 
-checksums	md5	7fbefc12bd0cf891546ee9d8bc18f7b0 \
-		sha1	837403283cfdd58e55f9c493f28b5893310579b9 \
-		rmd160	feaf6a64ccd8df4e2b9f2c595251bed75624fd9a \
-		sha256	0de7c3453461e2f0505ac634b984f8e7afa1952cf7fc972cbefbcc169edf2d29 \
-		size	9305005
+checksums	rmd160	dc7bd989fd5cf20db954078af5a54e6f1bc558a9 \
+		sha256	ce878aabcf01b61ed114522c32fff9e268b02da55b3c248349860bc3d0c8bdfa \
+		size	6258311
 
-depends_lib		path:lib/libssl.dylib:openssl port:libxml2
-
-patchfiles-append	gssapi-link.patch
+depends_lib		path:lib/libssl.dylib:openssl  \
+			port:libxml2 \
+			port:python37 \
+			port:py37-ply
 
 use_parallel_build	no
 universal_variant	no
+
+compiler.blacklist	gcc-4.2
+
+patchfiles		atomics.patch
 
 test.run		yes
 test.target		test
@@ -51,8 +54,7 @@ configure.args		--mandir=${prefix}/share/man \
 				--with-openssl=${prefix} \
 				--with-libxml2=${prefix} \
 				--without-libjson \
-				--enable-threads \
-				--enable-ipv6
+				--with-python=${prefix}/bin/python3.7
 
 platform darwin 8 {
 	configure.args-append --with-dlopen=no \
@@ -106,19 +108,6 @@ notes "******************************************************
 * logging into a directory where this new user can write files.
 ******************************************************"
 
-variant python27 description {Build python27 module} {
-	depends_lib-append port:python27 \
-			port:py27-configargparse \
-			port:py27-ply
-	configure.args-append --with-python=${prefix}/bin/python2.7
-}
-
-variant python36 description {Build python36 module} {
-	depends_lib-append port:python36 \
-			port:py36-configargparse \
-			port:py36-ply
-	configure.args-append --with-python=${prefix}/bin/python3.6
-}
 livecheck.type	regex
 livecheck.url	${homepage}downloads/
 livecheck.regex	"bind-(\\d+\.\\d+\.\\d+(?:-P\\d+)?).tar.gz - tar.gz\\s*</a>"

@@ -3,7 +3,7 @@
 PortSystem              1.0
 PortGroup               github 1.0
 
-github.setup            tj git-extras 4.5.0
+github.setup            tj git-extras 4.7.0
 maintainers             {grimreaper @grimreaper} openmaintainer
 platforms               darwin
 categories              devel
@@ -15,8 +15,9 @@ long_description        \
     commit percentages and more
 license                 MIT
 
-checksums               rmd160  eaf2c577c9614069f9f88f38c5deda3d69ce2b44 \
-                        sha256  6028688cffb65af40d6c8ce5a5d2f9c4fa35e084acaf640473c40496641ab234
+checksums           rmd160  4db698a7286afd0217b274803acbaa255e47899b \
+                    sha256  fd8ecd6305c44054b824c426941c4179331c8e599ee294651a0b873ee4195865 \
+                    size    137080
 
 use_configure           no
 

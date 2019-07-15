@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-scikit-learn
-version             0.19.1
+version             0.21.2
 revision            0
 categories-append   science
 platforms           darwin
 license             BSD
 
-python.versions     26 27 33 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -22,36 +22,49 @@ long_description    Scikit-learn integrates machine learning algorithms \
                     it provides versatile tools for data mining and analysis \
                     in any field of science and engineering.
 
-homepage            http://scikit-learn.org/
+homepage            https://scikit-learn.org/
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  dfb92fedadc1fecd9934f85321156f3f5d197a2e \
-                    sha256  5ca0ad32ee04abe0d4ba02c8d89d501b4e5e0304bdf4d45c2e9875a735b323a0
+checksums           rmd160  60bfa841e1863bc8f5c3c14338e35e57a9f45e76 \
+                    sha256  0aafc312a55ebf58073151b9308761a5fcfa45b7f7730cea4b1f066f824c72db \
+                    size    12238398
 
 if {${name} ne ${subport}} {
-    # scikit-learn package requires Python 2.6, 2.7 or 3.4+
-    if {${python.version} == 33} {
-        version             0.14.1
-        revision            1
-        distname            scikit-learn-${version}
-        checksums           rmd160  a372e7d1e8eb09be6fd1b4d791f05e049f5a87f4 \
-                            sha256  34821b8f460bdb7aba8eb882353bacbd01671bfb8057649ffcdce7f7ffa4a21d
-        # Stealth update for 0.14.1
-        dist_subdir         ${name}/${version}_1
-    } elseif {${python.version} == 26} {
-        version             0.16.1
-        revision            0
-        distname            scikit-learn-${version}
-        checksums           rmd160  eb47180da94eac22689ccd3464c9ba5eb0ae216c \
-                            sha256  c0721e295056c95c7002e05726f2bd271a7923e88bdeab34a2b60aac2b0ee6e4
-    }
-
     depends_build-append \
-                        port:py${python.version}-setuptools
+                        port:py${python.version}-setuptools \
+                        port:py${python.version}-cython
     depends_lib-append  port:py${python.version}-numpy \
                         port:py${python.version}-scipy
+
+    if {${python.version} <= 34} {
+        version             0.20.3
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  83e04bc34d4adf8836a562550e4ad1405f53fc68 \
+                            sha256  c503802a81de18b8b4d40d069f5e363795ee44b1605f38bc104160ca3bfe2c41 \
+                            size    11818490
+    } else {
+        depends_lib-append  port:libomp
+        depends_run-append  port:py${python.version}-joblib
+
+        # force cythonize
+        patchfiles-append   patch-sklearn__build_utils___init__.py.diff
+
+        python.add_archflags no
+
+        build.env-append    CPPFLAGS="${configure.cppflags} -Xpreprocessor -fopenmp" \
+                            CFLAGS="${configure.cc_archflags} -I${prefix}/include/libomp" \
+                            CXXFLAGS="${configure.cxx_archflags} -I${prefix}/include/libomp" \
+                            LDFLAGS="${configure.ld_archflags} -L${prefix}/lib/libomp -lomp" \
+                            DYLD_LIBRARY_PATH="${prefix}/lib/libomp"
+        destroot.env-append CPPFLAGS="${configure.cppflags} -Xpreprocessor -fopenmp" \
+                            CFLAGS="${configure.cc_archflags} -I${prefix}/include/libomp" \
+                            CXXFLAGS="${configure.cxx_archflags} -I${prefix}/include/libomp" \
+                            LDFLAGS="${configure.ld_archflags} -L${prefix}/lib/libomp -lomp" \
+                            DYLD_LIBRARY_PATH="${prefix}/lib/libomp"
+    }
 
     livecheck.type      none
 }

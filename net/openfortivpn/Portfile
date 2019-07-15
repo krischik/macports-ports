@@ -2,7 +2,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        adrienverge openfortivpn 1.7.1 v
+github.setup        adrienverge openfortivpn 1.10.0 v
 
 categories          net
 platforms           darwin
@@ -20,6 +20,6 @@ depends_lib         port:openssl
 
 use_autoreconf      yes
 
-checksums           rmd160  caea968dff62e21f720a538f5bc7b049f659fa6c \
-                    sha256  db694b53fd534158bdb150ac8ab67a9a8622ed21849d09f52f9c1396d0b7de3e \
-                    size    61236
+checksums           rmd160  aef2a916fa68351599e1259d91e55003fbeba2ad \
+                    sha256  faacc5c0169b2e3c55ef8a34012811a23cbd8b2f86f333054a3934e37ad24f6e \
+                    size    74903

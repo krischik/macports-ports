@@ -57,10 +57,10 @@ variant docs description "Install extra documentation" {
 		--enable-specs
 
 	configure.env-append \
-		FOP="${prefix}/bin/fop" \
-		XMLTO="${prefix}/bin/xmlto"
+		FOP=${prefix}/bin/fop \
+		XMLTO=${prefix}/bin/xmlto
 }
 
 livecheck.type  regex
-livecheck.url   http://xorg.freedesktop.org/archive/individual/lib/?C=M&O=D
+livecheck.url   https://xorg.freedesktop.org/archive/individual/lib/?C=M&O=D
 livecheck.regex libXaw-(\\d+(?:\\.\\d+)*)

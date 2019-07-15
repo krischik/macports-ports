@@ -1,10 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
 
-PortSystem 1.0
-PortGroup  python 1.0
-PortGroup  github 1.0
+PortSystem          1.0
+PortGroup           python 1.0
+PortGroup           github 1.0
 
-github.setup        xflr6 graphviz 0.8.3
+github.setup        xflr6 graphviz 0.11
 name                py-graphviz
 categories-append   graphics devel
 license             MIT
@@ -12,15 +12,16 @@ platforms           darwin
 maintainers         {mcalhoun @MarcusCalhoun-Lopez} openmaintainer
 description         Facilitates the creation and rendering of graph descriptions in the DOT language of the Graphviz graph drawing software from Python
 long_description    This package facilitates the creation and rendering of graph descriptions in the DOT language of the Graphviz graph drawing software (repo) from Python.
+supported_archs     noarch
+installs_libs       no
 
-checksums           rmd160  e2b00b1e11f656a889f5c83865d5c8206a1343c0 \
-                    sha256  3ccd64c56069bacec2d7616ddcf24f89fd49a3895fd382edbd06ee17bc39e211
+checksums           rmd160  48d7328c307fa20a2284b60400089b167410dde4 \
+                    sha256  bd1e10bc0de2c1cd1f95f67d1c8a9994427d0637eef95b1c22fc87328d49686a \
+                    size    146830
 
-python.versions 27 34 35 36
+python.versions     27 34 35 36 37
 
 if {${name} ne ${subport}} {
-
-    supported_archs noarch
 
     depends_build-append \
         port:py${python.version}-setuptools

@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        irssi irssi 1.1.1
-revision            1
+github.setup        irssi irssi 1.2.1
+revision            0
 categories          irc
 platforms           darwin
 license             {GPL-2+ OpenSSLException}
@@ -22,8 +22,9 @@ github.tarball_from releases
 
 use_xz              yes
 
-checksums           rmd160  e2f3292aecd9ad69f19cd94164aa31614625addf \
-                    sha256  784807e7a1ba25212347f03e4287cff9d0659f076edfb2c6b20928021d75a1bf
+checksums           rmd160  60d01b235492141e82c32328d0850e83ced425fc \
+                    sha256  5466a1ed9612cfa707d9a37d60b29d027b4ac7d83c74ceb1a410e2b59edba92c \
+                    size    1140380
 
 depends_build       port:pkgconfig
 depends_lib         port:gettext path:lib/pkgconfig/glib-2.0.pc:glib2 port:libiconv port:ncurses \

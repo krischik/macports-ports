@@ -1,11 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
 
-PortSystem 1.0
-PortGroup  python 1.0
+PortSystem          1.0
+PortGroup           python 1.0
 
 name                py-twisted
-version             17.9.0
-#revision            0
+version             19.2.1
 categories-append   devel net
 license             MIT
 platforms           darwin
@@ -17,26 +16,30 @@ long_description    Twisted is an event-driven networking framework \
                     (including HTTP, NNTP, SSH, IRC, FTP, and others), and \
                     much more.
 
-homepage            http://www.twistedmatrix.com/
+homepage            https://www.twistedmatrix.com/
 
-set dl_version [join [lrange [split ${version} .] 0 1] .]
-master_sites        http://tmrc.mit.edu/mirror/twisted/Twisted/${dl_version} \
-                    http://twistedmatrix.com/Releases/Twisted/${dl_version}
+set dl_version      [join [lrange [split ${version} .] 0 1] .]
+master_sites        https://twistedmatrix.com/Releases/Twisted/${dl_version}
 distname            Twisted-${version}
 use_bzip2           yes
 
-checksums           rmd160  5a4c088b2639eb844f57caaa646a611375078621 \
-                    sha256  0da1a7e35d5fcae37bc9c7978970b5feb3bc82822155b8654ec63925c05af75c
+checksums           rmd160  3eabf4dd477a51f6557c8ea787fa3a9900e03798 \
+                    sha256  fa2c04c2d68a9be7fc3975ba4947f653a57a656776f24be58ff0fe4b9aaf3e52 \
+                    size    3097651
 
-python.versions 27 34 35 36
+python.versions 27 35 36 37
 
 if {${name} ne ${subport}} {
+    # uses "from pkg_resources import load_entry_point"
     depends_lib-append    \
+        port:py${python.version}-bcrypt \
         port:py${python.version}-setuptools \
         port:py${python.version}-zopeinterface \
         port:py${python.version}-incremental \
         port:py${python.version}-hyperlink \
         port:py${python.version}-constantly
+    depends_run-append \
+        port:py${python.version}-pyhamcrest
 
     post-destroot {
         # update the plugin cache
@@ -48,10 +51,6 @@ if {${name} ne ${subport}} {
             file delete -force $cachefile
         }
     }
-
-    # uses from "pkg_resources import load_entry_point"
-    depends_run-append \
-        port:py${python.version}-setuptools
 
     # see https://trac.macports.org/ticket/54627
     depends_run-append \

@@ -6,7 +6,7 @@ PortGroup           compiler_blacklist_versions 1.0
 
 name                babl
 conflicts           babl-devel
-version             0.1.50
+version             0.1.66
 license             LGPL-3+
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          graphics
@@ -21,9 +21,13 @@ master_sites        gimp:${name}/${branch}/
 
 use_bzip2           yes
 
-checksums           rmd160  5ca5e2b83b32a7d6aa9cdee4634c4c279a170a78 \
-                    sha256  b52c1dc081ff9ae8bc4cb7cdb959c762ea692b9f4431bacf8d17a14dbcc85b2d \
-                    size    661756
+checksums           rmd160  c57889951538f3aedcd3b25d6f4fd4e45e778eef \
+                    sha256  369dd89345489a3949e83d5ad63295029088230626f64a05e530761b176fa163 \
+                    size    706100
+
+depends_build       port:pkgconfig
+
+depends_lib         port:lcms2
 
 # In 0.1.12, i386 fails to compile with SL's gcc-4.2:
 #    babl-cpuaccel.c:169: error: ‘asm’ operand has impossible constraints
@@ -42,10 +46,18 @@ patchfiles-append   patch-config.guess.diff
 
 # CC_FOR_BUILD is used by config.guess to determine processor type
 if {![variant_isset universal]} {
+    if {[vercmp [macports_version] 2.5.99] >= 0} {
+    configure.env-append "CC_FOR_BUILD=${configure.cc} ${configure.cc_archflags}"
+    } else {
     configure.env-append CC_FOR_BUILD="${configure.cc} ${configure.cc_archflags}"
+    }
 } else {
     foreach arch ${configure.universal_archs} {
+        if {[vercmp [macports_version] 2.5.99] >= 0} {
+        lappend merger_configure_env(${arch})  "CC_FOR_BUILD=${configure.cc} -arch ${arch}"
+        } else {
         lappend merger_configure_env(${arch})  CC_FOR_BUILD='${configure.cc} -arch ${arch}'
+        }
     }
 }
 

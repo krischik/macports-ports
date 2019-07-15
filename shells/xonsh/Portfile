@@ -4,11 +4,11 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        xonsh xonsh 0.6.6
-github.tarball_from tags
+github.setup        xonsh xonsh 0.9.7
+revision            0
 categories          shells
 platforms           darwin
-maintainers         nomaintainer
+maintainers         {mps @Schamschula} openmaintainer
 license             Permissive
 
 description         Xonsh is a Python-ish, BASHwards-looking shell language \
@@ -21,37 +21,36 @@ long_description    ${description} \
                     macOS, and Windows. Xonsh is meant for the daily use of \
                     experts and novices alike.
 
-checksums           rmd160  66ac7316530d37595cf36b82abb29f88b08375ce \
-                    sha256  c38ab010cd0f87680c6d8d34eca51679ff5284a6b76d93a7834314265c54bcf3 \
-                    size    1873989
+checksums           rmd160  0691f3bfa121ee2b8068273e819c5ddfe506a07a \
+                    sha256  4609b452262a6bce0943891f9ed8589c2a8c471dcb15807d880952e05de7e029 \
+                    size    2031612
 
-python.versions     34 35 36
+python.versions     34 35 36 37
 
 depends_lib-append  port:py${python.version}-prompt_toolkit \
                     port:py${python.version}-pygments \
                     port:py${python.version}-gnureadline
 
-subport             xonsh-devel {
-    # Remove after April 2019
-    replaced_by     xonsh
-    PortGroup       obsolete 1.0
-    version         0.5.0-2016-12-21
-    revision        1
+variant python34 conflicts python35 python36 python37 description {Use Python 3.4} {
+    # remove after November 1, 2019
+    ui_error "Please do not install this variant since it has been replaced by the python37 variant."
+    return -code error
 }
 
-
-variant python34 conflicts python35 python36 description {Use Python 3.4} {
-    python.default_version 34
+variant python35 conflicts python34 python36 python37 description {Use Python 3.5} {
+    # remove after November 1, 2019
+    ui_error "Please do not install this variant since it has been replaced by the python37 variant."
+    return -code error
 }
 
-variant python35 conflicts python34 python36 description {Use Python 3.5} {
-    python.default_version 35
-}
-
-variant python36 conflicts python34 python35 description {Use Python 3.6} {
+variant python36 conflicts python34 python35 python37 description {Use Python 3.6} {
     python.default_version 36
 }
 
-if {![variant_isset python34] && ![variant_isset python35]} {
-    default_variants +python36
+variant python37 conflicts python34 python35 python36 description {Use Python 3.7} {
+    python.default_version 37
+}
+
+if {![variant_isset python34] && ![variant_isset python35] && ![variant_isset python36]} {
+    default_variants +python37
 }

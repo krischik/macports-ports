@@ -1,10 +1,20 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+
+# https://github.com/harfbuzz/harfbuzz/issues/1642
+PortGroup           cxx11 1.1
+
+# https://github.com/harfbuzz/harfbuzz/issues/1651#issuecomment-484051395
 PortGroup           compiler_blacklist_versions 1.0
+compiler.blacklist-append {clang < 700}
 
 name                harfbuzz
-version             1.7.6
+version             2.5.3
+checksums           rmd160  d3e57a0c2b0b43df571200db8635c88ae1959d5b \
+                    sha256  fed00dc797b7ba3ca943225f0a854baaed4c1640fff8a31d455cd3b5caec855c \
+                    size    5685712
+
 categories          graphics
 platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -16,27 +26,22 @@ long_description    HarfBuzz is an ${description}.
 
 homepage            https://www.freedesktop.org/wiki/Software/HarfBuzz/
 master_sites        https://www.freedesktop.org/software/harfbuzz/release/
-use_bzip2           yes
-
-checksums           rmd160  bfd237407c3b8eea5a59f1c6bbab4a467549c767 \
-                    sha256  da7bed39134826cd51e57c29f1dfbe342ccedb4f4773b1c951ff05ff383e2e9b \
-                    size    2586909
+use_xz              yes
 
 depends_build       port:pkgconfig
 
-patchfiles-append   32bit.patch \
-                    coretext.patch
-
-# Remove this on an update to >1.7.6 as https://github.com/harfbuzz/harfbuzz/commit/2a2360
-compiler.blacklist  *llvm-gcc-4.2
-# clang 211.10.1 and earlier are known to fail. Assume 300 works?
-compiler.blacklist-append   {clang < 300}
+patchfiles          CGFloat.patch
 
 configure.args      --disable-silent-rules \
                     ac_cv_prog_AWK=/usr/bin/awk
 
+# Do not use -Werror. New compilers may have new warnings; we don't want users
+# to encounter build failures because of that.
+configure.cflags-append     -DHB_NO_PRAGMA_GCC_DIAGNOSTIC_ERROR
+configure.cxxflags-append   -DHB_NO_PRAGMA_GCC_DIAGNOSTIC_ERROR
+
 if {${name} eq ${subport}} {
-    revision        1
+    revision        0
     
     depends_lib-append \
                     path:lib/pkgconfig/cairo.pc:cairo \
@@ -57,7 +62,7 @@ if {${name} eq ${subport}} {
     post-destroot {
         set docdir ${prefix}/share/doc/${name}
         xinstall -d ${destroot}${docdir}
-        xinstall -m 644 -W ${worksrcpath} \
+        xinstall -m 0644 -W ${worksrcpath} \
                     AUTHORS \
                     COPYING \
                     ChangeLog \

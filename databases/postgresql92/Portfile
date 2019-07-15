@@ -8,7 +8,7 @@ PortGroup muniversal 1.0
 #remember to update the -doc and -server as well
 name			postgresql92
 version			9.2.24
-revision        1
+revision        3
 
 categories		databases
 platforms		darwin
@@ -62,7 +62,7 @@ configure.args	--sysconfdir=${prefix}/etc/${name} \
 configure.cppflags-append	-I${prefix}/include/ossp
 configure.ldflags-append    -headerpad_max_install_names
 
-# building psql with clang from XCode prior to 4.4 causes segfault on query; see #31717
+# building psql with clang from Xcode prior to 4.4 causes segfault on query; see #31717
 compiler.blacklist-append {clang < 421}
 
 if {[variant_isset universal]} {

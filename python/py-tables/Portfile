@@ -6,13 +6,13 @@ PortGroup           mpi 1.0
 
 set realname        tables
 name                py-${realname}
-version             3.4.3
+version             3.5.2
 revision            0
 categories-append   science
 platforms           darwin
 license             BSD
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {mmoll @mamoll} openmaintainer
 
@@ -25,9 +25,9 @@ homepage            https://pytables.github.io/
 master_sites        pypi:t/tables/ \
                     http://sourceforge.net/projects/pytables/files/pytables/${version}
 
-checksums           rmd160  13463f4273584a3d43e9e6641cebf504db30682e \
-                    sha256  b6aafe47154e2140c0a91bb38ebdb6ba67a24dd86263f1c294af8c11cb7deed4 \
-                    size    4624822
+checksums           rmd160  9e5aa9f3b270888c853eb5f30cd6461a362bb1c1 \
+                    sha256  b220e32262bab320aa41d33125a7851ff898be97c0de30b456247508e2cc33c2 \
+                    size    7825372
 
 distname            ${realname}-${version}
 
@@ -78,7 +78,7 @@ if {${name} ne ${subport}} {
     }
 
     post-patch {
-        reinplace "s:utils.h:xxx_utils.h:" {*}[glob ${worksrcpath}/{src,tables}/*.c]
+        reinplace -q "s:utils.h:xxx_utils.h:" {*}[glob ${worksrcpath}/{src,tables}/*.c]
     }
 
     post-destroot    {

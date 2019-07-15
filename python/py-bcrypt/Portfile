@@ -5,13 +5,13 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-bcrypt
-version             3.1.4
+version             3.1.7
 revision            0
 categories-append   devel
 platforms           darwin
 license             Apache-2
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -23,8 +23,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  36fafe531903767edf63c23c416f756eb39c4047 \
-                    sha256  67ed1a374c9155ec0840214ce804616de49c3df9c5bc66740687c1c9b1cd9e8d
+checksums           rmd160  af0842db4fab9714b313a29310be5a56e6e1356d \
+                    sha256  0b0069c752ec14172c5f78208f1863d7ad6755a6fae6fe76ec2c80d13be41e42 \
+                    size    42512
 
 if {${name} ne ${subport}} {
     depends_build-append \

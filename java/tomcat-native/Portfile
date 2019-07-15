@@ -1,9 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
-PortSystem 1.0
+PortSystem          1.0
+PortGroup           java 1.0
 
 name                tomcat-native
-version             1.2.16
+version             1.2.21
 categories          java www
 maintainers         {thebishops.org:matt @mattbishop} openmaintainer
 license             Apache-2
@@ -13,11 +14,12 @@ description         Tomcat 7+ HTTP Server native library support.
 long_description    This port provides access to native apr and other \
                     functions utilized by tomcat.
 
-homepage            http://tomcat.apache.org/
+homepage            https://tomcat.apache.org/
 master_sites        apache:tomcat/tomcat-connectors/native/${version}/source/
 
-checksums           rmd160  65dc8256c78d3fa2e1f3133c5cf650c108c23b8e \
-                    sha256  1e9409584c19d868efd056f7dbafc767a630a5a95ee3cd516de8b7aaa4cd97b6
+checksums           rmd160  01c9c3e44c94adf5038fb4b7698a5c18f474c8cd \
+                    sha256  05bba41671cc91c531c366a9ccd930b38a107a0212c73181961f3cda508d5007 \
+                    size    418909
 
 distname            ${name}-${version}-src
 worksrcdir          ${distname}/native
@@ -25,23 +27,20 @@ worksrcdir          ${distname}/native
 depends_lib         port:apr \
                     path:lib/libssl.dylib:openssl
 
+# java Portgroup settings
+java.version        1.7+
+java.fallback       openjdk8
+
 configure.args      --with-apr=${prefix} \
                     --with-ssl=${prefix}
-
-if {[info exists env(JAVA_HOME)]} {
-    configure.args-append   --with-java-home="$env(JAVA_HOME)"
-} else {
-    configure.args-append   --with-java-home="/System/Library/Frameworks/JavaVM.framework"
-}
 
 build.args          EXTRA_LDFLAGS="-shrext .jnilib"
 
 notes "
-To integrate this into tomcat, add something like
--Djava.library.path=${prefix} to the tomcat options.
+To integrate this into tomcat, add -Djava.library.path=${prefix} to the tomcat options or\
+to CATALINA_OPTS.
 
-You then need to configure a Connector in server.xml
-with the appropriate apr protocol class for your use,
+You then need to configure a Connector in server.xml with the appropriate apr protocol class for your use,\
 for instance:
     protocol=\"org.apache.coyote.http11.Http11AprProtocol\",
     protocol=\"org.apache.coyote.ajp.AjpAprProtocol\"
@@ -51,11 +50,12 @@ As in:
     <Connector port=\"8081\" maxHttpHeaderSize=\"8192\"
                maxThreads=\"150\" minSpareThreads=\"25\" maxSpareThreads=\"75\"
                enableLookups=\"false\" redirectPort=\"8443\" acceptCount=\"100\"
-               connectionTimeout=\"20000\" disableUploadTimeout=\"true\" protocol=\"org.apache.coyote.http11.Http11AprProtocol\" />
+               connectionTimeout=\"20000\" disableUploadTimeout=\"true\"
+               protocol=\"org.apache.coyote.http11.Http11AprProtocol\" />
 
 For further information please see https://tomcat.apache.org/native-doc/index.html
 "
 
 livecheck.type      regex
-livecheck.url       http://archive.apache.org/dist/tomcat/tomcat-connectors/native/
+livecheck.url       https://archive.apache.org/dist/tomcat/tomcat-connectors/native/
 livecheck.regex     {(\d+\.\d+\.\d+)/}

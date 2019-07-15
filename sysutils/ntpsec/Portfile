@@ -5,11 +5,9 @@ PortGroup           waf 1.0
 PortGroup           python 1.0
 
 name                ntpsec
-version             1.1.0
-revision            1
+version             1.1.3
 categories          sysutils net
-maintainers         {lbschenkel @lbschenkel} {fwright.net:fw @fhgwright} \
-                    openmaintainer
+maintainers         {fwright.net:fw @fhgwright} openmaintainer
 description         A secure, hardened, and improved implementation of NTP
 license             Permissive
 platforms           darwin
@@ -20,19 +18,21 @@ homepage            https://www.ntpsec.org/
 conflicts           ntp openntpd
 
 master_sites        ftp://ftp.ntpsec.org/pub/releases/
-checksums           rmd160  65e6f3a2339b98ffa0b0cdf7310dd850cd3082a6 \
-                    sha256  65333385e56fb571d6a9bae8174a74c805c3ea4e79fbe450db98c3825caafddb \
-                    size    2448580
+checksums           rmd160  cdaae8f682cd4cc97a37d86aca1d3196cfea0437 \
+                    sha256  226b4b29d5166ea3d241a24f7bfc2567f289cf6ed826d8aeb9f2f261c1836bde \
+                    size    2462330
 
 depends_build       port:bison
 depends_lib         path:lib/libssl.dylib:openssl port:python${python.version}
 
-patchfiles          patch-PreHighSierra.diff \
-                    patch-OldPython.diff
+patchfiles          patch-PreHighSierra.diff
 
-post-patch {
+post-destroot {
     foreach f {ntpdig ntpkeygen ntploggps ntplogtemp ntpmon ntpq ntpsnmpd ntpsweep ntptrace ntpviz ntpwait} {
-        reinplace "s,^#!/usr/bin/env python,#!${python.bin}," ${worksrcpath}/ntpclients/$f.py
+        # Some programs may not exist, e.g. ntploggps w/o gpsd
+        if {[file exists ${destroot}${prefix}/bin/$f]} {
+            reinplace "s,^#!/usr/bin/env python,#!${python.bin}," ${destroot}${prefix}/bin/$f
+        }
     }
 }
 
@@ -40,7 +40,8 @@ use_configure       yes
 configure.args      --alltests \
                     --define=CONFIG_FILE=${prefix}/etc/ntp.conf \
                     --disable-manpage \
-                    --pythondir=${python.pkgd}
+                    --pythondir=${python.pkgd} \
+                    --pythonarchdir=${python.pkgd}
 destroot.cmd        ${build.cmd}
 
 default_variants    +doc

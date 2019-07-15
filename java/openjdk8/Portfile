@@ -1,0 +1,300 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem       1.0
+
+name             openjdk8
+version          8u212
+revision         1
+
+set build        04
+set major        8
+
+subport openjdk8-openj9 {
+    version      8u212
+    revision     1
+
+    set build    04
+    set major    8
+    set openj9_version 0.14.2
+}
+
+subport openjdk8-openj9-large-heap {
+    version      8u212
+    revision     1
+
+    set build    04
+    set major    8
+    set openj9_version 0.14.2
+}
+
+subport openjdk10 {
+    version      10.0.2
+    revision     2
+    
+    set build    13
+    set major    10
+}
+
+subport openjdk11 {
+    version      11.0.3
+    revision     0
+
+    set build    7
+    set major    11
+}
+
+subport openjdk11-openj9 {
+    version      11.0.3
+    revision     1
+
+    set build    7
+    set major    11
+    set openj9_version 0.14.3
+}
+
+subport openjdk11-openj9-large-heap {
+    version      11.0.3
+    revision     1
+
+    set build    7
+    set major    11
+    set openj9_version 0.14.3
+}
+
+subport openjdk12 {
+    version      12.0.1
+    revision     0
+
+    set build    12
+    set major    12
+}
+
+subport openjdk12-openj9 {
+    version      12.0.1
+    revision     0
+
+    set build    12
+    set major    12
+    set openj9_version 0.14.1
+}
+
+subport openjdk12-openj9-large-heap {
+    version      12.0.1
+    revision     0
+
+    set build    12
+    set major    12
+    set openj9_version 0.14.1
+}
+
+categories       java devel
+maintainers      {breun.nl:nils @breun} openmaintainer
+platforms        darwin
+license          GPL-2
+supported_archs  x86_64
+
+description      Open Java Development Kit ${major} (AdoptOpenJDK) with HotSpot VM
+
+long_description OpenJDK build provided by AdoptOpenJDK, built from a fully \
+                 open-source set of build scripts and infrastructure. \
+                 \
+                 HotSpot is the VM from the OpenJDK community and  the most widely used VM. \
+                 It is suitable for all workloads.
+
+homepage         https://adoptopenjdk.net/
+
+if {${subport} eq "openjdk8"} {
+    livecheck.url    https://api.adoptopenjdk.net/v2/info/releases/${subport}?release=latest&openjdk_impl=hotspot
+    livecheck.regex  {"release_name": "jdk(\d+u\d+)-b\d+"}
+} else {
+    livecheck.url    https://github.com/AdoptOpenJDK/openjdk-jdk${major}u/releases
+    livecheck.regex  (?c)jdk-(\[0-9.\]+)
+}
+
+if {${subport} eq "openjdk8"} {
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk${version}-b${build}/
+    
+    checksums    rmd160  05e4da37f972cc986c6d555740e02d8d7e6fb217 \
+                 sha256  6f16c4c09e66a422db8a420e180f8a10e3009e330822fd03a2586847bc1bee49 \
+                 size    102150841
+
+    distname     OpenJDK${major}U-jdk_x64_mac_hotspot_${version}b${build}
+    worksrcdir   jdk${version}-b${build}
+
+    configure.cxx_stdlib libstdc++
+
+} elseif {${subport} eq "openjdk8-openj9"} {
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk${version}-b${build}_openj9-${openj9_version}/
+
+    checksums    rmd160  75c03713518b6dbee1be1add220a07e6a2058124 \
+                 sha256  7bb6e7b8e2c29efc1fc1de2802d7e4cb002e178d1fb01f9ad1e4110da714aca7 \
+                 size    113300023
+
+    distname     OpenJDK${major}U-jdk_x64_mac_openj9_${version}b${build}_openj9-${openj9_version}
+    worksrcdir   jdk${version}-b${build}
+
+    description  Open Java Development Kit ${major} (AdoptOpenJDK) with Eclipse OpenJ9 VM
+    long_description AdoptOpenJDK provides prebuilt OpenJDK binaries from a fully \
+                 open-source set of build scripts and infrastructure. \
+                 \
+                 OpenJ9 is the virtual machine from the Eclipse community. It is an enterprise-grade \
+                 VM designed for low memory usage and fast start-up and is used in IBM’s JDK. It is \
+                 suitable for running all workloads.
+} elseif {${subport} eq "openjdk8-openj9-large-heap"} {
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk${version}-b${build}_openj9-${openj9_version}/
+
+    checksums    rmd160  a64dea8a6d0cb7d6b51771f6285d7643792a8e08 \
+                 sha256  827a783e10842a053642659cd06bddaf0788a7b37bdfd02e26d5d00ca1c7073f \
+                 size    113293115
+
+    distname     OpenJDK${major}U-jdk_x64_mac_openj9_macosXL_${version}b${build}_openj9-${openj9_version}
+    worksrcdir   jdk${version}-b${build}
+
+    description  Open Java Development Kit ${major} (AdoptOpenJDK) with Eclipse OpenJ9 VM for large heap sizes
+    long_description AdoptOpenJDK provides prebuilt OpenJDK binaries from a fully \
+                 open-source set of build scripts and infrastructure. \
+                 \
+                 OpenJ9 is the virtual machine from the Eclipse community. It is an enterprise-grade \
+                 VM designed for low memory usage and fast start-up and is used in IBM’s JDK. It is \
+                 suitable for running all workloads. \
+                 \
+                 This version uses non-compressed references and should be used for applications which require heaps that are over ~57 GB.
+} elseif {${subport} eq "openjdk10"} {
+    master_sites https://download.java.net/java/GA/jdk${major}/${version}/19aef61b38124481863b1413dce1855f/${build}/
+
+    checksums    rmd160  d29498411adc487bf8191adbc4276c72602022cf \
+                 sha256  77ea7675ee29b85aa7df138014790f91047bfdafbc997cb41a1030a0417356d7 \
+                 size    200916897
+
+    distname     openjdk-${version}_osx-x64_bin
+    worksrcdir   jdk-${version}.jdk
+
+    description  Oracle OpenJDK ${major} with HotSpot VM
+    long_description Production-ready, free and open-source build of the Java \
+                 Development Kit, an implementation of the Java Standard \
+                 Edition (SE) ${major} Platform. OpenJDK is the official reference \
+                 implementation of Java SE. Included components are the \
+                 HotSpot virtual machine, the Java class library and the Java \
+                 compiler.
+
+    homepage     https://jdk.java.net/${major}/
+} elseif {${subport} eq "openjdk11"} {
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}/
+
+    checksums    rmd160  609fb1032c738e1a3d819ca925741dda1632664d \
+                 sha256  5ca2a24f1827bd7c110db99854693bf418f51ee3093c31332db5cd605278faad \
+                 size    189888613
+
+    distname     OpenJDK${major}U-jdk_x64_mac_hotspot_${version}_${build}
+    worksrcdir   jdk-${version}+${build}
+} elseif {${subport} eq "openjdk11-openj9"} {
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}_openj9-${openj9_version}/
+
+    checksums    rmd160  85cd395bff370b5bbd991a577ba8075053100ea4 \
+                 sha256  9217cab0b5dc6301b386ea837d6df38f93adcb5139e5f67a93bb42c3e36df624 \
+                 size    194958783
+
+    distname     OpenJDK${major}U-jdk_x64_mac_openj9_${version}_${build}_openj9-${openj9_version}
+    worksrcdir   jdk-${version}+${build}
+
+    description  Open Java Development Kit ${major} (AdoptOpenJDK) with Eclipse OpenJ9 VM
+    long_description AdoptOpenJDK provides prebuilt OpenJDK binaries from a fully \
+                 open-source set of build scripts and infrastructure. \
+                 \
+                 OpenJ9 is the virtual machine from the Eclipse community. It is an enterprise-grade \
+                 VM designed for low memory usage and fast start-up and is used in IBM’s JDK. It is \
+                 suitable for running all workloads.
+} elseif {${subport} eq "openjdk11-openj9-large-heap"} {
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}_openj9-${openj9_version}/
+
+    checksums    rmd160  160e2d91cb66db602bb1a142adf560726fb46471 \
+                 sha256  f37b06dc585c15af4987a81a79f774a1f6d50ea5e2fc0b4b06cacfd4d23ad124 \
+                 size    194945805
+
+    distname     OpenJDK${major}U-jdk_x64_mac_openj9_macosXL_${version}_${build}_openj9-${openj9_version}
+    worksrcdir   jdk-${version}+${build}
+
+    description  Open Java Development Kit ${major} (AdoptOpenJDK) with Eclipse OpenJ9 VM for large heap sizes
+    long_description AdoptOpenJDK provides prebuilt OpenJDK binaries from a fully \
+                 open-source set of build scripts and infrastructure. \
+                 \
+                 OpenJ9 is the virtual machine from the Eclipse community. It is an enterprise-grade \
+                 VM designed for low memory usage and fast start-up and is used in IBM’s JDK. It is \
+                 suitable for running all workloads. \
+                 \
+                 This version uses non-compressed references and should be used for applications which require heaps that are over ~57 GB.
+} elseif {${subport} eq "openjdk12"} {
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}/
+    distname     OpenJDK${major}U-jdk_x64_mac_hotspot_${version}_${build}
+
+    checksums    rmd160  b17d9deca70b2f6f6fa614314937c9fa4f5438e3 \
+                 sha256  dcb2ab681247298eda018df24166ba01674127083fb02892acf087e6181d8c56 \
+                 size    198112975
+
+    worksrcdir   jdk-${version}+${build}
+} elseif {${subport} eq "openjdk12-openj9"} {
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}_openj9-${openj9_version}/
+    distname     OpenJDK${major}U-jdk_x64_mac_openj9_${version}_${build}_openj9-${openj9_version}
+
+    checksums    rmd160  ea890ecf79a9b246410fc55ee58715b9054cb973 \
+                 sha256  c66064d695ec56e9b7ac62c9b29c9b499d3b72eada18cab81b37e8f9bb15e87a \
+                 size    197161287
+
+    worksrcdir   jdk-${version}+${build}
+
+    description  Open Java Development Kit ${major} (AdoptOpenJDK) with Eclipse OpenJ9 VM
+    long_description AdoptOpenJDK provides prebuilt OpenJDK binaries from a fully \
+                 open-source set of build scripts and infrastructure. \
+                 \
+                 OpenJ9 is the virtual machine from the Eclipse community. It is an enterprise-grade \
+                 VM designed for low memory usage and fast start-up and is used in IBM’s JDK. It is \
+                 suitable for running all workloads.
+} elseif {${subport} eq "openjdk12-openj9-large-heap"} {
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}_openj9-${openj9_version}/
+    distname     OpenJDK${major}U-jdk_x64_mac_openj9_macosXL_${version}_${build}_openj9-${openj9_version}
+
+    checksums    rmd160  cc8307046fd77663796d7d8dde7f5910593e0c90 \
+                 sha256  56b94c90ee0cf46d597a295a4c8f09cc8db8d7d1f35d32008dce3714455ba656 \
+                 size    197158114
+
+    worksrcdir   jdk-${version}+${build}
+
+    description  Open Java Development Kit ${major} (AdoptOpenJDK) with Eclipse OpenJ9 VM for large heap sizes
+    long_description AdoptOpenJDK provides prebuilt OpenJDK binaries from a fully \
+                 open-source set of build scripts and infrastructure. \
+                 \
+                 OpenJ9 is the virtual machine from the Eclipse community. It is an enterprise-grade \
+                 VM designed for low memory usage and fast start-up and is used in IBM’s JDK. It is \
+                 suitable for running all workloads. \
+                 \
+                 This version uses non-compressed references and should be used for applications which require heaps that are over ~57 GB.
+}
+
+use_configure    no
+
+build {}
+
+# macOS Java tools expect to find Java virtual machines under /Library/Java/JavaVirtualMachines, which is not under ${prefix}.
+destroot.violate_mtree yes
+
+set target /Library/Java/JavaVirtualMachines/${subport}
+set destroot_target ${destroot}${target}
+
+destroot {
+    xinstall -m 755 -d ${destroot_target}
+    copy ${worksrcpath}/Contents ${destroot_target}
+}
+
+notes "
+If you have more than one JDK installed you can make JDK ${major} the default
+by adding the following line to your Bash shell profile (~/.bash_profile):
+
+    export JAVA_HOME=${target}/Contents/Home
+"
+
+if {${subport} eq "openjdk10"} {
+    notes-append "
+    Warning: Support for OpenJDK ${major} has reached end of life and there will be no more updates.
+             Please consider migrating to a supported OpenJDK version.
+    "
+}

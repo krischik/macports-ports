@@ -3,9 +3,13 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
+perl5.require_variant   yes
+perl5.conflict_variants yes
+perl5.branches          5.26 5.28
+perl5.create_variants   ${perl5.branches}
+
 name                ack
-perl5.branches      5.26
-perl5.setup         ack 2.22 App
+perl5.setup         ack v3.0.1 ../../authors/id/P/PE/PETDANCE
 categories          devel
 platforms           darwin
 supported_archs     noarch
@@ -16,10 +20,13 @@ long_description    ack is a tool like grep, designed for programmers with large
                     trees of heterogeneous source code.
 homepage            https://beyondgrep.com/
 
-checksums           rmd160  75ec69671ca8de7fd6a10fcfc81649bb41b9c8bb \
-                    sha256  02c441dbbc86bf69c792ae92dc92419a0448c31f69d9703dd1530425c36e0f6c
+checksums           rmd160  0202e5a0399ae5ca9d42a40a743cbcb2f839cf2f \
+                    sha256  fc53df25c895d3218f9f50789b149edf61409d736450e46a510b9e5218adf5fe \
+                    size    240314
 
-depends_lib-append  port:p${perl5.major}-file-next
+depends_lib-append  port:p${perl5.major}-file-next \
+                    port:p${perl5.major}-getopt-long \
+                    port:p${perl5.major}-text-parsewords
 
 perl5.link_binaries_suffix
 

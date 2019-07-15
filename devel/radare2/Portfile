@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        radare radare2 1.2.1
-revision            1
+github.setup        radare radare2 3.6.0
+revision            0
 categories          devel
 platforms           darwin
 license             LGPL-3+
@@ -13,12 +13,15 @@ description         Opensource tools to disasm, debug, analyze and manipulate bi
 long_description    ${name} provides ${description}.
 homepage            http://radare.org
 
+depends_build       port:pkgconfig
+
 depends_lib         port:capstone \
                     port:zlib \
                     port:libzip
 
-checksums           rmd160  32fe3f724f6cc44351beadc9d2aaccd8fd3a7897 \
-                    sha256  bb6d1d8cd365f5cd9548dca9750fd3a9d96301a7a023a65071e0711fdcf3224e
+checksums           rmd160  46c7cf0a040c8e83f3008c53c6adf5434d0848f0 \
+                    sha256  d036f4687dcf234e62abd352f7f6a8b0131b7cf214bea3cd8beaade1e899bd14 \
+                    size    7340461
 
 configure.args-append \
                     --with-syscapstone \

@@ -1,0 +1,43 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           perl5 1.0
+
+perl5.branches      5.26 5.28
+perl5.setup         Git-Raw 0.83
+license             {Artistic-1 GPL}
+maintainers         {devans @dbevans} openmaintainer
+description         Git::Raw - Perl bindings to the Git linkable library (libgit2)
+long_description    ${description}
+
+platforms           darwin
+
+checksums           rmd160  9255eef0c950e94dada9e496d57cc3a77a90146b \
+                    sha256  83f9d02bb7e5d1522799a7635c933c7257152c6744dadcdb25f9b4d53de6cb81 \
+                    size    1397584
+
+if {${perl5.major} != ""} {
+    depends_build-append \
+                    port:p${perl5.major}-capture-tiny \
+                    port:p${perl5.major}-devel-checklib \
+                    port:p${perl5.major}-file-slurp-tiny \
+                    port:p${perl5.major}-getopt-long \
+                    port:p${perl5.major}-test-deep
+ 
+# dependency on libgit2 not required
+# uses embedded copy of libgit2 source (currently version 0.28 commit 040db8ad749 20190520)
+
+    depends_lib-append \
+                    port:curl \
+                    path:lib/libssl.dylib:openssl \
+                    port:libssh2 \
+                    port:p${perl5.major}-xsloader
+
+    post-patch {
+        # fixup install prefix if building in a non-standard location
+        # does nothing in the case of the default (/opt/local)
+        if {${prefix} ne "/opt/local"} {
+            reinplace "s|/opt/local|${prefix}|" ${worksrcpath}/inc/MakeMaker.pm
+        }
+    }
+}

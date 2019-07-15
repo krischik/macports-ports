@@ -4,8 +4,7 @@ PortSystem 1.0
 PortGroup github 1.0
 PortGroup cmake 1.0
 
-github.setup            neovim neovim 0.2.2 v
-revision                1
+github.setup            neovim neovim 0.3.7 v
 categories              editors
 platforms               darwin
 maintainers             {raimue @raimue} \
@@ -20,11 +19,12 @@ long_description \
 
 homepage                https://neovim.io
 
-checksums               rmd160  2fc734ffef7db15fe06f6ff06fc4f3bd9d720916 \
-                        sha256  80c6c2b7c624d1b56c88bb2cb46b33b244f8991e7221c5ce265c2fe884e9213d \
-                        size    8327883
+checksums               rmd160  ab61921d60aacd4e5c156722502e022691d5ae95 \
+                        sha256  e02ba9b71baed961745a8ffc88035dcb5a04a8a329b96c029ab4d9f612e95eb9 \
+                        size    9232822
 
-patchfiles              patch-mouse-ncurses.diff
+# https://github.com/neovim/neovim/issues/9687
+patchfiles              patch-issue9687.diff
 
 depends_build-append    port:pkgconfig
 
@@ -51,5 +51,5 @@ notes {
     If you want to share your existing Vim configuration with Neovim, you can add these symlinks:
         ln -s ~/.vim ~/.config/nvim
         ln -s ~/.vimrc ~/.config/nvim/init.vim
-    For possible incompatible changes and differences to Vim check ':help nvim-intro' in nvim. 
+    For possible incompatible changes and differences to Vim check ':help nvim-intro' in nvim.
 }

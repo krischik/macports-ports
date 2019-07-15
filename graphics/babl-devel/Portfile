@@ -6,9 +6,9 @@ PortGroup           compiler_blacklist_versions 1.0
 name                babl-devel
 conflicts           babl
 set git_name        babl
-set git_commit      6b214ca537547a79c62a1bf3cdd87cfe6d97a187
-set git_date        20180520
-version             0.1.51-${git_date}
+set git_commit      788564e25e0629858216363b642e918a6f61c136
+set git_date        20190624
+version             0.1.67-${git_date}
 license             LGPL-3+
 categories          graphics
 maintainers         {devans @dbevans}
@@ -21,17 +21,22 @@ description         Babl is a library for dynamically handling pixel formats and
 long_description    ${description}
 
 homepage            http://gegl.org/babl
-master_sites        https://git.gnome.org/browse/${git_name}/snapshot/
+master_sites        https://gitlab.gnome.org/GNOME/${git_name}/-/archive/${git_commit}/
 
 distname            ${git_name}-${git_commit}
 
-checksums           rmd160  e61a6f7ac923254db714957243f12cbae3be9925 \
-                    sha256  f64cde033f05166e52d6655d0124d41c44b776275fa75b8e29ad35fdcb3dd196 \
-                    size    353584
+use_bzip2           yes
+
+checksums           rmd160  0117703fe99badc3b6b9c938b73dbc885539a398 \
+                    sha256  3a1e6cdc45002b5db3029ea4c58d2613cb08c706ee7718712cfca0d725873608 \
+                    size    322406
 
 depends_build       port:automake \
                     port:autoconf \
-                    port:libtool
+                    port:libtool \
+                    port:pkgconfig
+
+depends_lib         port:lcms2
 
 # In 0.1.12, i386 fails to compile with SL's gcc-4.2:
 #    babl-cpuaccel.c:169: error: ‘asm’ operand has impossible constraints
@@ -48,10 +53,18 @@ configure.args      --disable-silent-rules \
  
 # CC_FOR_BUILD is used by config.guess to determine processor type
 if {![variant_isset universal]} {
+    if {[vercmp [macports_version] 2.5.99] >= 0} {
+    configure.env-append "CC_FOR_BUILD=${configure.cc} ${configure.cc_archflags}"
+    } else {
     configure.env-append CC_FOR_BUILD="${configure.cc} ${configure.cc_archflags}"
+    }
 } else {
     foreach arch ${configure.universal_archs} {
+        if {[vercmp [macports_version] 2.5.99] >= 0} {
+        lappend merger_configure_env(${arch})  "CC_FOR_BUILD=${configure.cc} -arch ${arch}"
+        } else {
         lappend merger_configure_env(${arch})  CC_FOR_BUILD='${configure.cc} -arch ${arch}'
+        }
     }
 }
 

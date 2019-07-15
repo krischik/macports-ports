@@ -3,8 +3,11 @@
 PortSystem                  1.0
 PortGroup                   github 1.0
 
-github.setup                PromyLOPh pianobar 2017.08.30
-revision                    2
+github.setup                PromyLOPh pianobar 2019.02.14
+checksums                   rmd160  8671455ed0bcb5368b76fdc8ee78de902e511fbf \
+                            sha256  feecd7d141a1826e3d39883d70d620bc34def4f550d546d2f9ec523898513443 \
+                            size    56538
+
 categories                  audio
 platforms                   darwin
 maintainers                 {ryandesign @ryandesign} openmaintainer
@@ -19,9 +22,6 @@ long_description            pianobar is a console client for the \
                             see why they were selected, show upcoming \
                             configure keybindings, last.fm scrobbling, \
                             proxy support for listening outside of USA.
-
-checksums                   rmd160  063b78864e03b098958ec174b06ede5852c978ab \
-                            sha256  fe12e5acd245b6bf83c0721d01d72fa4a450ec54fa6ccfc1542bd0f908ad6534
 
 depends_build               port:pkgconfig
 
@@ -50,10 +50,14 @@ build.args                  CC="${configure.cc} [get_canonical_archflags cc]" \
 destroot.args               PREFIX=${prefix}
 
 if {${subport} eq ${name}} {
+    revision                0
     depends_lib-append      port:libpiano
+} else {
+    livecheck.type          none
 }
 
 subport libpiano {
+    revision                0
     depends_lib-append      port:gnutls
     build.target            libpiano.so.0
     destroot.target         install-libpiano
@@ -63,6 +67,5 @@ subport libpiano {
 }
 
 platform darwin {
-    patchfiles-append       patch-Makefile.diff \
-                            patch-ffmpeg-4.0.diff
+    patchfiles-append       patch-Makefile.diff
 }

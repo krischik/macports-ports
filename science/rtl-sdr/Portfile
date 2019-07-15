@@ -7,11 +7,12 @@ PortGroup           github 1.0
 name                rtl-sdr
 maintainers         {michaelld @michaelld} openmaintainer
 
-github.setup        osmocom rtl-sdr 8a26abaf796300147b17fb6c0cc61344173d0169
-version             20180603
-checksums           rmd160 7f0383148787e83bcfca1d0e4278a3a2bd040c85 \
-                    sha256 28a688cd5dfe003f54adfc0a8625521bca4aa19010a58942d3b37e89b13261cd \
-                    size   134322
+github.setup        osmocom rtl-sdr f68bb2fa772ad94f58c59babd78353667570630b
+version             20181006
+checksums           rmd160 c56e1b57707df2927328a2fabb744c0d66bd9c1d \
+                    sha256 8f5dbee138769961f502009a0b256dcfd8fd09c5fec187e130db4041ffd0114b \
+                    size   134508
+revision            0
 
 categories          science comms
 platforms           darwin

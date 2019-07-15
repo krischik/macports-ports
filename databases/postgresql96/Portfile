@@ -7,7 +7,8 @@ PortGroup muniversal 1.0
 
 #remember to update the -doc and -server as well
 name                postgresql96
-version             9.6.9
+version             9.6.14
+revision            0
 
 categories          databases
 platforms           darwin
@@ -25,9 +26,9 @@ master_sites        http://ftp3.de.postgresql.org/pub/Mirrors/ftp.postgresql.org
             postgresql:source/v${version}/
 distname            postgresql-${version}
 
-checksums           rmd160  1ebf7b4f444abd5e843404f30726a4e2a812d9cd \
-                    sha256  b97952e3af02dc1e446f9c4188ff53021cc0eed7ed96f254ae6daf968c443e2e \
-                    size    19566222
+checksums           rmd160  541d2fb47049910990b8bab0376506551dd092ef \
+                    sha256  3f08c265c9ae814f727461408ab24fdf3d954c4f7ae42d9c97b3c7e03fc31a22 \
+                    size    18787744
 
 use_bzip2           yes
 
@@ -41,7 +42,8 @@ depends_run         port:postgresql_select
 worksrcdir          postgresql-${version}
 
 set libdir          ${prefix}/lib/${name}
-configure.args      --sysconfdir=${prefix}/etc/${name} \
+configure.args      PG_SYSROOT=disabled \
+                    --sysconfdir=${prefix}/etc/${name} \
                     --bindir=${libdir}/bin \
                     --libdir=${libdir} \
                     --includedir=${prefix}/include/${name} \
@@ -63,7 +65,7 @@ configure.args      --sysconfdir=${prefix}/etc/${name} \
 configure.ldflags-append    -headerpad_max_install_names
 configure.universal_args-delete --disable-dependency-tracking
 
-# building psql with clang from XCode prior to 4.4 causes segfault on query; see #31717
+# building psql with clang from Xcode prior to 4.4 causes segfault on query; see #31717
 compiler.blacklist-append   {clang < 421}
 notes "To use the postgresql server, install the ${name}-server port"
 
@@ -125,9 +127,9 @@ variant python27 conflicts python3 description {add support for python 2.7} {
 }
 
 variant python3 conflicts python27 description {add support for python 3.x} {
-    depends_lib-append      port:python36
+    depends_lib-append      port:python37
     configure.args-append   --with-python
-    configure.python        ${prefix}/bin/python3.6
+    configure.python        ${prefix}/bin/python3.7
 }
 
 variant perl description {add Perl support} {

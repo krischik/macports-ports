@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-path
-version             11.0.1
+version             12.0.1
 revision            0
 categories-append   devel
 platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -23,8 +23,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}.
 
 distname            ${python.rootname}.py-${version}
 
-checksums           rmd160  c9af8a4c876a8fb4d47b8669ba3b7fef0128fadf \
-                    sha256  e7eb9d0ca4110d9b4d7c9baa0696d8c94f837d622409cefc5ec9e7c3d02ea11f
+checksums           rmd160  6043b7f77716e81ddf563815cf42dcd5b4e4bc7c \
+                    sha256  9f2169633403aa0423f6ec000e8701dd1819526c62465f5043952f92527fea0f \
+                    size    42742
 
 if {${name} ne ${subport}} {
     depends_build-append \

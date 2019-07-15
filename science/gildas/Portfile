@@ -5,12 +5,12 @@ PortGroup           compilers 1.0
 PortGroup           active_variants 1.1 
 
 name                gildas
-version             201806a
+version             201907a
 set my_version      [string tolower [clock format [clock scan 2000-[string range ${version} 4 5]-10] -format %b]][string range ${version} 2 3][string range ${version} 6 end]
 categories          science
 platforms           darwin
 maintainers         {smaret @smaret} \
-                    {@bardeau iram.fr:bardeau}
+                    {bardeau @bardeau}
 license             permissive
 
 description         Radioastronomy data analysis software
@@ -29,10 +29,11 @@ homepage            http://www.iram.fr/IRAMFR/GILDAS/gildas.html
 master_sites        http://www.iram.fr/~gildas/dist/ \
                     http://www.iram.fr/~gildas/dist/archive/gildas/
 distname            ${name}-src-${my_version}
+use_xz              yes
 
-checksums           rmd160  87336e2694cd24be117868f48d7cb5a377249bb5 \
-                    sha256  6b4b62c99c1a98d97bc4df488e01aebc46a4d7329c7196ca090b5e97cc039d4c \
-                    size    31258141
+checksums           rmd160  eca8831245c8873e80f34086731474b0394f57ef \
+                    sha256  97eaa0d0a0f53f0616462642a9bfaddb0305a8a0948e60531d8a524a13a370b6 \
+                    size    138680948
 
 patch.pre_args      -p1
 patchfiles          patch-admin-Makefile.def.diff \
@@ -88,7 +89,7 @@ configure {
 }
 
 build {
-    system -W ${worksrcpath} "source admin/gildas-env.sh -c ${configure.fc} ${my_build_opts} -s ${prefix}/include:${prefix}/lib:/System/Library/Frameworks/Accelerate.framework/Frameworks/vecLib.framework/Versions/Current/ && export GAG_SLDFLAGS='-shared -o ${prefix}/lib/gildas/x86_64-darwin-gfortran/lib/\$(notdir \$@) -install_name ${prefix}/lib/gildas/x86_64-darwin-gfortran/lib/\$(notdir \$@)' && export DYLD_LIBRARY_PATH=${worksrcpath}/integ/x86_64-darwin-gfortran/lib && export GAG_ADDONS=yes && make -w depend && make -w install"
+    system -W ${worksrcpath} "source admin/gildas-env.sh -c ${configure.fc} ${my_build_opts} -s ${prefix}/include:${prefix}/lib:/System/Library/Frameworks/Accelerate.framework/Frameworks/vecLib.framework/Versions/Current/ && export GAG_SLDFLAGS='-shared -o ${prefix}/lib/gildas/x86_64-darwin-gfortran/lib/\$(notdir \$@) -install_name ${prefix}/lib/gildas/x86_64-darwin-gfortran/lib/\$(notdir \$@)' && export DYLD_LIBRARY_PATH=${worksrcpath}/integ/x86_64-darwin-gfortran/lib && export GAG_ADDONS=yes && make -w install"
 }
 
 destroot {
@@ -103,8 +104,9 @@ destroot {
     xinstall ${filespath}/mrtcal.in ${destroot}${prefix}/bin/mrtcal
     xinstall ${filespath}/sic.in ${destroot}${prefix}/bin/sic
     xinstall ${filespath}/sched-30m.in ${destroot}${prefix}/bin/sched-30m
+    xinstall ${filespath}/imager.in ${destroot}${prefix}/bin/imager
 
-    reinplace -W ${destroot}${prefix}/bin s|@PREFIX@|${prefix}|g astro class clic greg mapping mira mrtcal sic sched-30m
+    reinplace -W ${destroot}${prefix}/bin s|@PREFIX@|${prefix}|g astro class clic greg mapping mira mrtcal sic sched-30m imager
 
     # delete broken module
     delete ${destroot}${prefix}/lib/gildas/x86_64-darwin-gfortran/python/pyclassfiller

@@ -36,13 +36,48 @@ subport emacs-app-devel {
 
 depends_build-append port:autoconf port:automake port:libtool
 
-if {$subport eq $name || $subport eq "emacs-app"} {
-    version         26.1
-    revision        1
+configure.args  --without-ns \
+                --without-x \
+                --without-dbus \
+                --without-gconf \
+                --without-libotf \
+                --without-m17n-flt \
+                --without-gpm \
+                --with-gnutls \
+                --with-xml2 \
+                --with-modules \
+                --infodir ${prefix}/share/info/${name}
 
-    checksums       rmd160  f13fe104345738c853bcce2e3e061dbfb8692bc5 \
-                    sha256  760382d5e8cdc5d0d079e8f754bce1136fbe1473be24bb885669b0e38fc56aa3 \
-                    size    65007481
+depends_build-append   port:pkgconfig \
+                       port:texinfo
+depends_lib-append     port:ncurses \
+                       port:libxml2 \
+                       port:gnutls
+
+post-destroot {
+    xinstall -d ${destroot}${prefix}/share/emacs/${version}/leim
+    delete ${destroot}${prefix}/bin/ctags
+    delete ${destroot}${prefix}/share/man/man1/ctags.1.gz
+}
+
+platform darwin {
+    post-patch {
+        # Leopard's Xcode 3.1.x ld(1) man page claims -no_pie is supported, but it's not
+        if {${os.major} < 9} {
+            reinplace "s:-fno-pie::" ${worksrcpath}/configure
+        } elseif {${os.major} > 10} {
+            configure.ldflags-append -Wl,-no_pie
+        }
+    }
+}
+
+if {$subport eq $name || $subport eq "emacs-app"} {
+    version         26.2
+    revision        0
+
+    checksums       rmd160  3d9f5d7772e23425bcba7a6edb3183ce58bbb737 \
+                    sha256  4f99e52a38a737556932cc57479e85c305a37a8038aaceb5156625caf102b4eb \
+                    size    65202886
 
     patchfiles      patch-configure.diff
 
@@ -53,55 +88,24 @@ if {$subport eq $name || $subport eq "emacs-app"} {
 
 if {$subport eq "emacs-devel" || $subport eq "emacs-app-devel"} {
     epoch           1
-    version         20180606
-    
+    version         20190413
+
     fetch.type      git
     git.url         http://git.savannah.gnu.org/r/emacs.git
-    git.branch      4a51deb993d923767f0eddd4f350e636fe8d7c0b
+    git.branch      f9694a713824d402bcba01064ac2f95156bf4161
 
     pre-configure {
         system -W ${worksrcpath} "sh ./autogen.sh"
     }
 
+    configure.args-append  --with-json
+    depends_lib-append     port:jansson
+
     livecheck.type none
 } else {
     livecheck.type  regex
-    livecheck.url   http://ftp.gnu.org/gnu/emacs/?C=M&O=D
+    livecheck.url   https://ftp.gnu.org/gnu/emacs/?C=M&O=D
     livecheck.regex ${name}-(\\d+\\.\\d+\\w*)\\.tar
-}
-
-configure.args  --without-ns \
-                --without-x \
-                --without-dbus \
-                --without-gconf \
-                --without-libotf \
-                --without-m17n-flt \
-                --without-gpm \
-                --without-gnutls \
-                --with-xml2 \
-                --with-modules \
-                --infodir ${prefix}/share/info/${name}
-
-depends_build-append   port:pkgconfig \
-                       port:texinfo
-depends_lib-append     port:ncurses \
-                       port:libxml2
-
-post-destroot {
-    xinstall -d ${destroot}${prefix}/share/emacs/${version}/leim
-    delete ${destroot}${prefix}/bin/ctags
-    delete ${destroot}${prefix}/share/man/man1/ctags.1.gz
-}
-
-platform darwin {
-    post-patch {
-        # Leopard's XCode 3.1.x ld(1) man page claims -no_pie is supported, but it's not
-        if {${os.major} < 9} {
-            reinplace "s:-fno-pie::" ${worksrcpath}/configure
-        } elseif {${os.major} > 10} {
-            configure.ldflags-append -Wl,-no_pie
-        }
-    }
 }
 
 if {$subport eq $name || $subport eq "emacs-devel"} {
@@ -117,6 +121,7 @@ if {$subport eq $name || $subport eq "emacs-devel"} {
             --with-tiff \
             --with-gif \
             --with-png \
+            --with-lcms2 \
             --without-rsvg \
             --with-xft
         depends_lib-append      port:xorg-libXmu \
@@ -126,6 +131,7 @@ if {$subport eq $name || $subport eq "emacs-devel"} {
             port:tiff \
             port:giflib \
             port:libpng \
+            port:lcms2 \
             port:Xft2
 
         # autoconf appears to be dropping linker flags for freetype &
@@ -179,8 +185,10 @@ if {$subport eq $name || $subport eq "emacs-devel"} {
 if {$subport eq "emacs-app" || $subport eq "emacs-app-devel"} {
     categories-append   aqua
 
-    configure.args-append --with-ns
-    configure.args-delete --without-ns --without-x
+    configure.args-append  --with-ns     --with-lcms2
+    configure.args-delete  --without-ns  --without-x
+
+    depends_lib-append     port:lcms2
 
     universal_variant   no
 
@@ -198,7 +206,7 @@ if {$subport eq "emacs-app" || $subport eq "emacs-app-devel"} {
     }
 
     if {$subport eq "emacs-app"} {
-        revision 2
+        revision 3
     }
 
     variant multicolor_font description {Apply multicolor font patch} {
@@ -210,5 +218,10 @@ if {$subport eq "emacs-app" || $subport eq "emacs-app-devel"} {
     variant imagemagick description {Use ImageMagick} {
         depends_lib-append  port:ImageMagick
         configure.args-append --with-imagemagick
+    }
+
+    variant rsvg description {Use librsvg} {
+        depends_lib-append     port:librsvg
+        configure.args-append  --with-rsvg
     }
 }

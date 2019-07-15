@@ -1,0 +1,25 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        jbruchon jdupes 1.13.1 v
+revision            0
+checksums           rmd160  f093791c7e57639e291c4ffb35dcf6fc4a2c96c2 \
+                    sha256  a9cfcb3cda7107732c4517ccf11b69824069353f51140a350ba5bdc6da5fd08c \
+                    size    94261
+
+platforms           darwin
+categories          sysutils
+license             MIT
+maintainers         {isi.edu:calvin @cardi} openmaintainer
+description         identify and take actions upon duplicate files
+long_description    ${name} is a powerful duplicate file finder and an \
+                    enhanced fork of 'fdupes'.
+
+use_configure       no
+
+build.args          PREFIX=${prefix} \
+                    CC="${configure.cc} [get_canonical_archflags cc]"
+
+destroot.args       PREFIX=${prefix}

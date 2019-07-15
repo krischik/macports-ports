@@ -3,9 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         Astro-satpass 0.096 ../../authors/id/W/WY/WYANT
-revision            1
+perl5.branches      5.26 5.28
+perl5.setup         Astro-satpass 0.106 ../../authors/id/W/WY/WYANT
 maintainers         nomaintainer
 platforms           darwin
 license             {Artistic-1 GPL}
@@ -18,9 +17,9 @@ long_description    This package contains classes needed to predict \
 
 homepage            https://metacpan.org/release/${perl5.module}
 
-checksums           rmd160  117402312de33fd72220a1d25a286f3dc6cf4e8e \
-                    sha256  e8efc059668a13831745773dc219a40d1fe8e2bdb08553182f4bdfb6ab8c59d7 \
-                    size    551331
+checksums           rmd160  d3431a4ec242f1315463d15d861ed5ca66519aed \
+                    sha256  febc129921f6136d268da3db876854741327985410f3b1ea12fcbe2344787f67 \
+                    size    518263
 
 variant script description {Install the deprecated satpass script and optional dependencies} {}
 
@@ -42,5 +41,6 @@ if {${perl5.major} != ""} {
                     port:p${perl5.major}-geo-webservice-elevation-usgs
     }
 
+    perl5.use_module_build
     supported_archs noarch
 }

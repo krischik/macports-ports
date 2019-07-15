@@ -4,12 +4,11 @@ PortSystem 1.0
 PortGroup select 1.0
 
 name            maven3
-version         3.5.3
-revision        1
+version         3.6.1
 
 categories      java devel
 license         Apache-2
-maintainers     {blair @blair} openmaintainer
+maintainers     nomaintainer
 platforms       darwin
 supported_archs noarch
 
@@ -34,9 +33,9 @@ master_sites    apache:maven/maven-3/${version}/binaries
 distname        apache-maven-${version}-bin
 worksrcdir      apache-maven-${version}
 
-checksums       rmd160 4d6124a0dc34ea2c0692103dc7113c681ede8a25 \
-                sha256 b52956373fab1dd4277926507ab189fb797b3bc51a2a267a193c931fffad8408 \
-                size   8799579
+checksums       rmd160 22eb28a53e5cfe44ed8fd08ff5cc92ee8bdaadde \
+                sha256 2528c35a99c30f8940cc599ba15d34359d58bec57af58c1075519b8cd33b69e7 \
+                size   9136463
 
 depends_run     port:maven_select \
                 bin:java:kaffe

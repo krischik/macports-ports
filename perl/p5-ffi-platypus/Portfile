@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         FFI-Platypus 0.48
+perl5.branches      5.26 5.28
+perl5.setup         FFI-Platypus 0.90 ../../authors/id/P/PL/PLICEASE
 license             {Artistic-1 GPL}
 maintainers         {devans @dbevans} openmaintainer
 description         FFI::Platypus - Write Perl bindings to non-Perl libraries with FFI. No XS required.
@@ -12,18 +12,17 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  3668fe8b0f9cf06159a871bab7e436f43cc6ab06 \
-                    sha256  2cbf2c238137eb610d0b082056ad2769b70d9aec137fdb04f1939501a110d5b3 \
-                    size    202562
+checksums           rmd160  6842bfaa33e76ccc334b19474a2db7dcaad14c68 \
+                    sha256  bf16eb2bf171f83876f8a0090ed485a249784be92acfd8e769d903789e5334e8 \
+                    size    259350
 
 if {${perl5.major} != ""} {
     depends_build-append \
-                    port:p${perl5.major}-config-autoconf
+                    port:pkgconfig
 
     depends_lib-append \
-                    port:p${perl5.major}-alien-ffi \
+                    port:libffi \
+                    port:p${perl5.major}-capture-tiny \
                     port:p${perl5.major}-ffi-checklib \
-                    port:p${perl5.major}-file-sharedir
-
-    perl5.use_module_build
+                    port:p${perl5.major}-math-int64
 }

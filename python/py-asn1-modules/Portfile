@@ -4,17 +4,18 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-asn1-modules
-version             0.0.7
+version             0.2.5
+revision            0
 categories-append   devel crypto
 license             BSD
-maintainers         {eds.org:hans @eighthave}
+maintainers         {eds.org:hans @eighthave} openmaintainer
 
 description         A collection of ASN.1-based protocols modules.
 
 long_description    This is a small but growing collection of ASN.1 \
                     data structures expressed in Python terms using pyasn1 data model.
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 platforms           darwin
 supported_archs     noarch
@@ -23,19 +24,33 @@ homepage            https://pypi.python.org/pypi/pyasn1-modules
 master_sites        pypi:p/pyasn1-modules/
 distname            pyasn1-modules-${version}
 
-checksums           md5     9e92623a86709a77d43d406612ad7389 \
-                    rmd160  4d9f6e67020b5be843ffb611195e7249bb171e6b \
-                    sha256  794dbcef4b7124b8271f12eb7eea0d37b466012f11ce023f91e2e2082df11c7e
+checksums           rmd160  40894b951c253668e633350921062c98acd56b40 \
+                    sha256  ef721f68f7951fab9b0404d42590f479e30d9005daccb1699b0a51bb4177db96 \
+                    size    78918
+
+# fix tests; patch taken from upstream, remove with next update
+patchfiles-append   patch-main.py.diff
 
 if {${name} ne ${subport}} {
+    depends_build-append port:py${python.version}-setuptools
+    depends_lib-append   port:py${python.version}-asn1
+
     post-destroot {
         xinstall -m 755 -d ${destroot}${prefix}/share/doc/${subport}
-        xinstall -m 644 -W ${worksrcpath} CHANGES.txt LICENSE.txt README.txt \
+        xinstall -m 644 -W ${worksrcpath} CHANGES.txt LICENSE.txt README.md \
             ${destroot}${prefix}/share/doc/${subport}
     }
+
+    if {${python.version} in "27 34"} {
+        depends_test-append \
+                    port:py${python.version}-unittest2
+    }
+    test.run        yes
+    test.cmd        ${python.bin} tests/__main__.py
+    test.target
+    test.env        PYTHONPATH=${worksrcpath}:${worksrcpath}/build/lib
+
     livecheck.type  none
 } else {
-    livecheck.type  regex
-    livecheck.url   https://pypi.python.org/pypi/pyasn1-modules/
-    livecheck.regex pyasn1-modules/(\\d+(\\.\\d+)+)
+    livecheck.name  pyasn1-modules
 }

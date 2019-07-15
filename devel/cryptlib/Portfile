@@ -12,7 +12,12 @@ PortGroup           conflicts_build 1.0
 PortGroup           muniversal 1.0
 
 name                cryptlib
-version             3.4.4
+version             3.4.5
+revision            0
+checksums           rmd160  b2b54b8c67bc35799290e25ed61b61ba9bd29415 \
+                    sha256  2a98aeb09190301ba782ba2f79837332ae277ac93851d3066e63fecf6abe6f2a \
+                    size    6139150
+
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          devel security crypto
 platforms           darwin
@@ -33,12 +38,15 @@ long_description    cryptlib is a powerful security toolkit that allows even \
 homepage            https://www.cs.auckland.ac.nz/~pgut001/cryptlib/
 master_sites        ftp://ftp.franken.de/pub/crypt/cryptlib/ \
                     http://www.cypherpunks.to/~peter/
-distname            cl[join [split $version .] ""]
+distname            cl[join [split ${version} .] ""]
 use_zip             yes
 
-checksums           rmd160  0c51232bba6eac582b16991f6d01518dc8cbf49f \
-                    sha256  aa461b57c703f987a649a3987feb10d088d440f42b3160ef36104058909fec3d \
-                    size    5975092
+# 3.4.5 was stealth-updated in June 2019 but it does not build, so ignore it.
+# I reported this to the cryptlib mailing list today, but I can't find a
+# working mailing list archive so I can't provide a URL.
+if {${version} eq "3.4.5"} {
+    master_sites    macports_distfiles
+}
 
 depends_lib         port:zlib
 
@@ -64,13 +72,19 @@ build.args          CC="${configure.cc}" \
 configure.cppflags-replace -I${prefix}/include -isystem${prefix}/include
 
 foreach arch ${universal_archs} {
+    if {[vercmp [macports_version] 2.5.99] >= 0} {
+    lappend merger_build_env(${arch}) \
+                    "CFLAGS=${configure.cflags} ${configure.cppflags} -arch ${arch}" \
+                    "LDFLAGS=${configure.ldflags} -arch ${arch}"
+    } else {
     lappend merger_build_env(${arch}) \
                     CFLAGS="${configure.cflags} ${configure.cppflags} -arch ${arch}" \
                     LDFLAGS="${configure.ldflags} -arch ${arch}"
+    }
 }
 
 if {![variant_isset universal] && [info exists merger_build_env(${configure.build_arch})]} {
-    build.env-append $merger_build_env(${configure.build_arch})
+    build.env-append {*}$merger_build_env(${configure.build_arch})
 }
 
 destroot.args       PREFIX="${prefix}"
@@ -78,7 +92,7 @@ destroot.args       PREFIX="${prefix}"
 post-destroot {
     set docdir ${prefix}/share/doc/${subport}
     xinstall -d ${destroot}${docdir}
-    xinstall -m 644 -W ${worksrcpath} \
+    xinstall -m 0644 -W ${worksrcpath} \
         COPYING \
         README \
         ${destroot}${docdir}
@@ -86,4 +100,4 @@ post-destroot {
 
 livecheck.type      regex
 livecheck.url       ${homepage}download.html
-livecheck.regex     ${name} (\[0-9.\]+)
+livecheck.regex     cl\\d+\\.zip">${name} (\[0-9.\]+)

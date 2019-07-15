@@ -1,0 +1,27 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           cmake   1.1
+PortGroup           cxx11   1.1
+PortGroup           github  1.0
+
+github.setup        LASzip LASzip 3.2.9
+name                laszip
+categories          gis
+maintainers         {vince @Veence}
+description         LASzip is a library to handle compressed point cloud data
+long_description    $description
+
+platforms           darwin
+license             GPL-2+
+
+homepage            https://www.laszip.org
+github.tarball_from releases
+distname            laszip-src-${version}
+use_bzip2           yes
+
+checksums           rmd160  9ae0ece90961120ec3af19c3ee2e0055267607e5 \
+                    sha256  d0d54b9cfd7a6c8f63ab23c51cf3fb2389ec696b26cdfe8d07c86b5e2f8c2adb \
+                    size    155446
+
+patchfiles          install_name.patch

@@ -4,12 +4,13 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           muniversal 1.0
 
-github.setup        ivmai bdwgc 7.6.6 v
-checksums           rmd160  c31d48c92eefb65e119b222ef0646b2b59b77c0a \
-                    sha256  8e3ecdb991a0960e2a456a936485c2aeec584706cccad48ef232bdf1499e0f4e
+github.setup        ivmai bdwgc 8.0.4 v
+revision            1
+checksums           rmd160  d0499384c904d234b8f8d95d0d7c51e5445ff41e \
+                    sha256  cee2ec847416809934ea30eb674134aa4b8afe4213de00ef3ff3f920bbfb3f3a \
+                    size    803379
 
 name                boehmgc
-conflicts           boehmgc-devel
 
 categories          devel
 platforms           darwin
@@ -35,7 +36,8 @@ depends_build-append \
                 port:pkgconfig \
                 port:libatomic_ops
 
-configure.args  --enable-cplusplus
+configure.args  --enable-cplusplus \
+                --enable-static
 configure.cppflags-append \
                 -D_XOPEN_SOURCE=600 -D_DARWIN_C_SOURCE
 

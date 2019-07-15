@@ -2,6 +2,7 @@
 
 PortSystem          1.0
 PortGroup           github 1.0
+PortGroup           legacysupport 1.0
 
 name                osmocore
 maintainers         {michaelld @michaelld} openmaintainer
@@ -12,11 +13,49 @@ categories          science comms
 license             GPL-3
 platforms           darwin macosx
 
-github.setup        osmocom libosmocore 6a6a609309bee71e0ed0cba4753f06ae36038a44
-version             20180616
-checksums           rmd160 f1634b146c64b10e6b9cc2fdf32f8d7ef47210b1\
-                    sha256 c958f458d03c99f26fa18bef73e2df67f07adcd72f253fc80be4826f556bcc72\
-                    size   1043371
+# bump the epoch to switch the main port from a "devel" type to a release
+epoch               1
+
+subport osmocore-devel {}
+
+if {${subport} eq ${name}} {
+
+    # release
+    github.setup osmocom libosmocore 1.1.0
+    checksums    rmd160 ff487c8ce4cad67ff07486d59acc4460909d6770 \
+                 sha256 8ecd54cdca7b295cbfcd36311e5ff84ecf4e6b9ceba42fd57da0a82d94c76d7e \
+                 size   1210974
+    revision     0
+
+    # fix 'timer_clockgettime.c' to work with OSs that don't provide
+    # the function 'clock_gettime' and/or its various options.
+
+    patchfiles-append patch-fix_clock_gettime.release.diff
+
+    # fix use of Python2, part 1
+
+    patchfiles-append patch-fix-python.release.diff
+
+} else {
+
+    # devel
+    github.setup osmocom libosmocore e1e1ec31a3c5085c2774c4b04b5fafd602ae0d30
+    version   20190621-[string range ${github.version} 0 7]
+    checksums rmd160 b9b8fdc87b34cc5d9c36df6b60aa4a42f6d33393 \
+              sha256 169611c63f646e7436c98e542409b23ee4a81ae946c49dd3231aea4cbdaa0f6a \
+              size   1219380
+    revision  0
+
+    # fix 'timer_clockgettime.c' to work with OSs that don't provide
+    # the function 'clock_gettime' and/or its various options.
+
+    patchfiles-append patch-fix_clock_gettime.devel.diff
+
+    # fix use of Python2, part 1
+
+    patchfiles-append patch-fix-python.devel.diff
+
+}
 
 depends_build-append \
     port:automake \
@@ -30,10 +69,18 @@ depends_lib-append \
     port:python27 \
     port:talloc
 
-# fix use of Python2
-
-patchfiles-append patch-fix-python.diff
 patch.pre_args -p1
+
+# update configure.ac to current automake standards
+
+patchfiles-append patch-configure.ac.diff
+
+# fix header variable declaration to be "extern" even though it should
+# not technically be necessary.
+
+patchfiles-append patch-include_osmocom_coding_gsm0503_parity.h.diff
+
+# fix use of Python2, part 2
 
 post-patch {
     reinplace "s|@PYTHON_EXECUTABLE@|${frameworks_dir}/Python.framework/Versions/2.7/bin/python2.7|g" \
@@ -43,24 +90,6 @@ post-patch {
         ${worksrcpath}/utils/conv_codes_gsm.py \
         ${worksrcpath}/utils/conv_gen.py \
 }
-
-# fix stats.h to work within MacPorts
-
-patchfiles-append patch-include_osmocom_core_stats.h.diff
-
-# fix header variable declaration to be "extern" even though it should
-# not technically be necessary.
-
-patchfiles-append patch-include_osmocom_coding_gsm0503_parity.h.diff
-
-# update configure.ac to current automake standards
-
-patchfiles-append patch-configure.ac.diff
-
-# fix 'timer_clockgettime.c' to work with OSs that don't provide
-# the function 'clock_gettime' and/or its various options.
-
-patchfiles-append patch-fix_clock_gettime.diff
 
 # use autotools to get ready to configure
 

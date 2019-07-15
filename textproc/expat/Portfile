@@ -2,8 +2,16 @@
 
 PortSystem          1.0
 
+# BYTEORDER doesn't get defined during a normal universal build.
+PortGroup           muniversal 1.0
+
 name                expat
-version             2.2.5
+version             2.2.7
+revision            0
+checksums           rmd160  69422879994f197d8b2fe613a7e24d50703f0188 \
+                    sha256  cbc9102f4a31a8dafd42d642e9a3aa31e79a0aedaa1f6efd2795ebc83174ec18 \
+                    size    524943
+
 categories          textproc devel
 platforms           darwin freebsd
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -20,9 +28,7 @@ homepage            http://www.libexpat.org/
 master_sites        sourceforge:project/${name}/${name}/${version}
 use_bzip2           yes
 
-checksums           rmd160  c580ebbf9dc030d0c15752cd399a539a5b371a92 \
-                    sha256  d9dc32efba7e74f788fcc4f212a43216fc37cf5f23f4c2339664d473353aedf6 \
-                    size    510868
+configure.args      --without-docbook
 
 use_parallel_build  yes
 
@@ -35,7 +41,8 @@ post-destroot {
     xinstall -m 0755 -d ${examplesdir} ${docdir}/html
     
     xinstall -m 0644 -W ${worksrcpath} COPYING Changes README.md ${docdir}
-    xinstall -m 0644 {*}[glob ${worksrcpath}/doc/*] ${docdir}/html
+    xinstall -m 0644 -W ${worksrcpath}/doc expat.png reference.html style.css \
+        valid-xhtml10.png ${docdir}/html
     
     xinstall -m 0644 -W ${worksrcpath}/examples elements.c outline.c \
         ${examplesdir}

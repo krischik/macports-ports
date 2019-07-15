@@ -3,7 +3,11 @@
 PortSystem 1.0
 
 name                file
-version             5.33
+version             5.37
+checksums           rmd160  e01826cca438ffc467b169a8f4fd760f9843f5fc \
+                    sha256  e9c13967f7dd339a3c241b7710ba093560b9a33013491318e88e6b8b57bae07f \
+                    size    887682
+
 categories          sysutils
 license             BSD
 maintainers         {ryandesign @ryandesign} openmaintainer
@@ -16,7 +20,6 @@ long_description \
     For information on Mach-O binaries, it is suggested that one uses the command \
     `otool -fv`.
 
-
 homepage            http://www.darwinsys.com/file/
 platforms           darwin
 master_sites        freebsd \
@@ -24,10 +27,6 @@ master_sites        freebsd \
                     ftp://ftp.fu-berlin.de/unix/tools/${name}/ \
                     ftp://ftp.astron.com/pub/${name}/ \
                     ftp://ftp.gw.com/mirrors/pub/unix/${name}/
-
-checksums           rmd160  15b9711885b7e4bee1037e0f39f3766489ac70cd \
-                    sha256  1c52c8c3d271cd898d5511c36a68059cda94036111ab293f01f83c3525b737c6 \
-                    size    817060
 
 patchfiles          patch-magic-Makefile.am.diff \
                     patch-getline.diff
@@ -47,7 +46,7 @@ if {${name} eq ${subport}} {
     
     destroot {
         xinstall -W ${worksrcpath}/src/.libs file ${destroot}${prefix}/bin
-        xinstall -m 644 -W ${worksrcpath}/doc file.1 ${destroot}${prefix}/share/man/man1
+        xinstall -m 0644 -W ${worksrcpath}/doc file.1 ${destroot}${prefix}/share/man/man1
     }
     
     livecheck.type      regex
@@ -62,16 +61,5 @@ subport libmagic {
 
     post-destroot {
         delete ${destroot}${prefix}/bin/file ${destroot}${prefix}/share/man/man1/file.1
-    }
-    
-    pre-activate {
-        # file @5.14_0 and earlier installed some files now provided by libmagic
-        if {![catch {set installed [lindex [registry_active file] 0]}]} {
-            set file_version [lindex ${installed} 1]
-            set file_revision [lindex ${installed} 2]
-            if {[vercmp ${file_version} 5.14] < 0 || ([vercmp ${file_version} 5.14] == 0 && ${file_revision} < 1)} {
-                registry_deactivate_composite file "" [list ports_nodepcheck 1]
-            }
-        }
     }
 }

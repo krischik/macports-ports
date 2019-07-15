@@ -42,12 +42,12 @@ provides the release version, which is typically updated every month or so.
 
 subport gqrx-devel {
 
-    github.setup        csete gqrx 473c88533f6a0accb5565e4f6e330c92ec3efdb5
-    version             20180604
-    revision            1
-    checksums           rmd160 f93b13f2d6425d377cde1612e7b764bf31504bff \
-                        sha256 3a994f043ba0f1486233b16bf8b6d2f55b0491ec28994dbd4e8f6b79f86bc755 \
-                        size   1329089
+    github.setup csete gqrx 6e92a6a76ea623c62feb4b437137e5fa649e794c
+    version      20190413-[string range ${github.version} 0 7]
+    checksums    rmd160 726d46ba0df820577549cf7fbf5669f59082bc15 \
+                 sha256 7dcf542e7b37e57481153e4b7651a2165f83f1b9be29c347dcb37d16c9e515d4 \
+                 size   1329304
+    revision     0
 
     patchfiles-append   patch-gqrx.pro.devel.diff
 

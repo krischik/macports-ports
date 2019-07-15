@@ -5,16 +5,17 @@ PortGroup           cxx11 1.1
 
 name                qscintilla
 
-version             2.10.4
-checksums           rmd160 578852bd98085386d434997d82a2b1cb729308b4 \
-                    sha256 0353e694a67081e2ecdd7c80e1a848cf79a36dbba78b2afa36009482149b022d \
-                    size   2721322
+version             2.11.2
+checksums           rmd160 fb0631db0fa228eb2d4c35db69f085a67d7d8036 \
+                    sha256 029bdc476a069fda2cea3cd937ba19cc7fa614fb90578caef98ed703b658f4a1 \
+                    size   2986600
+revision            0
 
 categories          devel
 license             GPL-3
 maintainers         {michaelld @michaelld} {mcalhoun @MarcusCalhoun-Lopez} openmaintainer
 description         QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor control.
-homepage            http://www.riverbankcomputing.com/software/qscintilla/
+homepage            https://www.riverbankcomputing.com/software/qscintilla/
 platforms           darwin
 
 long_description    QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ editor control. \
@@ -29,7 +30,7 @@ long_description    QScintilla is a port to Qt of Neil Hodgson's Scintilla C++ e
                     multiple fonts.
 
 distname            QScintilla_gpl-${version}
-master_sites        sourceforge:pyqt
+master_sites        https://www.riverbankcomputing.com/static/Downloads/QScintilla/${version}
 
 foreach qt_major {4 5} {
     subport ${name}-qt${qt_major} {
@@ -40,6 +41,9 @@ foreach qt_major {4 5} {
         }
 
         worksrcdir ${worksrcdir}/Qt4Qt5
+
+        # temporary path to fix necessary inclusion of QUrl
+        patchfiles-append patch-Qt4Qt5_qsciscintillabase.cpp.diff
 
         if {${qt_major} eq 4} {
             # enable C++11
@@ -105,7 +109,7 @@ foreach qt_major {4 5} {
         }
     }
 
-    set python_versions {27 34 35 36}
+    set python_versions {27 34 35 36 37}
 
     foreach pver ${python_versions} {
         subport py${pver}-${name}-qt${qt_major} {
@@ -146,15 +150,13 @@ foreach qt_major {4 5} {
             configure.pre_args
 
             configure.cmd       ${configure.python} configure.py
-            configure.args-append                          \
+            configure.args-append --verbose                \
                 --pyqt=PyQt${qt_major}                     \
                 --sip=${prefix}/bin/sip-${python_ver_dot}  \
-                --qmake=${qt_qmake_cmd}
+                --qmake=${qt_qmake_cmd}                    \
+                --no-dist-info
 
             if {${qt_major} eq 4} {
-                configure.args-append \
-                    --pyqt-sipdir=${prefix}/share/py${pver}-sip/PyQt4
-
                 configure.args-append \
                     --spec=${qt_qmake_spec}
             } else {
@@ -204,17 +206,3 @@ if {${subport} eq ${name}} {
 livecheck.type      regex
 livecheck.url       ${homepage}download
 livecheck.regex     >QScintilla\[_-\]gpl-\(\[0-9.\]+\)${extract.suffix}<
-
-# see https://trac.macports.org/ticket/55261
-# see https://trac.macports.org/wiki/PortfileRecipes#deactivatehack
-if {${subport} eq "qscintilla-qt4" || ${subport} eq "qscintilla-designer-qt4"} {
-    pre-activate {
-        if {![catch {set installed [lindex [registry_active qscintilla] 0]}]} {
-            set _version  [lindex $installed 1]
-            set _revision [lindex $installed 2]
-            if {[vercmp $_version 2.10.1] < 0 || ([vercmp $_version 2.10.1] == 0 && $_revision < 1)} {
-                registry_deactivate_composite qscintilla "" [list ports_nodepcheck 1]
-            }
-        }
-    }
-}

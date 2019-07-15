@@ -1,11 +1,10 @@
 PortSystem 1.0
 
 name			subversion
-version			1.10.0
-revision		1
+version			1.12.0
 categories		devel
 platforms		darwin
-maintainers		{geeklair.net:dluke @danielluke} {blair @blair}
+maintainers		{geeklair.net:dluke @danielluke}
 description		subversion (svn) -- a version control system designed to be a better cvs
 license			Apache-2
 
@@ -13,17 +12,16 @@ long_description	Subversion (svn) is a version control system designed to be \
 			as similar to cvs(1) as possible, while fixing many \
 			outstanding problems with cvs(1).
 
-homepage		http://subversion.apache.org/
+homepage		https://subversion.apache.org/
 master_sites		apache:subversion
 use_bzip2		yes
-checksums	sha1	345bc84edc5fe72f70997d247230fd8d3a18d83b \
-		rmd160	ccde1df065be6c997967830053a03b6bdc68503e \
-		sha256	2cf23f3abb837dea0585a6b0ebd70e80e01f95bddef7c1aa097c18e3eaa6b584 \
-		size	8369823
+checksums	rmd160	cd06e97d3e109796c3370cb7633081805ee4d957 \
+		sha256	7fae7c73d8a007c107c0ae5eb372bc0bb013dbfe966fcd5c59cd5a195a5e2edf \
+		size	8504473
 
 depends_lib		port:expat \
 			port:apr port:apr-util \
-			port:db46 port:sqlite3 \
+			port:db48 port:sqlite3 \
 			port:gettext port:libiconv \
 			port:serf1 port:cyrus-sasl2 \
 			port:libmagic port:libcomerr \
@@ -41,7 +39,7 @@ patchfiles		config_impl.h.patch
 post-patch {		reinplace "s|__PREFIX__|${prefix}|" ${worksrcpath}/subversion/libsvn_subr/config_impl.h
 			}
 
-configure.args		--with-berkeley-db=:${prefix}/include/db46:${prefix}/lib/db46:db-4.6 \
+configure.args		--with-berkeley-db=:${prefix}/include/db48:${prefix}/lib/db48:db-4.8 \
 			--with-apr=${prefix}/bin/apr-1-config \
 			--with-apr-util=${prefix}/bin/apu-1-config --without-apxs \
 			--mandir=\\\${prefix}/share/man \
@@ -100,8 +98,8 @@ variant mod_dav_svn 	description {Install the subversion apache module (mod_dav_
 			}
 
 variant no_bdb		description {Build without support for BerkeleyDB repositories} {
-			depends_lib-delete	port:db46
-			configure.args-delete	--with-berkeley-db=:${prefix}/include/db46:${prefix}/lib/db46:db-4.6
+			depends_lib-delete	port:db48
+			configure.args-delete	--with-berkeley-db=:${prefix}/include/db48:${prefix}/lib/db48:db-4.8
 			configure.args-append	--without-berkeley-db
 			}
 
@@ -136,7 +134,7 @@ variant tools 		description {Install some optional extra subversion tools} {
 variant unicode_path	description {Installs a hack to workaround Mac OS X unicode path issues} {
 			patchfiles-append patch-osx_unicode_precomp.diff
 			post-install {
-				ui_warn "This variant (+unicode_path) implements a hack to deal with composed/decomposed unicode handling on Mac OS X which is different from linux and windows. It is an implementation of solution 1 from http://svn.apache.org/repos/asf/subversion/trunk/notes/unicode-composition-for-filenames which _WILL_ break some setups. Please be sure you understand what you are asking for when you install this variant."
+				ui_warn "This variant (+unicode_path) implements a hack to deal with composed/decomposed unicode handling on Mac OS X which is different from linux and windows. It is an implementation of solution 1 from https://svn.apache.org/repos/asf/subversion/trunk/notes/unicode-composition-for-filenames which _WILL_ break some setups. Please be sure you understand what you are asking for when you install this variant."
 				}
 			}
 
@@ -150,5 +148,5 @@ platform puredarwin {		configure.args-append \
 				}
 
 livecheck.type	regex
-livecheck.url	http://svn.apache.org/repos/asf/subversion/tags/
+livecheck.url	https://svn.apache.org/repos/asf/subversion/tags/
 livecheck.regex	"(\\d+\\.\\d+\\.\\d+)/"

@@ -6,13 +6,13 @@ PortGroup           cxx11 1.1
 PortGroup           compilers 1.0
 
 name                py-networkit
-version             4.5
+version             5.0
 revision            0
 categories-append   devel
 platforms           darwin
 license             MIT
 
-python.versions     35 36
+python.versions     35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -24,11 +24,14 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  0cd8edf8fdd8ee978e23d3ce778421c677bfff8f \
-                    sha256  d2f7862970d376da916a4f87bf6d90e080dcbb37ab74a30dc6b3924b3b7b0475
+checksums           rmd160  65c96a31c2b5b535ba8eca701db096dd4e770cd7 \
+                    sha256  4fd9439a155cc569000ec039e13680804d8cc233c6d602c88cf0f63174b2babd \
+                    size    1776184
 
 if {${name} ne ${subport}} {
-    compiler.whitelist  macports-gcc-4.9 macports-gcc-5 macports-gcc-6 macports-clang-5.0
+    # Pick a compiler that supports openmp
+    compiler.whitelist macports-clang-6.0 macports-clang-5.0 macports-clang-3.7 macports-gcc-7 macports-gcc-6 macports-gcc-5 macports-gcc-4.8 macports-gcc-4.7 macports-gcc-4.6 macports-gcc-4.5 macports-gcc-4.4 macports-gcc-4.3
+    compiler.fallback macports-clang-6.0
 
     depends_build-append \
                         port:py${python.version}-setuptools \
@@ -36,19 +39,40 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-pip \
                         port:scons
 
-    depends_lib-append  port:py${python.version}-networkx \
-                        port:py${python.version}-tabulate \
-                        port:py${python.version}-numpy \
-                        port:py${python.version}-scipy \
+    depends_lib-append  port:py${python.version}-scipy \
+                        port:py${python.version}-matplotlib \
                         port:py${python.version}-pandas \
+                        port:py${python.version}-numpy \
+                        port:py${python.version}-networkx \
                         port:py${python.version}-tabulate \
                         port:py${python.version}-seaborn \
                         port:py${python.version}-scikit-learn \
-                        port:py${python.version}-ipython \
-                        port:py${python.version}-matplotlib
+                        port:py${python.version}-ipython
 
-    post-patch {
-        reinplace "s|installExternalPythonPackages|#installExternalPythonPackages|" ${worksrcpath}/setup.py
+    if {[vercmp [macports_version] 2.5.99] >= 0} {
+    build.env-append    CC=${configure.cc} \
+                        CXX=${configure.cxx} \
+                        CFLAGS=${configure.cc_archflags} \
+                        CXXFLAGS=${configure.cxx_archflags} \
+                        CPPFLAGS=${configure.cppflags}
+
+    destroot.env-append CC=${configure.cc} \
+                        CXX=${configure.cxx} \
+                        CFLAGS=${configure.cc_archflags} \
+                        CXXFLAGS=${configure.cxx_archflags} \
+                        CPPFLAGS=${configure.cppflags}
+    } else {
+    build.env-append    CC="${configure.cc}" \
+                        CXX="${configure.cxx}" \
+                        CFLAGS="${configure.cc_archflags}" \
+                        CXXFLAGS="${configure.cxx_archflags}" \
+                        CPPFLAGS="${configure.cppflags}"
+
+    destroot.env-append CC="${configure.cc}" \
+                        CXX="${configure.cxx}" \
+                        CFLAGS="${configure.cc_archflags}" \
+                        CXXFLAGS="${configure.cxx_archflags}" \
+                        CPPFLAGS="${configure.cppflags}"
     }
 
     livecheck.type      none

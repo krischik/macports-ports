@@ -5,13 +5,13 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-sortedcontainers
-version             2.0.4
+version             2.1.0
 revision            0
 categories-append   devel
 platforms           darwin
 license             Apache-2
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -23,9 +23,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  d892949cd5cea6b9c953e4b5fe653a1234866512 \
-                    sha256  607294c6e291a270948420f7ffa1fb3ed47384a4c08db6d1e9c92d08a6981982 \
-                    size    29757
+checksums           rmd160  a2aa7ff8604a0a81ea71e5decb479bcc1e370b22 \
+                    sha256  974e9a32f56b17c1bac2aebd9dcf197f3eb9cd30553c5852a3187ad162e1a03a \
+                    size    29810
 
 if {${name} ne ${subport}} {
     depends_build-append \

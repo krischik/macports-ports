@@ -1,7 +1,7 @@
 PortSystem          1.0
 
 name                jmol
-version             14.29.12
+version             14.29.46
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          science
 platforms           darwin
@@ -23,9 +23,9 @@ master_sites        sourceforge:project/jmol/Jmol/Version%20${branch}/Jmol%20${v
 
 distname            Jmol-${version}-binary
 
-checksums           rmd160  a4028ebe365726d4202363fdfba40afcd6bbafd8 \
-                    sha256  7b8d89aea3607fe1f6551688bbc81cd0571b3e19c3886933d456c972aa4ab8d9 \
-                    size    70470520
+checksums           rmd160  5e88423653017cc064dd46fd2999c016a88bc034 \
+                    sha256  34957a72ec4e4abf30b91afa08146eb0a4a55fd0db0008aa9a0b97ef820b2f02 \
+                    size    71864850
 
 worksrcdir          ${name}-${version}
 

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        astropy astroquery 0.3.6 v
+github.setup        astropy astroquery 0.3.9 v
 name                py-${name}
 maintainers         {aronnax @lpsinger} openmaintainer
 categories-append   science
@@ -17,10 +17,11 @@ supported_archs     noarch
 license             BSD
 
 homepage            https://astroquery.readthedocs.io/
-checksums           rmd160  454039e127ea8511c9a360b441812af5577748cc \
-                    sha256  0fa9fa72bec59d549b4c3da187ff488e36fbec51d5dd2d5f948f0d6ec54d30b0
+checksums           rmd160  da830e53ff424b7cbdde9867b8d215fe8303de25 \
+                    sha256  271fd63d8347b55e9860dd4ecdf6dbefb24349c6912eeead307d34a1ccea5325 \
+                    size    5892871
 
-python.versions     27 34 35 36
+python.versions     27 35 36 37
 
 if {${name} ne ${subport}} {
 

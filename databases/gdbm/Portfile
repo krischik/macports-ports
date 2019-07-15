@@ -3,7 +3,8 @@
 PortSystem          1.0
 
 name                gdbm
-version             1.15
+version             1.18.1
+revision            1
 categories          databases
 platforms           darwin
 license             GPL-3+
@@ -21,9 +22,10 @@ depends_lib         port:gettext \
                     port:readline
 
 master_sites        gnu
-checksums           rmd160  f090fbbc771de6fdf74c342fb71a5ffc9b73ce82 \
-                    sha256  f9fde3207f67ed8a5a5ddd8ad5e7acf7b27c2cf0f20dfbdde876dcd6e3d2dc0e \
-                    size    928945
+
+checksums           rmd160  041c0dd2ae49d724ba509ce70a4349d246a9767d \
+                    sha256  86e613527e5dba544e73208f42b78b7c022d4fa5a6d5498bf18c8d6f745b91dc \
+                    size    941863
 
 # Don't link using "-flat_namespace -undefined suppress" on Yosemite and
 # later (#45709).

@@ -3,15 +3,16 @@
 PortSystem              1.0
 
 name                    web-ext
-version                 2.7.0
-checksums               rmd160  da431ce040d1ecae6e77d5b78a4d00e2eb4c9934 \
-                        sha256  6a0ed5c63d733210c530a2bb79a36d860a67021232f257158af8540910712de7 \
-                        size    290827
+version                 3.1.0
+revision                0
+checksums               rmd160  fc472f846a52da6c047b0537a6e6e8b9520670ad \
+                        sha256  3b444cb0369d59873aab7113a85bb0a01d2f108a20d8083b4d92fd9616323a83 \
+                        size    194790
 
 categories              devel
-maintainers             {yan12125 @yan12125} openmaintainer
+maintainers             nomaintainer
 license                 MPL-2
-description             A command line tool to help build, run, and test web extensions 
+description             A command line tool to help build, run, and test web extensions
 
 long_description        ${description}
 

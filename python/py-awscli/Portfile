@@ -2,13 +2,16 @@
 
 PortSystem          1.0
 PortGroup           python 1.0
+PortGroup           select 1.0
+
 
 name                py-awscli
-version             1.15.16
+version             1.16.193
+revision            0
 platforms           darwin
 supported_archs     noarch
 license             Apache-2
-maintainers         {pixilla @pixilla} openmaintainer
+maintainers         nomaintainer
 
 description         Universal Command Line Environment for AWS.
 long_description    ${description}
@@ -17,16 +20,13 @@ homepage            https://aws.amazon.com/cli/
 master_sites        pypi:a/awscli
 distname            awscli-${version}
 
-checksums           rmd160 41a691db4389b5fadfea6a6dfe53b19217934dc1 \
-                    sha256 0c471b208505ac0dbc967ba2e485fe278ca376005aa8d92909ef8f160731f4e8 \
-                    size   593977
+checksums           rmd160  959c15c20dcfcc7db8a3732f4c16afabd75a86d2 \
+                    sha256  b15d5f05d65a73119fbb1e0fedaa9436faeb77c7a65119cc9babd1bfbfcb6ddd \
+                    size    757231
 
-python.versions     27 35 36
+python.versions     27 35 36 37
 
 if {${name} ne ${subport}} {
-
-    PortGroup           select 1.0
-
     depends_build-append \
                         port:py${python.version}-setuptools
     depends_lib-append \
@@ -50,6 +50,24 @@ if {${name} ne ${subport}} {
         reinplace \
             "s,@PYTHON_BRANCH@,${python.branch},g" \
              ${worksrcpath}/${subport}
+    }
+
+    post-destroot {
+        # bash completion
+        set bash_compl_path ${prefix}/etc/bash_completion.d
+        xinstall -d ${destroot}${bash_compl_path}
+        xinstall -m 0644 ${worksrcpath}/bin/aws_bash_completer \
+            ${destroot}${bash_compl_path}/aws_bash_completer-${python.branch}
+    }
+
+    variant zsh_completion {
+        post-destroot {
+            set zsh_compl_path ${prefix}/share/zsh/site-functions
+            xinstall -d ${destroot}${zsh_compl_path}
+            xinstall -m 0644 ${worksrcpath}/bin/aws_zsh_completer.sh \
+                ${filespath}/_aws \
+                ${destroot}${zsh_compl_path}
+        }
     }
 
     livecheck.type      none

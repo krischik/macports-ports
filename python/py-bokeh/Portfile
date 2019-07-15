@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-bokeh
-version             0.12.15
+version             1.2.0
 revision            0
 categories-append   devel
 platforms           darwin
 license             BSD
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -25,16 +25,20 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  5059a467f908b7d3356c8de86cbee94fb001ffc6 \
-                    sha256  2891b883b30107dc610a7e963a21222f1fd096844d157c09db115179cfab6513
+checksums           rmd160  a086a45d84d402c0dc9b738a9f531bd548dd903d \
+                    sha256  d45d797b5b3f5bb688eb636fb0430b0d57af232abd8ddc07ddba922c1ef0c3ae \
+                    size    17551714
 
 if {${name} ne ${subport}} {
+    depends_build-append \
+                        port:py${python.version}-setuptools
     depends_lib-append  port:py${python.version}-six \
-                        port:py${python.version}-requests \
                         port:py${python.version}-yaml \
                         port:py${python.version}-dateutil \
                         port:py${python.version}-jinja2 \
                         port:py${python.version}-numpy \
+                        port:py${python.version}-Pillow \
+                        port:py${python.version}-packaging \
                         port:py${python.version}-tornado
 
     if {${python.version} == 27} {

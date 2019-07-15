@@ -2,13 +2,14 @@
 
 PortSystem          1.0
 PortGroup           github 1.0
+PortGroup           legacysupport 1.0
 
 name                zmq
 categories          devel sysutils net
 platforms           darwin
 license             LGPL-3+
 
-maintainers         inconsistent.nl:merijn {stromnov @stromnov} {michaelld @michaelld} openmaintainer
+maintainers         {stromnov @stromnov} {michaelld @michaelld} openmaintainer
 
 description         0MQ (ZeroMQ) lightweight messaging kernel
 
@@ -21,48 +22,57 @@ long_description    \
     protocols and more.
 
 if {${name} eq ${subport}} {
-    github.setup        zeromq libzmq 4.2.5 v
+    github.setup zeromq libzmq 4.3.1 v
+    checksums    rmd160 0401135c351b22e6417e3550aaec88d2b3a8b770 \
+                 sha256 29f5900c72ad44a34d3162d9b730156879a918172f6850fa8748d8d17c81477a \
+                 size   789041
+    revision     0
 
-    checksums           rmd160 de7e0d1e380991b55031a22c7b2fa482d650a0b4 \
-                        sha256 3a051a265e8b6a676e13e85179af96702c706491de248bc955f4384519faa2aa \
-                        size   714534
+    conflicts    zmq-devel zmq22 zmq3
+    configure.args-append --disable-libunwind --disable-cxx11 --disable-c11
 
-    conflicts           zmq-devel zmq22 zmq3
-    configure.args-append --disable-libunwind --disable-cxx11
-    patchfiles-append   patch-cxx11.release.diff
+    patch.pre_args -p1
+    patchfiles-append patch-cxx11.release.diff
+    patchfiles-append patch-c11.release.diff
+
 }
 
 # Legacy subport (no longer supported)
 subport zmq3 {
-    github.setup        zeromq zeromq3-x 3.2.5 v
-    revision            1
+    github.setup zeromq zeromq3-x 3.2.5 v
+    revision     1
 
-    checksums           rmd160 959e1403e4c8e36603711c9cf3bb5ff5cd5727aa \
-                        sha256 3ba8fbdee4845e26f25f3d1d43492bc182077338f4e857fa50a06e1b21bade7f
+    checksums    rmd160 959e1403e4c8e36603711c9cf3bb5ff5cd5727aa \
+                 sha256 3ba8fbdee4845e26f25f3d1d43492bc182077338f4e857fa50a06e1b21bade7f
 
-    conflicts           zmq zmq-devel zmq22
+    conflicts    zmq zmq-devel zmq22
 }
 
 # Legacy subport (as a dependency for p5-zeromq)
 subport zmq22 {
-    github.setup        zeromq zeromq2-x 2.2.0 v
-    revision            2
-    checksums           rmd160 5bf0cfe29e26348dc4c201764d099a8117c43735 \
-                        sha256 e021b62c6be211b5a1ac4b9e038068e0a8caaf81c22ee050183b25e991825e05
+    github.setup zeromq zeromq2-x 2.2.0 v
+    revision     2
+    checksums    rmd160 5bf0cfe29e26348dc4c201764d099a8117c43735 \
+                 sha256 e021b62c6be211b5a1ac4b9e038068e0a8caaf81c22ee050183b25e991825e05
 
-    conflicts           zmq zmq-devel zmq3
+    conflicts    zmq zmq-devel zmq3
 }
 
 subport zmq-devel {
-    github.setup        zeromq libzmq 85dfca3087893b4ccfc9d4e5b85f30518f1d70e6
-    version             20180615
-    checksums           rmd160 eea29fe4d91cfb74a60a17279c718ac60136081d \
-                        sha256 72a90ec66bb7fc2b228c8b34784b660c8de51c12a7b46049693fe7fa6e8954d9 \
-                        size   761097
+    github.setup zeromq libzmq 4904bf7177750dc7904a0d038dd9f5ff9083316d
+    version   20190623-[string range ${github.version} 0 7]
+    checksums rmd160 4554398c69d418ba3ffe683629fd3b9823ab971a \
+              sha256 96561f5d7a78c66eb55204610f5883101a8c2b5bc1243df07d5eaf12e1e5b8fa \
+              size   820419
+    revision  0
 
-    conflicts           zmq zmq22 zmq3
-    configure.args-append --disable-libunwind --disable-cxx11
-    patchfiles-append   patch-cxx11.devel.diff
+    conflicts    zmq zmq22 zmq3
+    configure.args-append --disable-libunwind --disable-cxx11 --disable-c11
+
+    patch.pre_args -p1
+    patchfiles-append patch-cxx11.devel.diff
+    patchfiles-append patch-c11.devel.diff
+
 }
 
 # override github information
@@ -86,14 +96,3 @@ configure.args-append --disable-silent-rules
 
 depends_build-append port:libtool port:pkgconfig
 build.args          LIBTOOL=${prefix}/bin/glibtool
-
-# special building for PPC/PPC64 for zmq and zmq-devel
-
-if {(${subport} eq "zmq" || ${subport} eq "zmq-devel") &&
-    (${build_arch} eq "ppc" || ${build_arch} eq "ppc64")} {
-
-    # force c++11
-    PortGroup cxx11 1.1
-
-    configure.args-replace --disable-cxx11 --enable-cxx11
-}

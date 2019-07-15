@@ -5,21 +5,13 @@ PortGroup           github 1.0
 PortGroup           muniversal 1.0
 
 name                libatomic_ops
-subport             libatomic_ops-devel {}
 
-if {${subport} eq ${name}} {
-    github.setup    ivmai libatomic_ops 7.6.4 v
+github.setup        ivmai libatomic_ops 7.6.10 v
+revision            0
 
-    checksums       rmd160  a00205679c9124b2fcc13cabf33038da65ce4fb2 \
-                    sha256  4dd8faedc526fd73dd4e34855f4551039066b5cb1fdf313023b4fd9d61a2190f
-} else {
-    # remove after Feb. 16, 2019
-    replaced_by     libatomic_ops
-    PortGroup       obsolete 1.0
-    github.setup    ivmai libatomic_ops f98d476f
-    version         7.5.0-git-20170112
-    revision        1
-}
+checksums           rmd160  3570de5b7cdd8cf75abe8e0bcda95db606fea5cd \
+                    sha256  281b75bfb00ccb3fa26a4a060b3eeb0d7410b4701e837b41413d1757e95afeb7 \
+                    size    138011
 
 maintainers         nomaintainer
 categories          devel

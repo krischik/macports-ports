@@ -1,7 +1,7 @@
-From 54709712b29ce458e99d54922f31769843271e3b Mon Sep 17 00:00:00 2001
+From d179c9b8622c923eec16cbd99b514862df3d3554 Mon Sep 17 00:00:00 2001
 From: Jeremy Huddleston Sequoia <jeremyhu@apple.com>
 Date: Sat, 17 Jan 2015 17:50:24 -0800
-Subject: [PATCH 1001/1008] MacPorts Only: Prepare clang-format for replacement
+Subject: [PATCH 1001/1007] MacPorts Only: Prepare clang-format for replacement
  with absolute path
 
 Signed-off-by: Jeremy Huddleston Sequoia <jeremyhu@apple.com>
@@ -27,10 +27,10 @@ index fa88fe9004..eb09448be5 100644
  tell application "BBEdit"
  	-- "set contents of text document 1 to newContents" scrolls to the bottom while
 diff --git llvm_master/tools/clang/tools/clang-format/clang-format-diff.py macports_master/tools/clang/tools/clang-format/clang-format-diff.py
-index ffa30e70dd..a624ad256f 100755
+index 3ba0abefc9..d67e3733bd 100755
 --- llvm_master/tools/clang/tools/clang-format/clang-format-diff.py
 +++ macports_master/tools/clang/tools/clang-format/clang-format-diff.py
-@@ -55,7 +55,7 @@ def main():
+@@ -58,7 +58,7 @@ def main():
    parser.add_argument('-style',
                        help='formatting style to apply (LLVM, Google, Chromium, '
                        'Mozilla, WebKit)')
@@ -40,7 +40,7 @@ index ffa30e70dd..a624ad256f 100755
    args = parser.parse_args()
  
 diff --git llvm_master/tools/clang/tools/clang-format/clang-format-sublime.py macports_master/tools/clang/tools/clang-format/clang-format-sublime.py
-index 16ff56e502..4b68104a28 100644
+index 20c867092e..ae823c1d05 100644
 --- llvm_master/tools/clang/tools/clang-format/clang-format-sublime.py
 +++ macports_master/tools/clang/tools/clang-format/clang-format-sublime.py
 @@ -18,7 +18,7 @@ import sublime_plugin
@@ -53,7 +53,7 @@ index 16ff56e502..4b68104a28 100644
  # Change this to format according to other formatting styles. See the output of
  # 'clang-format --help' for a list of supported styles. The default looks for
 diff --git llvm_master/tools/clang/tools/clang-format/clang-format.el macports_master/tools/clang/tools/clang-format/clang-format.el
-index aa9c3ff4ca..f661969e3c 100644
+index 0b9dc8d6fa..eebc4d115e 100644
 --- llvm_master/tools/clang/tools/clang-format/clang-format.el
 +++ macports_master/tools/clang/tools/clang-format/clang-format.el
 @@ -36,8 +36,7 @@
@@ -67,7 +67,7 @@ index aa9c3ff4ca..f661969e3c 100644
  
  A string containing the name or the full path of the executable."
 diff --git llvm_master/tools/clang/tools/clang-format/clang-format.py macports_master/tools/clang/tools/clang-format/clang-format.py
-index 2412566346..cf35c8738f 100644
+index 0c772f91f6..33c96180a4 100644
 --- llvm_master/tools/clang/tools/clang-format/clang-format.py
 +++ macports_master/tools/clang/tools/clang-format/clang-format.py
 @@ -36,7 +36,7 @@ import vim
@@ -80,5 +80,5 @@ index 2412566346..cf35c8738f 100644
    binary = vim.eval('g:clang_format_path')
  
 -- 
-2.13.3
+2.21.0 (Apple Git-120)
 

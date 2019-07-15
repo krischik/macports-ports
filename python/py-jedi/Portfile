@@ -4,14 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-jedi
-version             0.12.0
-revision            0
+version             0.14.0
 categories-append   devel
 platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -23,11 +22,11 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  b8b5608be9f2bb6bdf38c05f31020bd6be843df3 \
-                    sha256  1972f694c6bc66a2fac8718299e2ab73011d653a6d8059790c3476d2353b99ad
+checksums           rmd160  7f2d82451922f8d11885568b5e4c89d92ac5db5e \
+                    sha256  49ccb782651bb6f7009810d17a3316f8867dde31654c750506970742e18b553d \
+                    size    855833
 
 if {${name} ne ${subport}} {
-    # setuptools is mandatory due to 'include_package_data' option
     depends_build-append \
                         port:py${python.version}-setuptools
     depends_lib-append  port:py${python.version}-parso

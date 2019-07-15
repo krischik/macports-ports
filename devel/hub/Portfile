@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        github hub 2.4.0 v
+github.setup        github hub 2.12.1 v
 categories          devel
 platforms           darwin
 license             MIT
@@ -16,19 +16,35 @@ long_description    \
 
 homepage            https://hub.github.com/
 
-checksums           rmd160  c2e036d9556196c234a64e35cc3e52c9e2fce5de \
-                    sha256  433b4fe091392ead6f06b60e72f5bba0ea2c3e26312e36681f1da832167a9b1a \
-                    size    984583
+checksums           rmd160  64dee50bea74d090359ae43c22eee5e5a30a988a \
+                    sha256  8070fc65e0eb05e89b3715a72ba6956c1288e57e9a42b45b775e6f9fae372112 \
+                    size    1623943
+
+worksrcdir          src/github.com/${github.author}/${name}
 
 depends_build-append \
-                    port:go
+                    port:go port:bash
+build.target        man-pages
+build.cmd           make
+build.env-append    GOPATH=${workpath}
 
 use_configure       no
 
 installs_libs       no
 
+post-extract {
+    xinstall -d ${workpath}/src/github.com/${github.author}
+    move ${workpath}/${name}-${github.version} ${workpath}/${name}
+    move ${workpath}/${name} ${worksrcpath}
+}
+
 destroot {
     xinstall -W ${worksrcpath} bin/hub ${destroot}${prefix}/bin
+    set man-pages ${destroot}${prefix}/share/man/man1
+    xinstall -d ${man-pages}
+    foreach m [glob -directory ${worksrcpath}/share/man/man1 *.1] {
+        xinstall -W ${worksrcpath} ${m} ${man-pages}/
+    }
     set bash-completions ${destroot}${prefix}/share/bash-completion/completions
     xinstall -d ${bash-completions}
     xinstall -W ${worksrcpath} etc/hub.bash_completion.sh ${bash-completions}/hub
@@ -38,13 +54,13 @@ destroot {
 }
 
 notes "
-Using hub feels best when it's aliased as git.  This is not dangerous;
-your normal git commands will all work.  hub merely adds some sugar.
+Using hub feels best when it's aliased as git since
+normal git commands will all work.  hub merely adds some sugar.
 
 hub alias displays instructions for the current shell.
 With the -s flag, it outputs a script suitable for eval.
 
-You should place this command in your .bash_profile or other startup script:
+You could place this command in your shell startup script:
 
 eval \"\$(hub alias -s)\"
 "

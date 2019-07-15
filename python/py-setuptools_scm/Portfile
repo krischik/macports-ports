@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-setuptools_scm
-version             2.1.0
+version             3.3.3
 revision            0
 categories-append   devel
 platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -23,12 +23,18 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  d8d469c02c126d0a0c72c1b18203eae4124577c3 \
-                    sha256  a767141fecdab1c0b3c8e4c788ac912d7c94a0d6c452d40777ba84f918316379 \
-                    size    32776
+checksums           rmd160  6d39a82b2a0e93f53a2b904fa96eee98f5095e9a \
+                    sha256  bd25e1fb5e4d603dcf490f1fde40fb4c595b357795674c3e5cb7f6217ab39ea5 \
+                    size    36903
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools
+
+    # https://trac.macports.org/ticket/57199
+    use_configure       yes
+    configure.cmd       ${python.bin}
+    configure.pre_args
+    configure.args      setup.py egg_info
 
     livecheck.type      none
 }

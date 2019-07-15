@@ -5,13 +5,13 @@ PortGroup           python 1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 name                py-cryptography
-version             2.2.2
+version             2.7
 revision            0
 categories-append   devel
 platforms           darwin
 license             BSD
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -23,11 +23,12 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  990169925f758a3499c8ea57b17ee4cb028733d7 \
-                    sha256  9fc295bf69130a342e7a19a39d7bbeb15c0bcaabc7382ec33ef3b2b7d18d2f63
+checksums           rmd160  23bcb288d8d3495f119985ab1dd634a7ed2f5b40 \
+                    sha256  e6347742ac8f35ded4a46ff835c60e68c22a536a8ae5c4422966d06946b6d4c6 \
+                    size    495877
 
 platform macosx {
-    if { ${os.major} < 11 } {
+    if {${os.major} < 11} {
         # https://trac.macports.org/ticket/54519
         # https://trac.macports.org/ticket/54753
         # https://trac.macports.org/ticket/55079
@@ -37,7 +38,6 @@ platform macosx {
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \
-                        port:py${python.version}-idna \
                         port:py${python.version}-asn1crypto \
                         port:py${python.version}-six \
                         port:py${python.version}-cffi

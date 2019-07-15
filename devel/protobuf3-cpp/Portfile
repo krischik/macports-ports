@@ -4,10 +4,11 @@ PortSystem 1.0
 PortGroup  github 1.0
 PortGroup  cxx11 1.1
 
-github.setup    google protobuf 3.5.1 v
+github.setup    google protobuf 3.8.0 v
+revision        0
 name            protobuf3-cpp
 categories      devel
-maintainers     {blair @blair} openmaintainer
+maintainers     nomaintainer
 license         BSD
 description     Encode data in an efficient yet extensible format.
 conflicts       protobuf-cpp
@@ -45,8 +46,9 @@ if {${os.platform} eq "darwin" && ${os.major} < 11} {
 # bundled libtool version doesn't recognise -stdlib
 use_autoreconf  yes
 
-checksums       rmd160  21375095e562cfee25ba68d68e481cf608ac9a9a \
-                sha256  c28dba8782da2cfea1e11c61d335958c31a9c1bc553063546af9cbe98f204092
+checksums       rmd160  6fdecbb2ac2be899f97a8a94c126913071cab6e5 \
+                sha256  ddc96d83f3b7417da53bce2510b94ad2796465ef8763f7a4e82089157efe97aa \
+                size    4545607
 
 platforms       darwin
 
@@ -72,3 +74,5 @@ post-destroot {
 
 test.run    yes
 test.target check
+
+github.livecheck.regex  {([0-9.]+)}

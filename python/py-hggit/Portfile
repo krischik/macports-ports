@@ -6,14 +6,16 @@ PortGroup               bitbucket 1.0
 
 epoch                   20130201
 
-bitbucket.setup         durin42 hg-git 0.8.11
+bitbucket.setup         durin42 hg-git 2135ddef6d6e93afd8998ca824efd4680d4f1830
 name                    py-hggit
+version                 0.8.12-git-20190516
+revision                0
 
 categories-append       devel
 license                 GPL-2
 platforms               darwin
 supported_archs         noarch
-maintainers             {easieste @easye} {sean @seanfarley} openmaintainer
+maintainers             {easieste @easye} openmaintainer
 
 homepage                http://hg-git.github.com/
 description             Push to and pull from a Git server repository from Mercurial.
@@ -23,37 +25,25 @@ long_description        This is the Hg-Git plugin for Mercurial, adding the abil
                         or use a Git server as a collaboration point for a team with \
                         developers using both Git and Mercurial.
 
-checksums               rmd160  8e959fc098ebad1a128d250df9c795d22a144b48 \
-                        sha256  3965d98ba529aee4dadc2d4fd411d09c22a74ae90a2ee31fcaa9d15b36f659ac \
-                        size    127871
+checksums               rmd160  0005cb7464652a254d9219e9cd8d9af26a1917d0 \
+                        sha256  82709c845473815652fc304cf636cfe8da8048e05f88ee757fa190b17bb429ad \
+                        size    138454
 
 # can't set python.versions before adding custom subports
 subport py-hggit-devel {}
 subport py27-hggit-devel {}
 
+# obsolete 20190301
 if {[string match "*-devel" $subport]} {
-    bitbucket.setup     durin42 hg-git aae2d15de6af
-    bitbucket.livecheck default
-    name                py-hggit-devel
-    version             0.8.99
-    revision            24
-
-    checksums           rmd160  8cd66c1614952b28359435173bc83f3dc536bfa6 \
-                        sha256  9abd3951a7aff6245f06a73085e362250b376e2b631ad57bccfaf6f4fa596904
+    replaced_by         ${name}
+    PortGroup           obsolete 1.0
 }
 
 python.versions         27
 
 if {${name} ne ${subport}} {
-    depends_lib-append  bin:hg:mercurial \
+    depends_lib-append  port:mercurial \
                         bin:dulwich-2.7:py${python.version}-dulwich
-
-    conflicts           py${python.version}-hggit-devel
-    if {[string match "*-devel" $subport]} {
-        conflicts       py${python.version}-hggit
-    } else {
-        livecheck.type      none
-    }
 
     notes               "
 To enable hggit, add the following to your ~/.hgrc:

@@ -2,12 +2,18 @@
 
 PortSystem          1.0
 
+# Remember to update libvirt and py-libvirt at the same time.
 name                libvirt
-version             4.4.0
+version             5.4.0
+revision            0
+checksums           rmd160  f16d47c576101bde956e4c47469a001139021901 \
+                    sha256  1cfa802081bee09fd0ddfa97bd491e6554e25fa59f7a7758b41d8aef53458e7b \
+                    size    12346896
+
 categories          sysutils
 license             LGPL-2.1+
 platforms           darwin
-maintainers         {ryandesign @ryandesign} openmaintainer
+maintainers         {ryandesign @ryandesign} {danchr @danchr} openmaintainer
 
 description         Libvirt - The Virtualization API
 
@@ -17,10 +23,6 @@ long_description    A toolkit to interact with the virtualization \
 homepage            https://libvirt.org
 master_sites        ${homepage}/sources/
 use_xz              yes
-
-checksums           rmd160  e65ebeb5a802fca2719f4c066b285e401e449f32 \
-                    sha256  46631d63cb61af8042593a93fa046dddfff204d29858f20df77a125bd6f84ab6 \
-                    size    14668912
 
 depends_build       port:pkgconfig \
                     port:bash-completion \

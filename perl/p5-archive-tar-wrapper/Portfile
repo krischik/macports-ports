@@ -3,19 +3,23 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         Archive-Tar-Wrapper 0.23
-license             {Artistic-1 GPL}
+perl5.branches      5.26 5.28
+perl5.setup         Archive-Tar-Wrapper 0.36
+license             GPL-3
 maintainers         {devans @dbevans} openmaintainer
 description         Archive::Tar::Wrapper - API wrapper around the 'tar' utility
 long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  08bb974c95182b4240ee1d2954a126cfe5a209bd \
-                    sha256  4c02393a513619e123cff5f6bd3021b64b3e3146fac9dc2da02329de440674fa
+checksums           rmd160  6c500f8ab3b607dcfedbb43bd59c05d8209c26f3 \
+                    sha256  8f5f55e2cd84576d501ad43215a378095490f61e26957ec07e9ed7b8f048f1e8 \
+                    size    37284
 
 if {${perl5.major} != ""} {
+    depends_build-append \
+                    port:p${perl5.major}-dumbbench
+
     depends_lib-append \
                     port:p${perl5.major}-file-temp \
                     port:p${perl5.major}-file-which \

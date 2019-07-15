@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-widgetsnbextension
-version             3.2.1
+version             3.5.0
 revision            0
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -22,8 +22,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  c3e7603f83f08ebe471992dc3d31de7092865d83 \
-                    sha256  5417789ee6064ff515fd10be24870660af3561c02d3d48b26f6f44285d0f70cc
+checksums           rmd160  560655afc55e59374278fd80a419fc6925d06018 \
+                    sha256  8c9b4d73e388f2484296be18432d3cc0b8d59de243079a0db16a56c5571e1f86 \
+                    size    1112789
 
 if {${name} ne ${subport}} {
     depends_build-append \

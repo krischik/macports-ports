@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         libwww-perl 6.34 ../../authors/id/E/ET/ETHER
+perl5.branches      5.26 5.28
+perl5.setup         libwww-perl 6.39 ../../authors/id/O/OA/OALDERS
 maintainers         nomaintainer
 license             {Artistic-1 GPL}
 supported_archs     noarch
@@ -22,18 +22,21 @@ long_description    The libwww-perl collection is a set of Perl \
                     and even classes that help you implement \
                     simple HTTP servers.
 
-checksums           rmd160  409507ed0798f4e5d355e0292e4ea0256a0f9a16 \
-                    sha256  260363fd4204c0ddf7cd76f7b70e22beb3b5186e4c346f250a59288b52dc114c \
-                    size    167114
+checksums           rmd160  d95674f29df5dfe5f73dc6b00d8897c3817bce29 \
+                    sha256  9a8d7747938aa75d7d524c71574ae7f99ca66a5dac8255a7f7759f373e7774d5 \
+                    size    172113
 
 platforms           darwin
 
 if {${perl5.major} != ""} {
     depends_build-append \
                     port:p${perl5.major}-test-fatal \
+                    port:p${perl5.major}-test-leaktrace \
+                    port:p${perl5.major}-test-needs \
                     port:p${perl5.major}-test-requiresinternet
                     
     depends_lib-append \
+                    port:p${perl5.major}-data-dump \
                     port:p${perl5.major}-encode-locale \
                     port:p${perl5.major}-file-listing \
                     port:p${perl5.major}-html-form \

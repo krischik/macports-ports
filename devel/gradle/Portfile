@@ -3,10 +3,10 @@
 PortSystem          1.0
 
 name                gradle
-version             4.8
+version             5.5
 categories          devel java groovy
 license             Apache-2
-maintainers         {@amake madlon-kay.com:aaron+macports} openmaintainer
+maintainers         {amake @amake} openmaintainer
 
 description         An open-source build system that is based on the Groovy language
 long_description    Gradle is a build system which offers you ease, power and freedom. \
@@ -17,30 +17,30 @@ long_description    Gradle is a build system which offers you ease, power and fr
 
 homepage            https://gradle.org/
 platforms           darwin
+supported_archs     noarch
 distname            ${name}-${version}-bin
 master_sites        https://services.gradle.org/distributions
 
-checksums           rmd160  317bd8d2b67ae5b665638f55844c93bcaacd5b9a \
-                    sha256  f3e29692a8faa94eb0b02ebf36fa263a642b3ae8694ef806c45c345b8683f1ba \
-                    size    75885015
+# Update checksums for variant when updating these!
+checksums           rmd160  21c94bc4bc50c3bc8169b27d032d77c3bd21c91f \
+                    sha256  8d78b2ed63e7f07ad169c1186d119761c4773e681f332cfe1901045b1b0141bc \
+                    size    89150290
 
 worksrcdir          ${name}-${version}
 
 use_zip             yes
 use_configure       no
 
-build.cmd           true
+build {}
 
 pre-destroot {
     # Remove extraneous bat files
-    foreach f [glob -directory ${worksrcpath}/bin *.bat] {
-        delete $f
-    }
+    delete {*}[glob ${worksrcpath}/bin/*.bat]
 }
 
-destroot    {
+destroot {
     # Create the target java directory
-    xinstall -m 755 -d ${destroot}${prefix}/share/java/${name}
+    xinstall -m 0755 -d ${destroot}${prefix}/share/java/${name}
 
     # Copy over the needed elements of our directory tree
     copy ${worksrcpath}/bin \
@@ -53,10 +53,23 @@ destroot    {
     ln -s ${prefix}/share/java/${name}/bin/gradle ${destroot}${prefix}/bin
 }
 
-notes "
-Remember to set the environment variable GRADLE_HOME to the path to the gradle\
-distribution: ${prefix}/share/java/${name}
-"
+variant all description {Install supplemental documentation and source code} {
+    distname        ${name}-${version}-all
+
+    checksums       rmd160  e21e84110dca60ad139e6d5e35dc36b1fcb05da8 \
+                    sha256  302b7df46730ce75c582542c056c9bf5cac2b94fbf2cc656d0e37e41e8a5d371 \
+                    size    136295812
+
+    post-destroot {
+        xinstall -m 0755 -d ${destroot}${prefix}/share/doc/${name}
+        copy ${worksrcpath}/getting-started.html \
+            ${worksrcpath}/media \
+            ${worksrcpath}/src \
+            ${worksrcpath}/docs \
+            ${worksrcpath}/samples \
+            ${destroot}${prefix}/share/doc/${name}
+    }
+}
 
 livecheck.type  regex
 livecheck.url   ${master_sites}

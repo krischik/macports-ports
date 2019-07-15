@@ -5,7 +5,8 @@ PortGroup           active_variants 1.1
 PortGroup           python 1.0
 
 name                certbot-apache
-version             0.25.1
+version             0.35.1
+revision            0
 categories          security
 license             Apache-2
 maintainers         {mps @Schamschula} openmaintainer
@@ -15,11 +16,21 @@ platforms           darwin
 homepage            https://pypi.python.org/pypi/certbot-apache
 master_sites        pypi:c/certbot-apache
 
-python.versions     27 36
+python.versions     27 36 37
 
-checksums           rmd160  204b5fd36aeff32e383c841511149a4a02d4da27 \
-                    sha256  ed012465617073a0f1057fe854dc8d1eb6d2dd7ede1fb2eee765129fed2a095a \
-                    size    161165
+checksums           rmd160  c3afb6dd4ed3d5229ec6e9106ae4c15293d02634 \
+                    sha256  69962eafe0ec9be8eb2845e3622da6f37ecaeee7e517ea172d71d7b31f01be71 \
+                    size    180516
+
+if {[variant_isset python37]} {
+    python.default_version 37
+} elseif {[variant_isset python36]} {
+    python.default_version 36
+} else {
+    python.default_version 27
+}
+
+depends_build       port:py${python.version}-setuptools
 
 depends_lib-append  port:certbot \
                     port:py${python.version}-acme \
@@ -29,16 +40,14 @@ depends_lib-append  port:certbot \
                     port:py${python.version}-zopeinterface \
                     port:py${python.version}-mock
 
-variant python27 conflicts python36 description {Use Python 2.7} {
-    python.default_version     27
-    require_active_variants    certbot python27
+variant python27 conflicts python36 python37 description {Use Python 2.7} {
+    depends_lib-append  port:py${python.version}-python2-pythondialog
 }
 
-variant python36 conflicts python27 description {Use Python 3.6} {
-    python.default_version     36
-    require_active_variants    certbot python36
-}
+variant python36 conflicts python27 python37 description {Use Python 3.6} {}
 
-if {![variant_isset python36]} {
+variant python37 conflicts python27 python36 description {Use Python 3.7} {}
+
+if {![variant_isset python36] && ![variant_isset python37]} {
     default_variants +python27
 }

@@ -5,25 +5,41 @@ PortGroup           github 1.0
 PortGroup           python 1.0
 PortGroup           select 1.0
 
-github.setup        google yapf 0.20.1 v
+github.setup        google yapf 0.27.0 v
+revision            0
 name                py-yapf
 categories-append   devel
 license             Apache-2
-maintainers         {sean @seanfarley} openmaintainer
+maintainers         {reneeotten @reneeotten} openmaintainer
 description         A formatter for Python files
-long_description \
-    YAPF is based off of 'clang-format', developed by Daniel Jasper.
+long_description    YAPF is based off of 'clang-format', developed by Daniel Jasper.
 
 platforms           darwin
 supported_archs     noarch
 
-checksums           rmd160  513668fb0d10adfa78c28fd5dc60b4f6e6066c4b \
-                    sha256  6a42aae3447d5bcb85d4cac96ce330a034306d9427914dc5123c87616683c0ff
+checksums           rmd160  d276d961140a52bca5b84d382af646ba8d0a8961 \
+                    sha256  cc0b7140fc1977dbf14c546bd2c2bf7b727db6fffd1fe676409100656d7672aa \
+                    size    156367
 
-python.versions     27 35 36
+python.versions     27 35 36 37
 
-if {$subport ne $name} {
-    depends_run     port:yapf_select
+if {${subport} ne ${name}} {
+    depends_lib-append \
+                    port:py${python.version}-setuptools
+
+    depends_run-append \
+                    port:yapf_select
+
+    test.run        yes
+    test.cmd        ${python.bin} setup.py
+
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} AUTHORS CHANGELOG \
+            CONTRIBUTING.rst CONTRIBUTORS HACKING.rst \
+            LICENSE README.rst ${destroot}${docdir}
+    }
 
     select.group    yapf
     select.file     ${filespath}/py${python.version}-yapf

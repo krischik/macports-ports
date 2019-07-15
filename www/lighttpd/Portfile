@@ -1,9 +1,15 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem                  1.0
+PortGroup                   legacysupport 1.0
 
 name                        lighttpd
-version                     1.4.49
+version                     1.4.54
+revision                    0
+checksums                   rmd160  24ac7d816918e1c87aaaa1e6ae8f775a464527fc \
+                            sha256  cf14cce2254a96d8fcb6d3181e1a3c29a8f832531c3e86ff6f2524ecda9a8721 \
+                            size    763248
+
 set branch                  [join [lrange [split ${version} .] 0 1] .]
 categories                  www
 platforms                   darwin
@@ -21,10 +27,6 @@ long_description            lighttpd is a secure, fast, compliant and very \
 homepage                    http://www.lighttpd.net/
 master_sites                http://download.lighttpd.net/lighttpd/releases-${branch}.x/
 use_xz                      yes
-
-checksums                   rmd160  f7e3ff273455e1ad51f1fdc9514066f9ec3e716c \
-                            sha256  aedf49d7127d9e4c0ea56618e9e945a17674dc46a37ac7990120f87dd939ce09 \
-                            size    710964
 
 depends_build-append        port:pkgconfig
 
@@ -50,7 +52,8 @@ configure.args-append       CC_FOR_BUILD="${configure.cc}" \
 
 platform darwin {
     depends_lib-append      port:libev
-    patchfiles-append       patch-conf-darwin.diff
+    patchfiles-append       patch-conf-darwin.diff \
+                            patch-tigerfixes.diff
     post-patch {
         if {${os.major} <= 8} {
             set user "www"
@@ -79,15 +82,15 @@ destroot.keepdirs           ${destroot}${prefix}/var/log/lighttpd \
 post-destroot {
     xinstall -d ${destroot}${lighttpd_config_dir}/conf.d
     foreach f [glob ${worksrcpath}/doc/config/*.conf] {
-        xinstall -m 644 ${f} ${destroot}${lighttpd_config_dir}/[file tail ${f}].default
+        xinstall -m 0644 ${f} ${destroot}${lighttpd_config_dir}/[file tail ${f}].default
     }
     foreach f [glob ${worksrcpath}/doc/config/conf.d/*.conf] {
-        xinstall -m 644 ${f} ${destroot}${lighttpd_config_dir}/conf.d/[file tail ${f}].default
+        xinstall -m 0644 ${f} ${destroot}${lighttpd_config_dir}/conf.d/[file tail ${f}].default
     }
 
    set docdir ${destroot}${prefix}/share/doc/${name}
    xinstall -d ${docdir}
-   xinstall -m 644 -W ${worksrcpath} \
+   xinstall -m 0644 -W ${worksrcpath} \
        AUTHORS \
        COPYING \
        NEWS \

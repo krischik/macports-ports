@@ -6,10 +6,12 @@ PortGroup               github 1.0
 PortGroup               cmake 1.0
 PortGroup               compiler_blacklist_versions 1.0
 
-github.setup            keepassxreboot keepassxc 2.3.3
 name                    KeePassXC
+
+subport KeePassXC-devel {}
+
 categories              security aqua
-maintainers             {@yan12125 gmail.com:yan12125} openmaintainer
+maintainers             {yan12125 @yan12125} openmaintainer
 
 description             KeePassXC is a cross-platform community-driven port \
                         of the Windows application “Keepass Password Safe”.
@@ -23,64 +25,96 @@ license                 GPL-2+
 license_noconflict      openssl
 
 homepage                https://keepassxc.org
-github.tarball_from     releases
-use_xz                  yes
-distname                ${github.project}-${version}-src
-worksrcdir              ${github.project}-${version}
 
-checksums               rmd160  f91dbd9d38d419b2240a7b99715a269af688bc11 \
-                        sha256  cfff85ef89ba590aec798c59bea4aa3db00626d7bff8cdde0f62ee34aea60ad5 \
-                        size    4113768
-
-patchfiles              patch-no-deployqt.diff
-
-qt5.depends_component   qtmacextras
+qt5.depends_component   qtmacextras qtsvg
 qt5.depends_build_component \
                         qttools
 
 depends_lib-append      port:argon2 \
                         port:libgcrypt \
                         port:libsodium \
+                        port:qrencode \
+                        port:quazip \
+                        port:ykpers \
                         port:zlib
 
-# KeePassXC uses -fstack-protector-strong on Clang [1]. That flag is not
-# available until clang 602 [2] or upstream clang 3.5 [3]
-# [1] https://github.com/keepassxreboot/keepassxc/blob/develop/CMakeLists.txt
-# [2] https://opensource.apple.com/source/clang/clang-600.0.57/src/tools/clang/lib/CodeGen/CodeGenModule.cpp.auto.html
-#     https://opensource.apple.com/source/clang/clang-602.0.53/src/tools/clang/lib/CodeGen/CodeGenModule.cpp.auto.html
-# [3] https://github.com/llvm-project/clang/blob/release_34/lib/CodeGen/CodeGenModule.cpp
-#     https://github.com/llvm-project/clang/blob/release_35/lib/CodeGen/CodeGenModule.cpp
-compiler.blacklist-append {clang < 602} macports-clang-3.4 macports-clang-3.3
+# KeePassXC now requires a compiler with C++ defect report 253 (DR 253)
+# corrected[1]. AppleClang 8.0.0 is known to be broken[2] and
+# AppleClang 9.0.0 is known to work[3].
+# [1] https://stackoverflow.com/a/47368753/3786245
+# [2] https://build.macports.org/builders/ports-10.11_x86_64-builder/builds/77570/steps/install-port/logs/stdio
+# [3] https://build.macports.org/builders/ports-10.12_x86_64-builder/builds/82949/steps/install-port/logs/stdio
+compiler.blacklist-append {clang < 900} macports-clang-3.4 macports-clang-3.3
 # XXX: the following line shouldn't be necessary - revisit when libc++ becomes the default and default compiler configurations are updated
-compiler.fallback-append macports-clang-5.0 macports-clang-4.0 macports-clang-3.9
+compiler.fallback-append macports-clang-5.0
+
+pre-configure {
+    reinplace "s#/usr/local/bin#${prefix}/bin#" \
+        ${worksrcpath}/CMakeLists.txt
+}
 
 cmake.out_of_source     yes
 configure.pre_args-append \
     -DCMAKE_INSTALL_PREFIX=${applications_dir} \
     -DCMAKE_INSTALL_MANDIR=${prefix}/share/man \
-    -DWITH_XC_HTTP=ON \
     -DWITH_XC_BROWSER=ON \
+    -DWITH_XC_KEESHARE=ON \
+    -DWITH_XC_KEESHARE_SECURE=ON \
+    -DWITH_XC_NETWORKING=ON \
     -DWITH_XC_SSHAGENT=ON \
-    -DWITH_XC_NETWORKING=ON
-
-if {${configure.cxx_stdlib} eq "libstdc++"} {
-    configure.pre_args-append   -DWITH_CXX11=OFF
-}
+    -DWITH_XC_YUBIKEY=ON \
+    -DWITH_XC_UPDATECHECK=OFF
 
 if {${os.major} < 12} {
-    # autotype does not compile on 10.7
-    configure.pre_args-append   -DWITH_XC_AUTOTYPE=OFF
+    pre-fetch {
+        ui_error "${name} ${version} requires Mac OS X 10.8 or greater."
+        return -code error "incompatible Mac OS X version"
+    }
 }
 
-variant yubikey description {Enable YubiKey challenge-response support} {
+# In the future the Touch ID feature may require Darwin 17 (10.13)
+# https://github.com/keepassxreboot/keepassxc/issues/2484
+if {${os.major} >= 16} {
+    configure.pre_args-append   -DWITH_XC_TOUCHID=ON
+}
+
+if {${os.major} < 16} {
+    pre-configure {
+        # error: call to unavailable function 'operator delete': introduced in macOS 10.12
+        reinplace "s|-fsized-deallocation||" ${worksrcpath}/CMakeLists.txt
+    }
+}
+
+if {${subport} eq ${name}} {
+    # stable
+    github.setup            keepassxreboot keepassxc 2.4.3
+    github.tarball_from     archive
+
+    conflicts               KeePassXC-devel
+
+    checksums               rmd160  44302495518351d1596117bbb6f2e1c224715c19 \
+                            sha256  4e78c04d0e3ea0a45d4f944e396358866dfde7316721b031c135b78920099af6 \
+                            size    4840019
+
+    patchfiles              stable/patch-no-deployqt.diff
+
     configure.pre_args-append \
-        -DWITH_XC_YUBIKEY=ON
-    depends_lib-append port:ykpers
-}
+                            -DKEEPASSXC_BUILD_TYPE=Release
+} else {
+    # devel
+    github.setup            keepassxreboot keepassxc ce1f19cacc229c2097189620288f50ee512f6c29
+    github.tarball_from     archive
+    version                 20190703
+    revision                0
 
-pre-configure {
-    reinplace "s#/usr/local/bin#${prefix}/bin#" \
-        ${worksrcpath}/CMakeLists.txt
+    conflicts               KeePassXC
+
+    checksums               rmd160  e0409fd526567cd290c79708778fe3a6b68d1b26 \
+                            sha256  033183a33070456d2ed7db4122880446663c547729442cd736ea422386d7616d \
+                            size    9445627
+
+    patchfiles              devel/patch-no-deployqt.diff \
+                            devel/patch-osx10.11.diff
 }
 
 post-destroot {
@@ -89,7 +123,10 @@ post-destroot {
              LICENSE.CC0 LICENSE.GPL-2 LICENSE.GPL-3 LICENSE.LGPL-2.1 \
              LICENSE.LGPL-3 LICENSE.NOKIA-LGPL-EXCEPTION \
              ${destroot}${prefix}/share/doc/${name}
+
+    ln -s ${applications_dir}/KeePassXC.app/Contents/MacOS/keepassxc-cli \
+        ${destroot}${prefix}/bin/keepassxc-cli
 }
 
 test.run        yes
-test.target     test
+test.target     test ARGS="-V"

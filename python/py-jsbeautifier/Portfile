@@ -1,27 +1,28 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
-PortSystem 1.0
-PortGroup python 1.0
+PortSystem          1.0
+PortGroup           python 1.0
+PortGroup           github 1.0
 
+github.setup        beautify-web js-beautify 1.9.0 v
+revision            0
 name                py-jsbeautifier
-version             1.7.5
 categories-append   textproc
 platforms           darwin
 supported_archs     noarch
 license             MIT
-maintainers         {gmail.com:yan12125 @yan12125} openmaintainer
+maintainers         nomaintainer
 
 description         JS beautifier written in Python
 long_description    ${description}
 
-homepage            http://jsbeautifier.org/
-master_sites        pypi:j/jsbeautifier
-distname            jsbeautifier-${version}
+homepage            https://beautifier.io/
 
-checksums           rmd160  be3413dce3822903c6f685f8cea4d88143a154db \
-                    sha256  78eb1e5c8535484f0d0b588aca38da3fb5e0e34de2d1ab53c077e71c55757473
+checksums           rmd160  4145ea10409a77b42bdc70782f8b40e2b8445ca7 \
+                    sha256  db25820d1c24df1822c32fbebbf63d450ce281956da2defff790ddf8b519e1a9 \
+                    size    1058163
 
-python.versions     27 36
+python.versions     27 37
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -29,8 +30,16 @@ if {${name} ne ${subport}} {
 
     depends_lib-append  port:py${python.version}-six \
                         port:py${python.version}-editorconfig
-    post-destroot {
-        reinplace "s|#! /usr/bin/env python|#!${python.bin}|" ${build.dir}/js-beautify
-        xinstall -m 755 ${build.dir}/js-beautify ${destroot}${python.prefix}/bin
-    }
+
+    build.dir           ${worksrcpath}/python
+
+    test.run            yes
+    test.env            PYTHONPATH=${worksrcpath}/python
+    test.dir            ${worksrcpath}
+    test.cmd            ${python.bin}
+    test.target         python/js-beautify-test.py
+
+    livecheck.type      none
+} else {
+    github.livecheck.regex  {([0-9.]+)}
 }

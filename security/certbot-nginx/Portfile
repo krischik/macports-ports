@@ -5,7 +5,8 @@ PortGroup           active_variants 1.1
 PortGroup           python 1.0
 
 name                certbot-nginx
-version             0.25.1
+version             0.35.1
+revision            0
 categories          security
 license             Apache-2
 maintainers         {mps @Schamschula} openmaintainer
@@ -15,11 +16,21 @@ platforms           darwin
 homepage            https://pypi.python.org/pypi/certbot-nginx
 master_sites        pypi:c/certbot-nginx
 
-python.versions     27 36
+python.versions     27 36 37
 
-checksums           rmd160  2f993f2e83a12f6e3f5b3053a52e0a8d8da4ec10 \
-                    sha256  68f98b41c54e0bf4218ef293079597176617bee3837ae3aa6528ce2ff0bf4f9c \
-                    size    71723
+checksums           rmd160  88d504eebd512ac61ab3ca2a6cd41a5ba558f3c3 \
+                    sha256  85e9a48b4b549f6989304f66cb2fad822c3f8717d361bde0d6a43aabb792d461 \
+                    size    75839
+
+if {[variant_isset python37]} {
+    python.default_version 37
+} elseif {[variant_isset python36]} {
+    python.default_version 36
+} else {
+    python.default_version 27
+}
+
+depends_build       port:py${python.version}-setuptools
 
 depends_lib-append  port:certbot \
                     port:py${python.version}-acme \
@@ -29,16 +40,18 @@ depends_lib-append  port:certbot \
                     port:py${python.version}-zopeinterface \
                     port:py${python.version}-mock
 
-variant python27 conflicts python36 description {Use Python 2.7} {
-    python.default_version     27
-    require_active_variants    certbot python27
+post-patch {
+    reinplace "s|/usr/local/etc/nginx|${prefix}/etc/nginx|" ${worksrcpath}/certbot_nginx/constants.py
 }
 
-variant python36 conflicts python27 description {Use Python 3.6} {
-    python.default_version     36
-    require_active_variants    certbot python36
+variant python27 conflicts python36 python37 description {Use Python 2.7} {
+    depends_lib-append  port:py${python.version}-python2-pythondialog
 }
 
-if {![variant_isset python36]} {
+variant python36 conflicts python27 python37 description {Use Python 3.6} {}
+
+variant python37 conflicts python27 python36 description {Use Python 3.7} {}
+
+if {![variant_isset python36] && ![variant_isset python37]} {
     default_variants +python27
 }

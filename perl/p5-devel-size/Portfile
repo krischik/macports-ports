@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         Devel-Size 0.81
+perl5.branches      5.26 5.28
+perl5.setup         Devel-Size 0.83
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         Perl extension for finding the memory usage of Perl variables
@@ -12,5 +12,6 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  f29e44dbb9a065ffe191528ccd73790f3c53cb78 \
-                    sha256  7714cd56b9092f0139f12bbbc3ef3758fe9fc64083f7493114deca53b401f949
+checksums           rmd160  364fd8832d141f005645975f9032ea0bff500e43 \
+                    sha256  757a67e0aa59ae103ea5ca092cbecc025644ebdc326731688ffab6f8823ef4b3 \
+                    size    75372
