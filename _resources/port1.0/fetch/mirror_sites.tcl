@@ -443,6 +443,7 @@ set portfetch::mirror_sites::sites(gnu) {
 }
 
 set portfetch::mirror_sites::sites(gnupg) {
+    https://gnupg.org/ftp/gcrypt/
     http://mirror.cc.columbia.edu/pub/software/gnupg/
     http://ftp.freenet.de/pub/ftp.gnupg.org/gcrypt/
     ftp://ftp.gnupg.org/gcrypt/
@@ -501,7 +502,7 @@ set portfetch::mirror_sites::sites(macports) {
 }
 
 global os.platform os.major
-set distfiles_scheme [expr {${os.platform} eq "darwin" && ${os.major} < 13 ? "http" : "https"}]
+set distfiles_scheme [expr {${os.platform} eq "darwin" && ${os.major} < 10 ? "http" : "https"}]
 
 set portfetch::mirror_sites::sites(macports_distfiles) "
     ${distfiles_scheme}://distfiles.macports.org/:mirror
