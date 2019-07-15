@@ -129,15 +129,16 @@ destroot {
     #
     system "
         cp -r ${worksrcpath}/. ${destroot}${prefix}/share/java/${distname}/.
+
+        if test -e ${destroot}${prefix}/share/java/android-sdk-macosx/build-tools/28.0.3/zipalign; then
+            cp                                                                                  \
+                ${destroot}${prefix}/share/java/android-sdk-macosx/build-tools/28.0.3/zipalign  \
+                ${destroot}${prefix}/share/java/android-sdk-macosx/tools/zipalign
+        fi
     "
 
     xinstall -m 770 -d ${destroot}${prefix}/share/java/${distname}/samples
     xinstall -m 770 -d ${destroot}${prefix}/share/java/${distname}/temp
-
-    copy                                                                                \
-        ${destroot}${prefix}/share/java/android-sdk-macosx/build-tools/28.0.3/zipalign  \
-        ${destroot}${prefix}/share/java/android-sdk-macosx/tools/zipalign
-
 }
 
 platform macosx {
@@ -171,7 +172,7 @@ platform macosx {
         ui_info "# sudo dscl . append /Groups/_developer GroupMembership <username> #"
         ui_info "####################################################################"
 
-        foreach comp { Android-Emulator Android-Monitor} {
+        foreach comp {Android-Monitor} {
             copy                                                                                \
                 ${workpath}/appbundles-r${patchversion}/${comp}.app                             \
                 ${destroot}${applications_dir}/Developer
