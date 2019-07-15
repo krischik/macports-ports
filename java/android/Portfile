@@ -5,7 +5,7 @@ PortSystem 1.0
 name                android
 version             28.0.3
 categories          java devel emulators
-maintainers         openmaintainer
+maintainers         openmaintainer krischik
 license             Apache-2
 platforms           darwin
 description         Android SDK
@@ -182,7 +182,7 @@ platform macosx {
     }
 }
 
-variant platform_23 {
+variant platform_23 description "Install Android API 23 Version 6.0" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
@@ -198,7 +198,7 @@ variant platform_23 {
     }
 }
 
-variant platform_24 {
+variant platform_24 description "Install Android API 24 Version 7.0" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
@@ -214,7 +214,7 @@ variant platform_24 {
     }
 }
 
-variant platform_25 {
+variant platform_25 description "Install Android API 25 Version 7.1.2" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
@@ -230,7 +230,7 @@ variant platform_25 {
     }
 }
 
-variant platform_26 {
+variant platform_26 description "Install Android API 26 Version 8.0" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
@@ -246,7 +246,7 @@ variant platform_26 {
     }
 }
 
-variant platform_27 {
+variant platform_27 description "Install Android API 27 Version 8.1" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
@@ -262,7 +262,7 @@ variant platform_27 {
     }
 }
 
-variant platform_28 {
+variant platform_28 description "Install Android API 28 Version 9.0" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
