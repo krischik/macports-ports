@@ -4,7 +4,7 @@ PortSystem          1.0
 
 set my_name         gnupg
 name                ${my_name}2
-version             2.2.8
+version             2.2.17
 categories          mail security
 maintainers         {jann @roederja} {ionic @Ionic} openmaintainer
 license             GPL-3+
@@ -23,9 +23,10 @@ master_sites        ${my_name}:${my_name}
 
 use_bzip2           yes
 
-checksums           rmd160  200fc5ee2f8c25ca1ce9c7ac10f7479bc4f30406 \
-                    sha256  777b4cb8ced21965a5053d4fa20fe11484f0a478f3d011cef508a1a49db50dcd \
-                    size    6632465
+checksums           rmd160  13ad8e3e216d8c7ff6786329d8c15627ed2b9af2 \
+                    sha256  afa262868e39b651a2db4c071fba90415154243e83a830ca00516f9a807fd514 \
+                    sha1    12c1cee8871c03f0315fc8f27876364b75c95b12 \
+                    size    6717554
 
 platform darwin {
     if {![variant_isset pinentry] && ![variant_isset pinentry_mac]} {
@@ -55,12 +56,10 @@ depends_lib         port:libiconv           \
                     port:gettext            \
                     port:zlib               \
                     port:bzip2              \
-                    port:bison              \
                     port:libassuan          \
                     port:libksba            \
                     port:libgcrypt          \
                     port:libgpg-error       \
-                    port:openldap           \
                     port:readline           \
                     port:gnutls             \
                     port:libusb-compat      \
@@ -80,6 +79,16 @@ variant pinentry_mac conflicts pinentry description {Handle user input via pinen
     depends_lib-append      port:pinentry-mac
     configure.args-append   --with-pinentry-pgm=${applications_dir}/pinentry-mac.app/Contents/MacOS/pinentry-mac
 }
+
+configure.args-append --disable-openldap --with-ldap=no
+variant openldap description {Support openldap} {
+    depends_lib-append      port:openldap
+    configure.args-delete   --disable-openldap
+    configure.args-delete   --with-ldap=no
+    configure.args-append   --with-ldap=${prefix}
+}
+
+default_variants    +openldap
 
 test.run            yes
 test.dir            ${worksrcpath}/tests

@@ -20,9 +20,11 @@ subport jsoncpp-devel {}
 if {${subport} eq ${name}} {
 
     # release
-    github.setup    open-source-parsers jsoncpp 1.8.4
-    checksums       rmd160 46ddb792a25c1ac62967adef604d760e68c084f9 \
-                    sha256 9c2370371a76337e4afe3128cceec943620f97d12c720c3046f39eae6f85f4cd
+    github.setup    open-source-parsers jsoncpp 1.9.1
+    checksums       rmd160 83f09e5315eb913eb9867d0b082f90bac195e29f \
+                    sha256 79c71d0816dd11e32e76561a4481c30352a1ea922c1cddce81608a2621c18dfe \
+                    size   203119
+    revision        0
 
     conflicts       jsoncpp-devel
 
@@ -30,22 +32,26 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    github.setup    open-source-parsers jsoncpp c4103ab390d79036786296b30625c896810edbc3
-    version         20180603
-    checksums       rmd160 607f9c9ad627e8964b3dacc07c5d7569a8ec9ae7 \
-                    sha256 809059fb91fef3971ebdd8ec9fb85d22c92d86c25519ff87b130db98ec6d6548 \
-                    size   202102
+    github.setup open-source-parsers jsoncpp fd940255ced7773489f818e62d7074fbcfda81cc
+    version   20190826-[string range ${github.version} 0 7]
+    checksums rmd160 d359292b9b13f824265e82922127772034bd1d84 \
+              sha256 8060e04b5048466b43e9f93f7f6d1c3b967ce16bc6f87a04d72d527a80307644 \
+              size   202850
+    revision  0
 
     conflicts       jsoncpp
     long_description ${description}: \
         This port follows the GIT master version of ${name}, which is typically updated every few days to weeks.
 
+    # temporary patch to fix build errors, mostly in how [[deprecated]] is used
+    patchfiles-append patch-fix-build.diff
+    patch.pre_args -p1
+    
 }
-
-patchfiles          patch-CMakeLists.txt.diff
 
 cmake.out_of_source yes
 
 configure.args-append \
-                    -DBUILD_SHARED_LIBS=ON \
-                    -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF
+    -DBUILD_SHARED_LIBS=ON \
+    -DJSONCPP_WITH_POST_BUILD_UNITTEST=OFF \
+    -DCCACHE_FOUND=NO

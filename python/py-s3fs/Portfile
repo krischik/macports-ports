@@ -5,14 +5,14 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-s3fs
-version             0.1.5
+version             0.3.4
 revision            0
 categories-append   devel
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     27 34 35 36
+python.versions     27 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -24,14 +24,16 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  5bffc2ae5e7ab33c4c145ca0ea4e36cd92c307ba \
-                    sha256  4fbab74d72ceeb1a6f249165bde7b1d1c4dd758390339f52c84f0832bc5117a7 \
-                    size    27215
+checksums           rmd160  6c014d6e48572f8927610a0b641fb63c10ac541c \
+                    sha256  81e92de5448a40dd2fcc26ef86c314bb368bed9dd84a48f448d2d6406d9c0d84 \
+                    size    53333
 
 if {${name} ne ${subport}} {
     depends_build-append \
                         port:py${python.version}-setuptools
-    depends_lib-append  port:py${python.version}-boto3
+    depends_lib-append  port:py${python.version}-botocore \
+                        port:py${python.version}-boto3 \
+                        port:py${python.version}-six
 
     livecheck.type      none
 }

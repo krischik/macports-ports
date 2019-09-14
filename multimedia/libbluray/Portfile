@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                libbluray
-version             1.0.2
+version             1.1.2
 categories          multimedia
 license             LGPL-2.1
 platforms           darwin
@@ -12,8 +12,8 @@ description         an open-source library designed for Blu-Ray Discs playback
 
 long_description    ${description}
 
-homepage            http://www.videolan.org/developers/libbluray.html
-master_sites        http://get.videolan.org/libbluray/${version}
+homepage            https://www.videolan.org/developers/libbluray.html
+master_sites        https://get.videolan.org/libbluray/${version}
 
 use_bzip2           yes
 
@@ -24,9 +24,9 @@ depends_lib         port:libxml2 \
                     port:fontconfig \
                     port:freetype
 
-checksums           rmd160  37ac4f42277f7feb79ee9b99c5d4870b1e4bfddf \
-                    sha256  6d9e7c4e416f664c330d9fa5a05ad79a3fb39b95adfc3fd6910cbed503b7aeff \
-                    size    733058
+checksums           rmd160  bbfea1093f9fc5ea089cf5860e55e020b916a4b0 \
+                    sha256  a3dd452239b100dc9da0d01b30e1692693e2a332a7d29917bf84bb10ea7c0b42 \
+                    size    745779
 
 configure.perl      ${prefix}/bin/perl5
 

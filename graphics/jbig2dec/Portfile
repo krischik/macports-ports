@@ -3,9 +3,10 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        ArtifexSoftware ghostpdl-downloads 922 gs
+github.setup        ArtifexSoftware ghostpdl-downloads 927 gs
 name                jbig2dec
-version             0.14
+version             0.16
+revision            0
 categories          graphics
 platforms           darwin
 license             AGPL-3+
@@ -24,13 +25,15 @@ long_description    JBIG2 is designed for lossy or lossless encoding \
                     in PDF files. Thus its primary focus is the set of \
                     JBIG2 features supported in PDF.
 
-homepage            https://artifex.com/developers-ghostscript-jbig2dec/
+homepage            https://www.jbig2dec.com/
 github.tarball_from releases
 distname            ${name}-${version}
 
-checksums           rmd160  c7421f9ff09bc125f3245ba7540fd969932ba8ab \
-                    sha256  21b498c3ba566f283d02946f7e78e12abbad89f12fe4958974e50882c185014c \
-                    size    463572
+checksums           rmd160  6e494531b7a43f0bd6ef700d6d7ead1d1860865d \
+                    sha256  a4f6bf15d217e7816aa61b92971597c801e81f0a63f9fe1daee60fb88e0f0602 \
+                    size    728225
+
+depends_build       port:autoconf
 
 post-destroot {
     set docdir ${destroot}${prefix}/share/doc/${name}

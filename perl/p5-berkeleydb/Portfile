@@ -3,32 +3,40 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         BerkeleyDB 0.55
-# Increase the revision any time the version of db48 or db53 changes.
+perl5.branches      5.26 5.28
+perl5.setup         BerkeleyDB 0.63
+revision            0
+
+# Increase the revision any time the version of db48 db53 db60 or db62 changes.
 # See https://trac.macports.org/ticket/56561
-revision            1
+# version 0.63 revision 0 is built with
+# db48 4.8.30
+# db53 5.3.28
+# db60 6.0.30
+# eb62 6.2.32
+
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
-description         BerkeleyDB is a module which allows Perl programs \
-                    to make use of the facilities provided by \
-                    Berkeley DB version 2 or greater.
+description         BerkeleyDB - Perl extension for Berkeley DB version 2, 3, 4, 5 or 6
 long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  ba5dde51bd5672dfe9117f85808ad4f91ba142d5 \
-                    sha256  6f28e141c7e2fbc455621bc809d6e7d84a3640cc77568b07798ae3933107e44f
+checksums           rmd160  14b7a559f443c18e57ca62354a7a4482659a8cf5 \
+                    sha256  7e09938d22ebb9c5e0117e9303853937c3cfad3068b69869c7b020cfca5102d2 \
+                    size    208324
 
-variant db48 conflicts db53 description {Build with Berkeley DB 4.8} {}
-variant db53 conflicts db48 description {Build with Berkeley DB 5.3} {}
+variant db48 conflicts db53 db60 db62 description {Build with Berkeley DB 4.8} {}
+variant db53 conflicts db48 db60 db62 description {Build with Berkeley DB 5.3} {}
+variant db60 conflicts db48 db53 db62 description {Build with Berkeley DB 6.0} {}
+variant db62 conflicts db48 db53 db60 description {Build with Berkeley DB 6.2} {}
 
-if {![variant_isset db48] && ![variant_isset db53]} {
-    default_variants +db53
+if {![variant_isset db48] && ![variant_isset db53] && ![variant_isset db60] && ![variant_isset db62]} {
+    default_variants +db62
 }
 
 if {${perl5.major} != ""} {
-    foreach setvariant {db48 db53} {
+    foreach setvariant {db48 db53 db60 db62} {
         if {[variant_isset $setvariant]} {
             depends_lib-append \
                     port:$setvariant

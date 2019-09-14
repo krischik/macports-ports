@@ -6,9 +6,9 @@ PortGroup       github 1.0
 PortGroup       cxx11 1.1
 
 name            py-protobuf3
-version         3.5.1
+version         3.9.1
 categories-append   devel
-maintainers     nomaintainer
+maintainers     {toby @tobypeterson} openmaintainer
 license         BSD
 description     Encode data in an efficient yet extensible format.
 
@@ -36,18 +36,21 @@ master_sites    https://github.com/google/protobuf/releases/download/v${version}
 distfiles       protobuf-python-${version}.tar.gz
 worksrcdir      protobuf-${version}
 
-checksums       sha256  13d3c15ebfad8c28bee203dd4a0f6e600d2a7d2243bac8b5d0e517466500fcae \
-                rmd160  b2a7574a89fca44cf2b218aa29048909d9aed796
+checksums       sha256  d07934c7e78d424e5f0f2182c2f3bed47214481005b9614a7480d6aaac97e7ef \
+                rmd160  e25c28d0b2d2cd6e66557111da0ced3563a07785 \
+                size    4874011
 
 platforms       darwin
 
-python.versions 27 35 36
+python.versions 27 35 36 37
 
 if {${name} ne ${subport}} {
-    depends_build   port:py${python.version}-setuptools \
-                    port:py${python.version}-absl
+    conflicts       py${python.version}-protobuf
 
-    depends_lib     port:protobuf3-cpp
+    depends_build   port:py${python.version}-setuptools
+
+    depends_lib     port:protobuf3-cpp \
+                    port:py${python.version}-six
 
     worksrcdir      ${worksrcdir}/python
     
@@ -78,4 +81,8 @@ if {${name} ne ${subport}} {
     test.run        yes
     test.cmd        "${python.bin} setup.py"
     test.target     test --cpp_implementation
+
+    livecheck.type  none
 }
+
+github.livecheck.regex  {([0-9.]+)}

@@ -4,12 +4,23 @@ PortSystem              1.0
 PortGroup               muniversal 1.0
 
 name                    freetype
-version                 2.8.1
+version                 2.10.1
+revision                0
+set docdistname         ${name}-doc-${version}
+use_xz                  yes
+checksums               ${distname}${extract.suffix} \
+                        rmd160  9f4d8caf9396995b81658c2534d4dce17b48a733 \
+                        sha256  16dbfa488a21fe827dc27eaf708f42f7aa3bb997d745d31a19781628c36ba26f \
+                        size    2378784 \
+                        ${docdistname}${extract.suffix} \
+                        rmd160  5c3812a0cee9b30605b04b9e71607e1fb45ce0f3 \
+                        sha256  2fc160eda64cb6ee9f357c3fd6ef5f1f2b6039f10da650c726b0db49f863341f \
+                        size    2079092
+
 categories              print graphics
 maintainers             {ryandesign @ryandesign}
 license                 {FreeType GPL-2}
 homepage                https://www.freetype.org
-use_bzip2               yes
 platforms               darwin
 use_parallel_build      yes
 
@@ -26,25 +37,17 @@ long_description \
 
 master_sites            sourceforge:project/freetype/freetype2/${version}:source \
                         sourceforge:project/freetype/freetype-docs/${version}:docs \
-                        http://download.savannah.gnu.org/releases/freetype/
-
-set docdistname         ${name}-doc-${version}
+                        https://download.savannah.gnu.org/releases/freetype/
 
 distfiles               ${distname}${extract.suffix}:source \
                         ${docdistname}${extract.suffix}:docs
 
-checksums               ${distname}${extract.suffix} \
-                        rmd160  4b31c73b38d1f03c431b12408f800569e0724cc4 \
-                        sha256  e5435f02e02d2b87bb8e4efdcaa14b1f78c9cf3ab1ed80f94b6382fb6acc7d78 \
-                        size    1886443 \
-                        ${docdistname}${extract.suffix} \
-                        rmd160  5ef58133218fa1ba8106cdaada4a3e6f56c793ad \
-                        sha256  e6251ab44adcb075c7ca4205163c43b6539cbe5265b8a24ec0afa07f8b9213f3 \
-                        size    2128376
-
 patchfiles \
+    freetype-config-no-pkg-config.patch \
     patch-src_base_ftrfork.c.diff \
     patch-modules.cfg.diff
+
+depends_build           port:pkgconfig
 
 depends_lib             port:bzip2 \
                         port:libpng \
@@ -58,6 +61,11 @@ configure.args          --with-bzip2 \
                         --with-zlib \
                         --without-harfbuzz \
                         ac_cv_prog_AWK=/usr/bin/awk
+
+variant no_freetype_config description {Don't install the freetype-config script} {}
+if {![variant_isset no_freetype_config]} {
+    configure.args-append --enable-freetype-config
+}
 
 configure.universal_args-delete --disable-dependency-tracking
 

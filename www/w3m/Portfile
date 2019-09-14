@@ -4,7 +4,7 @@ PortSystem          1.0
 
 name                w3m
 version             0.5.3
-revision            10
+revision            13
 categories          www
 license             MIT
 maintainers         nomaintainer
@@ -18,7 +18,7 @@ long_description    w3m is a pager/text-based WWW browser. \
 platforms           darwin
 homepage            http://w3m.sourceforge.net/
 
-depends_lib         path:lib/libgc.dylib:boehmgc port:zlib path:lib/libssl.dylib:openssl port:ncurses \
+depends_lib         port:boehmgc port:zlib path:lib/libssl.dylib:openssl port:ncurses \
                     port:gettext port:libiconv
 
 if {${name} eq ${subport}} {
@@ -41,7 +41,7 @@ subport w3m-devel {
 
     github.setup    tats w3m 169789b1480710712d587d5859fab9d93eb952a2
     version         20180520
-    revision        0
+    revision        1
 
     checksums       rmd160  76853eefec217a90c8876599f33e3d2fb74bf3b8 \
                     sha256  1bb513056fba2b581ce0e45e6e4d6f15eae1dd0b0af78dce9ecb49a1c73b87e8 \
@@ -81,6 +81,6 @@ variant inline_image_imlib2 description {View inline images with imlib2} {
 }
 
 livecheck.type      regex
-livecheck.version   "${version}-36"
+livecheck.version   "${version}-37"
 livecheck.url       https://packages.debian.org/unstable/w3m
 livecheck.regex     ${name}_(\\d+(?:\\.\\d+)*-\\d+)(?:\\.\\d+)?.debian.tar.xz

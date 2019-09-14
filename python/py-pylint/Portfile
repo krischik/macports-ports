@@ -5,16 +5,16 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-pylint
-version             1.8.3
+version             2.3.1
 revision            0
 categories-append   devel
 platforms           darwin
 license             GPL-2+
 supported_archs     noarch
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
-maintainers         {blair @blair} {stromnov @stromnov} openmaintainer
+maintainers         {stromnov @stromnov} openmaintainer
 
 description         Error (and style) checking for python
 
@@ -31,24 +31,31 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  53b01a44f811070b4acc7f827a151ffe7c5df7f6 \
-                    sha256  c77311859e0c2d7932095f30d2b1bfdc4b6fe111f534450ba727a52eae330ef2
+checksums           rmd160  917358dcdd31e8147c6ee4680ed46385767b11a2 \
+                    sha256  723e3db49555abaf9bf79dc474c6b9e2935ad82230b10c1138a71ea41ac0fff1 \
+                    size    577767
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                        port:py${python.version}-setuptools \
                         port:py${python.version}-pytest-runner
 
-    depends_lib-append  port:py${python.version}-astroid \
-                        port:py${python.version}-six \
+    depends_lib-append  port:py${python.version}-setuptools \
+                        port:py${python.version}-astroid \
                         port:py${python.version}-isort \
                         port:py${python.version}-flake8-mccabe
 
     if {${python.version} eq 27} {
+        version             1.9.4
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  763a56b52da567df22a09caa965da3e15dccbd9a \
+                            sha256  ee1e85575587c5b58ddafa25e1c1b01691ef172e139fc25585e5d3f02451da93 \
+                            size    519076
+
         depends_lib-append  port:py${python.version}-configparser \
                             port:py${python.version}-backports-functools_lru_cache \
-                            port:py${python.version}-enum34 \
-                            port:py${python.version}-singledispatch
+                            port:py${python.version}-singledispatch \
+                            port:py${python.version}-six
     }
 
     depends_run-append  port:pylint_select

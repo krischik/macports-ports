@@ -4,7 +4,7 @@ PortSystem              1.0
 
 name                    openvas-client
 version                 2.0.5
-revision        3
+revision        4
 set download_id         617
 platforms               darwin
 categories              security
@@ -26,8 +26,7 @@ long_description \
     the client component.
 
 depends_build \
-    port:pkgconfig \
-    bin:grep:grep
+    port:pkgconfig
 
 depends_lib \
     path:bin/gdlib-config:gd2 \

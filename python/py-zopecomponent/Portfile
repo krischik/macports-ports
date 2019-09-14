@@ -1,32 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           python 1.0
+PortGroup           obsolete 1.0
 
-set real_name       zope.component
 name                py-zopecomponent
-version             4.4.1
-worksrcdir          ${real_name}-${version}
-distfiles           ${real_name}-${version}${extract.suffix}
+replaced_by         py-zope-component
+version             4.5
 categories-append   zope
 license             ZPL-2.1
-maintainers         {mps @Schamschula} openmaintainer
-description         This package represents the core of the Zope Component Architecture.
-long_description    ${description}
-platforms           darwin
-homepage            https://pypi.python.org/pypi/zope.component
-master_sites        pypi:z/zope.component
 
-python.versions     27 34 35 36
-
-checksums           rmd160  4379ba35f5aa2198dba102f750b53189198d6deb \
-                    sha256  1b29aa65413f6dda29e64e2352a6aa13d9ba70078f6b91f328573488788d531c
-
-if {${name} ne ${subport}} {
-    depends_lib-append  \
-                    port:py${python.version}-setuptools \
-                    port:py${python.version}-zope-event \
-                    port:py${python.version}-zopeinterface
-} else {
-    livecheck.url       https://pypi.org/pypi/${real_name}/json
-}
+# remove after 2020-09-06

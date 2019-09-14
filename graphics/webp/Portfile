@@ -3,7 +3,13 @@
 PortSystem              1.0
 
 name                    webp
-version                 0.6.1
+version                 1.0.3
+revision                0
+
+checksums               rmd160  6f85f05dc1e97ddaae3066cfdd2be0787097d679 \
+                        sha256  e20a07865c8697bba00aebccc6f54912d6bc333bb4d604e6b07491c1a226b34f \
+                        size    4029909
+
 categories              graphics science devel
 platforms               darwin
 maintainers             {ryandesign @ryandesign} openmaintainer
@@ -27,10 +33,6 @@ long_description        WebP is a new image format that provides lossy \
 homepage                https://developers.google.com/speed/webp/
 master_sites            http://downloads.webmproject.org/releases/webp/
 
-checksums               rmd160  b62cebd64addd74c2e7f42a56bc48feb370cbc94 \
-                        sha256  06503c782d9f151baa325591c3579c68ed700ffc62d4f5a32feead0ff017d8ab \
-                        size    3990217
-
 depends_lib             port:giflib \
                         port:jpeg \
                         port:libpng \
@@ -40,8 +42,7 @@ distname                libwebp-${version}
 
 patchfiles              configure.patch
 
-configure.args-append   --disable-sdl \
-                        --disable-silent-rules \
+configure.args-append   --disable-silent-rules \
                         --disable-wic \
                         --enable-gif \
                         --enable-jpeg \
@@ -51,6 +52,9 @@ configure.args-append   --disable-sdl \
                         --enable-libwebpmux \
                         --enable-png \
                         --enable-tiff
+
+# https://bugs.chromium.org/p/webp/issues/detail?id=366
+configure.args-append   --disable-sdl
 
 post-destroot {
     set docdir ${destroot}${prefix}/share/doc/${name}

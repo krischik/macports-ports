@@ -1,7 +1,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        macports macports-base 2.5.2 v
+github.setup        macports macports-base 2.6.0-beta1 v
 name                MacPorts
 
 categories          sysutils macports
@@ -21,11 +21,11 @@ homepage            https://www.macports.org
 distname            ${name}-${version}
 github.tarball_from releases
 # testing subdir is for non-final releases only
-#dist_subdir         ${name}/testing
+dist_subdir         ${name}/testing
 use_bzip2           yes
 
-checksums           rmd160 c7cb03860d8e06b2575aaeeebe3f12079aae209f \
-                    sha256 c0fb9225cba0ccfd68194375dd8ea01d3b9634d3642693805fa23712f9bd58a7
+checksums           rmd160 0dba7e84ba321fbcb0be00f76fa06243c55ee8ce \
+                    sha256 7207a2916b726c11e2784568f1e799ff3076ff53a26eab0d382267af3f99891c
 
 variant keep_prefix description "Use configured prefix instead of enforcing /opt/local" {}
 if {![variant_isset keep_prefix]} {
@@ -142,7 +142,11 @@ platform darwin 8 powerpc {
             }
             # Supply architecture and sysroot flags to build MacPorts universal.
             configure.cflags-append -isysroot ${sdkrootpath} -arch ppc -arch i386
+            if {[vercmp [macports_version] 2.5.99] >= 0} {
+            configure.env-append "SHLIB_LDFLAGS=-Wl,-syslibroot,${sdkrootpath} -arch ppc -arch i386"
+            } else {
             configure.env-append SHLIB_LDFLAGS='-Wl,-syslibroot,${sdkrootpath} -arch ppc -arch i386'
+            }
         }
     }
 }

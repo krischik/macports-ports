@@ -11,10 +11,30 @@
 options crossbinutils.target
 
 array set crossbinutils.versions_info {
+    2.26 {bzip2 {
+        rmd160  ce0400ffcc1200280854fefb29f97b63507bad14 \
+        sha256  c2ace41809542f5237afc7e3b8f32bb92bc7bc53c6232a84463c423b0714ecd9 \
+        size    25543552
+    }}
     2.30 {xz {
         rmd160  7f439bd642e514e89075a47758414ea65c50c3b3 \
         sha256  6e46b8aeae2f727a36f0bd9505e405768a72218f1796f0d09757d45209871ae6 \
         size    20286700
+    }}
+    2.31 {xz {
+        rmd160  cc4eece9d281ca10511e0618fac1f6ddbd9b42df \
+        sha256  231036df7ef02049cdbff0681f4575e571f26ea8086cf70c2dcd3b6c0f4216bf \
+        size    20445772
+    }}
+    2.31.1 {xz {
+        rmd160  9eeff67d0ae96bfb1bd1db20991b90166d5b15c5 \
+        sha256  5d20086ecf5752cc7d9134246e9588fa201740d540f7eb84d795b1f7a93bca86 \
+        size    20467996
+    }}
+    2.32 {xz {
+        rmd160  cfff50aae6534512a51fbb720e30f37484f8193e \
+        sha256  0ab6c55dd86a92ed561972ba15b9b70a8b9f75557f896446c82e8b36e473ee04 \
+        size    20774880
     }}
 }
 
@@ -45,7 +65,7 @@ proc crossbinutils.setup {target version} {
     if {[info exists crossbinutils.versions_info($version)]} {
         use_[lindex [set crossbinutils.versions_info($version)] 0] yes
 
-        checksums   {*}[lindex [set crossbinutils.versions_info($version)] 1]
+        checksums   binutils-${version}${extract.suffix} {*}[lindex [set crossbinutils.versions_info($version)] 1]
     } else {
         # the old default
         use_bzip2   yes
@@ -69,38 +89,38 @@ proc crossbinutils.setup {target version} {
         foreach {dir page} ${infopages} {
             # Fix texinfo source file
             set tex [glob -directory ${worksrcpath}/${dir} ${page}.texi*]
-            reinplace \
+            reinplace -q \
                 /setfilename/s/${page}/${crossbinutils.target}-${page}/ ${tex}
-            reinplace s/(${page})/(${crossbinutils.target}-${page})/g ${tex}
-            reinplace \
+            reinplace -q s/(${page})/(${crossbinutils.target}-${page})/g ${tex}
+            reinplace -q \
                 "s/@file{${page}}/@file{${crossbinutils.target}-${page}}/g" \
                 ${tex}
             move ${tex} \
                 ${worksrcpath}/${dir}/${crossbinutils.target}-${page}[file extension ${tex}]
 
             # Fix Makefile
-            reinplace -E \
+            reinplace -q -E \
                 s/\[\[:<:\]\]${page}\\.(info|texi)/${crossbinutils.target}-&/g \
                 ${worksrcpath}/${dir}/Makefile.in
         }
 
         # Fix packages' names.
         foreach dir {bfd binutils gas gold gprof ld opcodes} {
-            reinplace "/^ PACKAGE=/s/=.*/=${crossbinutils.target}-${dir}/" \
+            reinplace -q "/^ PACKAGE=/s/=.*/=${crossbinutils.target}-${dir}/" \
                 ${worksrcpath}/${dir}/configure
         }
 
         # Install target-compatible libbfd/libiberty in the target's directory
-        reinplace "s|bfdlibdir=.*|bfdlibdir='${prefix}/${crossbinutils.target}/host/lib'|g" \
+        reinplace -q "s|bfdlibdir=.*|bfdlibdir='${prefix}/${crossbinutils.target}/host/lib'|g" \
             ${worksrcpath}/bfd/configure                                \
             ${worksrcpath}/opcodes/configure
-        reinplace "s|bfdincludedir=.*|bfdincludedir='${prefix}/${crossbinutils.target}/host/include'|g"  \
+        reinplace -q "s|bfdincludedir=.*|bfdincludedir='${prefix}/${crossbinutils.target}/host/include'|g"  \
             ${worksrcpath}/bfd/configure                                             \
             ${worksrcpath}/opcodes/configure
 
-        reinplace "s|\$(libdir)|\"${prefix}/${crossbinutils.target}/host/lib\"|g" \
+        reinplace -q "s|\$(libdir)|\"${prefix}/${crossbinutils.target}/host/lib\"|g" \
             ${worksrcpath}/libiberty/Makefile.in
-        reinplace "s|/\$(MULTIOSDIR)||g" \
+        reinplace -q "s|/\$(MULTIOSDIR)||g" \
             ${worksrcpath}/libiberty/Makefile.in
     }
 
@@ -127,7 +147,7 @@ proc crossbinutils.setup {target version} {
     post-destroot {
         set docdir ${prefix}/share/doc/${name}
         xinstall -d ${destroot}${docdir}
-        xinstall -m 644 \
+        xinstall -m 0644 \
             {*}[glob -type f ${worksrcpath}/{COPYING*,ChangeLog,MAINTAINERS,README*}] \
             ${destroot}${docdir}
     }

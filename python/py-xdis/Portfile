@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-xdis
-version             3.8.4
+version             3.9.1
 platforms           darwin
 license             GPL-2
 maintainers         {khindenburg @kurthindenburg} openmaintainer
@@ -24,15 +24,17 @@ homepage            https://pypi.python.org/pypi/${python.rootname}/
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  a02cbe73eb42939b7d1d5a8fdfcbd18ef2b59055 \
-                    sha256  6b6b44f90b55cc4099834ec4a92ac93717e00871dfcbaed6b5390e331ea34461 \
-                    size    191233
+checksums           rmd160  0a22d9a1fbdf2953f69c135a56a5cfbd76d038ec \
+                    sha256  b95337ee772ade4f8038a100f06aaf5ab9e975170fe9afafc9bd29964bc8cc42 \
+                    size    182610
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 if {${name} ne ${subport}} {
     depends_build-append    port:py${python.version}-setuptools \
                             port:py${python.version}-pytest-runner
+
+    depends_lib-append  port:py${python.version}-click
 
     depends_test-append port:py${python.version}-py \
                         port:py${python.version}-pytest
@@ -40,6 +42,4 @@ if {${name} ne ${subport}} {
     test.env            PYTHONPATH=${worksrcpath}/build/lib
 
     livecheck.type  none
-} else {
-    livecheck.type  pypi
 }

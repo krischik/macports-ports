@@ -10,7 +10,7 @@ PortGroup           compiler_blacklist_versions 1.0
 name                gstreamer1-gst-plugins-good
 set my_name         gst-plugins-good
 # please only commit stable updates (even numbered releases)
-version             1.14.1
+version             1.14.4
 revision            1
 description         A set of good-quality plug-ins for GStreamer under GStreamer's preferred \
                     license, LGPL.
@@ -27,9 +27,9 @@ master_sites        https://gstreamer.freedesktop.org/src/${my_name}/
 use_xz              yes
 distname            ${my_name}-${version}
 
-checksums           rmd160  c48451bcb816113945dcd0ab0f0b022017a91275 \
-                    sha256  34ec062ddb766a32377532e039781f4a16fbc3e8b449e642605bacab26a99172 \
-                    size    3776168
+checksums           rmd160  4ec924780f7b55510fe5069a019869684b44942d \
+                    sha256  5f8b553260cb0aac56890053d8511db1528d53cae10f0287cfce2cb2acc70979 \
+                    size    3792524
 
 depends_build       port:pkgconfig
 
@@ -52,6 +52,9 @@ depends_lib         port:gstreamer1-gst-plugins-base \
                     port:taglib \
                     port:twolame \
                     port:wavpack
+
+# fix build with libvpx 1.8.0
+patchfiles-append   patch-ext-vpx-gstvpxdec.c.diff
 
 platform darwin {
     if {${os.major} < 11} {
@@ -162,28 +165,10 @@ if {[variant_isset universal]} {
 }
 
 # SSE register return with SSE disabled
-# <rdar://problem/9694837> - Fixed in XCode 4.2 (clang 211.10.1)
+# <rdar://problem/9694837> - Fixed in Xcode 4.2 (clang 211.10.1)
 # blacklist compilers that don't support C11 typedef redefinition
 # gstflvmux.h:73: error: redefinition of typedef ‘GstFlvMuxPadClass’
 compiler.blacklist  *gcc-3.* *gcc-4.* {clang < 300}
-
-# in version 1.14.0 some functionality moved here from bad and ugly
-# deactivate the old ports before activating the new one
-pre-activate {
-    if {![catch {set installed [lindex [registry_active gstreamer1-gst-plugins-bad] 0]}]} {
-        set _version [lindex $installed 1]
-        if {[vercmp $_version 1.14.0] < 0} {
-            registry_deactivate_composite gstreamer1-gst-plugins-bad "" [list ports_nodepcheck 1]
-        }
-    }
-
-    if {![catch {set installed [lindex [registry_active gstreamer1-gst-plugins-ugly] 0]}]} {
-        set _version [lindex $installed 1]
-        if {[vercmp $_version 1.14.0] < 0} {
-            registry_deactivate_composite gstreamer1-gst-plugins-ugly "" [list ports_nodepcheck 1]
-        }
-    }
-}
 
 livecheck.type      regex
 livecheck.url       ${master_sites}

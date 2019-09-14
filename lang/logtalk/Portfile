@@ -1,7 +1,7 @@
 PortSystem          1.0
 
 name                logtalk
-version             3.17.0
+version             3.29.0
 
 categories          lang
 maintainers         {logtalk.org:pmoura @pmoura}
@@ -25,12 +25,12 @@ long_description    Logtalk is an object-oriented logic programming language tha
                     portable developer tools, and a large number of programming examples to   \
                     help get you started.
 
-homepage            http://logtalk.org/
+homepage            https://logtalk.org/
 master_sites        ${homepage}files/
 
-checksums           rmd160  a3572cb0e54a64807584592dad0f57a4dafadfc0 \
-                    sha256  c175d0b70fcee71bc5228f39a936203ef8231fce272e9a7d189e2f1e58393425 \
-                    size    3266162
+checksums           rmd160  66be37d7f51d720ae605d5e681bf5b6bb9b70476 \
+                    sha256  34dd65991fefcdc8c508243d54d5c5cfef27202522a7233c36318fded3edf70d \
+                    size    17946761
 
 use_bzip2           yes
 

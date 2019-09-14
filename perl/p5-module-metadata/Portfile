@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         Module-Metadata 1.000033
+perl5.branches      5.26 5.28
+perl5.setup         Module-Metadata 1.000037
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         Gather package and POD information from perl module files
@@ -12,11 +12,13 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  ba01ccbc2305820a255a0c8d86091894532fa629 \
-                    sha256  bc96cc7949b52e2dac1595e806102640760917cfcd7497c7a023192156f3ff8e
+checksums           rmd160  e684f8865d2cef4b56da38e085a5871ef9f056c3 \
+                    sha256  8d5a74c1b07e145edda254602fedf19c0dd0c2d9688a370afdaff89c32cba629 \
+                    size    50454
 
 if {${perl5.major} != ""} {
     depends_lib-append \
+                    port:p${perl5.major}-encode \
                     port:p${perl5.major}-version
 
     supported_archs noarch

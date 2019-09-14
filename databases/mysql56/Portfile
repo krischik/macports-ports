@@ -1,10 +1,15 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           deprecated 1.0
+
+# New 5.6.x releases will be available until 2021-02;
+# however, support for macOS has ended early (2018-10-19)
+deprecated.upstream_support no
 
 name                mysql56
 set name_mysql      ${name}
-version             5.6.34
+version             5.6.45
 # Set revision_client and revision_server to 0 on
 # version bump.
 set revision_client 0
@@ -13,8 +18,8 @@ set version_branch  [join [lrange [split ${version} .] 0 1] .]
 categories          databases
 platforms           darwin
 license             GPL-2
-maintainers         {pixilla @pixilla} openmaintainer
-homepage            http://www.mysql.com/
+maintainers         nomaintainer
+homepage            https://www.mysql.com/
 
 if {$subport eq $name} {
 
@@ -47,10 +52,11 @@ if {$subport eq $name} {
     patchfiles-append   patch-scripts-mysql_install_db.pl.in.diff \
                         patch-scripts-mysql_secure_installation.pl.in.diff
 
-    checksums           rmd160 4095f4276623432d235211a445b5d5f540658b2d \
-                        sha256 ee90bafec6af3abe2715ccb0b3cc9345ed8d1cce025d41e6ec2b2b7a7d820823
+    checksums           rmd160  c711161babd1b8f9b7f96d88264a468972a83a0b \
+                        sha256  404d798974dd89aca4a19e67194b534eddc7508489982175978966360607aabb \
+                        size    32525559
 
-    depends_lib-append  port:zlib port:tcp_wrappers
+    depends_lib-append  port:zlib port:tcp_wrappers port:ncurses
     depends_run-append  port:mysql_select
 
     select.group        mysql
@@ -156,13 +162,6 @@ if {$subport eq $name} {
         }
     }
 
-    variant openssl description {Instead of the bundled yaSSL use OpenSSL} {
-        configure.args-delete   -DWITH_SSL:STRING=bundled
-        configure.args-append   -DWITH_SSL:STRING=${prefix}
-        depends_lib-append      path:lib/libssl.dylib:openssl
-        patchfiles-delete       patch-cmake-install_layout.cmake-yassl.diff
-    }
-
     notes "
 On activation if no ${prefix}/etc/${name_mysql}/my.cnf file exists one
 will be created which loads
@@ -184,7 +183,7 @@ simultaneously.
 "
 
     livecheck.type          regex
-    livecheck.url           http://dev.mysql.com/downloads/mysql/${version_branch}.html
+    livecheck.url           https://dev.mysql.com/downloads/mysql/${version_branch}.html
     livecheck.regex         "MySQL Community Server (${version_branch}(\.\[0-9.\]+)?)"
 }
 

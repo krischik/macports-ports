@@ -5,10 +5,10 @@ PortGroup           python 1.0
 
 set base_name       agate-excel
 name                py-agate-excel
-version             0.2.1
-python.versions     27 35 36
+version             0.2.3
+python.versions     27 35 36 37
 platforms           darwin
-maintainers         @esafak openmaintainer
+maintainers         {gmail.com:esafak @esafak} openmaintainer
 license             MIT
 
 description         Adds read support for Excel files (xls and xlsx) to agate
@@ -17,8 +17,9 @@ long_description    ${description}
 homepage            https://pypi.python.org/pypi/$base_name
 master_sites        pypi:a/$base_name
 
-checksums           rmd160  d28cf8f9861fe448754616e488282b758df82c69 \
-                    sha256  c7621051307a4650b95309a2e13f5774d08719421c9d965b461629a002d048b4
+checksums           rmd160  1e8bc5c720e70f1d7246a2bf358e8fb734e08c00 \
+                    sha256  8f255ef2c87c436b7132049e1dd86c8e08bf82d8c773aea86f3069b461a17d52 \
+                    size    153880
 
 distname            $base_name-${version}
 

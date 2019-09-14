@@ -3,7 +3,12 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        skvadrik re2c 1.0.3
+github.setup        skvadrik re2c 1.2.1
+revision            0
+checksums           rmd160  deb026f41e470913ed182041d0af46d6377c304e \
+                    sha256  1a4cd706b5b966aeffd78e3cf8b24239470ded30551e813610f9cd1a4e01b817 \
+                    size    2059304
+
 categories          devel
 platforms           darwin
 license             public-domain
@@ -19,13 +24,11 @@ long_description    re2c is a tool for generating C-based recognizers from \
 
 homepage            http://re2c.org/
 github.tarball_from releases
-
-checksums           rmd160  bc5861f99da1b2d16af17b7afcc63a7a5dba4f8a \
-                    sha256  cf56e0de3f335f6a22d3e8c06b8b450d858a4e7875ea1b01c9233e084b90cb52 \
-                    size    5806555
+use_xz              yes
 
 configure.args      --disable-silent-rules
 
 test.run            yes
 test.target         check
-test.env            LANG=C # make sed happy
+# make sed happy
+test.env            LANG=C

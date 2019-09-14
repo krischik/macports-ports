@@ -1,7 +1,5 @@
-#!/bin/sh
+#!@PREFIX@/bin/port-tclsh
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
-# \
-if type -fp port-tclsh >/dev/null; then exec port-tclsh "$0" "$@"; else exec /usr/bin/tclsh "$0" "$@"; fi
 #
 # Copyright (c) 2011,2013 The MacPorts Project
 #
@@ -32,13 +30,6 @@ if type -fp port-tclsh >/dev/null; then exec port-tclsh "$0" "$@"; else exec /us
 
 set prefix "@PREFIX@"
 
-if {[file exists ${prefix}/share/macports/Tcl/macports1.0/macports_fastload.tcl]} {
-    if {[catch {source ${prefix}/share/macports/Tcl/macports1.0/macports_fastload.tcl} result]} {
-        puts stderr "Error: $result"
-        exit 1
-    }
-}
-
 package require macports
 if {[catch {mportinit} result]} {
     puts stderr "Error: $result"
@@ -58,7 +49,7 @@ proc usage {} {
 # Prints an error message (but doesn't abort) if the UUID is empty.
 proc read_config {} {
     global prefix stats_url stats_id
-    set conf_path "${prefix}/etc/macports/stats.conf"
+    set conf_path "${prefix}/etc/macports/@CONFNAME@.conf"
     if {[file isfile $conf_path]} {
         set fd [open $conf_path r]
         while {[gets $fd line] >= 0} {
@@ -109,6 +100,22 @@ proc getgccinfo {} {
         # Don't warn since that's the default now that gcc -> clang
         return none
     }
+}
+
+# extraction of CommandLineTools version
+proc getcltinfo {} {
+    if {[file exists /usr/lib/libxcselect.dylib]} {
+        set pkgname "CLTools_Executables"
+    } else {
+        # Mountain Lion (10.8) and below. Note that we prefer Xcode over CLT for <= 10.8
+        set pkgname "DeveloperToolsCLI"
+    }
+
+    if {![catch {exec pkgutil --pkg-info=com.apple.pkg.${pkgname}} results]} {
+        return [lindex $results 3]
+    }
+
+    return none
 }
 
 ###### JSON Encoding helper procs ######
@@ -282,13 +289,11 @@ proc json_encode_stats {id os_dict ports_dict} {
 
     set os_json [json_encode_dict os]
     set active_ports_json [json_encode_portlist [dict get $ports "active"]]
-    set inactive_ports_json [json_encode_portlist [dict get $ports "inactive"]]
 
     set json "\{"
     append json "\n  \"id\": \"$id\","
     append json "\n  \"os\": [json_encode_dict os "  "],"
-    append json "\n  \"active_ports\": [json_encode_portlist [dict get $ports "active"] "  "],"
-    append json "\n  \"inactive_ports\": [json_encode_portlist [dict get $ports "inactive"] "  "]"
+    append json "\n  \"active_ports\": [json_encode_portlist [dict get $ports "active"] "  "]"
     append json "\n\}"
 
     return $json
@@ -381,12 +386,13 @@ proc action_stats {subcommands} {
     dict set os os_arch ${macports::os_arch}
     dict set os os_platform ${macports::os_platform}
     dict set os build_arch ${macports::build_arch}
+    dict set os cxx_stdlib ${macports::cxx_stdlib}
     dict set os gcc_version [getgccinfo]
     dict set os xcode_version ${macports::xcodeversion}
+    dict set os clt_version [getcltinfo]
 
     # Build dictionary of port information
     dict set ports active   [get_installed_ports yes]
-    dict set ports inactive [get_installed_ports no]
 
     # Make sure there aren't too many subcommands
     if {[llength $subcommands] > 1} {

@@ -3,9 +3,11 @@
 PortSystem          1.0
 
 name                latexmk
-version             4.55
-checksums           rmd160  c4370e8f75c7745ad9f79ee7029b8140b73a3568 \
-                    sha256  aa400d3c5860fffc925efe5d832c575f3bee1d3770e4c6db96e2add518c38d2b
+version             4.65
+
+checksums           rmd160  858015aa60b135e93a2a6ac74d7fb18d57647aa0 \
+                    sha256  fbd99fa6c606cc9378052cc1f974b2a6b1a72e1a635c87a2a7c3543386ad6ce8 \
+                    size    447290
 
 categories          tex print
 platforms           darwin

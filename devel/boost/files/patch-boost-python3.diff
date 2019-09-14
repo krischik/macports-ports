@@ -19,3 +19,4 @@
  else:
 -    import mpi
 +    from . import mpi
+ 

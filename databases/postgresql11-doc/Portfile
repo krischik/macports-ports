@@ -5,7 +5,7 @@ PortSystem 1.0
 name                postgresql11-doc
 conflicts           postgresql93-doc postgresql94-doc postgresql95-doc \
     postgresql96-doc postgresql10-doc
-version             11beta1
+version             11.5
 categories          databases
 platforms           darwin
 maintainers         {jwa @jyrkiwahlstedt}
@@ -22,9 +22,9 @@ master_sites        postgresql:source/v${version}
 distname            postgresql-${version}
 set rname           postgresql11
 
-checksums           rmd160  7af68c6d8f97f5fb30d843e46bb6c4d677dee418 \
-                    sha256  17889cbffdf4f07c193b16d76b2f9c45daa3f2ab225acd8d7f01521949cb1355 \
-                    size    20945387
+checksums           rmd160  01e22d6f7ec31c89531ebfdb474f997eeaaa992c \
+                    sha256  7fdf23060bfc715144cbf2696cf05b0fa284ad3eb21f0c378591c6bca99ad180 \
+                    size    19773087
 
 use_bzip2           yes
 dist_subdir         ${rname}

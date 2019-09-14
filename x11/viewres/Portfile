@@ -1,7 +1,10 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
 PortSystem          1.0
 
 name                viewres
-version             1.0.4
+version             1.0.6
+revision            0
 categories          x11 graphics
 license             X11
 maintainers         {jeremyhu @jeremyhu} openmaintainer
@@ -20,9 +23,9 @@ homepage            https://www.x.org/
 master_sites        xorg:individual/app/
 use_bzip2           yes
 
-checksums           md5     e4651e55dccb0ae234e49bdc0b984fc9 \
-                    sha1    02d251213b18b1f2588f20663e89052df58bcb8a \
-                    rmd160  3dd615c78089a2325a980128585686eed0eada58
+checksums           rmd160  c3a88c997708c9b8db84c94bd690bacc433178e9 \
+                    sha256  11c15db02066c1d5fc3febf9b185d16c1112f87e37c4b101a484dcefffb80934 \
+                    size    135200
 
 depends_build       port:pkgconfig
 
@@ -30,4 +33,4 @@ depends_lib         port:xorg-libXaw
 
 livecheck.type      regex
 livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
-livecheck.url       http://xorg.freedesktop.org/archive/individual/app/?C=M&O=D
+livecheck.url       https://xorg.freedesktop.org/archive/individual/app/?C=M&O=D

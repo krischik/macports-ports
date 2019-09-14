@@ -7,14 +7,16 @@ set _name           cherrypy
 set _n              [string index ${_name} 0]
 
 name                py-${_name}
-# 11.1.0 require various jaraco ports not in macports
-version             11.0.0
+version             18.1.2
+revision            0
 categories-append   www
 platforms           darwin
 supported_archs     noarch
 license             BSD
 
-maintainers         {khindenburg @kurthindenburg} gmail.com:freespace openmaintainer
+maintainers         {khindenburg @kurthindenburg} \
+                    {gmail.com:freespace @freespace} \
+                    openmaintainer
 
 description         Object-Oriented HTTP framework
 long_description    CherryPy is a pythonic, object-oriented web \
@@ -30,16 +32,33 @@ homepage            http://www.cherrypy.org/
 distname            CherryPy-${version}
 master_sites        pypi:${_n}/${_name}/
 
-checksums           rmd160  097cdb2f7be28792abcf1673314c68d1af9edb4b \
-                    sha256  5671f88c8dd8aecaac650761d18f74a2789b88a9337eb7433abe92a5e0be6780
+checksums           rmd160  81b7638d04d386fc9b57e7262d03634eca102720 \
+                    sha256  48de31ba3db04c5354a0fcf8acf21a9c5190380013afca746d50237c9ebe70f0 \
+                    size    683411
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 if {${name} ne ${subport}} {
     conflicts       py${python.version}-cherrypy3
 
-    depends_build-append    port:py${python.version}-setuptools
-    depends_lib-append      port:py${python.version}-cheroot
+    depends_build-append    port:py${python.version}-setuptools \
+                            port:py${python.version}-setuptools_scm
+    depends_lib-append      port:py${python.version}-cheroot \
+                            port:py${python.version}-contextlib2 \
+                            port:py${python.version}-portend \
+                            port:py${python.version}-zc-lockfile
+
+    if {${python.version} eq 27} {
+        # Last version that will support python 2.7
+        version             17.4.1
+        revision            0
+        # Need to set distname again for some reason
+        distname            CherryPy-${version}
+
+        checksums           rmd160  dd53082306fd9f65f39da7a8b157df2c2b0b6d71 \
+                            sha256  fba9fd96d0d9d5b4d680f7ec08e0758a7e5005039ee164e7936594ffad3a81ce \
+                            size    684113
+    }
 
     post-destroot {
         xinstall -m 644 -W ${worksrcpath} \

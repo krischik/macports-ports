@@ -1,7 +1,10 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
 PortSystem          1.0
 
 name                xbacklight
-version             1.2.1
+version             1.2.3
+revision            0
 categories          x11
 license             X11
 maintainers         {jeremyhu @jeremyhu} openmaintainer
@@ -14,9 +17,9 @@ homepage            https://www.x.org/
 master_sites        xorg:individual/app/
 use_bzip2           yes
 
-checksums           md5     0066f23f69ca3ef62dcaeb74a87fdc48 \
-                    sha1    861c2ce6a9ff44e93dece8c69508af9d826c032a \
-                    rmd160  60104d1d6cdff691f2db48c1b21dced064c113d5
+checksums           rmd160  e3200e27aae7283d0cb47ebfc2c41a614216c346 \
+                    sha256  3a27f324777ae99fee476cfb2f064576fb8cba4eb77f97cda37adda1c1d39ade \
+                    size    124611
 
 depends_build       port:pkgconfig
 
@@ -25,4 +28,4 @@ depends_lib         port:xorg-libXrandr \
 
 livecheck.type      regex
 livecheck.regex     ${name}-(\[\\d.\]+)${extract.suffix}
-livecheck.url       http://xorg.freedesktop.org/archive/individual/app/?C=M&O=D
+livecheck.url       https://xorg.freedesktop.org/archive/individual/app/?C=M&O=D

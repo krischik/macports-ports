@@ -4,14 +4,15 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pympler
-set real_name       Pympler
-version             0.2.1
-revision            1
-python.versions     27 34 35 36
+python.rootname     Pympler
+version             0.7
+revision            0
+
 categories-append   devel
-license             Apache-2 BSD MIT
-maintainers         nomaintainer
+platforms           darwin
 supported_archs     noarch
+license             Apache-2 BSD MIT
+maintainers         {reneeotten @reneeotten} openmaintainer
 
 description         measure, monitor and analyze the memory behavior of Python objects
 long_description    \
@@ -21,22 +22,23 @@ long_description    \
     lifetime of Python objects can be obtained. Undesirable or unexpected runtime \
     behavior like memory bloat and other "pymples" can easily be identified.
 
-platforms           darwin
+homepage            https://github.com/pympler/pympler
+master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
+distname            ${python.rootname}-${version}
 
-homepage            https://packages.python.org/${real_name}/
-master_sites        pypi:P/${real_name}/
-distname            ${real_name}-${version}
+checksums           rmd160  8ebdd5c3c927c497d20d94a390cfa8ec4ea88ffd \
+                    sha256  7a11e739125a9ce8bf868ded67238a40e8a7bf979bc03005eb8126182e5e274e \
+                    size    176177
+
+python.versions     27 34 35 36 37
 
 if {${name} ne ${subport}} {
-    patch {
-        reinplace "s|data_path = cobj.install_data|data_path = '${python.prefix}/share/pympler'|" \
-            ${worksrcpath}/setup.py
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} NOTICE LICENSE \
+            README.md ${destroot}${docdir}
     }
+
+    livecheck.type  none
 }
-
-checksums           rmd160  47b2285eb5fe9ff01f50d71e57da896110865af2 \
-                    sha256  292ee62bd50633af4d460d722c77e8c31647e936ae68e3c000e229312163becd
-
-livecheck.type      regex
-livecheck.url       ${master_sites}
-livecheck.regex     "${real_name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

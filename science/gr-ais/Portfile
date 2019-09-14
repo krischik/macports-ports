@@ -6,7 +6,7 @@ PortGroup           github 1.0
 
 github.setup        bistromath gr-ais 1863d1bf8a7709a8dfedb3ddb8e2b99112e7c872
 version             20151220
-revision            7
+revision            8
 checksums           rmd160 98ad4781960817c53576cd823a6d9806824f1f14 \
                     sha256 e62755e674d5c7b306fb9a22ed0ab88a69fb46dbc179bc80a4dcff3c7fc826b7
 
@@ -43,7 +43,11 @@ depends_lib-append \
     port:boost \
     path:lib/libvolk.dylib:volk
 
-depends_test-append \
+# still require cppunit for testing; NOTE: cppunit is checked for
+# during configure, so we need it to be in depends_lib or
+# depends_build to be used correctly. Choose the latter since it's
+# not required for runtime; just for build/test.
+depends_build-append \
     port:cppunit
 
 # for docs

@@ -11,8 +11,9 @@ categories          devel
 # https://www.gnu.org/licenses/autoconf-exception.html
 platforms           darwin
 supported_archs     noarch
+configure.cxx_stdlib
 license             {Autoconf GPL-3+}
-maintainers         larryv
+maintainers         {larryv @larryv}
 
 description         Automatically configures software for compilation
 long_description    Autoconf is an extensible package of m4 macros \
@@ -61,5 +62,5 @@ test.env            CC=${configure.cc}
 test.target         check
 
 livecheck.type      regex
-livecheck.url       http://ftp.gnu.org/gnu/${name}/?C=M&O=D
+livecheck.url       https://ftp.gnu.org/gnu/${name}/?C=M&O=D
 livecheck.regex     ${name}-(\\d+\\.\\d+)

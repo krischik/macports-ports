@@ -3,11 +3,17 @@
 PortSystem          1.0
 PortGroup           python 1.0
 
+# Remember to update libvirt and py-libvirt at the same time.
 name                py-libvirt
-version             4.1.0
+version             5.6.0
+revision            0
+checksums           rmd160  4e0a2ab858c47bbb07a2db8d203cf0eeee9a54fc \
+                    sha256  4df13fed9528a7eec153ab70196dcd481f6377ae5bf9ef84e07dfa1515202486 \
+                    size    201352
+
 platforms           darwin
 license             MIT
-maintainers         {danchr @danchr} openmaintainer
+maintainers         {danchr @danchr} {ryandesign @ryandesign} openmaintainer
 
 description         The libvirt virtualization API python binding
 long_description    The libvirt virtualization API python binding provides a \
@@ -20,12 +26,8 @@ homepage            http://www.libvirt.org/
 distname            libvirt-python-${version}
 master_sites        ${homepage}sources/python
 
-checksums           rmd160  e42219ddd3b9127657d9519511f5181097e9a152 \
-                    sha256  dec2a33d68779672b4688b296d6de18c9c41b89d8c74c9d3dc887e366587b8c7 \
-                    size    186312
-
 python.default_version  27
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 
 if {${name} ne ${subport}} {

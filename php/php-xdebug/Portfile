@@ -12,15 +12,15 @@ license                 Xdebug-1.01
 homepage                https://xdebug.org
 master_sites            ${homepage}/files/
 
-php.branches            5.3 5.4 5.5 5.6 7.0 7.1 7.2
+php.branches            5.3 5.4 5.5 5.6 7.0 7.1 7.2 7.3
 php.extensions.zend     xdebug
 
 if {[vercmp ${php.branch} 7.0] >= 0} {
-    version             2.6.0
+    version             2.7.2
     revision            0
-    checksums           rmd160  8d3f60a50ca69588fc1936384df044802bf31edf \
-                        sha256  b5264cc03bf68fcbb04b97229f96dca505d7b87ec2fb3bd4249896783d29cbdc \
-                        size    283644
+    checksums           rmd160  dd7784825909ac35288fdfda631f5318c768e688 \
+                        sha256  b0f3283aa185c23fcd0137c3aaa58554d330995ef7a3421e983e8d018b05a4a6 \
+                        size    230987
 } elseif {[vercmp ${php.branch} 5.5] >= 0} {
     version             2.5.5
     revision            0
@@ -56,7 +56,7 @@ extract.suffix          .tgz
 if {${name} ne ${subport}} {
     configure.args      --enable-xdebug
     
-    set xdebug_docs     ${homepage}docs/
+    set xdebug_docs     ${homepage}/docs/
     notes "
 You can get a list of the available configuration settings for xdebug\
 with the following command:

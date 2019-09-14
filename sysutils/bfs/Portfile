@@ -1,0 +1,32 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        tavianator bfs 1.5
+
+categories          sysutils
+platforms           darwin freebsd linux
+license             BSD
+maintainers         {@ylluminarious orbitalimpact.com:georgedp} openmaintainer
+description         A breadth-first version of the UNIX find command.
+
+long_description    bfs is a variant of the UNIX find command that operates breadth-first rather \
+    than depth-first. It is otherwise intended to be compatible with many \
+    versions of find, including: POSIX find, GNU find, BSD find and macOS find. \
+    If you're not familiar with find, the GNU find manual provides a good introduction.
+
+checksums           rmd160   ff86f437b927f7e63abd841c4be0e37dbcebe582 \
+                    sha256   d7dfb4196ed1a5837cd3dff021a7cd3b85b28f6520ea1ce8e5b2067936606756 \
+                    size     110687
+
+use_configure       no
+build.target        release
+destroot.args       PREFIX=${prefix}
+test.run            yes
+test.target         check
+
+variant universal {
+    build.args-append CFLAGS="${configure.universal_cflags}"
+    build.args-append CC="${configure.cc}"
+}

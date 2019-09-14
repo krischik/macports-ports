@@ -3,7 +3,7 @@
 PortSystem      1.0
 
 name            nano
-version         2.9.8
+version         4.4
 categories      editors
 platforms       darwin freebsd
 license         GPL-3
@@ -17,11 +17,11 @@ long_description \
     internationalization support, and filename tab completion.
 
 homepage        https://www.nano-editor.org
-master_sites    ${homepage}dist/v[strsed ${version} {/\.[0-9]*$//}]/ gnu
+master_sites    ${homepage}/dist/v[strsed ${version} {/\.[0-9]*$//}]/ gnu
 
-checksums       rmd160  3cafbbcf13886c19567107fc5c55c6c982562d54 \
-                sha256  07192c320b74c1fb78437021e9affa6a9d55b806ee012de601902392eaa03601 \
-                size    2905951
+checksums           rmd160  4c99a95b917e4d175d1523b99fb20708df633cbc \
+                    sha256  10204379779cfa6cc4885aae9f70108c48177b73bade336a13f30460975867a0 \
+                    size    2947594
 
 depends_lib     port:gettext \
                 port:libiconv \
@@ -37,7 +37,6 @@ use_parallel_build  yes
 
 set docdir      ${prefix}/share/doc/${name}
 
-
 post-destroot {
     xinstall -d $destroot$docdir/html
     xinstall -m 644 -W $worksrcpath AUTHORS COPYING ChangeLog INSTALL NEWS \
@@ -51,4 +50,4 @@ A sample configuration file is available at ${docdir}/sample.nanorc.
 
 livecheck.url   ${homepage}/download.php
 livecheck.type  regex
-livecheck.regex "${name}-(\\d+\\.\\d+\\.\\d+)"
+livecheck.regex "${name}-(\\d+\\.\\d+(\\.\d+)?)"

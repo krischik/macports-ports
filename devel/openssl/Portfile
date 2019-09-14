@@ -5,8 +5,7 @@ PortGroup           muniversal 1.0
 
 name                openssl
 epoch               1
-version             1.0.2o
-revision            1
+version             1.1.1c
 
 # Please revbump these ports when updating OpenSSL.
 #  - freeradius (#43461)
@@ -34,7 +33,6 @@ depends_lib         port:zlib
 # See https://www.openssl.org/source/mirror.html
 master_sites        ${homepage}/source \
                     ftp://gd.tuwien.ac.at/infosys/security/openssl/source/ \
-                    http://openssl.skazkaforyou.com/source/ \
                     http://mirror.switch.ch/ftp/mirror/openssl/source/ \
                     ftp://ftp.fi.muni.cz/pub/openssl/source/ \
                     ftp://ftp.pca.dfn.de/pub/tools/net/openssl/source/ \
@@ -42,24 +40,25 @@ master_sites        ${homepage}/source \
                     ftp://ftp.linux.hr/pub/openssl/source/ \
                     ftp://guest.kuria.katowice.pl/pub/openssl/source/
 
-checksums           sha1    a47faaca57b47a0d9d5fb085545857cc92062691 \
-                    rmd160  aac1564f006766e66f5a319def41e5d99122915d \
-                    sha256  ec3f5c9714ba0fd45cb4e087301eb1336c317e0d20b575a125050470e8089e4d \
-                    size    5329472
+checksums           sha1    71b830a077276cbeccc994369538617a21bee808 \
+                    rmd160  6e31a6191e954b3a960cc996833ae275de6c0f2f \
+                    sha256  f6fb3079ad15076154eda9413fed42877d668e7069d9b87396d0804fdb3f4c90 \
+                    size    8864262
 
-patchfiles          install-headers-HFS+.patch \
-                    parallel-building.patch \
-                    remove-duplicate-bn_print-doc.patch \
-                    349a41da1ad88ad87825414752a8ff5fdd6a6c3f.patch
+if {${os.platform} eq "darwin" && ${os.major} < 11} {
+    # Having the stdlib set to libc++ on 10.6 causes a dependency on a
+    # macports-clang compiler to be added, which would be a dep cycle.
+    configure.cxx_stdlib
+}
 
 configure.ccache    no
 configure.perl      /usr/bin/perl
 configure.cmd       ./Configure
-configure.args     -L${prefix}/lib \
-                    no-krb5 \
-                  --openssldir=${prefix}/etc/openssl \
+configure.args      -L${prefix}/lib \
+                    --openssldir=${prefix}/etc/openssl \
                     shared \
                     zlib
+
 # Use SDK if necessary.
 if {${configure.sdkroot} ne ""} {
     configure.args-append   '-isysroot ${configure.sdkroot}' \
@@ -77,10 +76,15 @@ platform darwin {
     # Don't use i386 assembly on Tiger (#38015, #43303).
     if {${os.major} <= 8} {
         append merger_configure_args(i386) { no-asm}
+        # https://trac.macports.org/ticket/58992
+        configure.args-append no-async
     }
     # Don't use x86-64 assembly on Tiger or Leopard.
     if {${os.major} <= 9} {
         append merger_configure_args(x86_64) { no-asm}
+        # OpenSSL requires Perl 5.10.0, while Leopard ships Perl 5.8.8
+        depends_build-append    port:perl5
+        configure.perl          ${prefix}/bin/perl5
     }
 }
 # Don't pass --host to configure.
@@ -107,7 +111,6 @@ if {[variant_isset universal]} {
 }
 
 destroot.args       MANDIR=${prefix}/share/man MANSUFFIX=ssl
-destroot.destdir    INSTALL_PREFIX=${destroot}
 
 variant rfc3779 description {enable RFC 3779: X.509 Extensions for IP Addresses and AS Identifiers} {
     configure.args-append   enable-rfc3779

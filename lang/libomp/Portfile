@@ -2,13 +2,14 @@
 
 PortSystem              1.0
 PortGroup               cmake 1.0
-PortGroup               muniversal 1.0
+if {${os.major} <= 17} {
+    PortGroup               muniversal 1.0
+}
 PortGroup               compiler_blacklist_versions 1.0
-PortGroup               github 1.0
 
 name                    libomp
 maintainers             {eborisch @eborisch} openmaintainer
-homepage                http://openmp.llvm.org
+homepage                https://openmp.llvm.org
 description             The OpenMP subproject of LLVM
 long_description        ${description} is intended to contain all of the\
                         components required to build an executing OpenMP\
@@ -29,22 +30,26 @@ if { ${subport} eq "libomp-devel" } {
         replaced_by             libomp
     } else {
         conflicts               libomp
-        github.setup            llvm-mirror openmp feadeef
-        worksrcdir              openmp-${version}
-        version                 329928
+        # Moved to official llvm github project. It would be a very large 
+        # (100MB+) download, so use the svn interface (!) to github to 
+        # download just the openmp directory. Not using LLVM's own SVN since
+        # they are in the process of migrating to github.
+        fetch.type              svn
+        svn.url                 https://github.com/llvm/llvm-project/trunk/openmp
+        svn.revision            327229
+        worksrcdir              openmp
+        # llvm-svn revision; also used for livecheck
+        version                 367070
         revision                0
         name                    ${subport}
-        checksums \
-            rmd160  41fb67de6ff9655c4c782bb180baed52c9173ed6 \
-            sha256  0efe16f32a5f0b2107774a42ae019532770a949bcb8fb3fa421c020ed15e6259
-
         livecheck.url \
-            http://llvm.org/viewvc/llvm-project/openmp/trunk/?view=log
+            https://llvm.org/viewvc/llvm-project/openmp/trunk/?view=log
         livecheck.version       ${version}
         livecheck.regex         revision=(\[0-9\]+)
         set rtpath              "runtime/"
     }
 } else {
+    PortGroup               github 1.0
     conflicts               libomp-devel
     if {${os.platform} eq "darwin" && ${configure.cxx_stdlib} ne "libstdc++"} {
         if {${os.major} <= 12} {
@@ -52,15 +57,16 @@ if { ${subport} eq "libomp-devel" } {
             # these systems. https://trac.macports.org/ticket/52554
             configure.cflags-append -stdlib=libc++
         }
-        version                 6.0.0
+        version                 8.0.1
         revision                0
-        master_sites            https://releases.llvm.org/${version}
+        master_sites            https://github.com/llvm/llvm-project/releases/download/llvmorg-${version}
         distname                openmp-${version}.src
         use_xz                  yes
         dist_subdir             openmp-release
         checksums \
-            rmd160  09f2a0d8a2fd317ec583d59d5142f74fec2b9d1a \
-            sha256  7c0e050d5f7da3b057579fb3ea79ed7dc657c765011b402eb5bbe5663a7c38fc
+            rmd160  96bb80f69878e463f5c464b1d8508b5e5ffd5822 \
+            sha256  3e85dd3cad41117b7c89a41de72f2e6aa756ea7b4ef63bb10dcddf8561a7722c \
+            size    933320
 
         worksrcdir              ${distname}
         set rtpath              "runtime/"
@@ -83,6 +89,7 @@ if { ${subport} eq "libomp-devel" } {
     livecheck.regex         svn-tags/RELEASE_(\[0-9\]+)
 }
 
+depends_build-append    port:perl5
 cmake.out_of_source     yes
 
 # According to documentation builds with clang >= 3.3
@@ -90,13 +97,17 @@ compiler.blacklist-append {clang < 500} *gcc*
 
 # Avoid dependency cycle
 # https://trac.macports.org/ticket/53110
-foreach ver {3.8 3.9 4.0 5.0 6.0 devel} {
+foreach ver {3.8 3.9 4.0 5.0 6.0 7.0 8.0 devel} {
     if {![file exists ${prefix}/bin/clang-mp-${ver}]} {
         compiler.blacklist-append macports-clang-${ver}
     }
 }
 
-default_variants        +universal
+if {${os.major} <= 17} {
+    default_variants        +universal
+} else {
+    universal_variant       no
+}
 
 # Do actual install into ${prefix}/(install|lib)/libomp
 # A little unorthodox, but to have clang automatically find the includes and

@@ -3,9 +3,9 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         File-Slurp 9999.19
-maintainers         gmail.com:matteo.corti
+perl5.branches      5.26 5.28
+perl5.setup         File-Slurp 9999.28 ../../authors/id/C/CA/CAPOEIRAB
+maintainers         nomaintainer
 license             {Artistic-1 GPL}
 description         Efficient reading/writing of complete files
 long_description    This module provides subs that allow you to read or \
@@ -19,7 +19,8 @@ long_description    This module provides subs that allow you to read or \
 
 platforms           darwin
 
-checksums           rmd160  38a646144cf4dada0d3e2918e33665de742700d1 \
-                    sha256  ce29ebe995097ebd6e9bc03284714cdfa0c46dc94f6b14a56980747ea3253643
+checksums           rmd160  71d9f6baa4845bbfbd53ae114274bcdcc01bd2de \
+                    sha256  0587ce010bcb79db9e744f14b5498be97bf2c7f2474d971916d92f0a10827cee \
+                    size    36049
 
 supported_archs     noarch

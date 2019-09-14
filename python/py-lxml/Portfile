@@ -4,12 +4,12 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-lxml
-version             4.2.1
+version             4.3.2
 categories-append   devel
 platforms           darwin
 license             BSD
 
-python.versions     26 27 33 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {petr @petrrr} openmaintainer
 
@@ -22,14 +22,14 @@ long_description    lxml is a Pythonic binding for the libxml2 and \
                     Python API, mostly compatible but superior to \
                     the well-known ElementTree API.
 
-homepage            http://lxml.de/
+homepage            https://lxml.de/
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  9dd038937c8579c0bfa6bf95b845e4945f31c5d0 \
-                    sha256  e2629cdbcad82b83922a3488937632a4983ecc0fed3e5cfbf430d069382eeb9b \
-                    size    4284267
+checksums           rmd160  22af7a760dbe3b5bb0dfd7d2c21f8105287df60c \
+                    sha256  3a9d8521c89bf6f2a929c3d12ad3ad7392c774c327ea809fd08a13be6b3bc05f \
+                    size    4380761
 
 # https://trac.macports.org/ticket/56666
 patchfiles-append   patch-setupinfo-remove-xcrun-call.diff

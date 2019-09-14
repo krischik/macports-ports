@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         Lingua-EN-Tagger 0.29
+perl5.branches      5.26 5.28
+perl5.setup         Lingua-EN-Tagger 0.31
 license             GPL-3
 maintainers         nomaintainer
 description         Part-of-speech tagger for English natural language processing
@@ -12,9 +12,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  a737f1c149e2ba2f66c14eda56e51c364cde98dd \
-                    sha256  ca96746c4f704f810630f1ddb5134104cc1985ac609030a380f3d61940b05a37 \
-                    size    263947
+checksums           rmd160  6cf4a7474d5880df48d9686478f611c73e7658b3 \
+                    sha256  949e8c87e4808f7ba096b979220ff081bbe03b6d57890d2eecd4b83ae872e993 \
+                    size    263102
 
 if {${perl5.major} != ""} {
     depends_lib-append \

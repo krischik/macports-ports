@@ -11,19 +11,32 @@ description         GLFW is a free, open-source, portable library for OpenGL and
 license             zlib
 platforms           darwin macosx
 
-if {${os.platform} eq "darwin" && ${os.major} < 11} {
+# glfw does not build on Mac OS X 10.5 or prior due to CoreGraphics
+# references that are 10.6+.
+if {${os.platform} eq "darwin" && ${os.major} < 10} {
+    pre-fetch {
+        ui_error "$name does not build on Mac OS X 10.5 'Leopard' or prior."
+        error "unsupported platform"
+    }
+}
 
-    # Mac OS X 10.6 and prior: latest commit supporting
+# special build on Mac OS X 10.6
+if {${os.platform} eq "darwin" && ${os.major} == 10} {
 
+    # Mac OS X 10.6: use the latest commit supporting this OS version
     github.setup    glfw glfw a94a84b507b0d6d11e8a3f257cb21f4bd6553516
+    version         3.1.2-20151024
     checksums       rmd160 1c07a75a88f272653ca246aa1212a208a83ecb30 \
                     sha256 ff4745264f92b740c50ecc90370f102c86c439f2b6108f1495bd60c87e5d6a83
+    revision        0
 
     # bump the epoch because I moved the version from 20151012 to 3.1.2
 
     epoch           1
 
-    long_description ${description}. This version of GLFW is the latest to provide support for Mac OS X 10.6 and prior, and it will not be updated. It is provided in the hope that it allows ports depending on GLFW to build on these older Mac OS X installs.
+    long_description ${description}. This version of GLFW is the latest to provide support for \
+        Mac OS X 10.6 and prior, and it will not be updated. It is provided in the \
+        hope that it allows ports depending on GLFW to build on these older Mac OS X installs.
 
     # patch to fix install directory for cmake files and docs
 
@@ -33,15 +46,36 @@ if {${os.platform} eq "darwin" && ${os.major} < 11} {
 
     # Mac OS X 10.7 and newer: release and devel
 
+    # requires c11 support as of 82ca58da (20190305) for
+    # <stdatomic.h>; 3.3 was released shortly after this change, so
+    # this requirement is now for all modern GLFW. hopefully the
+    # following force a C11 compliant compiler to be used! require GCC
+    # >= 4.6 (4.9 for full C11) or MacPorts' Clang >= 3.1 or
+    # AppleClang >= 700. MacPorts' Clang starts at 3.3, so nothing to
+    # block there!
+
+    PortGroup cxx11                       1.1
+    PortGroup compiler_blacklist_versions 1.0
+
+    compiler.blacklist-append macports-gcc-4.3 macports-gcc-4.4 macports-gcc-4.5 \
+        macports-gcc macports-gcc-4.6 macports-gcc-4.7 macports-gcc-4.8 \
+        macports-llvm-gcc-4.2 macports-dragonegg-3.3 macports-dragonegg-3.4 \
+        apple-gcc-4.0 apple-gcc-4.2 gcc-3.3 gcc-4.0 llvm-gcc-4.2 gcc cc \
+        {clang < 700} macports-clang-3.*
+
+    configure.args-append -DCMAKE_C_STANDARD=11 -DCMAKE_C_EXTENSIONS=OFF
+
     subport glfw-devel {}
 
     if {${subport} eq ${name}} {
 
         # release
 
-        github.setup    glfw glfw 3.2.1
-        checksums       rmd160 5fb5988736a0a2812426907ab8d64b94eeacc010 \
-                        sha256 34bc25f8111501eec35a52fd39fa50336a0c2e812d4a14454c7c946458ab015c
+        github.setup    glfw glfw 3.3
+        checksums       rmd160 c119dfda395c2250042b1463eaf00b068422e9b2 \
+                        sha256 7f788385e1bce1151f80101a14310bd8add536fbe940fbce02aef1d28417009b \
+                        size   758548
+        revision        0
 
         # bump the epoch because I moved the version from 20151012 to 3.1.2
 
@@ -55,15 +89,20 @@ if {${os.platform} eq "darwin" && ${os.major} < 11} {
 
         patchfiles-append patch-CMakeLists.txt.release.diff
 
+        # patch to fix install name of library
+
+        patchfiles-append patch-src_CMakeLists.txt.release.diff
+
     } else {
 
         # devel
 
-        github.setup    glfw glfw 0be4f3f75aebd9d24583ee86590a38e741db0904
-        version         20180529
-        checksums       rmd160 cd37e134aeda004d49474ec6f31f1dd6dc6ef624 \
-                        sha256 2388276834e597ad056c89afa8fe9c516e2651732071c624421c217e105aae52 \
-                        size   753412
+        github.setup glfw glfw 2c7ef5b480d7780455deed43aedc177b9fe3ac61
+        version   20190814-[string range ${github.version} 0 7]
+        checksums rmd160 04825b38389f328257704a2fdf062b630e496a43 \
+                  sha256 57f799a17817e2509e4edc4c9518aeccb5e70677413c58044399c1f5ddc32805 \
+                  size   756395
+        revision  0
 
         conflicts       glfw
         long_description ${description}: \
@@ -72,12 +111,12 @@ if {${os.platform} eq "darwin" && ${os.major} < 11} {
         # patch to fix install directory for cmake files and docs
 
         patchfiles-append patch-CMakeLists.txt.devel.diff
+
+        # patch to fix install name of library
+
+        patchfiles-append patch-src_CMakeLists.txt.devel.diff
+
     }
-
-    # patch to fix install name of library
-
-    patchfiles-append patch-src_CMakeLists.txt.diff
-
 }
 
 # use the real home page, not github's

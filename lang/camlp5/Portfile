@@ -3,11 +3,11 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-set _version        7.03
+set _version        7.08
 github.setup        camlp5 camlp5 [string map {. ""} ${_version}] rel
 version             ${_version}
-revision            1
-categories          lang ml
+revision            0
+categories          lang ocaml
 license             BSD
 platforms           darwin
 maintainers         {pmetzger @pmetzger} openmaintainer
@@ -26,8 +26,9 @@ long_description    Camlp5 is a preprocessor and pretty-printer for \
 
 homepage            https://camlp5.github.io/
 
-checksums           rmd160  34bb2a1a6a8c55d932a60f1f74ed4adcd907c0bf \
-                    sha256  53eb7451799107d33193ced162ea67024d1a7eb4a2aacd2056dc0cdfc715e4f7
+checksums           rmd160  5409a0cd30a30e366d3b9f131ee73ef179955498 \
+                    sha256  1a8dd7bcbee4ac37920606894a810ccc2275e7ea968c6b90ddac5bd70172ee38 \
+                    size    849029
 
 depends_build       port:ocaml
 

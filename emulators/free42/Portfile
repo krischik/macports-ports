@@ -5,7 +5,7 @@ PortSystem              1.0
 PortGroup               xcode 1.0
 
 name                    free42
-version                 2.0.20
+version                 2.5.3
 platforms               darwin
 categories              emulators
 license                 GPL-2
@@ -24,15 +24,21 @@ master_sites            http://thomasokken.com/free42/upstream:upstream
 distname                ${name}-macports-${version}
 distfiles               ${distname}.tgz:upstream
 checksums               ${distname}.tgz \
-                        rmd160  16b8b3b2833db2a419ea058b35409444298c480b \
-                        sha256  fcb69c991544ffc4696ed09e58c4309bad4758c5f9dddf73ac00c83041f18e15 \
-                        size    9069325
+                        rmd160  f00f105365b577b4dd67cedef5470f6a68c30baf \
+                        sha256  ef7a334a6881825e92db6eba490792c38856111c94c0cc8cf8218de934c4af9d \
+                        size    8932821
 
 extract.only            ${distname}.tgz
 patchfiles              patch-Free42.xcodeproj.diff
 patch.pre_args          -p1
 build.dir               ${build.dir}/mac
 xcode.configuration     'Release Decimal'
+
+# fix build with Xcode 10
+if {${os.platform} eq "darwin" && ([vercmp $xcodeversion 10.0] > 0)} {
+	build.pre_args      -UseNewBuildSystem=NO
+	destroot.pre_args   ${build.pre_args}
+}
 
 variant binary description {Use binary floating-point (faster but less precise)} {
     xcode.configuration 'Release Binary'

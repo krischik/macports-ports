@@ -8,7 +8,7 @@ version             2.0
 license             MIT
 
 categories          www
-maintainers         {kencu @kencu} openmaintainer
+maintainers         nomaintainer
 description         simple webkit2-gtk-based browser
 long_description    surf is a simple Web browser based on WebKit2/GTK+. It is able to display \
     websites and follow links. It supports the  XEmbed protocol which makes it possible to embed \
@@ -29,6 +29,8 @@ depends_build-append \
 depends_lib-append  path:lib/pkgconfig/webkit2gtk-4.0.pc:webkit2-gtk \
                     port:gtk3 \
                     port:dmenu
+
+depends_run-append  port:xprop
 
 # uses X11 specific code in UI
 require_active_variants \

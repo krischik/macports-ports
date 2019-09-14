@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        translate translate 2.3.0
+github.setup        translate translate 2.4.0
 name                translate-toolkit
 categories          textproc
 platforms           darwin
@@ -18,12 +18,12 @@ homepage            http://toolkit.translatehouse.org/
 github.tarball_from releases
 distname            translate-toolkit-${version}
 
-checksums           rmd160  90aeefb3404760d9b63a471389e32957c35f6124 \
-                    sha256  763325a419fdf2d5429e24bad42f33bccca7eb58279f57ddd742c4c3ea794ccb \
-                    size    7635702
+checksums           rmd160  d600c00ba9fef522afc28b10bb5ee7955d2fc515 \
+                    sha256  4039dae336e1471e1933868262ad6addd81161f546c00da6929d8f3883341e7f \
+                    size    7646438
 
 python.default_version \
-                    36
+                    37
 
 depends_build-append \
                     port:py${python.version}-setuptools

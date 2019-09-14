@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         Specio 0.42 ../by-authors/id/D/DR/DROLSKY
+perl5.branches      5.26 5.28
+perl5.setup         Specio 0.44 ../../authors/id/D/DR/DROLSKY
 license             Artistic-2
 maintainers         {devans @dbevans} openmaintainer
 description         Specio - Type constraints and coercions for Perl
@@ -12,8 +12,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  a93f27dce35e2584f7ac228bf26acad3a0d162f4 \
-                    sha256  23298b93a26d7ae3c1d58106f5898d84ddc71b626afdbf801bddb04d5e524ef6
+checksums           rmd160  41336722c247fd9901acbeff116b0de775fbd9bc \
+                    sha256  b544177c4577b3d0dfbc4e1f695678714eefd7f40399da6b7a7d123e317b6d6f \
+                    size    103311
 
 if {${perl5.major} != ""} {
     depends_build-append \
@@ -27,7 +28,8 @@ if {${perl5.major} != ""} {
                     port:p${perl5.major}-ref-util \
                     port:p${perl5.major}-role-tiny \
                     port:p${perl5.major}-sub-quote \
-                    port:p${perl5.major}-test-fatal
+                    port:p${perl5.major}-test-fatal \
+                    port:p${perl5.major}-xstring
 
     supported_archs noarch
 }

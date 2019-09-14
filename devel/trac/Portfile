@@ -2,7 +2,7 @@ PortSystem 1.0
 PortGroup python 1.0
 
 name			trac
-version			1.2.2
+version			1.4
 categories		devel python
 platforms		darwin
 maintainers		{geeklair.net:dluke @danielluke}
@@ -21,31 +21,39 @@ master_sites	https://download.edgewall.org/trac/ \
 		https://ftp.edgewall.org/pub/trac/
 distname	Trac-${version}
 
-checksums	md5	38cb5480c35616d8ecb3f0968e454536 \
-		sha1	815b4574c7eec8915f8b42b76d5f23a220951937 \
-		rmd160	3567871baf50ea2d70ea29f83592545d29496c3f \
-		sha256	5ddeca9d2d47093f5791ef7e38ec9aff9c911258b8ba94c85a32ccd9274fc3b6
+checksums	md5	9984fd689f3e6243aa70a32070dafd80     \
+		sha1	24b7650fc093966431b270f89b42675f86d3db88 \
+		rmd160	201f59c7659b67527d198d6d005b2f10ee575f92 \
+		sha256	a1ef354488d77bbce2aea016996fb71c76faf5f848d8c787703bad0d5e0ee5b1 \
+		size	5443966
 
 variant python27 description {Use Python 2.7} {}
 
 default_variants +python27
 python.default_version 27
 
-depends_lib	port:py${python.version}-pygments port:py${python.version}-genshi \
-		port:py${python.version}-babel port:py${python.version}-sqlite
+depends_lib	port:py${python.version}-pygments \
+		port:py${python.version}-genshi \
+		port:py${python.version}-jinja2 \
+		port:py${python.version}-babel \
+		port:py${python.version}-docutils \
+		port:py${python.version}-pygments \
+		port:py${python.version}-textile \
+		port:py${python.version}-tz \
+		port:py${python.version}-sqlite
 
 notes		"See http://projects.edgewall.com/trac/wiki/TracInstall for information on setting up a new trac environment."
 
 variant postgres description {Build with postgresql support instead of sqlite} {
 				depends_lib-delete port:py${python.version}-sqlite
-				depends_lib-append port:py${python.version}-psycopg2 port:py${python.version}-mx-base
+				depends_lib-append port:py${python.version}-psycopg2
 			}
 
 variant mysql description {Build with mysql support instead of sqlite} {
 				depends_lib-delete port:py${python.version}-sqlite
-				depends_lib-append port:py${python.version}-mysql
+				depends_lib-append port:py${python.version}-pymysq
 
-				ui_msg "Warning: MySQL support is currently experimental. That means it works for some people, but several issues remain, in particular regarding the use of unicode and the key length in the repository cache."
+				ui_msg "Warning: Trac supports the MySQL database backend, although there are a couple of KnowIssues."
 				ui_msg "See http://trac.edgewall.org/wiki/MySqlDb for more detailed information."
 			}
 

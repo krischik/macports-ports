@@ -3,11 +3,11 @@ PortSystem              1.0
 
 name                    xgawk
 version                 3.1.6a-20090408
-revision                1
+revision                2
 categories              lang textproc
 license                 GPL-3+
 installs_libs           no
-maintainers             free.fr:fclaire openmaintainer
+maintainers             nomaintainer
 platforms               darwin
 homepage                http://home.vr-web.de/Juergen.Kahrs/gawk/XML/
 master_sites            ${homepage}
@@ -29,7 +29,11 @@ depends_lib             port:readline \
 
 configure.args          --with-libiconv-prefix=${prefix} \
                         ac_cv_libsigsegv=no \
-                        --enable-static-extensions=yes
+                        --enable-static-extensions=yes \
+                        --disable-xml \
+                        --disable-pgsql \
+                        --disable-mpfr \
+                        --disable-gd
 
 test.run                yes
 test.target             check
@@ -37,4 +41,3 @@ test.target             check
 livecheck.type          regex
 livecheck.url           ${homepage}
 livecheck.regex         ${name}-(\[0-9.a-\]+)\\.tar.gz
-

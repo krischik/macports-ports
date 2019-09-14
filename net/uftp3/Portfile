@@ -4,11 +4,11 @@ PortSystem          1.0
 
 name                uftp3
 version             3.7.2
-revision            1
+revision            2
 categories          net
 platforms           darwin
 license             GPL-3+
-maintainers         free.fr:fclaire
+maintainers         nomaintainer
 
 description         Encrypted UDP based FTP with multicast
 long_description    UFTP is an encrypted multicast file transfer \

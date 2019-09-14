@@ -3,10 +3,10 @@
 PortSystem          1.0
 
 name                Okapi
-version             0.35
+version             0.37
 categories          aqua textproc java
 license             Apache-2
-maintainers         {@amake madlon-kay.com:aaron+macports} openmaintainer
+maintainers         {amake @amake} openmaintainer
 
 description         A set of tools for localization and translation
 long_description    The Okapi Framework is a cross-platform and free open-source set of \
@@ -18,17 +18,18 @@ supported_archs     noarch
 distname            okapi-apps_cocoa-macosx-x86_64_${version}
 master_sites        https://dl.bintray.com/okapi/Distribution/
 
-checksums           rmd160  bab4a812fb8d520023d7c48085edde0628cd6fe6 \
-                    sha256  94033a291df167172271aab8004974dfd84feb2c9023c0213056c0fe58124250
+checksums           rmd160  58f4794f9f3ace2fb974aadad5f6a5f998b7753f \
+                    sha256  219ddbe1b28dd15ddb58be7860baf98fa5cb92fd74fa920ab4048ba3e3e07724 \
+                    size    35072895
 
 use_dmg             yes
 use_configure       no
 
 depends_run         bin:java:kaffe
 
-build.cmd           true
+build {}
 
-destroot    {
+destroot {
     set okapi_home ${applications_dir}/${name}
     copy ${worksrcpath}/${name}_${version} ${destroot}${okapi_home}
 

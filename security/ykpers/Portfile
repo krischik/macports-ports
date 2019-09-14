@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                ykpers
-version             1.19.0
+version             1.20.0
 categories          security
 license             BSD
 maintainers         {cal @neverpanic} {snc @nerdling} openmaintainer
@@ -16,8 +16,9 @@ homepage            https://developers.yubico.com/yubikey-personalization/
 platforms           darwin
 master_sites        https://developers.yubico.com/yubikey-personalization/Releases/
 
-checksums           rmd160  23d75c503b93bf704173c5b64f70b456a2a51c02 \
-                    sha256  2bc8afa16d495a486582bad916d16de1f67c0cce9bb0a35c3123376c2d609480
+checksums           rmd160  398bdf2048def28e4b07e05b164be04f4c9c4b08 \
+                    sha256  0ec84d0ea862f45a7d85a1a3afe5e60b8da42df211bb7d27a50f486e31a79b93 \
+                    size    523134
 
 depends_lib         port:libyubikey
 

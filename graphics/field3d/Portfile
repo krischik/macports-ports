@@ -5,9 +5,9 @@ PortGroup               github 1.0
 
 github.setup            imageworks Field3D 1.7.2 v
 name                    field3d
-revision                5
+revision                8
 categories              graphics
-maintainers             {blair @blair}
+maintainers             nomaintainer
 license                 BSD
 
 description             Library for storing voxel data.

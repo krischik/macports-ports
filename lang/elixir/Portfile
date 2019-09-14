@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        elixir-lang elixir 1.6.5 v
+github.setup        elixir-lang elixir 1.9.0 v
 epoch               1
 categories          lang
 platforms           darwin
@@ -23,8 +23,9 @@ homepage            http://elixir-lang.org/
 
 depends_lib         port:erlang
 
-checksums           rmd160  e21b410bdf83dce42ffcedc3f86911ba4e130687 \
-                    sha256  30a0e5ea2164b14692902464d0217918159bb6448a52efbbc844c2a0f66151c4
+checksums           rmd160 7f1aa6439ca25bc7058e63c9868c185de0b3c405 \
+                    sha256 d4b36ccdf4f0cf452fec6ceb6b97ddd54793e7e424668bc9dbeeaf8d50ec9f90 \
+                    size   2247425
 
 # bin/mix
 conflicts           arb

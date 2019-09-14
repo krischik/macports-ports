@@ -9,7 +9,7 @@ PortGroup           cxx11 1.1
 
 name                libsigcxx3
 set gname           libsigc++
-version             2.99.11
+version             2.99.13
 license             LGPL-2.1
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          devel
@@ -29,9 +29,9 @@ master_sites        gnome:sources/${gname}/${branch}/
 distname            ${gname}-${version}
 use_xz              yes
 
-checksums           rmd160  ef7785e84fea65b17178ce14d2973629792b6a1f \
-                    sha256  177fb08df33da71780eef2ce4c5991a2b3b6d07d4ad1efbf6ad38f7964e4bb55 \
-                    size    951848
+checksums           rmd160  865c0f2dc927fbba354f3848a86c7fcf9bad69cf \
+                    sha256  6ce40b3d719b6792f145d94511131dd48edaa9c0cd4ec02b0e959d5d1c406621 \
+                    size    913688
 
 depends_build       port:pkgconfig \
                     port:mm-common \
@@ -41,7 +41,9 @@ depends_build       port:pkgconfig \
                     port:libxslt
 
 # requires a compiler that supports C++17
-compiler.blacklist-append {clang < 900.0.39} macports-clang-3.*
+# support for C++17 std::invoke_result in Apple clang requires Xcode 10 or better
+compiler.blacklist-append {clang < 1000} macports-clang-3.* {macports-clang-[4-6].0}
+compiler.fallback-append macports-clang-8.0 macports-clang-7.0
 
 # powerpc platforms want to use macports-gcc-6
 # C++17 support requires macports-gcc-7
@@ -51,7 +53,7 @@ compiler.fallback-append macports-gcc-7
 configure.perl      /usr/bin/perl
 
 configure.env-append \
-                    "M4=${prefix}/bin/gm4"
+                    M4=${prefix}/bin/gm4
 
 configure.args      --enable-static \
                     --disable-silent-rules
@@ -63,7 +65,7 @@ autoreconf.args     -fvi
 post-destroot {
     set docdir ${prefix}/share/doc/${gname}-3.0
     xinstall -d ${destroot}${docdir}
-    xinstall -m 0644 -W ${worksrcpath} AUTHORS COPYING ChangeLog NEWS README \
+    xinstall -m 0644 -W ${worksrcpath} AUTHORS COPYING ChangeLog NEWS README.md \
         ${destroot}${docdir}
 }
 

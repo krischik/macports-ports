@@ -26,7 +26,7 @@ github.setup            Electrostatics apbs-pdb2pqr d4e78c62e6a07f92c26924318d83
 version                 1.4.1
 homepage                http://www.poissonboltzmann.org
 worksrcdir              ${worksrcdir}/apbs
-revision                4
+revision                5
 
 checksums               rmd160  5c4d583e12deb3fbc2b5a8031882311cbfd22c7e \
                         sha256  f98ce6a51d8f813e1b4fa626c054ddbf7a985403ca30f890733cb1abf2bd6e05
@@ -77,7 +77,7 @@ test {
 # It comes with clang for OSX 10.6 so we need to blacklist clang to prevent it being used.
 compiler.blacklist      macports-gcc-4.4 macports-gcc-4.5 macports-gcc-4.6 \
     macports-dragonegg-3.4 gcc-4.2 llvm-gcc-4.2 apple-gcc-4.2 macports-llvm-gcc-4.2 {clang < 425} \
-    macports-clang-3.4 macports-clang-3.5
+    macports-clang-3.4
 # g++ will just fail to link apbs_geoflow. probably about -lstdc++ stuff. So, just use Fortran.
 compilers.choose        fc
 mpi.setup

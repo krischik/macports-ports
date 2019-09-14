@@ -17,7 +17,7 @@ long_description    Xalan is an XSLT processor for transforming XML \
                     Transformations (XSLT) and the XML Path Language \
                     (XPath).
 
-homepage            http://xalan.apache.org/xalan-c/
+homepage            https://xalan.apache.org/xalan-c/
 master_sites        apache:xalan/xalan-c/sources/
 distname            xalan_c-${version}-src
 
@@ -32,8 +32,8 @@ depends_lib         port:xercesc3
 
 worksrcdir          xalan-c-${version}/c
 
-configure.env       XALANCROOT='${workpath}/${worksrcdir}' \
-                    XERCESCROOT='${prefix}'
+configure.env       XALANCROOT=${workpath}/${worksrcdir} \
+                    XERCESCROOT=${prefix}
 configure.cmd       ./runConfigure
 configure.pre_args -C --prefix=${prefix} \
                    -c ${configure.cc} -x ${configure.cxx}
@@ -42,10 +42,10 @@ platform darwin {
     configure.pre_args-append   -p macosx
 }
 
-build.env           ${configure.env}
+build.env           {*}${configure.env}
 build.type          gnu
 use_parallel_build  no
 
-destroot.env        ${configure.env}
+destroot.env        {*}${configure.env}
 
 livecheck.type      moddate

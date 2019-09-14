@@ -6,6 +6,7 @@ PortGroup           compiler_blacklist_versions 1.0
 name                mesa
 epoch               1
 version             17.1.6
+revision            1
 categories          x11 graphics
 maintainers         {jeremyhu @jeremyhu} openmaintainer
 license             MIT
@@ -27,8 +28,7 @@ depends_build       port:pkgconfig \
                     port:bison \
                     port:gindent
 
-depends_lib         port:xorg-glproto \
-                    port:xorg-dri2proto \
+depends_lib         port:xorg-xorgproto \
                     port:xorg-libxcb \
                     port:xorg-libX11 \
                     port:xorg-libXext \
@@ -118,7 +118,7 @@ variant python27 description {Use python 2.7} {
     depends_build-append \
         port:py27-libxml2
     configure.env-append \
-        PYTHON2="${prefix}/bin/python2.7"
+        PYTHON2=${prefix}/bin/python2.7
 }
 
 if {![variant_isset python27]} {

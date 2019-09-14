@@ -4,7 +4,8 @@ PortSystem 1.0
 PortGroup muniversal 1.0
 
 name            openldap
-version         2.4.46
+version         2.4.48
+revision        1
 categories      databases
 maintainers     nomaintainer
 license         openldap
@@ -19,8 +20,9 @@ master_sites    ftp://ftp.OpenLDAP.org/pub/OpenLDAP/openldap-release/ \
                 ftp://ftp.nl.uu.net/pub/unix/db/openldap/openldap-release/
 extract.suffix    .tgz
 
-checksums       rmd160  d7038355b1c13a0b2d5104a0c75735b63e9c4148 \
-                sha256  9a90dcb86b99ae790ccab93b7585a31fbcbeec8c94bf0f7ab0ca0a87ea0c4b2d
+checksums       rmd160  c91aa87634856d84386d2d8498b647ea2b1b7521 \
+                sha256  d9523ffcab5cd14b709fcf3cb4d04e8bc76bb8970113255f372bc74954c6074d \
+                size    5704883
 
 depends_lib     path:bin/perl:perl5 \
                 port:tcp_wrappers \

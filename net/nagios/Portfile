@@ -3,7 +3,8 @@
 PortSystem  1.0
 
 name            nagios
-version         4.3.4
+version         4.4.5
+revision        1
 categories      net
 license         GPL-2
 maintainers     nomaintainer
@@ -17,13 +18,14 @@ long_description    A network service and host monitor that can notify you \
             checks for things such as CPU and disk usage and many \
             other things.
 
-homepage        http://nagios.org
+homepage        https://nagios.org
 
 livecheck.regex     nagios-(\[0-9.\]+)${extract.suffix}
 
 master_sites        sourceforge:project/nagios/nagios-4.x/nagios-${version}
-checksums       rmd160 bddc8310f82351923288620dc635c535d2ac2a32 \
-                sha256 c90b7812d9e343db12be19a572e15c415c5d6353a91c5e226e432c2d4aaa44f1
+checksums           rmd160  afdbd6ed29b6ac64574caeade70a37810c5b2cdc \
+                    sha256  bf69e2d2fae218694585677472d355ba676120cbd024164281e635dc467c391d\
+                    size    11304463
 
 depends_build       port:gd2
 depends_lib         path:lib/libssl.dylib:openssl \
@@ -65,9 +67,6 @@ post-patch {
 
     reinplace "s|daemon-init \$(DESTDIR)\$(INIT_DIR)/nagios|daemon-init \$(DESTDIR)\$(INIT_DIR)/nagios.init|g" \
         "${worksrcpath}/Makefile.in"
-
-    reinplace "s|NagiosLockDir=/var/lock/subsys|NagiosLockDir=${prefix}/var/nagios|g" \
-        ${worksrcpath}/daemon-init.in
 }
 
 add_users nagios group=nagios
@@ -90,7 +89,7 @@ notes "
 ************************************************************
 The basic steps to complete the installation are below.  But Nagios is\
 a complex program so you should read the documentation online at\
-http://www.nagios.org or locally at ${prefix}/share/nagios/docs/index.html\
+https://www.nagios.org or locally at ${prefix}/share/nagios/docs/index.html\
 to fully understand Nagios.
 ************************************************************
 

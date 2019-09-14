@@ -5,10 +5,10 @@ PortGroup           app 1.0
 PortGroup           active_variants 1.1
 
 name                pspp-devel
-set buildstamp      20180507030502
-set buildhash       g7697e4
-version             1.1.0
-revision            6
+set buildstamp      20190906050501
+set buildhash       g045cd8
+version             1.3.0
+revision            12
 # depends_test port:p${perl5.major}-text-diff
 categories          math
 license             GPL-3+
@@ -44,8 +44,10 @@ depends_lib-append  path:lib/pkgconfig/cairo.pc:cairo \
 
 depends_build-append    port:pkgconfig
 
-checksums           rmd160  5d791e841c10ec8e5f58853a7f8e7ed5a1aaebf3 \
-                    sha256  81c3aab39850e114a052398c7de3d8ee3bd79841762959a2991a01bf659b967b
+checksums           rmd160  7ad42beeb816e4b3be1f13aadfe731020c6e01db \
+                    sha256  7713239b868afb8e499981dc5018cb6f0e8d2394f6617dd2ea71fd2412d21178 \
+                    size    7334479
+
 post-extract {
     if {[variant_isset gui]} {
         copy ${filespath}/PSPP ${worksrcpath}
@@ -77,6 +79,7 @@ build.target-append  html
 
 test.run            yes
 test.target         check
+#test.env            TESTSUITEFLAGS='-v -k unrepresentable'
 #test.env            TESTSUITEFLAGS='1177 1178 1179 1180 1181 1182 1183 1184 1185 1186'
 
 variant help requires gui description {Provide in-application help via yelp} {
@@ -153,6 +156,6 @@ app.name            PSPP
 app.executable      ${worksrcpath}/PSPP
 app.icon            ${filespath}/logo.png
 
-livecheck.url               http://pspp.benpfaff.org/~blp/pspp-master/latest/i386/
+livecheck.url               http://pspp.benpfaff.org/~blp/pspp-master/latest/x86_64/
 livecheck.regex             <td>dist_version<\\/td><td>(.*)<\\/td>
 livecheck.version           ${version}-${buildhash}

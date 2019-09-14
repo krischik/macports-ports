@@ -1,11 +1,14 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
 PortSystem 1.0
 PortGroup               java 1.0
 
 name                    apache-ant-1.9
-version                 1.9.9
+version                 1.9.14
+set branch              [join [lrange [split ${version} .] 0 1] .]
 categories              devel java
 license                 Apache-2 W3C
-maintainers             openmaintainer {blair @blair}
+maintainers             nomaintainer
 supported_archs         noarch
 
 description             Java opensource build system
@@ -14,16 +17,17 @@ long_description        Ant is a Java based build tool.  In theory it is \
                         uses XML build files that define a set of targets.  \
                         Each target has dependencies (other targets) and \
                         contains a set of tasks to perform.
-homepage                http://ant.apache.org/
+homepage                https://ant.apache.org/
 
 platforms               darwin freebsd
 
 distname                apache-ant-${version}-bin
 master_sites            apache:ant/
 master_sites.mirror_subdir        binaries
-checksums               md5    565ffd791def7f22936311e9aa3f8058 \
-                        sha1   570005afd7c080436742e128b07eb97d50178d53 \
-                        sha512 3c0cc564c27483eb526e004b31b211dd689aa24a2aa7097fc11bc5304771e49124a657203eeec748a70a6bfa6f2c050d5647b37a69e5eb02843fff7a0f7646ea
+# Remember also to update the checksums in the source variant below.
+checksums               rmd160  2bc64a1799a3c4421f34759e731ce2285c852fff \
+                        sha256  efad74bd98d9eb72b080a3e08f5b17118e05372d22e3aa3bc0bd1686aa71361c \
+                        size    4493049
 
 worksrcdir              apache-ant-${version}
 set workTarget          ""
@@ -31,7 +35,9 @@ set workTarget          ""
 use_bzip2               yes
 use_configure           no
 
-build.cmd               true
+conflicts               apache-ant
+
+build {}
 
 # Ant is installed from the binary (jar) distribution by default. Due to
 # bootstrapping issues, the source variant generally doesn't build a very
@@ -41,9 +47,9 @@ build.cmd               true
 variant source description "build from source; not recommended" {
         distname                        apache-ant-${version}-src
         master_sites.mirror_subdir      source
-        checksums                       md5    c988158e101e7700b45c14b9804fd554 \
-                                        sha1   4c815a6f560cde94fc2b3d15e34393ebf6dbca52 \
-                                        sha512 27fe030f134e34d4e06ef32baf1e8cf392490745fa7a7f47cf3e123f1141499c059e317154c923a8d7dcb7af163eb0cc87636f5d6150e0ce54b6c0abc2d0a112
+        checksums                       rmd160  b084661f57b51e4e5a957322e009e055562765f6 \
+                                        sha256  b032f732f941ce44bb7bc512377c755e4017aa826ae7bc97f4edd8adcb7c75a6 \
+                                        size    3956853
         set workTarget                  /apache-ant
 
         build.cmd                       ./build.sh
@@ -85,5 +91,5 @@ destroot        {
 universal_variant       no
 
 livecheck.type          regex
-livecheck.url           http://www.apache.org/dist/ant/binaries/
-livecheck.regex         {apache-ant-(\d+(?:\.\d+)*)-bin.tar.bz2}
+livecheck.url           https://www.apache.org/dist/ant/binaries/
+livecheck.regex         apache-ant-([quotemeta ${branch}](?:\\.\\d+)*)-bin\\.tar\\.bz2

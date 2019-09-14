@@ -161,8 +161,8 @@ platform darwin 9 {
 
 options system_library
 options local_library
-default system_library      [set_system_library]
-default local_library       [set_local_library]
+default system_library      {[set_system_library]}
+default local_library       {[set_local_library]}
 
 #
 # Default values for this group :
@@ -194,7 +194,7 @@ variant with_docs {
     depends_build-append    bin:latex2html:latex2html \
                             bin:texi2pdf:texinfo \
                             bin:texi2html:texi2html \
-                            bin:pdftex:teTeX \
+                            bin:pdftex:texlive-basic \
                             port:gnustep-base
 
     post-destroot {

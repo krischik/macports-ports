@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         Array-Compare v3.0.1
+perl5.branches      5.26 5.28
+perl5.setup         Array-Compare v3.0.3
 epoch               1
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
@@ -13,9 +13,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  5a516d1f763e82851b633065f94234eb83af55f6 \
-                    sha256  eb4f5889342690d2a9a6c2bcce55221e47155412e59842e424ea41ed9a34d23b \
-                    size    9481
+checksums           rmd160  5163b9b969023c9d991c920243864e9018e35c45 \
+                    sha256  62ab7ccae9ef74c0e13a168fc3a69dbcf2fc61bdfd1def0be47a1fc94648168e \
+                    size    9831
 
 if {${perl5.major} != ""} {
     depends_build-append \

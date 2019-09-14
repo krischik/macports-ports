@@ -3,18 +3,21 @@
 PortSystem          1.0
 
 name                phonon
-version             4.10.1
+
+version             4.10.3
+checksums           rmd160 7a1934b45a6d54d0803edf0a3cd6d7b5b4ecc1e7 \
+                    sha256 2e8b145669afa0e93833e4064b657677abc9413e4007fa5ddc91397c9bddc295 \
+                    size   336724
+revision            0
+
 license             {LGPL-2.1 LGPL-3}
 maintainers         {michaelld @michaelld} openmaintainer
 description         Cross Platform Multimedia API used by KDE4
 platforms           darwin
-homepage            http://phonon.kde.org
+homepage            https://phonon.kde.org
 master_sites        kde:stable/${name}/${version}
 use_xz              yes
 distname            phonon-${version}
-checksums           rmd160 e495a1d1ea53a6d0c6cb218b7a11175a9d507377 \
-                    sha256 e5a98df31aeffc22493afc8d6adbca5d6f0c27cc2eed73b3be05195321e08db7 \
-                    size   322100
 
 variant demos description {Build the demos} {
     configure.args-append   -DPHONON_BUILD_DEMOS:BOOL=ON
@@ -178,4 +181,4 @@ configure.ldflags-append -F${qt_frameworks_dir}
 
 livecheck.type      regex
 livecheck.url       http://mirrors.mit.edu/kde/stable/${name}/
-livecheck.regex     ">(\[0-9.\]+)<"
+livecheck.regex     ">(\[0-9.\]+)/<"

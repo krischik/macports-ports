@@ -9,10 +9,8 @@ PortGroup           mpi 1.0
 PortGroup           linear_algebra 1.0
 PortGroup           debug 1.0
 
-github.setup        plumed plumed2 2.4.1 v
+github.setup        plumed plumed2 2.5.2 v
 name                plumed
-
-revision            1
 
 categories          science
 
@@ -30,8 +28,9 @@ platforms           darwin
 
 homepage            http://www.plumed.org/
 
-checksums           rmd160  8762d5c2f28c5281da0410691b0ede4575b73c82 \
-                    sha256  1cf9a2fda224b1c12c64b966c81c9a0e52c1468cf35dfbbe7dad51f3e976b102
+checksums           rmd160  d1c138a471707bb917f9ffbb83f3b6c5f0b68462 \
+                    sha256  4092bdf72cdcc53012844b7a3a708ec960000267a627c28320810554d26f19d9 \
+                    size    69331613
 
 # Disable additional features.
 # --disable-doc:          Do not create documentation, and avoid searching for Doxygen.
@@ -42,11 +41,16 @@ checksums           rmd160  8762d5c2f28c5281da0410691b0ede4575b73c82 \
 # --disable-static-patch: Avoid a number of tests that are only required when linking plumed
 #                         statically to an MD code.
 # --disable-mpi:          Do not search for MPI compiler (replaced when enabling mpi, see below)
+# --disable-python:       Python wrappers will be installed with a separate python port
 configure.args-append \
                     --disable-doc \
                     --disable-libsearch \
                     --disable-static-patch \
-                    --disable-mpi
+                    --disable-mpi \
+                    --disable-python
+
+# install bash completions
+configure.args-append BASH_COMPLETION_DIR=${prefix}/share/bash-completion/completions
 
 # Hardcode path for libplumedKernel.dylib.
 # This allows to patch MD codes using the --runtime option but using as
@@ -77,9 +81,8 @@ configure.cxxflags-replace -Os -O3
 # Library names are specified here to make sure that
 # only requested packages are linked.
 configure.ldflags-append \
-                    -lmatheval -lxdrfile -lz -lgsl
+                    -lxdrfile -lz -lgsl
 depends_lib-append  port:gsl \
-                    port:libmatheval \
                     port:xdrfile \
                     port:zlib
 
@@ -108,19 +111,14 @@ pre-configure {
 # plumed-devel subport
 # This subport installs the developer version
 subport plumed-devel {
-    github.setup        plumed plumed2 f0eab70af62be7797ed007565d42a2ab88c6303b
-    version             2.5-20180302
-    revision            1
+    github.setup        plumed plumed2 d6627cba892750546996b752282f200a41ed9c5e
+    version             2.6-20190719
     description         ${description} (development version)
     long_description    ${long_description} (development version)
     conflicts plumed
-    checksums           rmd160  ae098ee9a8c2aee503d6c174f9d21bd30cc9c4e5 \
-                        sha256  7f28caafbae93fb81ec3cf17c1a2929313f5b5d79adf9adee6c443cf3826e16d
-    configure.ldflags-delete -lmatheval
-    depends_lib-delete       port:libmatheval
-# plumed 2.5 supports python. However, I disable it here since it is
-# not correctly integrated with MacPorts yet
-    configure.args-append --disable-python
+    checksums           rmd160  9b980081a6cb733769d8acfc52f44810698634e6 \
+                        sha256  018681903daae08b45eb836209165dfbf443edff49984c591a64a9602feb278d \
+                        size    72598389
 }
 
 # Allow running tests from MacPorts

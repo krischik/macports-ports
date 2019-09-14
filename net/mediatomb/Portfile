@@ -5,10 +5,10 @@ PortGroup           conflicts_build 1.0
 
 name                mediatomb
 version             0.12.1
-revision            9
+revision            10
 categories          net multimedia
 platforms           darwin
-maintainers         gmail.com:yattenator
+maintainers         nomaintainer
 description         Open source (GPL) UPnP MediaServer
 long_description \
     MediaTomb is an open source (GPL) UPnP MediaServer \

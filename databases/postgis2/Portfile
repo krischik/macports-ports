@@ -5,7 +5,7 @@ PortSystem          1.0
 name                postgis2
 categories          databases gis
 license             GPL-2+
-version             2.4.4
+version             2.5.3
 epoch               1
 revision            0
 platforms           darwin
@@ -24,8 +24,9 @@ homepage            http://postgis.refractions.net/
 master_sites        http://download.osgeo.org/postgis/source
 distname            postgis-${version}
 
-checksums           rmd160  f9d5274a25b9e9e05a6f25343c9185bcd1fa4b3a \
-                    sha256  0663efb589210d5048d95c817e5cf29552ec8180e16d4c6ef56c94255faca8c2
+checksums           rmd160  1b7e63dcc15521622570e838bbdd2366d74a7f8c \
+                    sha256  72e8269d40f981e22fb2b78d3ff292338e69a4f5166e481a77b015e1d34e559a \
+                    size    16424752
 
 depends_build       port:autoconf \
                     port:automake \
@@ -44,7 +45,7 @@ conflicts           postgis
 
 # Neither is PostGIS 2.0 compatible with PostGreSQL 8
 # Database variants (from the GDAL port)
-set postgresql_suffixes {10 93 94 95 96}
+set postgresql_suffixes {11 10 93 94 95 96}
 
 set postgresql_variants {}
 
@@ -105,12 +106,12 @@ variant gui                 description {Build the GUI import tool} {
     configure.args-append   --with-gui
 }
 
-configure.args-append       --with-projdir=${prefix}/lib/proj5
+configure.args-append       --with-projdir=${prefix}/lib/proj6
 
 variant proj4               description {Builds with PROJ4 4.9 instead of PROJ4 5+} {
     depends_lib-delete      port:proj
     depends_lib-append      port:proj4
-    configure.args-delete   --with-projdir=${prefix}/lib/proj5
+    configure.args-delete   --with-projdir=${prefix}/lib/proj6
     configure.args-append   --with-projdir=${prefix}/lib/proj49
 }
 

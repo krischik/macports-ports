@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         CGI-Simple 1.15
+perl5.branches      5.26 5.28
+perl5.setup         CGI-Simple 1.22
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         A Simple totally OO CGI interface that is CGI.pm compliant
@@ -12,9 +12,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  043320783dbadec214227c3d809d5fab2341de4c \
-                    sha256  d8108bda0b2479630c3f2c9cf77a06bcfb5cccc7aa4c3d2755496a3293676d04 \
-                    size    86318
+checksums           rmd160  f60002ee22dba9c1cfe039d593797119006489db \
+                    sha256  f611a6a35bf0eb637d3d72c30cf400f0e2199844f11eb414087e6e652d8f878d \
+                    size    87400
 
 if {${perl5.major} != ""} {
     depends_build-append \

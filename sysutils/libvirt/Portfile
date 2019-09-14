@@ -1,13 +1,20 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           compiler_blacklist_versions 1.0
 
+# Remember to update libvirt and py-libvirt at the same time.
 name                libvirt
-version             4.4.0
+version             5.6.0
+revision            1
+checksums           rmd160  26fa8945d23baec75426b3d054da5b766682693b \
+                    sha256  65f4f9924e10135aa694ca8bcb0b55725883d08e0b32c42111603d573aabb9b4 \
+                    size    13147976
+
 categories          sysutils
 license             LGPL-2.1+
 platforms           darwin
-maintainers         {ryandesign @ryandesign} openmaintainer
+maintainers         {ryandesign @ryandesign} {danchr @danchr} openmaintainer
 
 description         Libvirt - The Virtualization API
 
@@ -17,10 +24,6 @@ long_description    A toolkit to interact with the virtualization \
 homepage            https://libvirt.org
 master_sites        ${homepage}/sources/
 use_xz              yes
-
-checksums           rmd160  e65ebeb5a802fca2719f4c066b285e401e449f32 \
-                    sha256  46631d63cb61af8042593a93fa046dddfff204d29858f20df77a125bd6f84ab6 \
-                    size    14668912
 
 depends_build       port:pkgconfig \
                     port:bash-completion \
@@ -34,7 +37,8 @@ depends_lib         port:curl \
                     port:yajl \
                     port:zlib
 
-compiler.blacklist-append apple-gcc* gcc-3.3 gcc-4.* *llvm-gcc-4.2 macports-gcc-4.3
+# see https://trac.macports.org/ticket/58726
+compiler.blacklist-append apple-gcc* gcc-3.3 *gcc-4.* {clang < 425}
 
 # libvirt build scripts work with python 2.x only
 configure.python    ${prefix}/bin/python2.7
@@ -97,6 +101,11 @@ configure.args      --disable-silent-rules \
                     --without-xenapi \
                     --without-xen-inotify \
                     --with-yajl
+
+# work around a hopefully temporary bug that appeared in 5.5.0:
+# https://bugzilla.redhat.com/show_bug.cgi?id=1728944
+# see https://trac.macports.org/ticket/58726
+configure.cflags-append -std=gnu99
 
 if {![variant_isset openssl]} {
     default_variants +gnutls

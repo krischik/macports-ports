@@ -6,7 +6,7 @@ PortGroup           github 1.0
 github.setup        tadzik panda 2016.02
 description         Perl 6 module installer 
 long_description    ${description}
-maintainers         {mojca @mojca} {coleda.com:will @coke} openmaintainer
+maintainers         {mojca @mojca} openmaintainer
 categories          lang perl
 license             Artistic-2
 platforms           darwin
@@ -42,7 +42,7 @@ destroot {
     # bin
     foreach f [glob -type f ${src}/bin/*] {
         # reinplace "s|/usr/bin/env perl6|${prefix}/bin/perl6|g" ${f}
-        xinstall ${f} ${destroot}/${prefix}/bin
+        xinstall ${f} ${destroot}${prefix}/bin
     }
 
     # TODO: state file inside panda

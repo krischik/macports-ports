@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         MCE 1.835 ../../authors/id/M/MA/MARIOROY
+perl5.branches      5.26 5.28
+perl5.setup         MCE 1.850 ../../authors/id/M/MA/MARIOROY
 
 maintainers         {devans @dbevans} openmaintainer
 license             {Artistic-1 GPL}
@@ -14,13 +14,12 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  d2011f4636794cc106a823bde5d45ccab401ea46 \
-                    sha256  716366244832f57695cd4c9024c5420da0187ab4714c72b40d799f24f73bbab7 \
-                    size    183455
+checksums           rmd160  ce0be11b9b8d44e0baf841b04061f9b8302fda6a \
+                    sha256  02d550e6637a46c682a0b96d6f7ba654d3bc8299ed26e92f4f711b096f29926f \
+                    size    213978
 
 if {${perl5.major} != ""} {
 # Sereal is loaded automatically if available
-# Use Time::HiRes 1.9739+ for Sierra compatibility
     depends_lib-append \
                     port:p${perl5.major}-sereal \
                     port:p${perl5.major}-time-hires

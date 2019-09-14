@@ -3,7 +3,7 @@
 PortSystem      1.0
 
 name            ngspice
-version         27
+version         30
 license         BSD
 categories      science cad
 maintainers     {@mguthaus ucsc.edu:mrg+openram} openmaintainer
@@ -18,8 +18,9 @@ long_description \
 homepage        http://ngspice.sourceforge.net/
 master_sites    sourceforge:project/ngspice/ng-spice-rework/${version}
 
-checksums       rmd160  a500dba09b711c2a1df93e1a55e6431832c61e25 \
-                sha256  0c08c7d57a2e21cf164496f3237f66f139e0c78e38345fbe295217afaf150695
+checksums       rmd160  965684c859955a42218c3d9f6deb2ed7cbe0cf6a \
+                sha256  08fe0e2f3768059411328a33e736df441d7e6e7304f8dad0ed5f28e15d936097 \
+                size    7147044
 
 set docdir      ${prefix}/share/doc/${name}
 
@@ -56,8 +57,23 @@ if {${name} eq ${subport}} {
     }
     
     variant manual description {Legacy compatibility variant} {
-        depends_run-append  port:ngspice-docs
+        depends_run-append       port:ngspice-docs
     }
+    
+    variant openmp description {Add OpenMP support variant} {
+        depends_lib-append       port:libomp 
+        
+        configure.args-append    --enable-openmp
+
+        compiler.whitelist       macports-clang-7.0 macports-clang-6.0 macports-clang-5.0 \
+                                 macports-clang-3.7 \
+                                 macports-gcc-8 macports-gcc-7 macports-gcc-6 macports-gcc-5 \
+                                 macports-gcc-4.8 macports-gcc-4.7 macports-gcc-4.6 macports-gcc-4.5 \
+                                 macports-gcc-4.4 macports-gcc-4.3
+        compiler.fallback        macports-clang-7.0
+    }
+
+    default_variants    +openmp +manual
     
     livecheck.regex     ${name}-(\[0-9.\]+)${extract.suffix}
 } else {
@@ -73,8 +89,9 @@ subport ngspice-docs {
     extract.suffix
     extract.only
  
-    checksums           rmd160  79603e1db19d357f98cd7e7b5560a7c00736131e \
-                        sha256  da71dfa6b2806acbad54f0980e50f1aea46fa0a6c3ddbd1824cae465d784284c
+    checksums           rmd160  a9848930d0789c0e73b12dcea7d0548c11dd9f0e \
+                        sha256  d9658d5e52f27822ef852063599d81a7f647fa03db993fca5b90f4677e0a8257 \
+                        size    2131163
     
     use_configure       no
 

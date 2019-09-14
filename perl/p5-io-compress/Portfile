@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26
-perl5.setup         IO-Compress 2.081 ../../authors/id/P/PM/PMQS
+perl5.branches      5.26 5.28
+perl5.setup         IO-Compress 2.087 ../../authors/id/P/PM/PMQS
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         Perl interface to allow reading and writing of \
@@ -16,9 +16,9 @@ homepage            https://metacpan.org/release/${perl5.module}
 
 platforms           darwin
 
-checksums           rmd160  cf444f7e6bab3f83dbbe84e5587474bd2e93e025 \
-                    sha256  5211c775544dc8c511af08edfb1c0c22734daa2789149c2a88d68e17b43546d9 \
-                    size    243904
+checksums           rmd160  680aa8c265d421fb1282e7702c3f37d20cb83218 \
+                    sha256  94f792775d0496fffe862363c76637e74ff5b46c40cf47042547686d164e23cb \
+                    size    260022
 
 if {${perl5.major} != ""} {
     depends_lib-append \

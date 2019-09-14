@@ -1,33 +1,34 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           github 1.0
 PortGroup           python 1.0
 
 set real_name       acme
 name                py-${real_name}
-version             0.25.1
-worksrcdir          ${real_name}-${version}
-distfiles           ${real_name}-${version}${extract.suffix}
+github.setup        certbot certbot 0.38.0 v
+revision            0
+worksrcdir          certbot-${version}/${real_name}
 categories-append   security
 license             Apache-2
 maintainers         {mps @Schamschula} openmaintainer
 description         ACME protocol implementation in Python.
 long_description    ${description}
 platforms           darwin
-homepage            https://pypi.python.org/pypi/acme
-master_sites        pypi:a/acme
+homepage            https://certbot.eff.org/
 
-python.versions     27 36
+python.versions     27 36 37
 
-checksums           rmd160  1be55e9b1fe2e1173b7c2eb80f9ed597a285c813 \
-                    sha256  47b5f3f73d69b7b1d13f918aa2cd75a8093069a68becf4af38e428e4613b2734 \
-                    size    79987
+checksums           rmd160  1fdf508644ee960a0a5c26b64d9fc1e878cffb8b \
+                    sha256  9242796712bbc57b3fcfa918c54236f3509bc063da4cc420f3fd2dee4b019b59 \
+                    size    1328397
 
 if {${name} ne ${subport}} {
     depends_build-append \
                     port:py${python.version}-funcsigs \
                     port:py${python.version}-mock \
-                    port:py${python.version}-nose
+                    port:py${python.version}-nose \
+                    port:py${python.version}-setuptools
 
     depends_lib-append  \
                     port:py${python.version}-asn1 \
@@ -39,13 +40,9 @@ if {${name} ne ${subport}} {
                     port:py${python.version}-requests \
                     port:py${python.version}-requests-toolbelt \
                     port:py${python.version}-pyrfc3339 \
-                    port:py${python.version}-setuptools \
                     port:py${python.version}-six \
                     port:py${python.version}-tz \
                     port:py${python.version}-werkzeug
 
     livecheck.type      none
-} else {
-    livecheck.type      regex
-    livecheck.regex     ${real_name}-(\[0-9.\]+)${extract.suffix}
 }

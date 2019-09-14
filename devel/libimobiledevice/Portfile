@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 
 github.setup        libimobiledevice libimobiledevice 1.2.0
-revision            1
+revision            3
 
 categories          devel
 platforms           darwin
@@ -46,3 +46,24 @@ configure.cmd       ./autogen.sh
 
 configure.args      --disable-silent-rules \
                     --without-cython
+
+subport libimobiledevice-devel {
+    github.setup    libimobiledevice libimobiledevice a9e69b1252e5918b6d8ada1209ccefde301cfa26
+    version         20190906
+    revision        1
+
+    checksums       rmd160  00bd758188ce3d08edc589f2eaed3d725ffd50b6 \
+                    sha256  304d49b66331dac1b3809af06510ed7368fc2b549318eb1992a7e567dedab9dc \
+                    size    240704
+
+    depends_lib-delete port:libusbmuxd
+    depends_lib-append port:libusbmuxd-devel
+
+    conflicts       libimobiledevice
+
+    livecheck.url   ${github.homepage}/commits/${github.livecheck.branch}.atom
+}
+
+if {${subport} eq ${name}} {
+    conflicts       libimobiledevice-devel
+}

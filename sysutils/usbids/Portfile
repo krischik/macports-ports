@@ -3,9 +3,9 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        usbids usbids f2c32da781daa809777eecdb69b31bc2f09c5f19
+github.setup        usbids usbids 632f481c6db5065170379d93242e862500e066b3
 name                usbids
-version             2018.05.04
+version             2019.08.21
 categories          sysutils
 platforms           darwin
 license             {GPL-2+ BSD}
@@ -21,27 +21,15 @@ long_description    This is a public repository of all known ID's used \
                     cryptic numeric codes.
 homepage            http://www.linux-usb.org/usb-ids.html
 
-checksums           rmd160  66f14f35559124473721bb30f2aa826a72f8008a \
-                    sha256  c9153230d9c8436fb3caa4b355ad5dadcd8855925878ab311a723659afc73eff \
-                    size    219906
+checksums           rmd160  70167b2fdf52726bdd996508decc42d19064cdf1 \
+                    sha256  8c662407bd04bbce66f413f13e342e550e947d50de6f4d366c62346c0b6419b4 \
+                    size    225831
 
 use_configure       no
 build {}
 destroot {
     exec /usr/bin/gzip -9 ${worksrcpath}/usb.ids
     xinstall -m 644 ${worksrcpath}/usb.ids.gz ${destroot}${prefix}/share
-}
-
-# Remove after 2017-11-28.
-pre-activate {
-    if {![catch {lindex [registry_active usbutils] 0} installed]} {
-        set _version [lindex $installed 1]
-        set _revision [lindex $installed 2]
-        if {[vercmp $_version 007] < 0
-                || ([vercmp $_version 007] == 0 && $_revision < 1)} {
-            registry_deactivate_composite usbutils {} {ports_nodepcheck true}
-        }
-    }
 }
 
 livecheck.version   ${version}

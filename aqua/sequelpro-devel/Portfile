@@ -1,0 +1,57 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           xcode 1.0
+PortGroup           github 1.0
+
+name                sequelpro-devel
+github.setup        sequelpro sequelpro 0e475dd80100d412309a5aadbb5cde52de15e25e
+version             20190903
+license             MIT
+categories          aqua devel databases
+maintainers         {amake @amake} openmaintainer
+description         MySQL/MariaDB database management for macOS
+
+long_description \
+    a fast, easy-to-use Mac database management application for working with \
+    MySQL & MariaDB databases
+
+homepage            https://sequelpro.com/
+
+checksums           md5     5807d7c65739d931ccd22708262c2f3d \
+                    sha1    b3ee2e98c725b9180ab015ca72117267943e1936 \
+                    rmd160  cb7e20e90c63b2b7e225a84b016bd4431633d5b6 \
+                    sha256  06396bac80fe28ba7f875bb8f70cef6a283476748e3f15aea6a19aaaffd6c510 \
+                    size    8516502
+
+pre-fetch {
+    if {${os.major} < 10} {
+        return -code error "This version of ${name} is only for Mac OS X 10.6 or later."
+    }
+}
+
+# UniversalDetector.framework links with libstdc++ so set this to prevent the
+# app from being flagged as broken
+configure.cxx_stdlib libstdc++
+
+supported_archs     i386 x86_64
+
+patchfiles          0001-Remove-Sparkle-and-auto-update.patch
+
+patch.pre_args      -p1
+
+xcode.scheme        "Sequel Pro"
+xcode.configuration Release
+
+# Don't set INSTALL_PATH. This build system uses INSTALL_PATH internally to
+# link the application and frameworks together with relative paths.
+xcode.destroot.type
+
+build.pre_args      -derivedDataPath ./DerivedData
+
+destroot {
+	copy "${worksrcpath}/build/${xcode.configuration}/Sequel Pro.app" \
+		${destroot}${applications_dir}
+}
+
+github.livecheck.regex  {([^"-]+)}

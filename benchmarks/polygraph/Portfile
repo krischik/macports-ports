@@ -4,10 +4,10 @@ PortSystem              1.0
 
 name                    polygraph
 version                 4.3.2
-revision                2
+revision                3
 categories              benchmarks www
 platforms               darwin
-maintainers             free.fr:fclaire
+maintainers             nomaintainer
 
 description             Web Polygraph is a performance testing tool for caching proxies and other Web intermediaries.
 

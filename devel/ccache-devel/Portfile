@@ -4,7 +4,14 @@ PortSystem          1.0
 PortGroup           github 1.0
 
 epoch               1
-github.setup        ccache ccache 3.4.2 v
+github.setup        ccache ccache 3.7.2 v
+revision            0
+# Use tarball, since the releases archive discourages running ./autogen.sh
+github.tarball_from tarball
+checksums           rmd160  a2aa777967d47700e6de73fc33e844c282222aeb \
+                    sha256  cbaafc73944864f76f910695b68ab82162b02c2ff0cec0e25292c553befaca0b \
+                    size    386099
+
 name                ccache-devel
 categories          devel
 platforms           darwin freebsd
@@ -20,11 +27,12 @@ long_description \
     compilation can be satisfied from cache.  This often results in a 5 to 10 \
     times speedup in common compilations.
 
-homepage            https://ccache.samba.org/
+homepage            https://ccache.dev
 
-checksums           rmd160  34491013b577f68ba541c0f6edc91ca58a95b17a \
-                    sha256  569556fd54a08676e7ed26e17c3c3b08d7434be1e1c77b987109577660861f9a \
-                    size    347800
+# gcc 4.x clang < 500 does not understand -Wpedantic
+pre-configure {
+    reinplace "s|\-Wpedantic||g" ${worksrcpath}/configure.ac
+}
 
 # use_autoconf yes and setting autoconf.cmd to a non-default value will modify
 # depends_build, removing autoconf/automake/libtool. Avoid this by doing it
@@ -32,16 +40,11 @@ checksums           rmd160  34491013b577f68ba541c0f6edc91ca58a95b17a \
 use_autoconf        yes
 autoconf.cmd        ./autogen.sh
 
-depends_build       port:asciidoc \
-                    port:autoconf \
+depends_build       port:autoconf \
                     port:automake \
-                    port:libtool \
-                    bin:perl:perl5
+                    port:libtool
 
-depends_lib         port:zlib
-
-patchfiles          no-Werror.patch
-
-build.target-append doc/ccache.1
+depends_lib         port:asciidoc \
+                    port:zlib
 
 conflicts           ccache

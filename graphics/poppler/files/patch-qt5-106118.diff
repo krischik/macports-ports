@@ -6,5 +6,5 @@
  #include <QPicture>
 +#include <array>
  
- //------------------------------------------------------------------------
  
+ class ArthurType3Font

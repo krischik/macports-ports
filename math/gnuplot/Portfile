@@ -6,7 +6,7 @@ PortGroup           xcodeversion    1.0
 PortGroup           wxWidgets       1.0
 
 name                gnuplot
-version             5.2.3
+version             5.2.7
 categories          math science
 # the license has some inconvenient requirements that we're not meeting
 # to be allowed to distribute binaries
@@ -29,9 +29,9 @@ homepage            http://gnuplot.sourceforge.net/
 master_sites        sourceforge:project/gnuplot/gnuplot/${version}
 dist_subdir         ${name}/${version}
 
-checksums           rmd160  063eaa8d94d2995fe5857f3eb9292974173d5aea \
-                    sha256  feb58c9358d9d129e00507f3b34d4b13c4caea3f004325c587f8caafe5dbe724 \
-                    size    5289416
+checksums           rmd160  59a3d9fbcd5856b123b4e8eb9ecde753ab252060 \
+                    sha256  97fe503ff3b2e356fe2ae32203fc7fd2cf9cef1f46b60fe46dc501a228b9f4ed \
+                    size    5335673
 
 depends_build       port:pkgconfig
 
@@ -65,7 +65,6 @@ configure.args      --with-caca=${prefix} \
                     --without-cairo \
                     --without-latex \
                     --without-lua \
-                    --without-pdf \
                     --without-qt \
                     --without-tutorial \
                     --with-cwdrc
@@ -91,11 +90,6 @@ variant pangocairo description "Enable cairo-based terminals" {
     configure.args-delete       --without-cairo
 }
 
-variant pdflib description "Enable pdflib-based pdf terminal" {
-    depends_lib-append          port:pdflib
-    configure.args-replace      --without-pdf --with-pdf=${prefix}
-}
-
 variant wxwidgets description "Enable wxt terminal" {
     wxWidgets.use               wxWidgets-3.0
     depends_lib-append          port:${wxWidgets.port}
@@ -110,7 +104,7 @@ variant qt conflicts qt5 description "Enable qt terminal with Qt 4" {
 variant qt5 conflicts qt description "Enable qt terminal with Qt 5" {
     # Latest versions of Qt require C++11
     PortGroup qt5   1.0
-    PortGroup cxx11 1.0
+    PortGroup cxx11 1.1
 
     configure.cxxflags-append   -std=c++11
 

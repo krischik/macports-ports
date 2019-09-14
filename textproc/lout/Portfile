@@ -13,7 +13,7 @@ long_description \
     language. It outputs PostScript directly, achieving high quality        \
     printouts in one step.
 
-homepage        http://savannah.nongnu.org/projects/lout/
+homepage        https://savannah.nongnu.org/projects/lout/
 master_sites    http://www.ctan.org/tex-archive/support/lout/ \
                 ftp://ftp.it.usyd.edu.au/jeff/lout/
 
@@ -26,7 +26,7 @@ use_configure   no
 
 # see <https://github.com/macports/macports-ports/pull/662>
 compiler.blacklist-append   {macports-clang-3.[0-9]} {clang > 800}
-compiler.fallback-append    macports-clang-4.0 macports-clang-5.0
+compiler.fallback-append    macports-clang-5.0
 
 use_parallel_build  yes
 build.args          PREFIX=${prefix} \

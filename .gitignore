@@ -2,6 +2,16 @@
 /PortIndex.quick
 **/.DS_Store
 */*/work
+<<<<<<< HEAD
 **/.backups
 **/*.swp
 *.backup
+=======
+
+Portfile~
+*.tcl~
+*.diff~
+*.patch~
+
+.DS_Store
+>>>>>>> master

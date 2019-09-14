@@ -4,15 +4,16 @@ PortSystem          1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 name                unbound
-version             1.7.1
+version             1.9.3
 categories          net
 license             BSD
-maintainers         {snc @nerdling}
+maintainers         {snc @nerdling} openmaintainer
 
 description         Validating, recursive, and caching DNS resolver.
 
-homepage            http://unbound.net/
+homepage            https://nlnetlabs.nl/projects/unbound/
 platforms           darwin
+depends_build       port:flex
 depends_lib         path:lib/libssl.dylib:openssl port:expat
 
 set unbounduser     unbound
@@ -30,12 +31,14 @@ long_description    Unbound is a validating, recursive, and caching DNS \
 
 master_sites        http://unbound.net/downloads/
 
-checksums           rmd160  fd9ee1d94d475a84997d16e2e939c661d297fa6b \
-                    sha256  56e085ef582c5372a20207de179d0edb4e541e59f87be7d4ee1d00d12008628d
+checksums           rmd160  2c589c79cf7ab5aa50b28f61d5f4e2ff62543af5 \
+                    sha256  1b55dd9170e4bfb327fb644de7bbf7f0541701149dff3adf1b63ffa785f16dfa \
+                    size    5686017
 
 configure.args-append   --with-pidfile=${prefix}/var/run/${name}/${name}.pid \
                         --with-ssl=${prefix} \
-                        --with-rootkey-file=${prefix}/etc/${name}/root.key
+                        --with-rootkey-file=${prefix}/etc/${name}/root.key \
+                        --with-libexpat=${prefix}
 
 if {${os.major} == 10} {
     compiler.blacklist  *llvm-gcc-4.2 *gcc-4.0 gcc-3.3 clang
@@ -64,15 +67,15 @@ post-activate {
 }
 
 # Make it run on boot
-startupitem.create  yes
-startupitem.name    unbound
-startupitem.start   "${prefix}/sbin/unbound-anchor -a ${prefix}/etc/${name}/root.key || : && chown ${unbounduser}:${unboundgroup} ${prefix}/etc/${name}/root.key && ${prefix}/sbin/unbound"
-startupitem.stop    "/bin/kill \$(cat ${prefix}/var/run/${name}/unbound.pid)"
-
-livecheck.type      regex
-livecheck.url       ${homepage}/download.html
-livecheck.regex     "The latest version of unbound \\(currently (\\d+\\.\\d+(\\.\\d+))\\)"
-
-use_parallel_build  no
+# Redirect stderr on launchd-started items because launchd redirects stderr to a black hole
+# Let macports (daemondo) manage the availability of process and pidfile as unbound fails to start at the first attempt
+# because unbound is unable to get port 53. Unbound starts successfully at second attempt.
+startupitem.create	yes
+startupitem.name	unbound
+startupitem.logfile	/Library/Logs/unbound-startupitem.log
+startupitem.logevents	yes
+startupitem.start	"(${prefix}/sbin/unbound-anchor -a ${prefix}/etc/${name}/root.key 2>&1) || : && (chown ${unbounduser}:${unboundgroup} ${prefix}/etc/${name}/root.key 2>&1) && (${prefix}/sbin/unbound 2>&1)"
+startupitem.stop	"(/bin/kill \$(cat ${prefix}/var/run/${name}/unbound.pid) 2>&1)"
+startupitem.pidfile	clean ${prefix}/var/run/${name}/${name}.pid
 
 notes-append        "An example configuration is provided at ${prefix}/etc/${name}/${name}.conf-dist."

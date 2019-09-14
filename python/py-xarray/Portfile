@@ -7,7 +7,7 @@ set _name           xarray
 set _n              [string index ${_name} 0]
 
 name                py-${_name}
-version             0.10.3
+version             0.12.3
 categories-append   science math
 platforms           darwin
 supported_archs     noarch
@@ -27,11 +27,11 @@ homepage            https://github.com/pydata/xarray
 distname            ${_name}-${version}
 master_sites        pypi:${_n}/${_name}/
 
-checksums           md5     50594490ea444414398caf519fd14b08 \
-                    rmd160  a6c4f231b4618d1ebdcb5c2193dbfaed30004efd \
-                    sha256  72fafe29ba00633483aed39e405442226ef66d2ddc1021a39527ae1522b7067a
+checksums           rmd160  577ccb87f98bc4234a36b0f99929d19cfa3fe697 \
+                    sha256  9310e610af988acb57a2627b10025a250bcbe172e66d3750a6dd3b3c5357da56 \
+                    size    1793550
 
-python.versions     27 34 35 36
+python.versions     27 35 36 37
 
 if {${name} ne ${subport}} {
     depends_build-append    port:py${python.version}-setuptools

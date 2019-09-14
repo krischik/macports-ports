@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-rpy2
-version             2.9.3
+version             3.1.0
 revision            0
 categories-append   science
 platforms           darwin
 license             {MPL-1.1 LGPL-2.1+}
 
-python.versions     27 34 35 36
+python.versions     27 34 35 36 37
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -26,21 +26,43 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  5415da7ae850b959f191334aa05faa0435464fb4 \
-                    sha256  1b72958e683339ea0c3bd9f73738e9ece2da8da8008a10e2e0c68fc7864e9361 \
-                    size    193487
+checksums           rmd160  068deab8d7bca9f1c8cac5ee61303eaac3e136c2 \
+                    sha256  ed4284df32d00b1fba5b1409e5df64b04b02d47aff543d6ef1dc211ab94e247f \
+                    size    158773
 
 if {${name} ne ${subport}} {
-    if {${python.version} == 27} {
+    depends_lib-append  port:py${python.version}-cffi \
+                        port:py${python.version}-pytest \
+                        port:py${python.version}-jinja2 \
+                        port:py${python.version}-tz \
+                        port:py${python.version}-simplegeneric \
+                        port:py${python.version}-tzlocal
+
+    if {${python.version} eq 27} {
         version             2.8.6
         revision            0
 
         distname            ${python.rootname}-${version}
 
         checksums           rmd160  0ff07cd76a5b9d0b109651b785de9f5f276121d4 \
-                            sha256  004d13734a7b9a85cbc1e7a93ec87df741e28db1273ab5b0d9efaac04a9c5f98
+                            sha256  004d13734a7b9a85cbc1e7a93ec87df741e28db1273ab5b0d9efaac04a9c5f98 \
+                            size    191192
 
         depends_lib-append  port:py${python.version}-singledispatch
+
+        depends_lib-delete  port:py${python.version}-cffi \
+                            port:py${python.version}-pytest \
+                            port:py${python.version}-jinja2 \
+                            port:py${python.version}-simplegeneric
+    } elseif {${python.version} eq 34} {
+        version             3.0.4
+        revision            0
+
+        distname            ${python.rootname}-${version}
+
+        checksums           rmd160  0ff07cd76a5b9d0b109651b785de9f5f276121d4 \
+                            sha256  004d13734a7b9a85cbc1e7a93ec87df741e28db1273ab5b0d9efaac04a9c5f98 \
+                            size    191192
     }
 
     depends_build-append \

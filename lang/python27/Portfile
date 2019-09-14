@@ -2,11 +2,13 @@
 
 PortSystem          1.0
 PortGroup           select 1.0
+PortGroup           clang_dependency 1.0
 
 name                python27
 epoch               2
 # Remember to keep py27-tkinter and py27-gdbm's versions sync'd with this
-version             2.7.15
+version             2.7.16
+revision            2
 
 set major           [lindex [split $version .] 0]
 set branch          [join [lrange [split ${version} .] 0 1] .]
@@ -26,9 +28,9 @@ master_sites        ${homepage}ftp/python/${version}/
 distname            Python-${version}
 use_xz              yes
 
-checksums           md5 a80ae3cc478460b922242f43a1b4094d \
-                    rmd160 4bbb2b0012b82e1b27661a08305fad461371679f \
-                    sha256 22d9b1ac5b26135ad2b8c2901a9413537e08749a753356ee913c84dbd2df5574
+checksums           md5 30157d85a2c0479c09ea2cbe61f2aaf5 \
+                    rmd160 2e4ab325a9c9edf1687b6a5969cdafeb3cc954da \
+                    sha256 f222ef602647eecb6853681156d32de4450a2c39f4de93bd5b20235f2e660ed7
 
 patchfiles          patch-Makefile.pre.in.diff \
                     patch-setup.py.diff \
@@ -36,7 +38,8 @@ patchfiles          patch-Makefile.pre.in.diff \
                     patch-Lib-ctypes-macholib-dyld.py.diff \
                     patch-configure.diff \
                     patch-libedit.diff \
-                    enable-loadable-sqlite-extensions.patch
+                    enable-loadable-sqlite-extensions.patch \
+                    lchmod.patch
 
 depends_build       port:pkgconfig
 depends_lib         port:bzip2 \
@@ -51,6 +54,36 @@ depends_lib         port:bzip2 \
                     port:zlib
 depends_run         port:python_select \
                     port:python2_select
+
+# This port is used by clang-3.4 to bootstrap libcxx
+subport ${name}-bootstrap {
+    set stdprefix ${prefix}
+    prefix      ${prefix}/libexec/libcxx-bootstrap
+    set frameworks_dir  ${prefix}/Library/Frameworks
+    set applications_dir    ${prefix}/Applications
+    configure.cppflags-append   -I${stdprefix}/include
+    configure.ldflags-append    -L${stdprefix}/lib
+    configure.env-append    PATH=${prefix}/bin:$::env(PATH)
+    configure.cxx_stdlib
+    compiler.whitelist      clang llvm-gcc-4.2 gcc-4.2 apple-gcc-4.2
+    patchfiles-delete       patch-libedit.diff
+    depends_build-replace   port:pkgconfig port:pkgconfig-bootstrap
+    depends_lib-replace     port:gettext port:gettext-bootstrap \
+                            port:ncurses port:ncurses-bootstrap
+    depends_lib-delete      port:db48 \
+                            port:libedit \
+                            port:sqlite3
+    # no need to be 'port select'able
+    depends_run
+    use_xz              no
+    depends_extract     port:xz-bootstrap
+    extract.suffix      .tar.xz
+    extract.cmd         ${prefix}/bin/xz
+}
+# Also needed by later clangs.
+if {${os.platform} eq "darwin" && ${os.major} < 11 && ${cxx_stdlib} eq "libc++"} {
+    clang_dependency.extra_versions 3.7
+}
 
 configure.args      --enable-framework=${frameworks_dir} \
                     --enable-ipv6 \
@@ -161,8 +194,19 @@ variant universal {
     }
 }
 
-variant ucs4 description {Enable support for UCS4} {
+variant ucs4 description {Enable support for UCS4 (breaks ABI)} {
     configure.args-append   --enable-unicode=ucs4
+    notes-append "The ucs4 variant changes Python's ABI, breaking binary\
+    compatibility with extension modules. It is strongly recommended to\
+    configure MacPorts to build all ports from source when using it. Adding\
+    or removing this variant on an existing installation will mean that all\
+    ports that install Python extension modules need to be reinstalled. This\
+    variant also breaks compatibility with native Mac frameworks used by\
+    modules such as PyObjC."
+}
+
+variant optimizations description {Compile with LTO and PGO. Build time greatly increased} {
+    configure.args-append   --enable-optimizations
 }
 
 livecheck.type          regex

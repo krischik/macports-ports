@@ -3,14 +3,17 @@
 PortSystem          1.0
 PortGroup           muniversal 1.0
 PortGroup           compiler_blacklist_versions 1.0
+PortGroup           cxx11 1.1
 PortGroup           gobject_introspection 1.0
+PortGroup           legacysupport 1.0
 
 name                gegl-devel
 conflicts           gegl-0.4
 set git_name        gegl
-set git_commit      395307d213d85360ae12a5812f8d877c89164594
-set git_date        20180519
-version             0.4.3-${git_date}
+set git_commit      a4e3588f7a922786718aaed51ec276d0b2730ef4
+set git_date        20190801
+version             0.4.17-${git_date}
+revision            1
 license             {GPL-3+ LGPL-3+}
 categories          graphics
 maintainers         {devans @dbevans}
@@ -24,13 +27,15 @@ long_description    GEGL is a graph based image processing framework offering im
                     based on a recent snapshot of upstream git master.
 
 homepage            http://gegl.org/
-master_sites        https://git.gnome.org/browse/${git_name}/snapshot/
+master_sites        https://gitlab.gnome.org/GNOME/${git_name}/-/archive/${git_commit}/
 
 distname            ${git_name}-${git_commit}
 
-checksums           rmd160  db0ec71ef44fa8da6e61156830e23b875b87e522 \
-                    sha256  2a1576d930cd656f8f076faceabec1d3f84f7a725fdfd5f644cbdb96e16ee857 \
-                    size    24915501
+use_bzip2           yes
+
+checksums           rmd160  497b2b0f4288b62cfdc59fba8c7b80bbea77001b \
+                    sha256  1bd4dbc4b5ba30b361874cdd600ef163d05ca539019b47626d1d8246571015bf \
+                    size    22596167
 
 depends_build       port:pkgconfig \
                     port:w3m \
@@ -40,23 +45,24 @@ depends_lib         port:babl-devel \
                     port:gdk-pixbuf2 \
                     port:gtk2 \
                     port:jpeg \
-                    port:lua \
+                    port:luajit \
                     path:bin/dot:graphviz \
-                    port:openexr \
-                    port:exiv2 \
                     port:gexiv2 \
                     port:jasper \
                     port:json-glib \
                     port:lcms2 \
-                    port:lensfun \
                     port:libraw \
                     port:librsvg \
                     path:lib/libavcodec.dylib:ffmpeg \
                     port:libspiro \
+                    port:openexr \
+                    port:poppler \
+                    port:SuiteSparse_UMFPACK \
                     port:vala \
                     port:webp
 
-patchfiles          patch-configure.ac.diff
+patchfiles          patch-configure.ac.diff \
+                    remove-unused-malloc.h.patch
 
 post-patch {
     # http://trac.macports.org/ticket/35148
@@ -69,7 +75,9 @@ gobject_introspection yes
 
 # blacklist compilers that do not support C11 (redefinition of typedef 'GeglDownscale2x2Fun' in gegl-algorithms.h at line 51)
 # tweak gcc blacklisting for 10.5 ppc
-compiler.blacklist  *gcc-3.* *gcc-4.* {clang < 300}
+# version 0.4.14+ requires apple clang 700.0.72 (Xcode 7.0.0) to build new parallelization code
+# ../gegl/gegl-parallel.h:134:29: error: expected expression '[] (gint     i,'
+compiler.blacklist  *gcc-3.* *gcc-4.* {clang < 700}
 
 use_autoreconf      yes
 autoreconf.args     -fvi
@@ -78,8 +86,13 @@ configure.python    ${prefix}/bin/python2.7
 
 configure.args      --disable-docs \
                     --disable-silent-rules \
-                    --without-sdl \
-                    --without-umfpack
+                    --without-sdl
+
+# at present, luajit does not build on PowerPC
+platform darwin powerpc {
+    depends_lib-delete port:luajit
+    configure.args-append --without-lua
+}
 
 # use version specific binary suffix to avoid conflict with gegl, gegl-0.3
 

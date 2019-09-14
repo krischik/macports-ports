@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           muniversal 1.0
 
 name                libressl-devel
-version             2.7.3
+version             2.9.2
 distname            libressl-${version}
 
 categories          security devel
@@ -23,8 +23,9 @@ homepage            https://www.libressl.org
 conflicts           openssl libressl
 
 master_sites        openbsd:LibreSSL
-checksums           rmd160 54394d02692a63ec51445a7ea7eab37dabe931f5 \
-                    sha256 16c70d8fe1de6e9bedea0d67804b55f3894717693a05ed45e15e0e2f939c2795
+checksums           rmd160  ff13aa4867bf6bffc56adc9a7da71b7c19c085d5 \
+                    sha256  c4c78167fae325b47aebd8beb54b6041d6f6a56b3743f4bd5d79b15642f9d5d4 \
+                    size    3607549
 
 patchfiles \
     openssldir-cert.pem.patch

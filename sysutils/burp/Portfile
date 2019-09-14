@@ -4,6 +4,7 @@ PortSystem 1.0
 
 name            burp
 version         2.1.32
+revision        1
 
 categories      sysutils
 license         {AGPL-3+ OpenSSLException}
@@ -44,18 +45,6 @@ post-destroot {
 }
 
 destroot.keepdirs ${destroot}${prefix}/etc/burp/CA-client
-
-pre-activate {
-    # Prevent activation failure for upgrades. This can be removed after January 2019.
-    # See https://trac.macports.org/ticket/55671
-    foreach filepath "${prefix}/etc/burp/CA-client/.turd_${subport}" {
-        if {[file exists ${filepath}] && [registry_file_registered ${filepath}] == "0"} {
-            if {[catch {delete ${filepath}}]} {
-                ui_warn "Cannot delete ${filepath}; please remove it manually"
-            }
-        }
-    }
-}
 
 livecheck.url ${homepage}/download.html
 livecheck.regex {<li>([0-9.]+): Stable$}

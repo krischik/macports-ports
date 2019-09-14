@@ -3,7 +3,12 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        rrthomas recode 3.7 v
+github.setup        rrthomas recode 3.7.2 v
+revision            0
+checksums           rmd160  8ffad294cdbbd05e1e84d64e831d71f7791031fc \
+                    sha256  8b2c9d0fa12575afde5c3168c25e38a660525a883c298bb005b61b65d99239cc \
+                    size    2212114
+
 categories          textproc
 platforms           darwin
 license             GPL-3+
@@ -18,10 +23,6 @@ long_description    This recode program has the purpose of converting files \
                     or fall back on approximations.
 
 github.tarball_from releases
-
-checksums           rmd160  45e2e57508704647a72d267575e18e6992fc7345 \
-                    sha256  188ce229f01485ecd847b9c2828615c14611473efffbab04b5e2fe138f839e64 \
-                    size    2230285
 
 depends_test        port:py27-cython
 
@@ -46,5 +47,6 @@ post-destroot {
 test.run            yes
 test.target         check
 test.env            CC=${configure.cc} \
+                    DYLD_LIBRARY_PATH=${worksrcpath}/src/.libs \
                     PATH=${frameworks_dir}/Python.framework/Versions/2.7/bin:$env(PATH)
 test.args           PYTHON=${prefix}/bin/python2.7

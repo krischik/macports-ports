@@ -1,10 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           cxx11 1.1
 PortGroup           gobject_introspection 1.0
 
 name                libdmapsharing
-version             3.9.1
+version             3.9.7
 categories          devel
 license             LGPL-2+
 maintainers         {devans @dbevans} openmaintainer
@@ -19,9 +20,9 @@ master_sites        ${homepage}
 
 platforms           darwin
 
-checksums           rmd160  482bc15201b4b7d880f5f07cb0607ff41201cd6f \
-                    sha256  7567888f588d0ee0a017385c09c68ceec0383b3e9b47f0df061a4386a69b1610 \
-                    size    781900
+checksums           rmd160  6adc78dab770545830e2fb1524d416584e06d513 \
+                    sha256  745f4dc0b00db3e40721d041c883d813489814eaad3ca0f9ffb091e7e1acfa88 \
+                    size    802636
 
 depends_build       port:pkgconfig
 
@@ -42,4 +43,4 @@ configure.args      --with-mdns=avahi \
 
 livecheck.type      regex
 livecheck.url       https://www.flyn.org/projects/${name}/download.html
-livecheck.regex     libdmapsharing-(\[0-9\]+\\\.\[0-9\\\.\]+).tar.gz
+livecheck.regex     "${name}-(\\d+(?:\\.\\d+)*)${extract.suffix}"

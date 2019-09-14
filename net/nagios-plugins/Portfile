@@ -5,7 +5,7 @@ PortGroup           perl5 1.0
 
 name                nagios-plugins
 version             2.2.1
-revision            1
+revision            2
 categories          net
 license             GPL-3+
 maintainers         nomaintainer
@@ -17,8 +17,8 @@ long_description    Nagios plugins are standalone programs that report the \
                     status of hosts and services to the Nagios monitoring \
                     framework.
 
-homepage            http://nagios.org
-master_sites        http://nagios-plugins.org/download/
+homepage            https://nagios.org
+master_sites        https://nagios-plugins.org/download/
 
 checksums           rmd160  39c364ac08854a1829d47562d4add1ae58a49334 \
                     sha256  647c0ba4583d891c965fc29b77c4ccfeccc21f409fdf259cb8af52cb39c21e18
@@ -52,13 +52,13 @@ configure.args      --sbindir=${prefix}/share/nagios/cgi-bin \
                     --with-ps-varlist="procstat,&procuid,&procpid,&procppid,&procvsz,&procrss,&procpcpu,procprog,&pos"
 
 variant mysql56 conflicts mysql57 {
-    depends_lib-append path:bin/mysql_config56:mysql56
+    depends_lib-append port:mysql56
     configure.args-delete --without-mysql
     configure.args-append --with-mysql=${prefix}/lib/mysql56
 }
 
 variant mysql57 conflicts mysql56 {
-    depends_lib-append path:bin/mysql_config57:mysql57
+    depends_lib-append port:mysql57
     configure.args-delete --without-mysql
     configure.args-append --with-mysql=${prefix}/lib/mysql57
 }

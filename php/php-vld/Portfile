@@ -6,14 +6,20 @@ PortGroup           php 1.1
 name                php-vld
 categories          php devel
 platforms           darwin
-maintainers         ryandesign openmaintainer
+maintainers         {ryandesign @ryandesign} openmaintainer
 license             BSD
 
-php.branches        5.3 5.4 5.5 5.6 7.0 7.1 7.2
+php.branches        5.3 5.4 5.5 5.6 7.0 7.1 7.2 7.3
 php.pecl            yes
 php.pecl.prerelease yes
 
-if {[vercmp ${php.branch} 5.4] >= 0} {
+if {[vercmp ${php.branch} 7.0] >= 0} {
+    version         0.16.0
+    revision        0
+    checksums       rmd160  f4447ea2d7d0a5599b4097f4bb84d7ba814161e2 \
+                    sha256  af70dd9e29b29ece04af288db30261e62f841d4278cae58fb56efcfb17ba1039 \
+                    size    20967
+} elseif {[vercmp ${php.branch} 5.4] >= 0} {
     version         0.14.0
     revision        0
     checksums       rmd160  fc7847e434cb44c0372dee024469b6f46ef3a2eb \

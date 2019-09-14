@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                diffoscope
-version             93
+version             121
 categories          sysutils python
 platforms           darwin
 supported_archs     noarch
@@ -24,12 +24,11 @@ long_description    diffoscope will try to get to the bottom of what makes \
 homepage            https://diffoscope.org/
 master_sites        pypi:d/diffoscope
 
-checksums           md5     0141fdc8a6752a5fdf40b8f6f581f02b \
-                    rmd160  eab00aa0a71c26b113933cf1cf3e0935ae3a1581 \
-                    sha256  d2164f9d83c7469047a3cefa088ac69df8593d1cd48cf9e100539e808eb3203d \
-                    size    9494933
+checksums           rmd160  028d09d25ab8aa2aca1243ec322e6931e2e3b07b \
+                    sha256  ac07125f7774eb9397bda483ed9740f3ed920cd5d744dcb9ef10d03173df0f7b \
+                    size    1778574
 
-python.default_version 36
+python.default_version 37
 
 depends_build-append \
                     port:py${python.version}-setuptools

@@ -15,7 +15,11 @@ default qt5.top_level {${configure.dir}}
 default qt5.cxxflags {}
 default qt5.ldflags {}
 default qt5.frameworkpaths {}
-default qt5.spec_cmd {"-spec "}
+if {[vercmp [macports_version] 2.5.3] <= 0} {
+    default qt5.spec_cmd {"-spec "}
+} else {
+    default qt5.spec_cmd "-spec "
+}
 
 # with the -r option, the examples do not install correctly (no source code)
 #     the install_sources target is not created in the Makefile(s)
@@ -24,6 +28,15 @@ configure.cmd                   ${qt_qmake_cmd}
 
 configure.pre_args-replace      --prefix=${prefix} "PREFIX=${prefix}"
 configure.universal_args-delete --disable-dependency-tracking
+
+platform macosx {
+    # Use Xcode on macOS <= 10.9 (os.major 13) because CLT doesn't ship with an SDK on 10.9-
+    # Better way is to just check if CLT SDK works correctly rather than hardcode OS
+    # See: https://trac.macports.org/ticket/58779
+    if { [info exists use_xcode] && ${os.major} <= 13 } {
+        use_xcode yes
+    }
+}
 
 pre-configure {
     #
@@ -48,6 +61,11 @@ pre-configure {
         # see https://trac.macports.org/ticket/53597
         set sdks_dir ${developer_dir}/Platforms/MacOSX.platform/Developer/SDKs
         if { ![file exists ${sdks_dir}/MacOSX${configure.sdk_version}.sdk] } {
+            configure.sdk_version
+        }
+
+        # same check as before, but if macports wants to use CLT's developer_dir instead of Xcode, then we check if the build OS version is available on CLT.
+        if { [info exists configure.developer_dir] && ${developer_dir} ne ${configure.developer_dir} && ![file exists ${configure.developer_dir}/SDKs/MacOSX${configure.sdk_version}.sdk] } {
             configure.sdk_version
         }
     }
@@ -159,6 +177,13 @@ pre-configure {
     }
     if {${qmake5_l_flags} ne "" } {
         puts ${cache} QMAKE_LFLAGS+="${qmake5_l_flags}"
+    }
+
+    if {${os.platform} eq "darwin" && ${os.major} < 11} {
+        # use newer cctools on older platforms to handle output from newer clang versions
+        depends_build-append port:cctools
+        puts ${cache} QMAKE_AR="${prefix}/bin/ar\ cq"
+        puts ${cache} QMAKE_RANLIB="${prefix}/bin/ranlib"
     }
 
     # accommodating variant request varies depending on how qtbase was built

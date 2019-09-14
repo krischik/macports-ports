@@ -4,11 +4,11 @@ PortSystem          1.0
 
 name                dwarf
 version             0.3.0
-revision            1
+revision            2
 categories          sysutils
 license             GPL-2+
 platforms           darwin
-maintainers         gmail.com:fernando.iazeolla
+maintainers         nomaintainer
 description         a little and powerful object file manipulation tool
 long_description    dwarf-ng is a powerful object file manipulation tools in \
                     the spirit of gdb. With dwarf-ng you can read and edit \
@@ -22,7 +22,7 @@ long_description    dwarf-ng is a powerful object file manipulation tools in \
                     Mach-O (macOS executables) files formats. In the \
                     future new files type will be added.
 homepage            https://github.com/elboza/dwarf-ng/
-master_sites        http://download.savannah.gnu.org/releases/dwarf-ng \
+master_sites        https://download.savannah.gnu.org/releases/dwarf-ng \
                     http://www.autistici.org/0xFE/software/releases/dwarf-ng
 
 checksums           md5     c67148b14cec1712732e0aa30e478726 \

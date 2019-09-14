@@ -9,7 +9,7 @@ categories              devel
 license                 zlib
 platforms               darwin macosx
 
-maintainers             {kencu @kencu} openmaintainer
+maintainers             nomaintainer
 description             lightening fast realtime 3D game engine
 long_description        ${description}
 homepage                http://irrlicht.sourceforge.net/
@@ -40,6 +40,15 @@ xcode.project           ./source/Irrlicht/MacOSX/MacOSX.xcodeproj
 xcode.configuration     Release
 xcode.destroot.type     framework
 xcode.target            IrrFramework
+
+# port builds again in destroot phase - no need to build twice
+build                   {}
+
+# fix build with Xcode 10
+if {${os.platform} eq "darwin" && ([vercmp $xcodeversion 10.0] > 0)} {
+    destroot.pre_args       -derivedDataPath ./DerivedData
+    xcode.scheme            ${xcode.target}
+}
 
 post-destroot {
     # the xcode project does not install all the include files

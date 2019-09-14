@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           cmake 1.0
 
 name                gmt5
-version             5.4.2
-revision            1
+version             5.4.5
+revision            0
 categories          science
 platforms           darwin
 maintainers         {takeshi @tenomoto}
@@ -17,7 +17,7 @@ long_description GMT is an open source collection of ~120 tools \
     plots via contour maps to artificially illuminated surfaces \
     and 3D perspective views.
 
-homepage            http://gmt.soest.hawaii.edu/
+homepage            https://www.generic-mapping-tools.org/
 master_sites        ftp://ftp.soest.hawaii.edu/gmt          \
                     ftp://ibis.grdl.noaa.gov/pub/gmt        \
                     ftp://ftp.iris.washington.edu/pub/gmt   \
@@ -30,11 +30,9 @@ use_xz              yes
 distname            gmt-${version}
 distfiles           ${distname}-src${extract.suffix}
 
-# stealth update 
-dist_subdir         ${name}/${version}_1
-
-checksums           rmd160  ed90b3b46aeb98b7d5ed9bb0c68fbf7ebf7df929 \
-                    sha256  ddcd63094aeda5a60f541626ed7ab4a78538d52dea24ba915f168e4606e587f5
+checksums           rmd160  900befd66ec4a9aea75c53d99ed83f7e25163e35 \
+                    sha256  078d4997507cb15344c74a874568985e45bdbd6d3a72d330c74c47f4c0359bb1 \
+                    size    59175704
 
 depends_lib         port:dcw-gmt \
                     port:ghostscript \

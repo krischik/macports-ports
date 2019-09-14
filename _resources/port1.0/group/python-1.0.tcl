@@ -34,7 +34,7 @@ post-extract {
 }
 
 pre-destroot    {
-    xinstall -d -m 755 ${destroot}${prefix}/share/doc/${subport}/examples
+    xinstall -d -m 0755 ${destroot}${prefix}/share/doc/${subport}/examples
 }
 
 # python.rootname: The "proper" name of the software. For a module
@@ -63,13 +63,13 @@ proc python_get_version {} {
 proc python_get_default_version {} {
     global python.versions
     if {[info exists python.versions]} {
-        if {27 in ${python.versions}} {
-            return 27
+        if {37 in ${python.versions}} {
+            return 37
         } else {
             return [lindex ${python.versions} end]
         }
     } else {
-        return 27
+        return 37
     }
 }
 
@@ -122,17 +122,32 @@ proc python_set_versions {option action args} {
             set pycxxflags ""
             if {${python.add_archflags}} {
                 if {[variant_exists universal] && [variant_isset universal]} {
+                    if {[vercmp [macports_version] 2.5.99] >= 0} {
+                    build.env-append    CFLAGS=${configure.universal_cflags} \
+                                        OBJCFLAGS=${configure.universal_cflags} \
+                                        LDFLAGS=${configure.universal_ldflags}
+                    } else {
                     build.env-append    CFLAGS="${configure.universal_cflags}" \
                                         OBJCFLAGS="${configure.universal_cflags}" \
                                         LDFLAGS="${configure.universal_ldflags}"
+                    }
                     set pycxxflags ${configure.universal_cxxflags}
                 } else {
+                    if {[vercmp [macports_version] 2.5.99] >= 0} {
+                    build.env-append    CFLAGS=${configure.cc_archflags} \
+                                        OBJCFLAGS=${configure.objc_archflags} \
+                                        FFLAGS=${configure.f77_archflags} \
+                                        F90FLAGS=${configure.f90_archflags} \
+                                        FCFLAGS=${configure.fc_archflags} \
+                                        LDFLAGS=${configure.ld_archflags}
+                    } else {
                     build.env-append    CFLAGS="${configure.cc_archflags}" \
                                         OBJCFLAGS="${configure.objc_archflags}" \
                                         FFLAGS="${configure.f77_archflags}" \
                                         F90FLAGS="${configure.f90_archflags}" \
                                         FCFLAGS="${configure.fc_archflags}" \
                                         LDFLAGS="${configure.ld_archflags}"
+                    }
                     set pycxxflags ${configure.cxx_archflags}
                 }
             }
@@ -140,12 +155,20 @@ proc python_set_versions {option action args} {
                 set pycxxflags [portconfigure::construct_cxxflags $pycxxflags]
             }
             if {$pycxxflags ne ""} {
+                if {[vercmp [macports_version] 2.5.99] >= 0} {
+                build.env-append        CXXFLAGS=$pycxxflags
+                } else {
                 build.env-append        CXXFLAGS="$pycxxflags"
+                }
             }
             if {${python.set_compiler}} {
                 foreach var {cc objc cxx fc f77 f90} {
                     if {[set configure.${var}] ne ""} {
+                        if {[vercmp [macports_version] 2.5.99] >= 0} {
+                        build.env-append [string toupper $var]=[set configure.${var}]
+                        } else {
                         build.env-append [string toupper $var]="[set configure.${var}]"
+                        }
                     }
                 }
             }
@@ -154,17 +177,32 @@ proc python_set_versions {option action args} {
             set pycxxflags ""
             if {${python.add_archflags} && ${python.consistent_destroot}} {
                 if {[variant_exists universal] && [variant_isset universal]} {
+                    if {[vercmp [macports_version] 2.5.99] >= 0} {
+                    destroot.env-append CFLAGS=${configure.universal_cflags} \
+                                        OBJCFLAGS=${configure.universal_cflags} \
+                                        LDFLAGS=${configure.universal_ldflags}
+                    } else {
                     destroot.env-append CFLAGS="${configure.universal_cflags}" \
                                         OBJCFLAGS="${configure.universal_cflags}" \
                                         LDFLAGS="${configure.universal_ldflags}"
+                    }
                     set pycxxflags ${configure.universal_cxxflags}
                 } else {
+                    if {[vercmp [macports_version] 2.5.99] >= 0} {
+                    destroot.env-append CFLAGS=${configure.cc_archflags} \
+                                        OBJCFLAGS=${configure.objc_archflags} \
+                                        FFLAGS=${configure.f77_archflags} \
+                                        F90FLAGS=${configure.f90_archflags} \
+                                        FCFLAGS=${configure.fc_archflags} \
+                                        LDFLAGS=${configure.ld_archflags}
+                    } else {
                     destroot.env-append CFLAGS="${configure.cc_archflags}" \
                                         OBJCFLAGS="${configure.objc_archflags}" \
                                         FFLAGS="${configure.f77_archflags}" \
                                         F90FLAGS="${configure.f90_archflags}" \
                                         FCFLAGS="${configure.fc_archflags}" \
                                         LDFLAGS="${configure.ld_archflags}"
+                    }
                     set pycxxflags ${configure.cxx_archflags}
                 }
             }
@@ -172,12 +210,20 @@ proc python_set_versions {option action args} {
                 set pycxxflags [portconfigure::construct_cxxflags $pycxxflags]
             }
             if {$pycxxflags ne ""} {
+                if {[vercmp [macports_version] 2.5.99] >= 0} {
+                destroot.env-append     CXXFLAGS=$pycxxflags
+                } else {
                 destroot.env-append     CXXFLAGS="$pycxxflags"
+                }
             }
             if {${python.set_compiler} && ${python.consistent_destroot}} {
                 foreach var {cc objc cxx fc f77 f90} {
                     if {[set configure.${var}] ne ""} {
+                        if {[vercmp [macports_version] 2.5.99] >= 0} {
+                        destroot.env-append [string toupper $var]=[set configure.${var}]
+                        } else {
                         destroot.env-append [string toupper $var]="[set configure.${var}]"
+                        }
                     }
                 }
             }
@@ -222,38 +268,19 @@ options python.branch python.prefix python.bin python.lib python.libdir \
         python.include python.pkgd
 # for pythonXY, python.branch is X.Y
 default python.branch   {[string range ${python.version} 0 end-1].[string index ${python.version} end]}
-default python.prefix   {[python_get_defaults prefix]}
-default python.bin      {[python_get_defaults bin]}
-default python.lib      {[python_get_defaults lib]}
-default python.pkgd     {[python_get_defaults pkgd]}
+default python.prefix   {${frameworks_dir}/Python.framework/Versions/${python.branch}}
+default python.bin      {${python.prefix}/bin/python${python.branch}}
+default python.lib      {${python.prefix}/Python}
+default python.pkgd     {${python.prefix}/lib/python${python.branch}/site-packages}
 default python.libdir   {${python.prefix}/lib/python${python.branch}}
 default python.include  {[python_get_defaults include]}
-
-default build.cmd       {"${python.bin} setup.py [python_get_defaults setup_args]"}
-default destroot.cmd    {"${python.bin} setup.py [python_get_defaults setup_args]"}
-default destroot.destdir {"--prefix=[python_get_defaults setup_prefix] --root=${destroot}"}
+default build.cmd       {${python.bin} setup.py --no-user-cfg}
+default destroot.cmd    {${python.bin} setup.py --no-user-cfg}
+default destroot.destdir {--prefix=${python.prefix} --root=${destroot}}
 
 proc python_get_defaults {var} {
-    global python.version python.branch prefix python.prefix
+    global python.version python.branch python.prefix
     switch -- $var {
-        prefix {
-            global build_arch frameworks_dir
-            set ret "${frameworks_dir}/Python.framework/Versions/${python.branch}"
-            if {${python.version} == 25 || (${python.version} == 24 &&
-                ![file isfile ${ret}/include/python${python.branch}/Python.h] &&
-                ([file isfile ${prefix}/include/python${python.branch}/Python.h]
-                || [string match *64* $build_arch]))} {
-                set ret $prefix
-            }
-            return $ret
-        }
-        bin {
-            if {${python.version} != 24} {
-                return "${python.prefix}/bin/python${python.branch}"
-            } else {
-                return "${prefix}/bin/python${python.branch}"
-            }
-        }
         include {
             set inc_dir "${python.prefix}/include/python${python.branch}"
             if {[file exists ${inc_dir}]} {
@@ -270,48 +297,6 @@ proc python_get_defaults {var} {
                 } else {
                     return [lindex ${inc_dirs} 0]
                 }
-            }
-        }
-        lib {
-            if {${python.version} != 24 && ${python.version} != 25} {
-                return "${python.prefix}/Python"
-            } else {
-                return "${prefix}/lib/lib${python.branch}.dylib"
-            }
-        }
-        pkgd {
-            if {${python.version} != 24} {
-                return "${python.prefix}/lib/python${python.branch}/site-packages"
-            } else {
-                return "${prefix}/lib/python${python.branch}/site-packages"
-            }
-        }
-        setup_args {
-            if {${python.version} != 24} {
-                return "--no-user-cfg"
-            } else {
-                return ""
-            }
-        }
-        setup_prefix {
-            if {${python.version} != 24} {
-                return "${python.prefix}"
-            } else {
-                return "${prefix}"
-            }
-        }
-        link_binaries {
-            if {${python.version} != 24 && ${python.version} != 25} {
-                return yes
-            } else {
-                return no
-            }
-        }
-        move_binaries {
-            if {${python.version} == 24 || ${python.version} == 25} {
-                return yes
-            } else {
-                return no
             }
         }
         binary_suffix {
@@ -335,8 +320,8 @@ default python.add_archflags yes
 default python.set_compiler yes
 default python.set_cxx_stdlib yes
 
-default python.link_binaries {[python_get_defaults link_binaries]}
+default python.link_binaries yes
 default python.link_binaries_suffix {[python_get_defaults binary_suffix]}
 
-default python.move_binaries {[python_get_defaults move_binaries]}
+default python.move_binaries no
 default python.move_binaries_suffix {[python_get_defaults binary_suffix]}
