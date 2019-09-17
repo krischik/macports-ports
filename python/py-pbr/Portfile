@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pbr
-version             5.4.0
+version             5.4.2
 revision            0
 
 categories-append   devel
@@ -27,9 +27,9 @@ homepage            https://docs.openstack.org/pbr/latest/
 master_sites        pypi:p/pbr
 distname            pbr-${version}
 
-checksums           rmd160  9935451c9201a77018f6238654caee4ef04d193c \
-                    sha256  36ebd78196e8c9588c972f5571230a059ff83783fabbbbedecc07be263ccd7e6 \
-                    size    118117
+checksums           rmd160  461e0034c840cb94a19c657997dbf8ed80037218 \
+                    sha256  9b321c204a88d8ab5082699469f52cc94c5da45c51f114113d01b3d993c24cdf \
+                    size    120106
 
 python.versions     27 34 35 36 37
 

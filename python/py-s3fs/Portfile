@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-s3fs
-version             0.2.2
+version             0.3.3
 revision            0
 categories-append   devel
 platforms           darwin
@@ -24,9 +24,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  58be057eade8cafbfdf7f6efef63e5750ef072d1 \
-                    sha256  dcd32e77efc4838474317fcef31a72891c51043c7807fca59c035003876f7bd0 \
-                    size    47544
+checksums           rmd160  b94e21b8ab495e4138c203e9420db0f7702d6be8 \
+                    sha256  91b9d51d892ddb9e5aba16903f479477493ba753faf1adf57f0d839c4c67cadd \
+                    size    45033
 
 if {${name} ne ${subport}} {
     depends_build-append \

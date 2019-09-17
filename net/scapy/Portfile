@@ -33,11 +33,11 @@ subport ${name}-devel {}
 
 if {${subport} eq ${name}} {
 
-    github.setup secdev ${name} 2.4.2 v
-    checksums    rmd160 ec09619505951dfa1aad12a1dfc74554c144d646 \
-                 sha256 bca3f14b1aa2312c70e684ebe2966d9b6fc66e214cb4a60b330a0c37192b31ec \
-                 size   3330393
-    revision     0
+    github.setup secdev ${name} 2.4.3 v
+    checksums rmd160 71ef31e63c9de8e158bcc57dafe50b2a36c01a7b \
+              sha256 d9f4d27553418463273b0aab7c11dea2f4121c53a493fe9dc91d7feaf057af60 \
+              size   2970127
+    revision  0
 
     conflicts       ${name}-devel
 
@@ -48,11 +48,11 @@ if {${subport} eq ${name}} {
 
 } else {
 
-    github.setup secdev scapy be824b6ff467cb026fd4855d57f4cf900e978342
-    version   20190716-[string range ${github.version} 0 7]
-    checksums rmd160 7d354bda80ac624409401962403ef4c8b60f8343 \
-              sha256 3d773d35d30cdda8c77f9820d2a587c366319ad3e275bec919e402642815b2e7 \
-              size   2955985
+    github.setup secdev scapy 39a1cf58370a062e5216af749d02c42e7b0e66aa
+    version   20190817-[string range ${github.version} 0 7]
+    checksums rmd160 4639efa1753171105c1af6a165bc4fbb4e12d459 \
+              sha256 db0dbfdfb4643cc43b849f2065be845b31d4e12eb3e7f84a825701669c1de3a3 \
+              size   2971051
     revision  0
 
     long_description    ${long_description} \

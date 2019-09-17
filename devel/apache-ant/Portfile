@@ -34,7 +34,9 @@ set workTarget          ""
 use_bzip2               yes
 use_configure           no
 
-build.cmd               true
+conflicts               apache-ant-1.9
+
+build {}
 
 # Ant is installed from the binary (jar) distribution by default. Due to
 # bootstrapping issues, the source variant generally doesn't build a very

@@ -20,11 +20,11 @@ homepage            https://myriadrf.org/projects/lime-suite/
 subport limesuite-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup jmyriadrf LimeSuite 570e879ef5b04b73ab284016160ec87b6b668b14
-    version   20190716-[string range ${github.version} 0 7]
-    checksums rmd160 8c2e5138b3b724c9500ede97c3b6c0f5f765bf6f \
-              sha256  ea6dd59ab56da399851bf535ae0b31e5ea79ee6832f8445d34c51325606c9c50 \
-              size    5363667
+    github.setup myriadrf LimeSuite 05d454e8848233e6c270596c0214d6a670c8bd75
+    version   20190808-[string range ${github.version} 0 7]
+    checksums rmd160 b324045126cfbb35fcac75cd94cd9e91b1dbe1fb \
+              sha256 32b51ed5c7769d3ad1c7dc27f99d2eed3d956ed3c9e8dd081765a7969ae24e16 \
+              size   5363953
     revision  0
 
     name            limesuite-devel
