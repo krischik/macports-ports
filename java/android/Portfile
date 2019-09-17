@@ -71,10 +71,8 @@ post-extract {
     system "
         mkdir -v -p ${workpath}/swt
         mkdir -v -p ${workpath}/android-sdk-macosx
-
         unzip -q ${distpath}/${prog} -d ${workpath}
         unzip -q ${distpath}/${swt}  -d ${workpath}/swt
-
         mv -v ${workpath}/tools ${workpath}/android-sdk-macosx
     "
 }
@@ -82,22 +80,15 @@ post-extract {
 pre-build {
     system "
         export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
-
         pushd ${workpath}/android-sdk-macosx/tools/bin
             echo '---> sdkmanager: Update'
-
             ./sdkmanager --update
-
             echo '---> sdkmanager: Licenses'
-
             # just using yes won't work. You need to provide
             # a limited amount of 'Y'
-
             printf 'Y\nY\nY\nY\nY\nY\nY'            |   \
                 ./sdkmanager --licenses >'/dev/null'
-
             echo '---> sdkmanager: Build Tool'
-
             ./sdkmanager                                \
                 'build-tools;'${version}                \
                 'cmake;'${cmakeversion}                 \
@@ -106,14 +97,10 @@ pre-build {
                 'lldb;'${lldbversion}                   \
                 'platform-tools'                        \
                 'tools'
-
             echo '---> sdkmanager: Platforms Addon'
-
             ./sdkmanager                                \
                 'add-ons;addon-google_apis-google-'${addonversion}
-
             echo '---> sdkmanager: Extras'
-
             ./sdkmanager                                \
                 'extras;android;m2repository'           \
                 'extras;google;m2repository'            \
@@ -129,7 +116,6 @@ destroot {
     #
     system "
         cp -r ${worksrcpath}/. ${destroot}${prefix}/share/java/${distname}/.
-
         if test -e ${destroot}${prefix}/share/java/android-sdk-macosx/build-tools/28.0.3/zipalign; then
             cp                                                                                  \
                 ${destroot}${prefix}/share/java/android-sdk-macosx/build-tools/28.0.3/zipalign  \
@@ -186,9 +172,7 @@ variant platform_23 description "Install Android API 23 Version 6.0" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
-
             echo '---> sdkmanager: Platforms 23'
-
             pushd ${workpath}/android-sdk-macosx/tools/bin
                 ./sdkmanager                \
                     'platforms;android-23'  \
@@ -202,9 +186,7 @@ variant platform_24 description "Install Android API 24 Version 7.0" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
-
             echo '---> sdkmanager: Platforms 24'
-
             pushd ${workpath}/android-sdk-macosx/tools/bin
                 ./sdkmanager                \
                     'platforms;android-24'  \
@@ -218,9 +200,7 @@ variant platform_25 description "Install Android API 25 Version 7.1.2" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
-
             echo '---> sdkmanager: Platforms 25'
-
             pushd ${workpath}/android-sdk-macosx/tools/bin
                 ./sdkmanager                \
                     'platforms;android-25'  \
@@ -234,9 +214,7 @@ variant platform_26 description "Install Android API 26 Version 8.0" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
-
             echo '---> sdkmanager: Platforms 26'
-
             pushd ${workpath}/android-sdk-macosx/tools/bin
                 ./sdkmanager                \
                     'platforms;android-26'  \
@@ -250,9 +228,7 @@ variant platform_27 description "Install Android API 27 Version 8.1" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
-
             echo '---> sdkmanager: Platforms 27'
-
             pushd ${workpath}/android-sdk-macosx/tools/bin
                 ./sdkmanager                \
                     'platforms;android-27'  \
@@ -266,9 +242,7 @@ variant platform_28 description "Install Android API 28 Version 9.0" {
     build {
         system "
             export JAVA_HOME=\$(/usr/libexec/java_home --version 1.8)
-
             echo '---> sdkmanager: Platforms 28'
-
             pushd ${workpath}/android-sdk-macosx/tools/bin
                 ./sdkmanager                \
                     'platforms;android-28'  \

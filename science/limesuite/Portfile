@@ -20,11 +20,11 @@ homepage            https://myriadrf.org/projects/lime-suite/
 subport limesuite-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup myriadrf LimeSuite 05d454e8848233e6c270596c0214d6a670c8bd75
-    version   20190808-[string range ${github.version} 0 7]
-    checksums rmd160 b324045126cfbb35fcac75cd94cd9e91b1dbe1fb \
-              sha256 32b51ed5c7769d3ad1c7dc27f99d2eed3d956ed3c9e8dd081765a7969ae24e16 \
-              size   5363953
+    github.setup myriadrf LimeSuite d375f70b140d5baacb02e376db4c7c5c3a09af13
+    version   20190910
+    checksums rmd160 bcec9bcd89202868eef75f568d1ff9cbbd6929c7 \
+              sha256 3a72f23265737fb2495083cc017bf56a42ee3c7071baa351975f50aaaf476ec1 \
+              size   5363954
     revision  0
 
     name            limesuite-devel
@@ -65,7 +65,8 @@ variant wxgui description {Enable wxWidgets LimeSuiteGUI} {
     wxWidgets.use           wxWidgets-3.2
     depends_lib-append      port:${wxWidgets.port}
     configure.args-delete   -DENABLE_GUI=OFF
-    configure.args-append   -DENABLE_GUI=ON
+    configure.args-append   -DENABLE_GUI=ON \
+        -DwxWidgets_CONFIG_EXECUTABLE=${wxWidgets.wxconfig}
 }
 
 variant soapy description {Add Soapy support} {

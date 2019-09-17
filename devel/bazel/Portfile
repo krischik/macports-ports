@@ -21,14 +21,14 @@ subport               bazel25 { }
 if { ${name} eq ${subport} } {
     
     # Main port
-    github.setup      bazelbuild ${name} 0.28.1
-    revision          1
+    github.setup      bazelbuild ${name} 0.29.1
+    revision          0
 
     conflicts         bazel21 bazel25
 
-    checksums         rmd160  16aa4e271f47a425e39adc9469c670cdacde118b \
-                      sha256  2cea463d611f5255d2f3d41c8de5dcc0961adccb39cf0ac036f07070ba720314 \
-                      size    256641169
+    checksums         rmd160  e83da6d224b5888da300082fd07a7f0457f2d07a \
+                      sha256  872a52cff208676e1169b3e1cae71b1fe572c4109cbd66eab107d8607c378de5 \
+                      size    265744999
 
     pre-fetch {
         # https://trac.macports.org/ticket/58518
