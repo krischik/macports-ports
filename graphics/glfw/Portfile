@@ -97,11 +97,11 @@ if {${os.platform} eq "darwin" && ${os.major} == 10} {
 
         # devel
 
-        github.setup glfw glfw 2c7ef5b480d7780455deed43aedc177b9fe3ac61
-        version   20190814-[string range ${github.version} 0 7]
-        checksums rmd160 04825b38389f328257704a2fdf062b630e496a43 \
-                  sha256 57f799a17817e2509e4edc4c9518aeccb5e70677413c58044399c1f5ddc32805 \
-                  size   756395
+        github.setup glfw glfw 1bd0a55aa76ceeda0537f7483bda1163405aa571
+        version   20191003-[string range ${github.version} 0 7]
+        checksums rmd160 636fd1b2693da68c977dfa764599d8ebd5aa476f \
+                  sha256 031f10f87d7df5bef1a791fc0d6a86c727ccf183687d2587d06979833b841b06 \
+                  size   756409
         revision  0
 
         conflicts       glfw

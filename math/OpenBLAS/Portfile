@@ -53,11 +53,11 @@ if {![info exists blas_arch]} {
 subport OpenBLAS-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    xianyi OpenBLAS b5af7b9c7808f06d6c10c2b2db90a054ab746970
-    version         20190831-[string range ${github.version} 0 7]
-    checksums       rmd160 74e428606043678a1736a10e0051f625a89d2030 \
-                    sha256 108748715ab11721bfaa2c334e2d602b590aae4ae4413f4339980abad9554d2e \
-                    size   11997273
+    github.setup    xianyi OpenBLAS aa04b0925ecb894b58d55bb0f9d80a0554817384
+    version         20191006-[string range ${github.version} 0 7]
+    checksums       rmd160 90eeebe0db354f56951fe4f6efbad9fb7f24cda2 \
+                    sha256 171f871d5059ec5f07918987cf6254581239c4853eb5d0b30ebaf1cc20f40ec1 \
+                    size   12018241
     revision        0
 
     name            ${github.project}-devel

@@ -97,15 +97,15 @@ platform darwin {
 
         subport libuv-devel {
 
-            github.setup libuv libuv 549f52c4672a4d8198f096efa513a96b20e2f843
-            version   20190909-[string range ${github.version} 0 7]
-            checksums rmd160 fe38a09873db8a8a4a11d4d43e82f4b4e1844752 \
-                    sha256  dde7975379693ccda4eb7e92bc0b5c91b7e9dd5302649f6f7b745e2e2a98f9df \
-                    size    1242780
+            github.setup libuv libuv 645be48a804e1538d6058fa147d8786c49baf94b
+            version   20190926-[string range ${github.version} 0 7]
+            checksums rmd160 389345c7e3538ff590cc0bf3c9584c6352161e99 \
+                      sha256 4737e1a4f1abc59a95048f3a520ba786a12b064a453bf3e78910d02d5f751d50 \
+                      size   1250184
             revision  0
 
             long_description ${long_description} \
-                This port is kept up with the libuv GIT 'master' branch, is typically updated weekly to monthly.
+                This port is kept up with the libuv GIT 'v1.x' branch, is typically updated weekly to monthly.
             conflicts libuv
 
             github.livecheck.branch v1.x

@@ -8,11 +8,11 @@ PortGroup           conflicts_build 1.0
 
 name                magic-devel
 conflicts           magic
-version             8.2.140
+version             8.2.144
 revision            0
-checksums           rmd160  bac85a81dad6262cc6319b9b58319512f266bd95 \
-                    sha256  92da00a706fe1d979254e49d0b88ee507005aba126b3d70519f76c37e0fb79e1 \
-                    size    4007778
+checksums           rmd160  4e04c64d0a64ce40947ddca1c09f3251c92741df \
+                    sha256  79d16e474a7d9a895fb1869516bfe1e99aee7e9a9234ee457384b876efc6f928 \
+                    size    4008407
 
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          science

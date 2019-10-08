@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-fsspec
-version             0.4.4
+version             0.5.2
 revision            0
 categories-append   devel
 platforms           darwin
@@ -23,9 +23,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  76dc5703073ff13344145f2989636a3f60f44bbe \
-                    sha256  97697a46e8bf8be34461c2520d6fc4bfca0ed749b22bb2b7c21939fd450a7d63 \
-                    size    58421
+checksums           rmd160  3c42ee233fe38440340c4dfcf40371df39a2b036 \
+                    sha256  6531a5fa9ea6bf27a5180d225558a8a7aa5d7c3cbf7e8b146dd37ac699017937 \
+                    size    64153
 
 if {${name} ne ${subport}} {
     depends_build-append \

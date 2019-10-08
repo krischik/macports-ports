@@ -18,11 +18,7 @@
 options crossgcc.target \
         crossgcc.languages
 
-if {[vercmp [macports_version] 2.5.3] <= 0} {
-    default crossgcc.languages {"c c++"}
-} else {
-    default crossgcc.languages "c c++"
-}
+default crossgcc.languages "c c++"
 
 array set crossgcc.versions_info {
     7.1.0 {bzip2 {
@@ -64,6 +60,11 @@ array set crossgcc.versions_info {
         rmd160  b9dd53082905c4ca2f7f8291af1e4d015bc97d39 \
         sha256  79a66834e96a6050d8fe78db2c3b32fb285b230b855d0a66288235bc04b327a0 \
         size    70546856
+    }}
+    9.2.0 {xz {
+        rmd160  a51d7f812f45980c517c4505e04a217cf319a992 \
+        sha256  ea6ef08f121239da5695f76c9b33637a118dcf63e24164422231917fa61fb206 \
+        size    70607648
     }}
 }
 

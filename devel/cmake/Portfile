@@ -47,10 +47,10 @@ if {${subport} eq ${name}} {
 
     # release
 
-    version   ${branch}.3
-    checksums rmd160 2707bff0caad92199e62bea45b9e68fae411d600 \
-              sha256 13958243a01365b05652fa01b21d40fa834f70a9e30efa69c02604e64f58b8f5 \
-              size   9270184
+    version   ${branch}.4
+    checksums rmd160 320ccf2b8f8873f2a796a42cd60ed597edf3fe40 \
+              sha256 8a211589ea21374e49b25fc1fc170e2d5c7462b795f1b29c84dd0e984301ed7a \
+              size   9270648
     revision  0
 
     master_sites    ${homepage}/files/v${branch}/
@@ -76,11 +76,11 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    set commit c6ed04431988ac337ea21d74f035148b6c57f894
-    version   20190915-[string range ${commit} 0 7]
-    checksums rmd160 e1fc457014ee9946e2a4041dd9d40c68089b4499 \
-              sha256 8e2fadafd8438f5232bdbe035eaca61e507b2fad0e6647f4f9edaa7ec5b0c77a \
-              size   6999101
+    set commit f2bf78ccf72182b12615dcc4efbab7b3240411e2
+    version   20191006-[string range ${commit} 0 7]
+    checksums rmd160 2dbf973c6553d2f912811e792b8a565c8a8b3368 \
+              sha256 7417ab350cea183c801a5f4d3603214b1f5a5206ec5ec82cc170dc8136c7c80b \
+              size   7081557
     revision  0
 
     use_bzip2       yes
