@@ -10,7 +10,7 @@ configure.cxx_stdlib    libc++
 PortGroup               cxx11 1.1
 
 name                    nodejs12
-version                 12.11.0
+version                 12.13.0
 
 categories              devel net
 platforms               darwin
@@ -24,21 +24,22 @@ long_description        Node's goal is to provide an easy way to build scalable 
                         Machine or Python's Twisted. Node takes the event model a bit further-it \
                         presents the event loop as a language construct instead of as a library.
 
-conflicts               nodejs6 nodejs8 nodejs10 nodejs11
+conflicts               nodejs8 nodejs10 nodejs13
 
 homepage                https://nodejs.org/
 master_sites            ${homepage}dist/v${version}
 use_xz                  yes
 
-checksums               rmd160  142ebe5fba4c3a655b3e6f1acc62524b19918f61 \
-                        sha256  8306491e9b7bb95f8ee34dcd8daa4c071b94d523e63c0f2b8c605f2ca43dcf91 \
-                        size    22817256
+checksums               rmd160  985a3dcab1d739260fdd7be1c2f0c63cd67abb2c \
+                        sha256  a82b1541cf670318a0102c32e06f296662b5ccccae764c1f32be4a3cf038bef6 \
+                        size    22862096
 
 distname                node-v${version}
 
 depends_build           port:pkgconfig
 
-depends_lib             port:python27 \
+depends_lib             port:icu \
+                        port:python27 \
                         path:lib/libssl.dylib:openssl
 
 proc rec_glob {basedir pattern} {
@@ -51,12 +52,8 @@ proc rec_glob {basedir pattern} {
 
 configure.python ${prefix}/bin/python2.7
 
-patchfiles              patch-common.gypi.diff \
-                        patch-deps-v8-test-torque-test-torque.tq.diff
-
-pre-patch {
-    file mkdir ${worksrcpath}/deps/v8/test/torque
-}
+patchfiles              patch-common.gypi.diff
+patchfiles-append       patch-node.gyp.diff
 
 post-patch {
     foreach f [concat ${worksrcpath}/configure \
@@ -77,7 +74,7 @@ if { ${os.platform} eq "darwin" && ${os.major} < 11 } {
 }
 
 configure.args-append   --without-npm
-configure.args-append   --with-intl=small-icu
+configure.args-append   --with-intl=system-icu
 configure.args-append   --shared-openssl
 configure.args-append   --shared-openssl-includes=${prefix}/include/openssl
 configure.args-append   --shared-openssl-libpath=${prefix}/lib
@@ -91,8 +88,7 @@ universal_variant       no
 configure.ccache        no
 
 test.run                yes
-
-use_parallel_build      no
+test.cmd                ${build.cmd} -j${build.jobs}
 
 switch $build_arch {
     i386 {
@@ -165,4 +161,4 @@ destroot {
 
 livecheck.url       ${homepage}dist/
 livecheck.type      regex
-livecheck.regex     {v(\d+\.\d+\.\d+)}
+livecheck.regex     {v(12\.\d+\.\d+)}

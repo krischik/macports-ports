@@ -4,12 +4,12 @@ PortSystem                1.0
 PortGroup       github    1.0
 
 # see note to remove block below at next update
-github.setup    protocolbuffers protobuf 3.9.2 v
+github.setup    protocolbuffers protobuf 3.10.1 v
 revision        0
 
-checksums       rmd160  51b60b25ba285d87ae16f01ad2d3b21916c2bae8 \
-                sha256  1891110cce323fe56b509da3589f03756c7eaf462a60971cb1c4af4efb154f69 \
-                size    4543063
+checksums       rmd160  8099f5ce7b46f5e6255b453566b110f695f690da \
+                sha256  e82ee5bdde198e0a1935e280748a86a7989474ea771418a2fd90f03e2e65b99b \
+                size    4598421
 
 name            protobuf3-cpp
 categories      devel

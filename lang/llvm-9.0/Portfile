@@ -1,3 +1,5 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
 # TODO:
 #  * Update clang and lldb subports to build against installed libLLVM/libclang
 
@@ -144,7 +146,11 @@ checksums           llvm-9.0.0.src.tar.xz \
                     lldb-9.0.0.src.tar.xz \
                     rmd160  ec312e0ef133e8a649a833ce7ca7338d5fdae377 \
                     sha256  1e4c2f6a1f153f4b8afa2470d2e99dab493034c1ba8b7ffbbd7600de016d0794 \
-                    size    9846624
+                    size    9846624 \
+                    polly-9.0.0.src.tar.xz \
+                    rmd160  9cce54e805f090f3c5e82f1f659e3a2f8c20cd23 \
+                    sha256  a4fa92283de725399323d07f18995911158c1c5838703f37862db815f513d433 \
+                    size    8719928
 
 
 patch.pre_args  -p1
@@ -162,6 +168,9 @@ patchfiles-append \
     5001-patch-machoreader-strnlen.diff \
     5002-patch-objdumper-strnlen.diff
 
+# fix build on leopard
+patchfiles-append 5000-patch-llvm8-tools-dsymutil-symbolmap-use-older-cfname-and-fix-uuid-on-leopard.diff
+
 if {${subport} eq "clang-${llvm_version}"} {
     patchfiles-append \
         1001-MacPorts-Only-Prepare-clang-format-for-replacement-w.patch \
@@ -176,7 +185,11 @@ if {${subport} eq "clang-${llvm_version}"} {
         3001-Fix-missing-long-long-math-prototypes-when-using-the.patch \
         3002-implement-atomic-using-mutex-lock_guard-for-64b-ops-.patch \
         openmp-locations.patch
-        
+
+    # fix build on leopard
+    patchfiles-append \
+        5001-patch-libcxx-src-new-posix-memalign-leopard.diff \
+        5002-patch-toolchains-darwin-add-back-pre-10.6-link-libs.diff
 
     # https://llvm.org/bugs/show_bug.cgi?id=25681
     if {${worksrcdir} eq "trunk" || ${worksrcdir} eq "release_${llvm_version_no_dot}"} {
@@ -280,7 +293,7 @@ if {${subport} eq "llvm-${llvm_version}"} {
 	    -DCOMPILER_RT_BUILD_LIBFUZZER=OFF
     }
 
-    if {${os.major} <= 14} {
+    if {${os.major} <= 15} {
         # XRAY uses TLS, MAP_ANONYMOUS, and clock_gettime, so disable it
         # on systems that don't currently support these features
         # see https://trac.macports.org/ticket/57130
@@ -322,13 +335,7 @@ compiler.blacklist-append macports-clang-3.3 macports-clang-3.4
 # Override the normal compiler fallback list entirely since we have
 # such specific requirements.
 compiler.fallback   clang
-# Use each macports-clang version only if already installed, to avoid
-# dependency cycles or chaining (8.0 depends on 7.0 depends on 6.0...)
-foreach ver {8.0 7.0 6.0 5.0} {
-    if {[file exists ${prefix}/bin/clang-mp-${ver}]} {
-        compiler.fallback-append macports-clang-${ver}
-    }
-}
+
 # 3.7 is already needed to bootstrap cmake, so is a good last resort
 # when the system clang is too old.
 if {${os.platform} eq "darwin" && ${os.major} < 18} {

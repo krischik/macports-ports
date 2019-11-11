@@ -54,7 +54,7 @@ epoch               1
 # SIP 4.16.[1-7] provides SIP API 11.1.
 # SIP 4.15.5 provided SIP API 11.0.
 
-python.versions     27 34 35 36 37
+python.versions     27 34 35 36 37 38
 python.default_version 27
 
 if {${name} ne ${subport}} {
@@ -187,6 +187,6 @@ if {[string last devel ${subport}] != -1} {
 
     livecheck.type   regex
     livecheck.url    https://www.riverbankcomputing.com/software/sip/download
-    livecheck.regex  sip-(\\d+(\\.\\d+)+)${extract.suffix}
+    livecheck.regex  sip-(4(\\.\\d+)+)${extract.suffix}
 
 }

@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-astroid
-version             2.3.1
+version             2.3.3
 revision            0
 categories-append   devel
 platforms           darwin
 license             LGPL-2.1+
 supported_archs     noarch
 
-python.versions     27 34 35 36 37
+python.versions     27 34 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -24,13 +24,10 @@ long_description    The aim of this module is to provide a common \
                     essentially governed by pylint's needs.
 
 homepage            https://github.com/pycqa/astroid
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  8139cf081419769e66347ccc15f7ab8c669f27cc \
-                    sha256  b7546ffdedbf7abcfbff93cd1de9e9980b1ef744852689decc5aeada324238c6 \
-                    size    297020
+checksums           rmd160  180dfda90675ead4026b7cd2f47f2ba2ecb7aee9 \
+                    sha256  71ea07f44df9568a75d0f354c49143a4575d90645e9fead6dfb52c26a85ed13a \
+                    size    297350
 
 if {${name} ne ${subport}} {
     depends_build-append \

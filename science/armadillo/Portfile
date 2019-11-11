@@ -6,7 +6,7 @@ PortGroup                       compiler_blacklist_versions 1.0
 PortGroup                       mpi 1.0
 
 name                            armadillo
-version                         9.700.3
+version                         9.800.2
 revision                        0
 categories                      science
 platforms                       darwin
@@ -28,9 +28,9 @@ master_sites                    sourceforge:project/arma
 
 use_xz                          yes
 
-checksums                       rmd160  3c1947e4ff15e50eb2139f04ab13ff82e5a80de1 \
-                                sha256  6779ab4e82b8487dcf08e58d6d7d86f20b1c0032c6817712a95ec6097fe4528d \
-                                size    4711276
+checksums                       rmd160  f20fcde4d47c1fbb54b590e5e44fe0122d0ad8ae \
+                                sha256  09962d8d22b98aea32633f6b6ad9b15189888b905f1f092183eda3c5bff35457 \
+                                size    4715232
 
 depends_build-append            port:pkgconfig
 

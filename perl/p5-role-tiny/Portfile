@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26 5.28
-perl5.setup         Role-Tiny 2.001001 ../../authors/id/H/HA/HAARG
+perl5.branches      5.26 5.28 5.30
+perl5.setup         Role-Tiny 2.001004 ../../authors/id/H/HA/HAARG
 
 platforms           darwin
 maintainers         nomaintainer
@@ -16,9 +16,9 @@ description         Role::Tiny - Roles. Like a nouvelle cuisine portion size sli
 
 long_description    Role::Tiny is a minimalist role composition tool.
 
-checksums           rmd160  8d38c72ca018d777117b0d8212355411d7bd628f \
-                    sha256  6852874c2db6208595855d4c8abc03464300224313d51780e09d84ccc6f3d99b \
-                    size    30243
+checksums           rmd160  a8587ecc0c582fcedb8d96c8d04ac73c70e40836 \
+                    sha256  92ba5712850a74102c93c942eb6e7f62f7a4f8f483734ed289d08b324c281687 \
+                    size    31569
 
 if {${perl5.major} != ""} {
     depends_build-append \

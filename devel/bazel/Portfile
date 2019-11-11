@@ -2,7 +2,6 @@
 
 PortSystem                                            1.0
 PortGroup             github                          1.0
-PortGroup             cxx11                           1.1
 PortGroup             java                            1.0
 PortGroup             compilers                       1.0
 PortGroup             xcodeversion                    1.0
@@ -21,27 +20,28 @@ subport               bazel26 { }
 if { ${name} eq ${subport} } {
     
     # Main port
-    github.setup      bazelbuild ${name} 0.29.1
+    github.setup      bazelbuild ${name} 1.1.0
     revision          0
 
     conflicts         bazel25 bazel26
 
-    checksums         rmd160  e83da6d224b5888da300082fd07a7f0457f2d07a \
-                      sha256  872a52cff208676e1169b3e1cae71b1fe572c4109cbd66eab107d8607c378de5 \
-                      size    265744999
+    checksums         rmd160  5de84b32ed85f7b9718c8f9ff88f10a66382316f \
+                      sha256  4b66a8c93af7832ed32e7236cf454a05f3aa06d25a8576fc3f83114f142f95ab \
+                      size    267683689
 
-    pre-fetch {
+    if { ${os.platform} eq "darwin" && ${os.major} < 16 } {
+        known_fail yes
         # https://trac.macports.org/ticket/58518
-        if { ${os.major} < 14 } {
-            ui_error "${name} ${version} requires macOS10.10 or newer."
+        pre-fetch {
+            ui_error "${name} ${version} requires macOS10.12 or newer."
             return -code error "incompatible macOS version"
         }
     }
     
     # Required java version.
-    java.version      12
+    java.version      12+
     # JDK port to install if required java not found
-    java.fallback     openjdk12
+    java.fallback     openjdk13
 
 } elseif { "bazel26" eq ${subport} } {
 
@@ -59,18 +59,19 @@ if { ${name} eq ${subport} } {
                       sha256  c0e94f8f818759f3f67af798c38683520c540f469cb41aea8f5e5a0e43f11600 \
                       size    244633948
 
-    pre-fetch {
+    if { ${os.platform} eq "darwin" && ${os.major} < 14 } {
+        known_fail yes
         # https://trac.macports.org/ticket/58518
-        if { ${os.major} < 14 } {
+        pre-fetch {
             ui_error "${name} ${version} requires macOS10.10 or newer."
             return -code error "incompatible macOS version"
         }
     }
     
     # Required java version.
-    java.version      12
+    java.version      12+
     # JDK port to install if required java not found
-    java.fallback     openjdk12
+    java.fallback     openjdk13
 
 } elseif { "bazel25" eq ${subport} } {
 
@@ -86,9 +87,10 @@ if { ${name} eq ${subport} } {
                       sha256  7456032199852c043e6c5b3e4c71dd8089c1158f72ec554e6ec1c77007f0ab51 \
                       size    275804130
 
-    pre-fetch {
+    if { ${os.platform} eq "darwin" && ${os.major} < 14 } {
+        known_fail yes
         # https://trac.macports.org/ticket/58518
-        if { ${os.major} < 14 } {
+        pre-fetch {
             ui_error "${name} ${version} requires macOS10.10 or newer."
             return -code error "incompatible macOS version"
         }
@@ -131,9 +133,7 @@ set bazel_min_xcode   9.0
 # Even though bazel can build without Xcode, mark use Xcode for now since it fails to
 # build with tracemode on latest master if both CLT and Xcode are available.
 # Better solution is to respect MacPorts environment configure.developer_dir
-if {[info exists use_xcode]} {
-    use_xcode yes
-}
+use_xcode             yes
 
 # python versions. Build needs both 'python2' and 'python3'
 set py3ver 3.7
@@ -152,7 +152,7 @@ post-extract {
     ln -s ${prefix}/bin/python${py3ver} ${workpath}/bin/python3
 }
 
-if {${os.major} < 16} {
+if {${os.platform} eq "darwin" && ${os.major} < 16} {
     # https://github.com/bazelbuild/bazel/issues/6188
     depends_build-append  port:unzip
 }
@@ -187,10 +187,13 @@ post-patch {
 # Blacklist too old system compilers
 compiler.blacklist-append {clang < 710}
 
-# Clang 7 and 8 fail with missing libarclite on older systems (e.g. 10.10)
+# Clang 7, 8 and 9 fail with missing libarclite on older systems (e.g. 10.10)
 # ../usr/bin/xcrun /opt/local/bin/clang-mp-8.0 -fobjc-arc -framework CoreServices -framework Foundation -o /opt/local/var/macports/build/_opt_bblocal_var_buildworker_ports_build_ports_devel_bazel/bazel26/work/.tmp/bazel_4sKHinCP/archive/_embedded_binaries/xcode-locator tools/osx/xcode_locator.m
 # ld: file not found: /opt/local/libexec/llvm-8.0/lib/arc/libarclite_macosx.a
-compiler.blacklist-append {macports-clang-[7-8].0}
+compiler.blacklist-append {macports-clang-[7-9].0}
+
+# require c++11
+compiler.cxx_standard 2011
 
 build.env-append  CC=${configure.cc} \
                  CXX=${configure.cxx} \
@@ -203,7 +206,7 @@ if {[vercmp ${xcodeversion} ${bazel_min_xcode}] < 0} {
 }
 
 variant bash_completion {
-    depends_build-append  bin:bash:bash 
+    depends_build-append  bin:bash:bash
 }
 
 build {

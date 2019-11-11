@@ -6,6 +6,9 @@ PortGroup           muniversal 1.0
 PortGroup           compiler_blacklist_versions 1.0
 PortGroup           active_variants 1.1
 PortGroup           github 1.0
+# https://trac.macports.org/ticket/59246
+# https://trac.macports.org/ticket/59308
+PortGroup           xcode_workaround 1.0
 
 set git_commit      7c145b64417fbe674f90785d2e5a5afea1a1b821
 set git_release     4.2.git

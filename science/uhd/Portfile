@@ -53,6 +53,17 @@ Provides the release version, which is typically updated every month or so.
 
     patchfiles-append patch-fix-boost-python.release.diff
 
+    # temporary patch to fix gpsdata API: .separation -> .fix.geoid_sep
+    patchfiles-append patch-fix-gpsdata_separation_api.diff
+
+    # temporary patch to add double quoting around UHD_VERSION, such
+    # that if specified externally it can be any string. devel already
+    # contains this patch.
+    patchfiles-append patch-fix-UHD_VERSION_quotes.diff
+
+    # temporary patch to fix gpsdata API: .fix.altitude -> .fix.altHAE
+    patchfiles-append patch-fix-gpsdata_altitude_api.diff
+
     # temporary patch to fix searching for Boost::Python, which
     # depends on the version of Boost & which Python. 2 parts: a patch
     # and then reinplace. This is part 2.
@@ -94,6 +105,17 @@ Provides UHD 3.9 Long-Term Service \(LTS\) branch. This branch is not updated ex
     # release. works on all non-devel UHD ports; devel contains this patch.
     patchfiles-append patch-fix-gpsd_read-api.diff
 
+    # temporary patch to fix gpsdata API: .separation -> .fix.geoid_sep
+    patchfiles-append patch-fix-gpsdata_separation_api.39lts.diff
+
+    # temporary patch to add double quoting around UHD_VERSION, such
+    # that if specified externally it can be any string. devel already
+    # contains this patch.
+    patchfiles-append patch-fix-UHD_VERSION_quotes.39lts.diff
+
+    # temporary patch to fix gpsdata API: .fix.altitude -> .fix.altHAE
+    patchfiles-append patch-fix-gpsdata_altitude_api.39lts.diff
+
 }
 
 subport uhd-devel {
@@ -101,12 +123,12 @@ subport uhd-devel {
     long_description ${description}: \
 Provides the UHD GIT maint or master branch, depending on which is more advanced, and is typically updated every few days to week.
 
-    github.setup EttusResearch uhd 18bc320dc3348346255ab0d33aa319fb2618d7b3
-    version   20190913-[string range ${github.version} 0 7]
-    checksums rmd160 8672438a8a72c35ce8ddd679b899b734febd6109 \
-              sha256 68224ec0d7e179062b4d1b39f44d4c90aad77990a11e4af3a93d1da048ef5556 \
-              size   13013830
-    revision  1
+    github.setup EttusResearch uhd 0408f47b23a834192a31d8000bd5e2536704728e
+    version   20191014-[string range ${github.version} 0 7]
+    checksums rmd160 1a0e1ab162de913a31fcce5a7384a98b50f37ed2 \
+              sha256 84324c59329d84c44e15440c252441fdd2a494e58bddfecf8d0526528d286e44 \
+              size   12881027
+    revision  0
 
     conflicts uhd uhd-39lts
 
@@ -123,10 +145,6 @@ Provides the UHD GIT maint or master branch, depending on which is more advanced
     # temporary patch to disable Boost DIRS before internal DIRS
 
     patchfiles-append patch-host_CMakeLists.txt.devel.diff
-
-    # temporary patch to fix the x300-series FPGA .bit image size
-
-    patchfiles-append patch-host_lib_usrp_x300_x300_image_loader.cpp.devel.diff
 
     # set the variable UHD_VERSION_DEVEL to TRUE, no matter its current setting
     post-patch {
@@ -149,18 +167,6 @@ if {${subport} ne "uhd-39lts"} {
 }
 
 if {${subport} ne "uhd-devel"} {
-
-
-    # temporary patch to fix gpsdata API: .separation -> .fix.geoid_sep
-    patchfiles-append patch-fix-gpsdata_separation_api.diff
-
-    # temporary patch to add double quoting around UHD_VERSION, such
-    # that if specified externally it can be any string. devel already
-    # contains this patch.
-    patchfiles-append patch-fix-UHD_VERSION_quotes.diff
-
-    # temporary patch to fix gpsdata API: .fix.altitude -> .fix.altHAE
-    patchfiles-append patch-fix-gpsdata_altitude_api.diff
 
     # gpsd has been removed from devel
     default_variants +gpsd

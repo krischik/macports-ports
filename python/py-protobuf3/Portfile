@@ -6,7 +6,7 @@ PortGroup       github 1.0
 PortGroup       cxx11 1.1
 
 name            py-protobuf3
-version         3.9.2
+version         3.10.1
 categories-append   devel
 maintainers     {toby @tobypeterson} openmaintainer
 license         BSD
@@ -36,13 +36,13 @@ master_sites    https://github.com/google/protobuf/releases/download/v${version}
 distfiles       protobuf-python-${version}.tar.gz
 worksrcdir      protobuf-${version}
 
-checksums       sha256  a7564e52d2842033303d2a81b4b8099145b5aabe0a5531a8b057801377bc2a13 \
-                rmd160  d34f96ce5785142446d96e18d00d41dc8ff7583d \
-                size    4859528
+checksums       sha256  39c7a5e7e557b24fc324bec3a73054d277ed9b9b320b273564e04f862131e679 \
+                rmd160  462a95c51a98fef1ef23986cf45e5bc9703606eb \
+                size    4920657
 
 platforms       darwin
 
-python.versions 27 35 36 37
+python.versions 27 35 36 37 38
 
 if {${name} ne ${subport}} {
     conflicts       py${python.version}-protobuf

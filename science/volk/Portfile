@@ -5,10 +5,9 @@ PortGroup           cmake 1.0
 PortGroup           github 1.0
 PortGroup           muniversal 1.0
 
-# although Volk does not technically require C++11, forcing the use of
-# modern compilers reduces build failures. Also, it will require C++11
-# in the future, so let's just get on the bandwagon early.
-PortGroup           cxx11 1.1
+# Volk requires C/C++11 as of release 2.0.0
+compiler.c_standard   2011
+compiler.cxx_standard 2011
 
 name                volk
 categories          science comms
@@ -36,11 +35,11 @@ provides the release version, which is typically updated every month or so.
 
 subport volk-devel {
 
-    github.setup gnuradio volk 1299d72c396a88fd2679adfd7a919ac00d2cf678
-    version   20190805-[string range ${github.version} 0 7]
-    checksums rmd160 58e8d5f767e754e9270ebffa1d9a1d6a61c37ab0 \
-              sha256 afd5b0011e7f1f2be254f42a3cf63e0bdfb950391c165d6a38b24da996c0a178 \
-              size   261505
+    github.setup gnuradio volk 2137e830b15cc3f9aaa7559da349ca71ef5ca950
+    version   20191030-[string range ${github.version} 0 7]
+    checksums rmd160 9e2fc12d653f702cfbac62c11f5f5efd997cbc6d \
+              sha256 12cc12d1998aa7dfec222f1605e4accdf2ce17ddfb480e75954623b90a7751c6 \
+              size   264993
     revision  0
 
     conflicts       volk

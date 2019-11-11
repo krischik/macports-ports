@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-virtualenv
-version             16.7.5
+version             16.7.7
 revision            0
 
 categories-append   devel
@@ -22,11 +22,11 @@ homepage            https://virtualenv.pypa.io
 master_sites        pypi:v/${python.rootname}
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  fa57500512ab6b7db0523757b5aa67904b140a71 \
-                    sha256  f78d81b62d3147396ac33fc9d77579ddc42cc2a98dd9ea38886f616b33bc7fb2 \
-                    size    5111957
+checksums           rmd160  9413383f5969eb1c71e137943c9180b776840ac1 \
+                    sha256  d257bb3773e48cac60e475a19b608996c73f4d333b3ba2e4e57d5ac6134e0136 \
+                    size    5116795
 
-python.versions     27 34 35 36 37
+python.versions     27 34 35 36 37 38
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools
@@ -45,7 +45,7 @@ if {${name} ne ${subport}} {
 
     post-destroot {
         set docdir ${prefix}/share/doc/${subport}
-        xinstall -m 0755 -d ${destroot}${docdir}/docs/changelog
+        xinstall -d ${destroot}${docdir}/docs/changelog
         xinstall -m 0644 -W ${worksrcpath} README.rst LICENSE.txt AUTHORS.txt \
             ${destroot}${docdir}
         xinstall -m 0644 {*}[glob -directory ${worksrcpath}/docs *.rst] \

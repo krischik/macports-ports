@@ -7,7 +7,7 @@ PortGroup           clang_dependency 1.0
 
 name                libxml2
 version             2.9.9
-revision            2
+revision            3
 categories          textproc
 platforms           darwin
 license             MIT
@@ -35,20 +35,34 @@ checksums           rmd160  a7d5f9ca4a24db329108f4bfb6bd4eed0f61ab21 \
                     size    5476717
 
 set my_prefix ${prefix}
+set icu_prefix ${prefix}
+set iconv_prefix ${prefix}
 
 # This port is used by clang-3.4 to bootstrap libcxx
 subport ${name}-bootstrap {
+    revision        6
+    configure.cxx_stdlib
     set my_prefix ${prefix}/libexec/libcxx-bootstrap
     configure.pre_args      --prefix=${my_prefix}
-    configure.cppflags-prepend   -I${my_prefix}/include
-    configure.ldflags-prepend    -L${my_prefix}/lib
-    configure.env-append    PATH=${my_prefix}/bin:$::env(PATH)
-    configure.cxx_stdlib
-    depends_build-replace   port:pkgconfig port:pkgconfig-bootstrap
-    depends_lib-replace     port:libiconv port:libiconv-bootstrap \
-                            port:icu port:icu-bootstrap \
-                            port:xz port:xz-bootstrap
-    compiler.whitelist      clang llvm-gcc-4.2 gcc-4.2 apple-gcc-4.2
+    if {${os.major} <= 10} {
+        set icu_prefix ${my_prefix}
+        set iconv_prefix ${my_prefix}
+        configure.cppflags-prepend   -I${my_prefix}/include
+        configure.ldflags-prepend    -L${my_prefix}/lib
+        configure.env-append    PATH=${my_prefix}/bin:$::env(PATH)
+        depends_build-replace   port:pkgconfig port:pkgconfig-bootstrap
+        depends_lib-replace     port:libiconv port:libiconv-bootstrap \
+                                port:icu port:icu-bootstrap \
+                                port:xz port:xz-bootstrap
+        compiler.whitelist      clang llvm-gcc-4.2 gcc-4.2 apple-gcc-4.2
+    } else {
+        # 10.7 has libc++ but still needs a C++11 compiler for icu
+        depends_lib-replace     port:icu port:icu58
+        set icu_prefix ${prefix}/libexec/icu58
+        configure.pkg_config_path   ${icu_prefix}/lib/pkgconfig
+        configure.cppflags-prepend   -I${icu_prefix}/include
+        configure.ldflags-prepend    -L${icu_prefix}/lib
+    }
 }
 # Also needed by later clangs.
 if {${os.platform} eq "darwin" && ${os.major} < 11 && ${cxx_stdlib} eq "libc++"} {
@@ -58,7 +72,8 @@ if {${os.platform} eq "darwin" && ${os.major} < 11 && ${cxx_stdlib} eq "libc++"}
 patchfiles-append   include.patch
 
 post-patch {
-    reinplace "s|@PREFIX@|${my_prefix}|g" ${worksrcpath}/include/libxml/encoding.h
+    reinplace "s|@ICONV_PREFIX@|${iconv_prefix}|g" ${worksrcpath}/include/libxml/encoding.h
+    reinplace "s|@ICU_PREFIX@|${icu_prefix}|g" ${worksrcpath}/include/libxml/encoding.h
     reinplace -locale C "s|/etc|${my_prefix}/etc|g" \
         ${worksrcpath}/catalog.c \
         ${worksrcpath}/runtest.c \
@@ -79,7 +94,7 @@ configure.args      --disable-silent-rules \
 destroot.keepdirs   ${destroot}${my_prefix}/etc/xml
 post-destroot {
     xinstall -m 0755 -d ${destroot}${my_prefix}/etc/xml
-    ln -s ${my_prefix}/include/unicode ${destroot}${my_prefix}/include/libxml2/unicode
+    ln -s ${icu_prefix}/include/unicode ${destroot}${my_prefix}/include/libxml2/unicode
 }
 
 test.run            yes
@@ -95,3 +110,5 @@ variant readline description {Enable readline support} {
                             --with-history
     depends_lib-append      port:readline
 }
+
+livecheck.regex     {"LATEST_LIBXML2_IS_([^"]+)"}

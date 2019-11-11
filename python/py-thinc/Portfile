@@ -7,13 +7,13 @@ PortGroup           github                      1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 name                py-thinc
-version             7.1.1
+version             7.3.1
 revision            0
 github.setup        explosion thinc ${version} v
 
-checksums           rmd160  91f67cd11890eab04c87a74b8fa5fc7c1add34e1 \
-                    sha256  4a8e89275b161327c5947de018543b208b3c98d50700ee93814ffb3ca3e9a71f \
-                    size    240224
+checksums           rmd160  f002cfd4b0664d3ca08ff38c59a0d6e02201b2ea \
+                    sha256  ccae13cae681c0493889db45473db0f845e7042af57f3f3369e07aa5ffe21201 \
+                    size    245665
 
 platforms           darwin
 supported_archs     x86_64
@@ -29,7 +29,7 @@ long_description    ${description}
 github.livecheck.regex {([0-9.]+)}
 
 # Support python versions
-python.versions     35 36 37
+python.versions     35 36 37 38
 python.default_version 37
 
 # Compiler selection

@@ -32,11 +32,11 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    github.setup open-source-parsers jsoncpp 736409f1b5dadc392a7a301c9176d8ef0d2a1d76
-    version   20191001-[string range ${github.version} 0 7]
-    checksums rmd160 b33874e3561deeba8102b2a1594ec5fd00fefa30 \
-              sha256 39013fcbddf31e6880a412478943b1b77349b7aef7081e210b29c402a1052018 \
-              size   206209
+    github.setup open-source-parsers jsoncpp 645cd0412c100d633a882da30d6245a30a8a4c82
+    version   20191108-[string range ${github.version} 0 7]
+    checksums rmd160 bc8355c0595eece43fa020429b1f6d1cf4030fe6 \
+              sha256 98ddd41a7c6e3559bf98c4e660a2c230e16c18786602333c39440ee05e9739c6 \
+              size   209887
     revision  0
 
     conflicts       jsoncpp
@@ -46,7 +46,7 @@ if {${subport} eq ${name}} {
     # temporary patch to fix build errors, mostly in how [[deprecated]] is used
     patchfiles-append patch-fix-build.diff
     patch.pre_args -p1
-    
+
 }
 
 cmake.out_of_source yes

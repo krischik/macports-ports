@@ -63,13 +63,16 @@ if {${subport} eq "llvm-${llvm_version}"} {
     }
 }
 
-if {${os.platform} eq "darwin" && ${os.major} < 11 && ${cxx_stdlib} eq "libc++"} {
-    configure.cxx_stdlib    libstdc++
-    # Have to also use bootstrap versions of deps that use libstdc++ in
-    # order to be able to build libc++.
-    depends_lib-replace port:libxml2 port:libxml2-bootstrap \
-                        port:python27 port:python27-bootstrap \
-                        port:ncurses port:ncurses-bootstrap
+if {${os.platform} eq "darwin" && ${os.major} < 12 && ${cxx_stdlib} eq "libc++"} {
+    if {${os.major} < 11} {
+        configure.cxx_stdlib    libstdc++
+        # Have to also use bootstrap versions of deps that use libstdc++ in
+        # order to be able to build libc++.
+        depends_lib-replace port:python27 port:python27-bootstrap \
+                            port:ncurses port:ncurses-bootstrap
+    }
+    # libxml2 depends on icu which needs a C++11 compiler
+    depends_lib-replace     port:libxml2 port:libxml2-bootstrap
     configure.cppflags-prepend  -I${bootstrap_prefix}/include
     configure.ldflags-prepend   -L${bootstrap_prefix}/lib
     configure.env-append    PATH=${bootstrap_prefix}/bin:$::env(PATH)
@@ -202,6 +205,9 @@ if {${subport} eq "llvm-${llvm_version}"} {
 # Xcode 4.3's clang (318.x) fails per https://trac.macports.org/ticket/44161
 compiler.blacklist gcc-4.0 {gcc-4.2 <= 5577} {clang < 421}
 
+# avoid dependency cycles
+compiler.blacklist-append   macports-clang-*
+
 variant universal {
     if {[vercmp [macports_version] 2.5.99] >= 0} {
     build.env-append \
@@ -233,14 +239,6 @@ variant universal {
 variant assertions description "Enable assertions for error detection (has performance impacts, especially on JIT)" {
     configure.args-delete --disable-assertions
     configure.args-append --enable-assertions
-}
-
-# blacklist current and future versions if they're not available in order to
-# help break potential dependency cycles.
-foreach ver {3.4 3.7 3.8 3.9 4.0 5.0 6.0 7.0 8.0 devel} {
-    if {![file exists ${prefix}/bin/clang-mp-${ver}]} {
-        compiler.blacklist-append macports-clang-${ver}
-    }
 }
 
 platform darwin {

@@ -5,9 +5,9 @@ PortGroup           github 1.0
 PortGroup           python 1.0
 
 set realname        lexicon
-github.setup        AnalogJ ${realname} 3.3.3 v
+github.setup        AnalogJ ${realname} 3.3.8 v
 name                py-dns-lexicon
-revision            0
+revision            1
 categories-append   net
 license             MIT
 maintainers         {mps @Schamschula} openmaintainer
@@ -16,11 +16,11 @@ description         Manipulate DNS records on various DNS providers in a \
 long_description    ${description}
 platforms           darwin
 
-python.versions     27 36 37
+python.versions     27 36 37 38
 
-checksums           rmd160  6577523fb1d3aebeac0e4bb5e33baa06666996cf \
-                    sha256  521e88113262851208d963980745dce267d37de98c2f837a0b0fc9c73f9e6cf8 \
-                    size    3211759
+checksums           rmd160  99315c1b811735ad636cf4f6f8e880b3b0eae3ed \
+                    sha256  57352ca89035ae4be59f754876f0448462e97756f68694abfa3454f364dc589e \
+                    size    3249323
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -30,6 +30,7 @@ if {${name} ne ${subport}} {
                     port:py${python.version}-cryptography \
                     port:py${python.version}-future \
                     port:py${python.version}-requests \
+                    port:py${python.version}-tldextract \
                     port:py${python.version}-yaml
 
     livecheck.type  none

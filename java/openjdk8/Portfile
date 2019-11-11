@@ -3,28 +3,28 @@
 PortSystem       1.0
 
 name             openjdk8
-version          8u222
+version          8u232
 revision         0
 
-set build        10
+set build        09
 set major        8
 
 subport openjdk8-openj9 {
-    version      8u222
-    revision     0
+    version      8u232
+    revision     1
 
-    set build    10
+    set build    09
     set major    8
-    set openj9_version 0.15.1
+    set openj9_version 0.17.0
 }
 
 subport openjdk8-openj9-large-heap {
-    version      8u222
-    revision     0
+    version      8u232
+    revision     1
 
-    set build    10
+    set build    09
     set major    8
-    set openj9_version 0.15.1
+    set openj9_version 0.17.0
 }
 
 subport openjdk10 {
@@ -36,29 +36,29 @@ subport openjdk10 {
 }
 
 subport openjdk11 {
-    version      11.0.4
+    version      11.0.5
     revision     0
 
-    set build    11
+    set build    10
     set major    11
 }
 
 subport openjdk11-openj9 {
-    version      11.0.4
-    revision     0
+    version      11.0.5
+    revision     1
 
-    set build    11
+    set build    10
     set major    11
-    set openj9_version 0.15.1
+    set openj9_version 0.17.0
 }
 
 subport openjdk11-openj9-large-heap {
-    version      11.0.4
-    revision     0
+    version      11.0.5
+    revision     1
 
-    set build    11
+    set build    10
     set major    11
-    set openj9_version 0.15.1
+    set openj9_version 0.17.0
 }
 
 subport openjdk12 {
@@ -88,29 +88,29 @@ subport openjdk12-openj9-large-heap {
 }
 
 subport openjdk13 {
-    version      13
+    version      13.0.1
     revision     0
 
-    set build    33
+    set build    9
     set major    13
 }
 
 subport openjdk13-openj9 {
-    version      13
-    revision     0
+    version      13.0.1
+    revision     1
 
-    set build    33
+    set build    9
     set major    13
-    set openj9_version 0.16.0
+    set openj9_version 0.17.0
 }
 
 subport openjdk13-openj9-large-heap {
-    version      13
-    revision     0
+    version      13.0.1
+    revision     1
 
-    set build    33
+    set build    9
     set major    13
-    set openj9_version 0.16.0
+    set openj9_version 0.17.0
 }
 
 categories       java devel
@@ -140,9 +140,9 @@ if {${subport} eq "openjdk8"} {
 if {${subport} eq "openjdk8"} {
     master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk${version}-b${build}/
     
-    checksums    rmd160  b56170dfdc1da40b18b1f17f3f59a54eee7a5c79 \
-                 sha256  9605fd00d2960934422437f601c7a9a1c5537309b9199d5bc75f84f20cd29a76 \
-                 size    102266954
+    checksums    rmd160  c659d3f0f5611aa03859fb9442b6eca138485788 \
+                 sha256  c237b2c2c32c893e4ee60cdac8c4bcc34ca731a5445986c03b95cf79918e40c3 \
+                 size    102496705
 
     distname     OpenJDK${major}U-jdk_x64_mac_hotspot_${version}b${build}
     worksrcdir   jdk${version}-b${build}
@@ -150,11 +150,13 @@ if {${subport} eq "openjdk8"} {
     configure.cxx_stdlib libstdc++
 
 } elseif {${subport} eq "openjdk8-openj9"} {
-    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk${version}-b${build}_openj9-${openj9_version}/
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk${version}-b${build}.${revision}_openj9-${openj9_version}/
+    # Temporary dist_subdir for stealth update: https://trac.macports.org/wiki/PortfileRecipes#stealth-updates
+    dist_subdir  ${name}/${version}_${revision}
 
-    checksums    rmd160  ca2295364eb5ec2d8e96f4d67821347ecc0b990a \
-                 sha256  df185e167756332163633a826b329db067f8a721f7d5d27f0b353a35fc415de0 \
-                 size    113687040
+    checksums    rmd160  d90d77e1ee0d2752f992ba8a53dbcad9602e191d \
+                 sha256  168079dcc20f62ac4409800c78d23a63ba7c665e58cd7ac8bde21ebbbb2b6d48 \
+                 size    114222397
 
     distname     OpenJDK${major}U-jdk_x64_mac_openj9_${version}b${build}_openj9-${openj9_version}
     worksrcdir   jdk${version}-b${build}
@@ -167,11 +169,13 @@ if {${subport} eq "openjdk8"} {
                  VM designed for low memory usage and fast start-up and is used in IBM’s JDK. It is \
                  suitable for running all workloads.
 } elseif {${subport} eq "openjdk8-openj9-large-heap"} {
-    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk${version}-b${build}_openj9-${openj9_version}/
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk${version}-b${build}.${revision}_openj9-${openj9_version}/
+    # Temporary dist_subdir for stealth update: https://trac.macports.org/wiki/PortfileRecipes#stealth-updates
+    dist_subdir  ${name}/${version}_${revision}
 
-    checksums    rmd160  ebadd190bd0b1bc31e95a286837b9b8c5e83f647 \
-                 sha256  a55adfc18ab175510b1f5dced82d9ca660c4f4636f992c301f6db2f49cae4759 \
-                 size    113678902
+    checksums    rmd160  5b541680f690a2eb353c764dba8c5ddf62f8f366 \
+                 sha256  e28e308321886fe98caada4148a6ee768b22e97486696220ffde6c174fe75fa9 \
+                 size    114212346
 
     distname     OpenJDK${major}U-jdk_x64_mac_openj9_macosXL_${version}b${build}_openj9-${openj9_version}
     worksrcdir   jdk${version}-b${build}
@@ -207,18 +211,20 @@ if {${subport} eq "openjdk8"} {
 } elseif {${subport} eq "openjdk11"} {
     master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}/
 
-    checksums    rmd160  2bdf0011a0ee020841aad2c972b4f4e75ab5132c \
-                 sha256  a50b211f475b9497311c9b65594764d7b852b1653f249582bb20fc3c302846a5 \
-                 size    190345711
+    checksums    rmd160  d4099ff93dce27338c2675b356e4f2859082bf8e \
+                 sha256  0825d0d3177832320b697944cd8e7b2e7fe3893fafe8bfcf33ee3631aa5ca96b \
+                 size    188745854
 
     distname     OpenJDK${major}U-jdk_x64_mac_hotspot_${version}_${build}
     worksrcdir   jdk-${version}+${build}
 } elseif {${subport} eq "openjdk11-openj9"} {
-    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}_openj9-${openj9_version}/
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}.${revision}_openj9-${openj9_version}/
+    # Temporary dist_subdir for stealth update: https://trac.macports.org/wiki/PortfileRecipes#stealth-updates
+    dist_subdir  ${name}/${version}_${revision}
 
-    checksums    rmd160  9f71da3e233feb16a84d4369611033a00d7ee4ed \
-                 sha256  7c09678d9c2d9dd0366693c6ab27bed39c76a23e7ac69b8a25c794e99dcf3ba7 \
-                 size    196042493
+    checksums    rmd160  1915fac0403ce775419dcccaafe74de9a8432cac \
+                 sha256  97dc8234b73e233316b5dfdca75af9a0d54aa23b1309b1a68fd0a5d2fa928e05 \
+                 size    196981668
 
     distname     OpenJDK${major}U-jdk_x64_mac_openj9_${version}_${build}_openj9-${openj9_version}
     worksrcdir   jdk-${version}+${build}
@@ -231,11 +237,13 @@ if {${subport} eq "openjdk8"} {
                  VM designed for low memory usage and fast start-up and is used in IBM’s JDK. It is \
                  suitable for running all workloads.
 } elseif {${subport} eq "openjdk11-openj9-large-heap"} {
-    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}_openj9-${openj9_version}/
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}.${revision}_openj9-${openj9_version}/
+    # Temporary dist_subdir for stealth update: https://trac.macports.org/wiki/PortfileRecipes#stealth-updates
+    dist_subdir  ${name}/${version}_${revision}
 
-    checksums    rmd160  049469ea87ee1abe83a9cb65e551c82962c8964f \
-                 sha256  f0769c458982efb927325d7892c6a7b7dcf3f71265992830025574275dcb3cc8 \
-                 size    196031578
+    checksums    rmd160  5d0f9d8f81dec18bd5d2a57fcf2684759e87b9d3 \
+                 sha256  5bfc4ad3b3568303091e3863c4c9baff279929a35326dd48fb26d8e95e8e3174 \
+                 size    196984646
 
     distname     OpenJDK${major}U-jdk_x64_mac_openj9_macosXL_${version}_${build}_openj9-${openj9_version}
     worksrcdir   jdk-${version}+${build}
@@ -298,18 +306,20 @@ if {${subport} eq "openjdk8"} {
     master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}/
     distname     OpenJDK${major}U-jdk_x64_mac_hotspot_${version}_${build}
 
-    checksums    rmd160  542642959d04f0d43e7bc34e4d4f1615b68283fa \
-                 sha256  f948be96daba250b6695e22cb51372d2ba3060e4d778dd09c89548889783099f \
-                 size    198189530
+    checksums    rmd160  1c7fef6b601c262f245a3b40fab279abfa5fec6c \
+                 sha256  9c82de98ce9bc2353bcf314d85366c9a2c572db034e10a71aa47e804e13748c1 \
+                 size    198205689
 
     worksrcdir   jdk-${version}+${build}
 } elseif {${subport} eq "openjdk13-openj9"} {
-    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}_openj9-${openj9_version}/
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}.${revision}_openj9-${openj9_version}/
+    # Temporary dist_subdir for stealth update: https://trac.macports.org/wiki/PortfileRecipes#stealth-updates
+    dist_subdir  ${name}/${version}_${revision}
     distname     OpenJDK${major}U-jdk_x64_mac_openj9_${version}_${build}_openj9-${openj9_version}
 
-    checksums    rmd160  07adcea6a8d60372414f5afd90c7a333a541d3f6 \
-                 sha256  583e0defd5c062550896ead7cac383be16f1a81d9b6492dfec26da9af5dcc1c0 \
-                 size    199513858
+    checksums    rmd160  8bd31c96ae660af6af81be78dd50b2103424bfa5 \
+                 sha256  ea578286d726c0cc9660625f4cd93f67fe1ca89d47584bc4d14bda71f9cb2d5d \
+                 size    201722075
 
     worksrcdir   jdk-${version}+${build}
 
@@ -321,12 +331,14 @@ if {${subport} eq "openjdk8"} {
                  VM designed for low memory usage and fast start-up and is used in IBM’s JDK. It is \
                  suitable for running all workloads.
 } elseif {${subport} eq "openjdk13-openj9-large-heap"} {
-    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}_openj9-${openj9_version}/
+    master_sites https://github.com/AdoptOpenJDK/openjdk${major}-binaries/releases/download/jdk-${version}%2B${build}.${revision}_openj9-${openj9_version}/
+    # Temporary dist_subdir for stealth update: https://trac.macports.org/wiki/PortfileRecipes#stealth-updates
+    dist_subdir  ${name}/${version}_${revision}
     distname     OpenJDK${major}U-jdk_x64_mac_openj9_macosXL_${version}_${build}_openj9-${openj9_version}
 
-    checksums    rmd160  40eecc015b5653d976333e093194d27b8da6575a \
-                 sha256  6d490314d3dcec8d203c67bb4799a69a564cb544b3ccaf6ec92fdfd9e42a119d \
-                 size    199510663
+    checksums    rmd160  401a9beec2f300b0739d7757aa1bc3aacd676b44 \
+                 sha256  0f8b8b11faa2d128adba469429d5fbfd524bc9948e9b16bb78ab8efb43b4018c \
+                 size    201721778
 
     worksrcdir   jdk-${version}+${build}
 
