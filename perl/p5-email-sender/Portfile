@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Email-Sender 1.300031
+perl5.setup         Email-Sender 1.300034
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         Email::Sender - a library for sending email
@@ -16,8 +16,9 @@ long_description    Email::Sender replaces the old and sometimes problematic \
 platforms           darwin
 supported_archs     noarch
 
-checksums           rmd160  e2855da09086f61d79dbca676ea819aecb53457f \
-                    sha256  c412372938510283d8c850127895e09c2b670f892e1c3992fd54c0c1a9064f14
+checksums           rmd160  c1f97cb1d353d75db3b1e4d51ece231dff2ed17d \
+                    sha256  05ac38a63b053c7c3846ffa45196e4483a5785941b0bfb615b22b7a4f04c5291 \
+                    size    52213
 
 if {${perl5.major} != ""} {
     depends_build-append \

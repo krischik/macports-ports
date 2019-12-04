@@ -19,6 +19,7 @@ long_description        This is an open source DAB and DAB+ software defined rad
                         like Raspberry Pi 2/3 and 100€ China Windows 10 tablets.
 
 license                 GPL-2
+license_noconflict      openssl
 
 homepage                https://www.welle.io/
 
@@ -75,21 +76,18 @@ if {${subport} eq ${name}} {
                             458-fixFreezeWithRtlSdr.patch
 } else {
     # devel
-    github.setup            AlbrechtL welle.io 4b9ab6d00046927309c84ea4aa31df679ce40c59
+    github.setup            AlbrechtL welle.io 1aa8e2fe6319e95c1e1a2815d83f3bfcd41cd386
     set githash             [string range ${github.version} 0 6]
-    version                 20191029+git${githash}
+    version                 20191124+git${githash}
 
     conflicts               welle.io
 
-    checksums               rmd160  1998043b2a1daacbd97abd661b0e9ac6035e209d \
-                            sha256  42b22c2dd8f71e1359c882314b1f3230d22ca580a86c29c075459860c4c4040b \
-                            size    1630258
+    checksums               rmd160  d2b6df7232e1b1d883887d7851fa2610e3cf3f02 \
+                            sha256  4583db0be423de82f7cc2ebc0169ff4d8e8a5bf821b146f77a3d8bb6761e9177 \
+                            size    1636011
 
     configure.pre_args-append \
         -DGIT_COMMIT_HASH=${githash}
-
-    patch.pre_args          -p1
-    patchfiles-append       458-fixFreezeWithRtlSdr.patch
 }
 
 configure.pre_args-append \
