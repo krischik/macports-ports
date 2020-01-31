@@ -20,9 +20,9 @@ long_description    Zabbix is the ultimate open source availability and \
                     of the best commercial ones. 
 
 array set VERSIONS {
-    4  4.0.14
+    4  4.0.17
     42 4.2.8
-    44 4.4.1
+    44 4.4.5
 }
 
 set zver            [regsub -all {[^\d]} ${subport} {}]
@@ -42,9 +42,9 @@ dist_subdir         zabbix${zver}
 if {$zver == 4} {
     livecheck.regex     "zabbix-(4\.0\.\[0-9\]+).tar.gz"
     checksums \
-        rmd160  8bdf1912a0b180080fe746ca9f90608c2445f55f \
-        sha256  6b76424f750d213fe60b41440539e1dd9e2676d532a07cb2e93807c35cefed45 \
-        size    17180904
+        rmd160  5b58d30dec15f5bc96b61cb9bf94a6c372bb2852 \
+        sha256  41f0999d1e60046cc68cacd2bb88df77ad03356894a015ea94300feeb94ac940 \
+        size    17191889
 }
 if {$zver == 42} {
     livecheck.regex     "zabbix-(4\.2\.\[0-9\]+).tar.gz"
@@ -57,9 +57,9 @@ if {$zver == 42} {
 if {$zver == 44} {
     livecheck.regex     "zabbix-(4\.4\.\[0-9\]+).tar.gz"
     checksums \
-        rmd160  12b4c8da56fa1e1c4b30bc8145b09231ccd0c29a \
-        sha256  0bf74e597dd41a558305fe17a2b1ed6fe2d77044b87696a92e4227fbf315564a \
-        size    20449635
+        rmd160  dcb961c036ea585d279988dad73df898e86ffe25 \
+        sha256  94a897825b062e17b34767c0864305cee6a87476dda8bee88dcf845b24bed0ea \
+        size    19284769
 }
 
 patchfiles          log_and_pid_locations.patch

@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           java 1.0
 
 name                apache-solr8
-version             8.3.0
+version             8.4.1
+revision            0
 categories          java textproc
 maintainers         {ieee.org:s.t.smith @essandess} openmaintainer
 
@@ -24,9 +25,9 @@ extract.suffix      .tgz
 
 master_sites        apache:lucene/solr/${version}/
 
-checksums           rmd160  89726b465cb6807d0aaad5677929043aeba39c01 \
-                    sha256  1a9820915186227eaf6fcb851d60690853911b92a15b4e0b7f046324eb8d1387 \
-                    size    186097798
+checksums           rmd160  00201fbd8c2a4dc7ae71b44493ce039a26312322 \
+                    sha256  ec39e1e024b2e37405149de41e39e875a39bf11a53f506d07d96b47b8d2a4301 \
+                    size    186857366
 
 # see https://lucene.apache.org/solr/guide/8_1/solr-system-requirements.html
 java.version        9+

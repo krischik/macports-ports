@@ -4,14 +4,19 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-construct
-version             2.9.45
+
+version             2.10.56
+checksums           rmd160 5cb579e4e60b9d34678ac9c93fa6eb6afb21f908 \
+                    sha256 97ba13edcd98546f10f7555af41c8ce7ae9d8221525ec4062c03f9adbf940661 \
+                    size   54823
 revision            0
+
 categories-append   devel
 platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 35 36 37
+python.versions     27 35 36 37 38
 
 maintainers         {michaelld @michaelld} openmaintainer
 
@@ -24,14 +29,17 @@ long_description    \
     complex constructs are composed of a hierarchy of simpler ones.
 
 homepage            https://construct.readthedocs.org
-master_sites        pypi:c/construct/
-distname            construct-${version}
-
-checksums           rmd160  b2bc3deb9c377cbb95f61caacf7ae0b5849baf96 \
-                    sha256  2271a0efd0798679dea825ff47e22a4c550456a5db0ba8baa82f7eae0af0118c \
-                    size    56397
 
 if {${name} ne ${subport}} {
+
+    if { ${python.version} == 27 || ${python.version} == 35} {
+        version         2.10.54
+        checksums       rmd160 8ef31fe45319257ca905e25bee6a108a5f659e2a \
+                        sha256  3c130a67f05610557dd1b27e062a7165f92b517f9ed50db880ebe068696fd712 \
+                        size    55318
+        revision        0
+    }
+
     depends_build-append \
                         port:py${python.version}-setuptools
 
@@ -39,3 +47,6 @@ if {${name} ne ${subport}} {
 
     livecheck.type      none
 }
+
+master_sites        pypi:c/construct/
+distname            construct-${version}

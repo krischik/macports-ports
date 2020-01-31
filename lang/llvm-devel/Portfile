@@ -23,7 +23,7 @@ dist_subdir             llvm
 categories              lang
 platforms               darwin
 license                 NCSA
-maintainers             {jeremyhu @jeremyhu} {larryv @larryv}
+maintainers             {jeremyhu @jeremyhu} {larryv @larryv} {kencu @kencu}
 
 if {${subport} eq "llvm-${llvm_version}"} {
     homepage            https://llvm.org/
@@ -54,11 +54,6 @@ if {${subport} eq "llvm-${llvm_version}"} {
     depends_lib         port:libxml2 port:libomp port:llvm-${llvm_version} port:python27
     depends_run         port:clang_select port:ld64
     depends_skip_archcheck-append ld64 subversion
-
-    # Clang doesn't actually use any of these, but the LLVM makefile
-    # system overlinks its binaries. Remove (or convert to build deps?)
-    # after #46040 is resolved.
-    depends_lib-append  port:libedit port:libffi port:ncurses port:zlib
 
     # Older Xcode's lipo doesn't support x86_64h slices
     # https://trac.macports.org/ticket/53159
@@ -234,6 +229,7 @@ if {${subport} eq "llvm-${llvm_version}"} {
         -DCMAKE_LINKER=${prefix}/bin/ld \
         -DCLANG_INCLUDE_TESTS=OFF \
         -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
+        -DCLANG_ENABLE_ARCMT=OFF \
         -DDARWIN_PREFER_PUBLIC_SDK=ON \
         -DLLVM_BUILD_RUNTIME=ON \
         -DLIBCXX_ENABLE_SHARED=OFF \
@@ -578,10 +574,11 @@ if {${subport} eq "llvm-${llvm_version}"} {
     }
 
     variant analyzer description {Install clang static analyzer} {
-        configure.args-delete \
-            -DCLANG_ENABLE_STATIC_ANALYZER=OFF
-        configure.args-append \
-            -DCLANG_ENABLE_STATIC_ANALYZER=ON
+        # these have to be switched on or off together
+        configure.args-replace -DCLANG_ENABLE_STATIC_ANALYZER=OFF \
+                               -DCLANG_ENABLE_STATIC_ANALYZER=ON
+        configure.args-replace -DCLANG_ENABLE_ARCMT=OFF \
+                               -DCLANG_ENABLE_ARCMT=ON
 
         depends_run-append port:perl5
 

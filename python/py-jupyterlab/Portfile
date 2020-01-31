@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-jupyterlab
-version             1.2.3
+version             1.2.6
 revision            0
 categories-append   devel
 platforms           darwin
@@ -24,9 +24,9 @@ long_description    JupyterLab enables you to work with documents and \
 
 homepage            https://jupyter.org/
 
-checksums           rmd160  b452e3c4febe77f340de35d7b0c2e9cd740deacd \
-                    sha256  2188a9bcaaf0b6a68ff9098a481f37ece8231634b862fd3c9adedc466aac79f2 \
-                    size    6676809
+checksums           rmd160  b9e053902f5cd9f4137729dbf5aa739d3d962430 \
+                    sha256  42134b13fb0c410a9f55e8492a31ba5a1a346430a22690a512b8307764b68355 \
+                    size    6662479
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \
@@ -41,7 +41,7 @@ if {${name} ne ${subport}} {
     livecheck.type      none
 }
 
-foreach {old new} {27 37 34 37 35 37 36 37} {
+foreach {old new} {27 37 35 37 36 37} {
     subport py${old}-${python.rootname} "
         replaced_by py${new}-${python.rootname}
         PortGroup obsolete 1.0

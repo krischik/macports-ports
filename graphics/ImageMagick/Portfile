@@ -9,11 +9,11 @@ PortGroup                   conflicts_build 1.0
 # PHP Warning:  Version warning: Imagick was compiled against Image Magick version XXXX but version YYYY is loaded. Imagick will run but may behave surprisingly in Unknown on line 0
 
 name                        ImageMagick
-version                     6.9.10-77
+version                     6.9.10-90
 revision                    0
-checksums                   rmd160  fb4e8cd7e5154a68838450e81f864627dd322e26 \
-                            sha256  55b3ef6281056c728a25e178434f1e7a2e491cbd99e44dc090a82967a2df6e11 \
-                            size    9068384
+checksums                   rmd160  98261616882d7adc610545199a4bc1cbb2807ac9 \
+                            sha256  c88fd84a1fce4853fe5c14260d118419a5f2bf9160ba704e9c2aa494a3a9d0d6 \
+                            size    9070564
 
 categories                  graphics devel
 maintainers                 {ryandesign @ryandesign}
@@ -64,7 +64,8 @@ depends_lib                 port:bzip2 \
                             port:openjpeg \
                             port:openexr \
                             port:expat \
-                            port:libxml2
+                            port:libxml2 \
+                            port:libheif
 
 # Magick-config etc. use pkg-config
 depends_lib-append          port:pkgconfig
@@ -97,6 +98,7 @@ configure.args              --enable-shared \
                             --with-zlib \
                             --with-modules \
                             --with-xml \
+                            --with-heic \
                             --without-gcc-arch \
                             --without-perl \
                             --without-fpx \

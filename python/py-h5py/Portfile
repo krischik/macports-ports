@@ -8,7 +8,7 @@ PortGroup               mpi 1.0
 github.setup            h5py h5py 2.10.0
 name                    py-h5py
 # h5py needs to be re-built after hdf5 upgrades
-revision                0
+revision                1
 
 platforms               darwin
 license                 BSD
@@ -28,7 +28,7 @@ long_description  \
 
 homepage                https://www.h5py.org
 
-python.versions         27 36 37 38
+python.versions         27 35 36 37 38
 python.default_version  37
 
 checksums \

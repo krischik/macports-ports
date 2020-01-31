@@ -1,12 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem              1.0
-PortGroup               cxx11 1.1
 PortGroup               legacysupport 1.0
 
 name                    mono
 # please update msbuild when updating mono
-version                 6.4.0.198
+version                 6.8.0.96
 revision                0
 epoch                   1
 categories              devel lang mono
@@ -22,9 +21,9 @@ master_sites            https://download.mono-project.com/sources/mono/
 use_xz                  yes
 universal_variant       no
 
-checksums               rmd160  8045bcbe15ee51f3c12b2b99844ad697927d22fc \
-                        sha256  d00852822525e36f9f8b3e0f537d3a41c7a718cac22d06fc63ea64988877c2ea \
-                        size    230056560
+checksums               rmd160  404f33928aeb7a129ce6d8c45ca7932beec2d133 \
+                        sha256  ed5df4ec663a4e228e89e910e954fa18d33f72e790c11174e1b62fc8cca90ba0 \
+                        size    245059192
 
 patchfiles-append       patch-aot-compiler.c.diff
 if {!${configure.ccache}} {
@@ -49,6 +48,12 @@ configure.args          --enable-nls \
 
 test.run                yes
 test.target             check
+
+compiler.cxx_standard   2011
+
+# avoid conflict with port brotli
+configure.cppflags-delete -I${prefix}/include
+configure.ldflags-delete  -L${prefix}/lib
 
 post-patch {
     if {${os.major} < 9} {
@@ -75,10 +80,6 @@ post-destroot {
     xinstall -d ${destroot}${docdir}
     xinstall -m 0644 -W ${worksrcpath} COPYING.LIB NEWS README.md \
         ${destroot}${docdir}
-}
-
-variant unixodbc description {map unixodbc instead of libiodbc to odbc32.dll} {
-    patchfiles-append patch-odbc32.diff
 }
 
 livecheck.url           https://www.mono-project.com/download/stable/

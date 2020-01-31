@@ -13,47 +13,42 @@ maintainers         {michaelld @michaelld} openmaintainer
 description         ${name} is an environment switcher for the shell.
 
 long_description    \
-    ${description} It knows how to hook into bash, zsh, tcsh and fish shell to \
+    {*}${description} It knows how to hook into bash, zsh, tcsh and fish shell to \
     load or unload environment variables depending on the current \
     directory. This allows project-specific environment variables without \
     cluttering the \"~/.profile\" file.
 
-if {${name} eq ${subport}} {
-
-    go.setup        github.com/direnv/direnv 2.20.1 v
-    checksums       rmd160 8372c319e57ac8557c87b8dca32da6d874014afa \
-                    sha256 837b208c0bbee6f250f051d53cc1d89cfcd7899dad4363ade9845dd955bce425 \
-                    size   98939
-    revision        0
-
-    conflicts       direnv-devel
-}
-
+# deprecate the devel port, if installed
+# can be removed after 20210125
 subport direnv-devel {
 
-    go.setup  github.com/direnv/direnv 4314b169cee4151f632da1dc52db241c0443c372
-    version   20191101-[string range ${github.version} 0 7]
-    checksums rmd160 c5fec8610a128bbfc67303c15dbe457d66d0c03b \
-              sha256 d4006f8ee3022607506ceab709663399d9c7bf70e13e7e381ff0b24d70e826b5 \
-              size   99590
+    PortGroup   obsolete 1.0
+    replaced_by direnv
+    version     20191231-ab4d188d
+    revision    1
+    depends_build
+    depends_lib
+
+}
+
+if {${name} eq ${subport}} {
+
+    go.setup  github.com/direnv/direnv 2.21.2 v
+    checksums rmd160 a5a1eae1277175cf33451a67d2090c7713543c9e \
+              sha256 4f2de2faf197af4da0536eb8cfe0c3b3d4770fd8cbb832e4d20e8f7244d47ca2 \
+              size   94309
     revision  0
 
-    conflicts       direnv
-    long_description ${long_description}: \
-        This port follows the GIT master version of ${name}, which is \
-        typically updated every few days to weeks.
+    depends_build-append port:shfmt
 
+    build.cmd make
+    build.target all
+
+    destroot {
+        system "cd ${worksrcpath} && make install DESTDIR=${destroot}${prefix}"
+    }
 }
 
 # override github information
 
-homepage            http://direnv.net/
-
-depends_build-append port:shfmt
-
-build.cmd           make
-build.target        all
-
-destroot {
-    system "cd ${worksrcpath} && make install DESTDIR=${destroot}${prefix}"
-}
+homepage https://direnv.net/

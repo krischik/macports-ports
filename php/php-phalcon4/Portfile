@@ -9,18 +9,18 @@ platforms               darwin
 maintainers             {ryandesign @ryandesign} openmaintainer
 license                 BSD
 
-php.branches            7.2 7.3
+php.branches            7.2 7.3 7.4
 
 if {[vercmp ${php.branch} 7.5] < 0} {
     conflicts-append    ${php}-phalcon3
 }
 
 if {[vercmp ${php.branch} 7.2] >= 0} {
-    github.setup        phalcon cphalcon 4.0.0-rc.3 v
+    github.setup        phalcon cphalcon 4.0.3 v
     revision            0
-    checksums           rmd160  dac9dc2091bd1906ac8781f19f9a2c028306dd21 \
-                        sha256  f844d0e555fdfd991f3152c6ca0d17a1072678958c938f89fe70455ae702e535 \
-                        size    6819820
+    checksums           rmd160  d4a553a6aa6cb93d26ce51e564edcfc969779f5d \
+                        sha256  64179b2d052a597f2d322efaf0e93277aeb13785f6d48638f27014a47900f802 \
+                        size    6790054
 }
 
 description             full stack PHP framework written as an extension

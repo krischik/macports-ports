@@ -17,12 +17,12 @@ homepage            https://wiki.myriadrf.org/Gr-limesdr_Plugin_for_GNURadio
 subport gr-limesdr-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup myriadrf gr-limesdr ccceb5c4b37aea58500c45b9bc22958f76ccce52
-    version   20190917-[string range ${github.version} 0 7]
-    checksums rmd160 b60458dc9e44768b2e97832c107958ac461c6a35 \
-              sha256 97c48459ad564a32123530f2f90f0e5d4a9b14690222706643891372d3c28764 \
-              size   3086348
-    revision  1
+    github.setup myriadrf gr-limesdr cd653a40b7585b49c2d8507476aeff64b49fb8e6
+    version   20200124-[string range ${github.version} 0 7]
+    checksums rmd160 17d714dd91847875fe0dbe20c3542137832e8a42 \
+              sha256 635a28e408040804761e683b2f511ed1c51bf28049283a7ee041cf72cb868389 \
+              size   3086467
+    revision  0
 
     name            gr-limesdr-devel
     long_description ${description}. This port is kept up with the ${name} \

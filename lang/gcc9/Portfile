@@ -5,11 +5,12 @@ PortGroup           select                       1.0
 PortGroup           compiler_blacklist_versions  1.0
 PortGroup           active_variants              1.1
 PortGroup           conflicts_build              1.0
+PortGroup           xcode_workaround             1.0
 
 epoch               2
 name                gcc9
 version             9.2.0
-revision            1
+revision            2
 subport             libgcc9 { revision 1 }
 platforms           darwin
 categories          lang
@@ -178,7 +179,7 @@ if { ${os.major} < 11 } {
 # gcc cannot build if libunwind-headers is active
 conflicts_build-append libunwind-headers
 
-# List of dylibs to be installed 
+# List of dylibs to be installed
 # Note that we really don't want to include libgcc_ext.10.[45].dylib here, but install_name_tool
 # doesn't know how to change the id of stubs, and it's easier than recreating them for each
 # gcc port.
@@ -250,7 +251,7 @@ if {${subport} eq "libgcc9"} {
     #build.target        all
 
     post-destroot {
-        
+
         file mkdir ${destroot}${prefix}/lib/libgcc.merged
 
         foreach dylib ${dylibs} {
@@ -294,7 +295,7 @@ if {${subport} eq "libgcc9"} {
     }
 
 } else {
-    
+
     post-destroot {
 
         file delete ${destroot}${prefix}/share/info/dir

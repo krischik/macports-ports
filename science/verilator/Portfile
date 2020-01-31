@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem              1.0
-PortGroup               cxx11 1.1
 
 name                    verilator
-version                 4.016
+version                 4.026
 revision                0
 categories              science electronics
 license                 {LGPL-3 Artistic-2}
@@ -19,9 +18,11 @@ master_sites            https://www.veripool.org/ftp
 
 extract.suffix          .tgz
 
-checksums               rmd160  eba0e31b5b4a9769fb65b842c9a4b9d4b34ecfb6 \
-                        sha256  328a8f85c4fb0ecdabbf56e3c261485234dd1c28211e413101c533fdaea9d8a1 \
-                        size    2536449
+checksums               rmd160  6a5caf6a436f7b8273cd5bd76670ebedddc9aaa0 \
+                        sha256  6afb8ab04ab4e29e36f4b4cb04bb2c711e0af11843e41028ee1ea0d31eef9fac \
+                        size    2404465
+
+compiler.cxx_standard   2014
 
 installs_libs           no
 

@@ -33,15 +33,17 @@ if {${subport} eq ${name}} {
 }
 
 subport ${name}-devel {
-    github.setup            att ast c99e9ff13e8fc1bf46127e6f28d0f0bde16ffda0
-    version                 20191114
+    github.setup            att ast 43d1853550010c2badce7da704019f5e61f62cac
+    version                 20200125-g[string range ${github.version} 0 6]
     revision                0
-    checksums               rmd160  634b6256b9406d1009d10946cb8478ff700c97f6 \
-                            sha256  176aedc1b2246f0f3cd32e5110b1ad1428c2a68028170f378fc29f91f9d02926 \
-                            size    2224514
+    checksums               rmd160  e97b8827d5aac3c357ecdcdbb944700f616d31ec \
+                            sha256  ac2e86c80f976ae6106b5a04fe9c260a3ddd5da9b9ca04784f3f66ed77963c26 \
+                            size    2229672
 
     set branchtype          development
     conflicts-append        ${name}
+
+    configure.args          -Dfallback-version-number=${version}
 }
 
 description         the KornShell UNIX shell and programming language \

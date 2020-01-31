@@ -5,13 +5,15 @@ PortGroup           cmake 1.1
 PortGroup           compiler_blacklist_versions 1.0
 PortGroup           github 1.0
 
-github.setup        fletcher MultiMarkdown-6 6.4.0
-checksums           rmd160  8f2ba7399afbad73f208704f13e0d582df6b0708 \
-                    sha256  ed34ce1febe1f785187b012c8a5a4dd982600fa745cd80a12f1c3d51f1ea8580 \
-                    size    3208024
+github.setup        fletcher MultiMarkdown-6 6.5.1
+revision            0
+checksums           rmd160  7b012591d0f9005355d4a0cf7b591c91612e6890 \
+                    sha256  bdb8298e9ad986a9651a939a3a668ac461f1be7128c380f4bb5e51667c779252 \
+                    size    3302877
 
 name                multimarkdown
 categories          textproc
+platforms           darwin
 license             MIT
 maintainers         {ryandesign @ryandesign} openmaintainer
 
@@ -29,30 +31,19 @@ long_description    MultiMarkdown, or MMD, is a tool to help turn \
                     typography for various languages (proper left- and \
                     right-sided quotes, for example).
 
-homepage            http://fletcherpenney.net/multimarkdown/
-platforms           darwin
+homepage            https://fletcherpenney.net/multimarkdown/
 
 depends_lib-append  port:curl
 
-patchfiles-append   AppleClang.patch
-patchfiles-append   PATH.patch
-patchfiles-append   which.patch
 patchfiles-append   DeploymentTarget.patch
+patchfiles-append   version.patch
 
-# Blacklist compilers that do not support -std=C11 or -fbracket-depth
-compiler.blacklist  *gcc-3.* *gcc-4.* {clang < 500}
+compiler.c_standard 2011
+
+# Blacklist compilers that do not support -fbracket-depth
+compiler.blacklist  {clang < 500}
 
 configure.args-append \
-                    -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=OFF \
-                    -DSHAREDBUILD=1
-
-# https://github.com/fletcher/MultiMarkdown-6/issues/145
-configure.ldflags-append \
-                    -lcurl
+                    -DCMAKE_BUILD_WITH_INSTALL_RPATH:BOOL=OFF
 
 test.run            yes
-
-pre-destroot {
-    # https://github.com/fletcher/MultiMarkdown-6/issues/147
-    copy ${cmake.build_dir}/version.h ${worksrcpath}/Sources/libMultiMarkdown/include
-}

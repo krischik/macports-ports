@@ -6,10 +6,10 @@ PortGroup               active_variants 1.1
 PortGroup               github 1.0
 PortGroup               compilers 1.0
 
-github.setup            scipy scipy 1.3.3 v
-checksums               rmd160 1d5c684465fdb70a1bf521e6d99a82a726de1b2a \
-                        sha256 5eab0f166e405bb3985fa7aef2c993741d0ba508255b4ff7fdeab6514fabd80c \
-                        size   18704891
+github.setup            scipy scipy 1.4.1 v
+checksums               rmd160 e232695a51ed02b362187ea164ce269cb431e2ab \
+                        sha256 4cc4e820d0770225bfb83e2a0ae340bb230fafb5402ea8efa87c6576a3f342cf \
+                        size   18892400
 revision                0
 
 name                    py-scipy
@@ -21,7 +21,7 @@ long_description        ${description}
 
 homepage                https://www.scipy.org/
 
-python.versions         27 34 35 36 37 38
+python.versions         27 35 36 37 38
 
 python.add_archflags    no
 universal_variant       no
@@ -35,21 +35,18 @@ github.livecheck.regex  {([0-9.-]+)}
 
 if {${name} ne ${subport}} {
 
-    # peg at 1.2.x for Py27 and Py34; SciPy dropped support as of 1.3.0
-    if {${python.version} == 27 ||
-        ${python.version} == 34} {
-        github.setup scipy scipy 1.2.2 v
-        checksums rmd160 f7ef899e7b9ba5940d739cbabae241da37586633 \
-                  sha256 4ee9b7e299748f0f3749cae9429e9e27c23cacbfe2a846ebd2abf1e4983c24d9 \
-                  size   18556755
-        revision  1
+    # peg at 1.2.x for Py27; SciPy dropped support as of 1.3.0
+    if {${python.version} == 27} {
+        github.setup scipy scipy 1.2.3 v
+        checksums rmd160 868076b4d88257a6b536f4c3a4e1e8230b587290 \
+                  sha256 beb6123e91a0bdfba4557b6560be4899dac174a38c30876e5cfc60382ecb4ff7 \
+                  size   18564471
+        revision  0
         github.livecheck.regex {(1\.2\.[0-9.-]+)}
+    } else {
+        # requires PyBind11 as of 1.4.0
+        depends_lib-append  port:py${python.version}-pybind11
     }
-    # bump the epoch for Py34 version to move it from 1.3.0 back to 1.2.x
-    if {${python.version} == 34} {
-        epoch 1
-    }
-
     depends_lib-append      port:py${python.version}-numpy \
                             port:py${python.version}-nose
 

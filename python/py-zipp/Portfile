@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-zipp
-version             0.6.0
-revision            1
+version             2.1.0
+revision            0
 categories-append   devel
 platforms           darwin
 license             MIT
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -18,18 +18,26 @@ description         A pathlib-compatible Zipfile object wrapper.
 long_description    ${description}
 
 homepage            https://github.com/jaraco/zipp
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  dd2381041d1ad7011c5906182756064d72f63824 \
-                    sha256  3718b1cbcd963c7d4c5511a8240812904164b7f381b647143a89d3b98f9bcd8e \
-                    size    10778
+checksums           rmd160  ec788cfdd2d474b13ff231d360488a16b9a4240c \
+                    sha256  feae2f18633c32fc71f2de629bfb3bd3c9325cd4419642b1f1da42ee488d9b98 \
+                    size    13758
 
 if {${name} ne ${subport}} {
+
+    if {${python.version} < 36} {
+        version             1.1.0
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  632e25ded32f45b3b89f8ec21437c72df0bfb570 \
+                            sha256  d9d2efe11d3a3fb9184da550d35bd1319dc8e30a63255927c82bb42fca1f4f7c \
+                            size    12837
+    }
+
     depends_build-append \
                         port:py${python.version}-setuptools \
-                        port:py${python.version}-setuptools_scm
+                        port:py${python.version}-setuptools_scm \
+                        port:py${python.version}-toml
 
     depends_lib-append  port:py${python.version}-more-itertools
 

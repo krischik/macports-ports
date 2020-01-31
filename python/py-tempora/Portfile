@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-tempora
-version             1.14.1
-revision            1
+version             2.1.0
+revision            0
 
 categories-append   devel
 platforms           darwin
@@ -22,11 +22,9 @@ homepage            https://pypi.python.org/pypi/${python.rootname}
 distname            ${python.rootname}-${version}
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-checksums           rmd160  7dac285c19fc780e630536bf456d6c7c37c10e15 \
-                    sha256  cb60b1d2b1664104e307f8e5269d7f4acdb077c82e35cd57246ae14a3427d2d6 \
-                    size    19383
-
-patchfiles          patch-remove-flake8.diff
+checksums           rmd160  145d2421c6c98bc8c4d5fed366a928f3800dcb5c \
+                    sha256  61287665ed38bb86a3f4293de5c7613c56b525f9db2ec099d794b9c97f7d5e54 \
+                    size    21329
 
 python.versions     27 35 36 37 38
 
@@ -37,7 +35,14 @@ if {${name} ne ${subport}} {
                             port:py${python.version}-setuptools \
                             port:py${python.version}-six
 
-    if {${python.version} > 33} {
+    if {${python.version} < 36} {
+        version             1.14.1
+        revision            1
+
+        checksums           rmd160  7dac285c19fc780e630536bf456d6c7c37c10e15 \
+                            sha256  cb60b1d2b1664104e307f8e5269d7f4acdb077c82e35cd57246ae14a3427d2d6 \
+                            size    19383
+
         depends_test-append port:py${python.version}-py \
                             port:py${python.version}-pytest \
                             port:py${python.version}-freezegun
@@ -45,7 +50,11 @@ if {${name} ne ${subport}} {
         test.env            PYTHONPATH=${worksrcpath}/build/lib
         test.cmd            py.test-${python.branch}
         test.target
+
+        livecheck.type      none
     }
+
+    test.run        no # v2.0.0 requires pytest-breezegun
 
     livecheck.type  none
 }

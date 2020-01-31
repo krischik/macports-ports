@@ -4,8 +4,9 @@ PortSystem          1.0
 PortGroup github    1.0
 
 name                everparse
-github.setup        project-everest everparse 7baa13fd44bb0fc9ec63ce0e9e8509deb9f8aea0
-version             20191129-[string range ${github.version} 0 6]
+github.setup        project-everest everparse 1635d3ee3d7026dcb5d3e573f81e7d3cbca86e9a
+version             20200130-[string range ${github.version} 0 6]
+revision            0
 
 categories          devel
 platforms           darwin
@@ -16,9 +17,9 @@ long_description    EverParse provides LowParse, verified-secure F*/Low* parser 
                     QuackyDucky, an untrusted compiler for generating verified secure parsers from a \
                     message format specification.
 
-checksums           rmd160  9abc9b3b2f78051b94150acd09271d583766d6fa \
-                    sha256  dc5e3bfb51814468f6c98a6535ef092f071e75dc940306fb78f6e34c646406df \
-                    size    633052
+checksums           rmd160  b2fc28f8274542edff9e35acd29f2253d53a1c15 \
+                    sha256  ac2d5859ee008f2054def2a1f9eba6e9746a3444ef54c4eec5e1345469d04b24 \
+                    size    634670
 
 depends_lib         port:fstar-devel \
                     port:kremlin-devel

@@ -2,7 +2,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-opengl
-version             3.1.0
+version             3.1.5
 categories-append   graphics
 platforms           darwin
 supported_archs     noarch
@@ -17,14 +17,13 @@ long_description    PyOpenGL is the cross platform Python binding to OpenGL \
 
 homepage            http://pyopengl.sourceforge.net/
 
-master_sites        pypi:P/PyOpenGL/
-distname            PyOpenGL-${version}
+python.rootname     PyOpenGL
 
-checksums           md5    0de021941018d46d91e5a8c11c071693 \
-                    rmd160 75728a3b53e62a41e634037c4f00efd4ba1ee67b \
-                    sha256 9b47c5c3a094fa518ca88aeed35ae75834d53e4285512c61879f67a48c94ddaf
+checksums           md5    fcb5bdd0d48da86d9f6124716831de93 \
+                    rmd160 fdbc576953756c3eeeb552dbf1d18dcefee71698 \
+                    sha256 4107ba0d0390da5766a08c242cf0cf3404c377ed293c5f6d701e457c57ba3424
 
-python.versions     27 35 36 37
+python.versions     27 35 36 37 38
 
 if {$subport ne $name} {
     depends_build   port:py${python.version}-setuptools
@@ -38,6 +37,4 @@ if {$subport ne $name} {
     patchfiles      pillow-compat.diff
     test.run        yes
     livecheck.type  none
-} else {
-    livecheck.name  PyOpenGL
 }

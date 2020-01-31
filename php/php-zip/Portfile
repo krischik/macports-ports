@@ -9,16 +9,16 @@ platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
 license             PHP-3.01
 
-php.branches        5.2 5.3 5.4 5.5 5.6 7.0 7.1 7.2 7.3
+php.branches        5.2 5.3 5.4 5.5 5.6 7.0 7.1 7.2 7.3 7.4
 php.pecl            yes
 
 if {[vercmp ${php.branch} 4.3] >= 0} {
     epoch           3
-    version         1.15.4
+    version         1.16.1
     revision        0
-    checksums       rmd160  19a63b45037f972687cd5a02c0e5ad5de2427195 \
-                    sha256  0a32dd0e90f4b36e6d6acbcbe08d2eb033cde1dc6a8384b89d90631b05bbb099 \
-                    size    268277
+    checksums       rmd160  3ed87e3f8200452c0db76a6ae24de49c8dfe9176 \
+                    sha256  9802a2e3941e5cb3aed1bf60b434654af520dd0ad096934d81f2d3826ff86f7e \
+                    size    289776
 }
 
 description         PHP zip functions
@@ -30,7 +30,13 @@ if {${name} ne ${subport}} {
     depends_lib-append      port:libzip \
                             port:zlib
 
-    configure.args-append   --enable-zip \
-                            --with-libzip=${prefix} \
-                            --with-zlib-dir=${prefix}
+    if {[vercmp ${php.branch} 7.4] < 0} {
+        configure.args-append --enable-zip \
+                              --with-libzip=${prefix} \
+                              --with-zlib-dir=${prefix}
+    } else {
+        depends_build-append    port:pkgconfig
+        
+        configure.args-append --with-zip
+    }
 }

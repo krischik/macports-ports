@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-pytest
-version             5.3.1
+version             5.3.4
 revision            0
 categories-append   devel
 platforms           darwin
@@ -24,9 +24,9 @@ long_description    The pytest framework makes it easy to write small tests, \
 
 homepage            https://pytest.org
 
-checksums           rmd160  ae00029add95e541cb0173f6306cfa610fe0097f \
-                    sha256  f67403f33b2b1d25a6756184077394167fe5e2f9d8bdaab30707d19ccec35427 \
-                    size    994584
+checksums           rmd160  7a5c50e8bda76fb590cbce8a28c8edd2f7b259dc \
+                    sha256  1d122e8be54d1a709e56f82e2d85dcba3018313d64647f38a91aec88c239b600 \
+                    size    990897
 
 if {${name} ne ${subport}} {
     depends_build-append \

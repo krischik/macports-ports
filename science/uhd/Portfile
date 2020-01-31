@@ -20,10 +20,10 @@ if {${subport} eq ${name}} {
     long_description ${description}: \
 Provides the release version, which is typically updated every month or so.
 
-    github.setup EttusResearch uhd 3.14.1.1 v
-    checksums rmd160 1524187dd19a6741c95dc73ca4895eb517daf921 \
-              sha256 61bf4875fd2baecb13fae67bd6b6770eefc6f519a9ba9a5f19fdf41d516ff142 \
-              size   12960718
+    github.setup EttusResearch uhd 3.15.0.0 v
+    checksums rmd160 ac9ef6473cd5b034650e3979236d2535f398dec2 \
+              sha256 fe385e826b8fbf4e869b4b919b7b7b8f01fba283bc0b8ffb954947f819b9c07b \
+              size   12896898
     revision  0
 
     conflicts uhd-devel uhd-39lts
@@ -35,47 +35,13 @@ Provides the release version, which is typically updated every month or so.
     # overload the github livecheck regex to look for versions that
     # are just numbers and '.', no letters (e.g., "3.7.3_rc2").
 
-    github.livecheck.regex  {([0-9.]+)}
+    github.livecheck.regex {([0-9.]+)}
 
     # temporary patch to disable Boost DIRS before internal DIRS
 
     patchfiles-append patch-host_CMakeLists.txt.release.diff
     patch.pre_args -p1
 
-    # temporary patch to fix working with various Boost versions,
-    # including 1.70.0
-
-    patchfiles-append patch-fix-Boost_1.70.0_find.release.diff
-
-    # temporary patch to fix searching for Boost::Python, which
-    # depends on the version of Boost & which Python. 2 parts: a patch
-    # and then reinplace. This is part 1.
-
-    patchfiles-append patch-fix-boost-python.release.diff
-
-    # temporary patch to fix gpsdata API: .separation -> .fix.geoid_sep
-    patchfiles-append patch-fix-gpsdata_separation_api.diff
-
-    # temporary patch to add double quoting around UHD_VERSION, such
-    # that if specified externally it can be any string. devel already
-    # contains this patch.
-    patchfiles-append patch-fix-UHD_VERSION_quotes.diff
-
-    # temporary patch to fix gpsdata API: .fix.altitude -> .fix.altHAE
-    patchfiles-append patch-fix-gpsdata_altitude_api.diff
-
-    # temporary patch to fix searching for Boost::Python, which
-    # depends on the version of Boost & which Python. 2 parts: a patch
-    # and then reinplace. This is part 2.
-    post-patch {
-        # need to do this only for +python3X variants
-        if {${PythonVersionNoDot} ne "27"} {
-            reinplace "s|@PythonVersionNoDot@|${PythonVersionNoDot}|g" \
-                ${worksrcpath}/host/CMakeLists.txt
-            reinplace "s|@PythonVersionWithDot@|${PythonVersionWithDot}|g" \
-                ${worksrcpath}/host/CMakeLists.txt
-        }
-    }
 }
 
 subport uhd-39lts {
@@ -116,6 +82,19 @@ Provides UHD 3.9 Long-Term Service \(LTS\) branch. This branch is not updated ex
     # temporary patch to fix gpsdata API: .fix.altitude -> .fix.altHAE
     patchfiles-append patch-fix-gpsdata_altitude_api.39lts.diff
 
+    # gpsd has been removed from release and devel
+    default_variants +gpsd
+
+    variant gpsd description {enable gpsd support} {
+        depends_lib-append path:lib/libgps.dylib:gpsd
+        configure.args-append -DENABLE_GPSD=ON \
+            -DLIBGPS_LIBRARY=${prefix}/lib/libgps.dylib \
+            -DLIBGPS_INCLUDE_DIR=${prefix}/include
+    }
+
+    if {![variant_isset gpsd]} {
+        configure.args-append -DENABLE_GPSD=OFF
+    }
 }
 
 subport uhd-devel {
@@ -150,7 +129,7 @@ Provides the UHD GIT maint or master branch, depending on which is more advanced
 
 # override the github Portgroup's homepage setting
 
-homepage http://uhd.ettus.com/
+homepage https://kb.ettus.com/UHD
 
 if {${subport} ne "uhd-39lts"} {
 
@@ -158,13 +137,6 @@ if {${subport} ne "uhd-39lts"} {
     # which was introduced in 3.11.0.0.
     # see also < https://trac.macports.org/ticket/55980 >
     compiler.blacklist-append { clang < 800 }
-
-}
-
-if {${subport} ne "uhd-devel"} {
-
-    # gpsd has been removed from devel
-    default_variants +gpsd
 
 }
 
@@ -262,34 +234,65 @@ if {${configure.cxx_stdlib} eq "macports-libstdc++" ||
 
 default_variants +docs +examples +libusb +manual +test +manpages
 
-# select Python to use; default to 2.7
+# specify the Python dependencies; these are checked for at configure,
+# then used for building, but not at runtime.
 
-variant python27 conflicts python36 python37 description {Build using Python 2.7} {}
-variant python36 conflicts python27 python37 description {Build using Python 3.6} {}
-variant python37 conflicts python27 python36 description {Build using Python 3.7} {}
+set pythons_suffixes {27 35 36 37 38}
 
-if {![variant_isset python27] &&
-    ![variant_isset python36] &&
-    ![variant_isset python37]} {
-    default_variants +python27
+set pythons_ports {}
+foreach s ${pythons_suffixes} {
+    lappend pythons_ports python${s}
 }
 
-if {![variant_isset python27] &&
-    ![variant_isset python36] &&
-    ![variant_isset python37]} {
-    ui_error "\n\nYou must select one of the variants +python27, +python36, or +python37.\n"
+foreach s ${pythons_suffixes} {
+    set p python${s}
+    set v [string index ${s} 0].[string index ${s} 1]
+    set i [lsearch -exact ${pythons_ports} ${p}]
+    set c [lreplace ${pythons_ports} ${i} ${i}]
+    variant ${p} description "Build ${name} using Python ${v}" conflicts {*}${c} ""
+}
+
+# default to Py37 if not selected by the user
+set selected_python_no_dot 37
+foreach s ${pythons_suffixes} {
+    if {[variant_isset python${s}]} {
+        set selected_python_no_dot ${s}
+    }
+}
+default_variants +python${selected_python_no_dot}
+
+# make sure the default python variant wasn't
+# deselected without selecting another one
+set selected_python_no_dot ""
+foreach s ${pythons_suffixes} {
+    if {[variant_isset python${s}]} {
+        set selected_python_no_dot ${s}
+    }
+}
+
+if {${selected_python_no_dot} eq ""} {
+    set py_vars ""
+    set final_s [lindex ${pythons_suffixes} end]
+    foreach s ${pythons_suffixes} {
+        if {${s} eq ${final_s}} {
+            set py_vars "${py_vars}or "
+        }
+        set py_vars "${py_vars}+python${s}"
+        if {${s} ne ${final_s}} {
+            set py_vars "${py_vars}, "
+        }
+    }
+    ui_error "\n\nYou must select one of the variants ${py_vars}.\n"
     return -code error "Invalid variant selection"
 }
 
-set PythonVersionNoDot ""
-if {[variant_isset python27]} {
-    set PythonVersionNoDot "27"
-} elseif {[variant_isset python36]} {
-    set PythonVersionNoDot "36"
-} else {
-    set PythonVersionNoDot "37"
-}
-set PythonVersionWithDot [join [split ${PythonVersionNoDot} ""] "."]
+set PythonVersionNoDot ${selected_python_no_dot}
+
+set PythonVersionWithDot [join [split ${selected_python_no_dot} ""] "."]
+
+set PythonTopDir "${frameworks_dir}/Python.framework/Versions/${PythonVersionWithDot}"
+
+set PythonName python${PythonVersionWithDot}
 
 # required Python
 
@@ -300,7 +303,7 @@ depends_lib-append \
 
 # specify the Python version to use
 
-set PythonExe "${frameworks_dir}/Python.framework/Versions/${PythonVersionWithDot}/bin/python${PythonVersionWithDot}"
+set PythonExe "${PythonTopDir}/bin/${PythonName}"
 
 configure.args-append \
     -DPYTHON_EXECUTABLE=${PythonExe}
@@ -380,37 +383,18 @@ if {![variant_isset manpages]} {
     configure.args-append -DENABLE_MAN_PAGES=OFF
 }
 
-if {${subport} ne "uhd-devel"} {
-    # gpsd has been removed from devel
-    variant gpsd description {enable gpsd support} {
-        depends_lib-append path:lib/libgps.dylib:gpsd
-        configure.args-append -DENABLE_GPSD=ON \
-            -DLIBGPS_LIBRARY=${prefix}/lib/libgps.dylib \
-            -DLIBGPS_INCLUDE_DIR=${prefix}/include
-    }
-
-    if {![variant_isset gpsd]} {
-        configure.args-append -DENABLE_GPSD=OFF
-    }
-}
-
 if {${subport} ne "uhd-39lts"} {
 
     variant python_api \
         description {enable Python API support (experimental)} {
-        depends_lib-append port:py${PythonVersionNoDot}-numpy
+        depends_lib-append \
+            port:py${PythonVersionNoDot}-numpy \
+            port:py${PythonVersionNoDot}-pybind11
         configure.args-append \
             -DENABLE_PYTHON_API=ON \
-            -DPYTHON_INCLUDE_DIR=${frameworks_dir}/Python.framework/Versions/${PythonVersionWithDot}/Headers \
-            -DPYTHON_LIBRARY=${frameworks_dir}/Python.framework/Versions/${PythonVersionWithDot}/Python \
-            -DUHD_PYTHON_DIR=${frameworks_dir}/Python.framework/Versions/${PythonVersionWithDot}/lib/python${PythonVersionWithDot}/site-packages
-
-        # 'uhd' requires boost-python to be the correct version, not
-        # 'uhd-devel' or 'uhd-39lts'; remove this once the release has
-        # fully moved to pybind11.
-        if {${subport} eq "uhd"} {
-            require_active_variants boost python${PythonVersionNoDot}
-        }
+            -DPYTHON_INCLUDE_DIR=${PythonTopDir}/Headers \
+            -DPYTHON_LIBRARY=${PythonTopDir}/Python \
+            -DUHD_PYTHON_DIR=${PythonTopDir}/lib/${PythonName}/site-packages
     }
 
     if {![variant_isset python_api]} {

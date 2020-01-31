@@ -8,7 +8,7 @@ github.setup        alex pretend 1.0.9 v
 name                py-pretend
 platforms           darwin
 license             BSD
-maintainers         {yan12125 @yan12125} openmaintainer
+maintainers         nomaintainer
 
 description         A library for stubbing in Python
 long_description    ${description}
@@ -20,7 +20,7 @@ checksums           rmd160  9aa242c5cbcba266780dbeae50a5ca55cb72a91f \
                     sha256  65e490da33638cd3d6487b775c9dd3477d339873e73f8699979738d8d19124ad \
                     size    5651
 
-python.versions     27 36 37
+python.versions     27 36 37 38
 
 if {${name} ne ${subport}} {
     depends_build-append \

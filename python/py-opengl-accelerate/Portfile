@@ -2,7 +2,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-opengl-accelerate
-version             3.1.0
+version             3.1.5
 categories-append   graphics
 platforms           darwin
 license             BSD
@@ -13,22 +13,16 @@ long_description \
    operations for slow points in PyOpenGL 3.x.
 
 homepage            http://pyopengl.sourceforge.net/
-master_sites        pypi:P/PyOpenGL-accelerate/
-distname            PyOpenGL-accelerate-${version}
+python.rootname     PyOpenGL-accelerate
 
-checksums           md5 489338a4818fa63ea54ff3de1b48995c \
-                    rmd160 7d353f43a341fbc34ed580076b8555bae60cc4d5 \
-                    sha256 927f4670b893d46e2f6273ae938bf0a1db27ffae3336eba94813ccef6260c410
+checksums           md5 b710eaf81da4051c623a33c0ec5bb713 \
+                    rmd160 125440ae018e9666121664c2328d8d0a3dab6a98 \
+                    sha256 12e5518b0216a478527c7ce5ddce623c3d0517adeb87226da767772e8b7f2f06
 
-python.versions     27 35 36 37
+python.versions     27 35 36 37 38
 
 if {$subport ne $name} {
     depends_lib     port:py${python.version}-numpy
-    depends_build-append port:py${python.version}-cython
-    patchfiles      patch-use-cython.diff
-    post-patch {
-        delete {*}[glob ${worksrcpath}/src/*.c]
-    }
 }
 
 livecheck.type  none

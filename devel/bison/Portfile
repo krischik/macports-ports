@@ -6,7 +6,7 @@ name                bison
 subport             bison-runtime {}
 
 epoch               1
-version             3.4.2
+version             3.5.1
 if {${subport} eq "bison"} {
     revision        0
 } else {
@@ -53,9 +53,9 @@ homepage            https://www.gnu.org/software/bison
 master_sites        gnu
 use_xz              yes
 
-checksums           rmd160  00d7179f584b13b8b37c564c2d52d1d0b423b3c0 \
-                    sha256  27d05534699735dc69e86add5b808d6cb35900ad3fd63fa82e3eb644336abfa0 \
-                    size    2240532
+checksums           rmd160  993211e7e906fae37e7eb4ee5bf34dfe7c13e61e \
+                    sha256  3e7e097bd9709a2d5e40e69446b74b149733b3de864fadb7a9b54eca7b2a4dd0 \
+                    size    2354592
 
 configure.args      --disable-silent-rules \
                     ac_cv_prog_HAVE_GCJ_IN_PATH= \
@@ -72,6 +72,23 @@ if {${subport} eq "bison-runtime"} {
     livecheck.type  none
 } else {
     patchfiles-append skip-runtime-po.patch
+
+    # __WORDSIZE is not defined in the Tiger stdint.h header
+    # we add in a 32 and 64 bit compatible version of the macro
+    # taken from the later Apple stdint.h headers
+    patchfiles-append patch-wordsize.diff
+
+    # the build uses pragmas inside functions, which requires a newer gcc version
+    # and also uses C11 redefinition of typedefs in the test suite
+    # this is possibly a bug, to be further elucidated once a more complete understanding
+    # is available. See ticket #59927 for further details of this issue.
+    compiler.c_standard 2011
     test.run        yes
     test.target     check
+}
+
+platform darwin 8 {
+    # https://trac.macports.org/ticket/58819
+    depends_build-append port:flex
+    configure.args-append ac_cv_prog_LEX=${prefix}/bin/flex
 }

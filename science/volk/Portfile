@@ -19,10 +19,10 @@ platforms           darwin
 
 if {${name} eq ${subport}} {
 
-    github.setup gnuradio volk 2.0.0 v
-    checksums rmd160 ab6e7a497cd9efcd6873d4edd5b36fd8dbdf9e16 \
-              sha256 33eb98eeb036186665b0f941be1570e5a3350cb0193bbf67b28ef5d9a5ada617 \
-              size   261506
+    github.setup gnuradio volk 2.1.0 v
+    checksums rmd160 8050edc7d8a0c7633d9dd7523b36ea6d62130c5f \
+              sha256 0934d9f3a0f4b4375826dc291720d52b464da3203f52ff47595a80d731902ce0 \
+              size   274868
     revision  0
 
     # bump the epoch because I moved the version from 20150707 to 1.0.1
@@ -35,11 +35,11 @@ provides the release version, which is typically updated every month or so.
 
 subport volk-devel {
 
-    github.setup gnuradio volk 636cb803a94728638352c1b506ab3170073e9572
-    version   20191117-[string range ${github.version} 0 7]
-    checksums rmd160 3e14116f817a4d82004e6ef4add251ada90d0af7 \
-              sha256 c3da38adaed6e500b6e567be73b25e67f96e28c22b0ab060d39624386b453476 \
-              size   267001
+    github.setup gnuradio volk 001e60a7f33cdc5430892201af88a332b67f5872
+    version   20200108-[string range ${github.version} 0 7]
+    checksums rmd160 34802f54d390c4f11910cdf0244bf20ef8e023fb \
+              sha256 4bb75391fa5ec37e1b12967c3f8dfb2dc905a318a8237f98fb9e867c1c57715a \
+              size   274863
     revision  0
 
     conflicts       volk
@@ -66,6 +66,10 @@ if {[variant_isset debug]} {
 } else {
     cmake.build_type Release
 }
+
+# remove use of CPATH, as it is not needed
+
+compiler.cpath
 
 # remove top-level library path, such that internal libraries are used
 # instead of any already-installed ones.

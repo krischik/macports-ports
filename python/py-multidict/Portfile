@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-multidict
-version             4.6.1
+version             4.7.4
 categories-append   devel
 platforms           darwin
 license             Apache-2
@@ -22,9 +22,9 @@ master_sites        pypi:m/multidict
 
 distname            multidict-${version}
 
-checksums           rmd160  3246cb5b21496270772516f2fba71a4d6b6186fe \
-                    sha256  5159c4975931a1a78bf6602bbebaa366747fce0a56cb2111f44789d2c45e379f \
-                    size    115293
+checksums           rmd160  68b13e500d3519d9d897a5633a4fd99525ee5931 \
+                    sha256  d7d428488c67b09b26928950a395e41cc72bb9c3d5abfe9f0521940ee4f796d4 \
+                    size    50315
 
 if {${name} ne ${subport}} {
     depends_build-append    port:py${python.version}-setuptools

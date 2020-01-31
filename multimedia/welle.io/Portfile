@@ -18,8 +18,8 @@ long_description        This is an open source DAB and DAB+ software defined rad
                         high DPI and touch displays and it runs even on cheap computers  \
                         like Raspberry Pi 2/3 and 100€ China Windows 10 tablets.
 
-license                 GPL-2
-license_noconflict      openssl
+license                 GPL-3+
+license_noconflict      openssl mpg123
 
 homepage                https://www.welle.io/
 
@@ -56,54 +56,79 @@ variant airspy description {Add Airspy support} {
     depends_lib-append port:airspy
 }
 
+variant cli description {Also compile welle-cli} {
+    # mpg123 is licensed as LGPL-2.1 except for 
+    # file src/libout123/modules/coreaudio.c which is GPL-2
+    # welle-cli relies on libout123 while the GUI does not.
+    # In order to have binaries distributed for welle-io,
+    # we enable only welle-gui by default. The user can enable
+    # cli variant to build also welle-cli locally.
+
+    configure.pre_args-replace -DBUILD_WELLE_CLI=OFF -DBUILD_WELLE_CLI=ON
+
+    license_noconflict-delete   mpg123
+
+    post-patch {
+        reinplace "s!\"index.html\"!\"${applications_dir}/welle-io.app/Contents/Resources/welle-cli/index.html\"!" \
+        ${worksrcpath}/src/welle-cli/webradiointerface.cpp
+        reinplace "s!\"index.js\"!\"${applications_dir}/welle-io.app/Contents/Resources/welle-cli/index.js\"!" \
+        ${worksrcpath}/src/welle-cli/webradiointerface.cpp
+    }
+
+    post-destroot {
+        ln -s ${applications_dir}/welle-io.app/Contents/MacOS/welle-cli \
+            ${destroot}${prefix}/bin/welle-cli
+    }
+}
+
+variant profiling description {Enable profiling (see README.md)} {
+    configure.pre_args-append \
+        -DPROFILING=ON
+}
+
+variant kiss_fft description {Use KISS FFT instead of FFTW} {
+    configure.pre_args-append \
+        -DKISS_FFT=ON
+    depends_lib-delete  port:fftw-3-single
+}
+
 if {${subport} eq ${name}} {
     # stable
-    github.setup            AlbrechtL welle.io 2.0 v
+    github.setup            AlbrechtL welle.io 2.1 v
     github.tarball_from     archive
     epoch                   1
+    revision                1
 
     conflicts               welle.io-devel
 
-    checksums               rmd160  354a3ad5313f11a441a75f4d3852d73c9a4dd76c \
-                            sha256  abfe999b6788ae57dfaaebea5e1db912565d60cc287c9eec4636b0e10eab4f9d \
-                            size    1621571
+    checksums               rmd160  55dbf6dfe64be80478b46dc11fa2df8265885648 \
+                            sha256  ff7aa2e7f96b647ea8495209f483e726b7219c825a2699f4871986a7b0dd303a \
+                            size    1636411
 
     configure.pre_args-append \
         -DGIT_COMMIT_HASH=${version}
-
-    patch.pre_args          -p1
-    patchfiles-append       CMakeLists.txt.patch \
-                            458-fixFreezeWithRtlSdr.patch
 } else {
     # devel
-    github.setup            AlbrechtL welle.io 1aa8e2fe6319e95c1e1a2815d83f3bfcd41cd386
+    github.setup            AlbrechtL welle.io 81f757ca4591a0255ec9dade5a2b73091bcea73b
     set githash             [string range ${github.version} 0 6]
-    version                 20191124+git${githash}
+    version                 20200114+git${githash}
 
     conflicts               welle.io
 
-    checksums               rmd160  d2b6df7232e1b1d883887d7851fa2610e3cf3f02 \
-                            sha256  4583db0be423de82f7cc2ebc0169ff4d8e8a5bf821b146f77a3d8bb6761e9177 \
-                            size    1636011
+    checksums               rmd160  6e46bf40bfccc2954de1d31e72df4fcd4106a885 \
+                            sha256  c17d45b1289660ec65b4a3b36460f8c09202219d78ec9c44337da311c8d4eae9 \
+                            size    1645049
 
     configure.pre_args-append \
         -DGIT_COMMIT_HASH=${githash}
 }
 
 configure.pre_args-append \
+    -DBUILD_WELLE_CLI=OFF \
     -DBUNDLE_INSTALL_DIR=${applications_dir} \
     -DGIT_DESCRIBE=${version} \
     -DWELLE-IO_VERSION=${version}
 
 post-patch {
     reinplace "s/\$(PRODUCT_BUNDLE_IDENTIFIER)/@PRODUCT_BUNDLE_IDENTIFIER@/" ${worksrcpath}/welle-io.plist
-    reinplace "s!\"index.html\"!\"${applications_dir}/welle-io.app/Contents/Resources/welle-cli/index.html\"!" \
-        ${worksrcpath}/src/welle-cli/webradiointerface.cpp
-    reinplace "s!\"index.js\"!\"${applications_dir}/welle-io.app/Contents/Resources/welle-cli/index.js\"!" \
-        ${worksrcpath}/src/welle-cli/webradiointerface.cpp
-}
-
-post-destroot {
-    ln -s ${applications_dir}/welle-io.app/Contents/MacOS/welle-cli \
-        ${destroot}${prefix}/bin/welle-cli
 }

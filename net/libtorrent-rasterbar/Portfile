@@ -4,12 +4,12 @@ PortSystem          1.0
 PortGroup           active_variants 1.1
 PortGroup           compiler_blacklist_versions 1.0
 PortGroup           conflicts_build 1.0
-PortGroup           cxx11 1.1
 PortGroup           github 1.0
 
-github.setup        arvidn libtorrent 1_2_2 libtorrent-
+github.setup        arvidn libtorrent 1_2_3 libtorrent-
 name                libtorrent-rasterbar
 version             [string map {_ .} ${version}]
+revision            2
 license             BSD
 categories          net
 maintainers         {devans @dbevans} openmaintainer
@@ -21,9 +21,9 @@ description         A C++ bittorrent library (not the same as port libtorrent)
 long_description    A C++ bittorrent library designed to run on anything from embedded systems to large scale \
                     seed servers. It comes with python bindings and detailed documentation.
 
-checksums           rmd160  958815f337d4ff51cf4c6c095463398110c12710 \
-                    sha256  41ff8d269c1e988fec5d2f50f6588af9e5bd2866e5bab96e5a12c8bdccb734f8 \
-                    size    3584080
+checksums           rmd160  1c15ad9769feb00ffd960118a647d42ac1417dab \
+                    sha256  ede7770136e4bc75ccdbecbbacef1ea4290b8fbbc80d9c708ce3da02c3edd33e \
+                    size    3591120
 
 depends_build       port:pkgconfig \
                     port:autoconf \
@@ -35,9 +35,13 @@ depends_lib         port:boost \
 
 patchfiles          patch-configure.ac.diff
 
-# don't overwrite any existing blacklist
 # Apple clang less than 900.0.39.2 fails to build
-compiler.blacklist-append  *gcc-3.* *gcc-4.* {clang < 900.0.39.2}
+# build using C++14 for binary compatibility with C++14 dependents
+compiler.cxx_standard 2014
+compiler.blacklist-append *gcc-3.* *gcc-4.* {clang < 900.0.39.2}
+
+# ensure that compiler is using C++14 mode
+configure.cxxflags-append -std=c++14
 
 configure.args      --disable-silent-rules \
                     --enable-python-binding \
@@ -50,7 +54,7 @@ universal_variant   no
 
 conflicts_build     ${name}
 
-variant python27 conflicts python37 description {Build bindings for Python 2.7} {
+variant python27 conflicts python37 python38 description {Build bindings for Python 2.7} {
         require_active_variants boost python27
         depends_lib-append port:python27
         configure.python ${prefix}/bin/python2.7
@@ -59,7 +63,7 @@ variant python27 conflicts python37 description {Build bindings for Python 2.7} 
                 PYTHON_EXTRA_LIBS=
 }
 
-variant python37 conflicts python27 description {Build bindings for Python 3.7} {
+variant python37 conflicts python27 python38 description {Build bindings for Python 3.7} {
         require_active_variants boost python37
         depends_lib-append port:python37
         configure.python ${prefix}/bin/python3.7
@@ -68,10 +72,19 @@ variant python37 conflicts python27 description {Build bindings for Python 3.7} 
                 PYTHON_EXTRA_LIBS=
 }
 
+variant python38 conflicts python27 python37 description {Build bindings for Python 3.8} {
+        require_active_variants boost python38
+        depends_lib-append port:python38
+        configure.python ${prefix}/bin/python3.8
+        configure.env-append \
+                PYTHON_INSTALL_PARAMS=--prefix=${destroot}${frameworks_dir}/Python.framework/Versions/3.8 \
+                PYTHON_EXTRA_LIBS=
+}
+
 variant error_logging description {Enable logging of errors to disk} {
         configure.args-append --enable-logging=errors
 }
 
-if {![variant_isset python37]} {
-    default_variants    +python27
+if {![variant_isset python27] && ![variant_isset python38]} {
+        default_variants +python37
 }

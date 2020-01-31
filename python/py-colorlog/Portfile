@@ -1,0 +1,46 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-colorlog
+version             4.1.0
+revision            0
+
+categories-append   devel
+platforms           darwin
+supported_archs     noarch
+license             MIT
+maintainers         {reneeotten @reneeotten} openmaintainer
+
+description         Log formatting with colors!
+long_description    ${description}
+
+homepage            https://github.com/borntyping/python-colorlog
+
+checksums           rmd160  d9fb219bf2f811f612698f59884f22825d43f41f \
+                    sha256  30aaef5ab2a1873dec5da38fd6ba568fa761c9fa10b40241027fa3edea47f3d2 \
+                    size    26460
+
+python.versions     37 38
+
+if {${name} ne ${subport}} {
+    depends_build-append \
+                    port:py${python.version}-setuptools
+
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} LICENSE README.md ${destroot}${docdir}
+    }
+
+    depends_test-append \
+                    port:py${python.version}-pytest
+
+    test.run        yes
+    test.cmd        py.test-${python.branch}
+    test.target
+    test.env        PYTHONPATH=${worksrcpath}/build/lib
+
+    livecheck.type  none
+}

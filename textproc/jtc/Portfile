@@ -4,8 +4,9 @@ PortSystem          1.0
 PortGroup           compiler_blacklist_versions 1.0
 PortGroup           github 1.0
 
-github.setup        ldn-softdev jtc 1.74
+github.setup        ldn-softdev jtc 1.75d
 github.tarball_from archive
+revision            0
 
 platforms           darwin
 categories          textproc
@@ -23,9 +24,9 @@ long_description    jtc stand for: JSON test console, but it's a legacy name, \
                     insert new elements, remove, copy, move, compare, \
                     transform and swap around).
 
-checksums           rmd160  84ec627b6b0b34ab68bbac9cbf126949e18c7538 \
-                    sha256  25a6da6d6d647f900a77d8271444015a62bee7ddef3140612e511312944d454c \
-                    size    171694
+checksums           rmd160  2d9829a134299d5730c4ffaf27c8c8658d8b5bc5 \
+                    sha256  e490a754be493660ef4f2e764ea121b5c39b280adf9b4c55d73e4876e8618f04 \
+                    size    206457
 
 compiler.cxx_standard 2014
 
@@ -35,10 +36,6 @@ compiler.blacklist-append {clang < 602}
 
 installs_libs       no
 use_configure       no
-
-patchfiles          patch-jtc-cpp.diff \
-                    patch-json-hpp.diff \
-                    patch-streamstr-hpp.diff
 
 build.cmd           ${configure.cxx}
 build.args          -o jtc -Wall -std=c++14 -Ofast

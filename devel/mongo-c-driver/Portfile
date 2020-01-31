@@ -4,10 +4,10 @@ PortSystem          1.0
 PortGroup           cmake 1.1
 PortGroup           github 1.0
 
-github.setup        mongodb mongo-c-driver 1.15.2
-checksums           rmd160  c67f397708d14c34a160bb34f0e33bf73e0e82ab \
-                    sha256  f092ea4859e66f0739f5d01ad06deac682f400e81bd97c627bf8064c366f1765 \
-                    size    6668192
+github.setup        mongodb mongo-c-driver 1.16.0
+checksums           rmd160  37e92881a8758ff5453a6dcb64dd8fcac8d4041a \
+                    sha256  a4e7ed92e3a2a28640987507b4b9da18c2ed225fe87af00ea9deec839cdd55e0 \
+                    size    7066123
 
 categories          devel
 platforms           darwin
@@ -23,7 +23,7 @@ configure.args-append \
                     -DENABLE_UNINSTALL=OFF
 
 if {${subport} eq ${name}} {
-    revision        1
+    revision        0
 
     categories-append \
                     databases

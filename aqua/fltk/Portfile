@@ -9,7 +9,7 @@ license         LGPL
 platforms       macosx
 maintainers     {michaelld @michaelld} openmaintainer
 description     Fast Light Tool Kit
-homepage        http://www.fltk.org/
+homepage        https://www.fltk.org/
 
 long_description \
     FLTK (pronounced fulltick) \
@@ -51,11 +51,11 @@ if {${subport} eq ${name}} {
     long_description ${long_description} \
         This port provides the snapshot released of FLTK, typically updated a few times a month.
 
-    github.setup fltk fltk ee9ada967806dae72aa1b9ddad7b95b94f4dd2a3
-    version   20191110-[string range ${github.version} 0 7]
-    checksums rmd160 ab3521d451f1ad777765b7f887b2046c52daa49e \
-              sha256 96f59b8cc0dc1c00b3861500ba4d0ffc2e0daf6ea02bbbd1c3a217fb306fcb0f \
-              size   6026154
+    github.setup fltk fltk 2990717d6e2548837d0a81916c85299105b27b0c
+    version   20200111-[string range ${github.version} 0 7]
+    checksums rmd160 24abc21f238bb2a57fffd4b9d0460020be834b4f \
+              sha256 9722a6bc112f92d92cea49e588a75b937ddad0950d5f606d20833e7b503c48ae \
+              size   6074559
     revision  0
 
     patchfiles-append \

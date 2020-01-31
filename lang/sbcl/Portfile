@@ -8,7 +8,7 @@ name            sbcl
 #
 # Please bump the revision of math/maxima and math/maxima-devel when
 # this port changes.
-version         1.5.9
+version         2.0.1
 revision        0
 
 categories      lang
@@ -40,9 +40,9 @@ distfiles       ${name}-${version}-source${extract.suffix}:sbcl
 worksrcdir      ${name}-${version}
 
 checksums       ${name}-${version}-source${extract.suffix} \
-    rmd160  b23aa05a474646b540275eab2b5eeab683048ac1 \
-    sha256  cbdb0d25e8a4b02b8369a667a289c8f0ce1d4ebb4e565e9191a31f1ae9a4b9b6 \
-    size    6435962 
+    rmd160  30c40fe35c29b3f566e6d8abd7fdf5c3d03868b0 \
+    sha256  8450d60b7264a34158f8811d46dc6e74ff855bbd1227752572877e6604ce56e8 \
+    size    6466983 
 
 # Since SBCL is written in lisp, it requires a running lisp binary to
 # bootstrap from.

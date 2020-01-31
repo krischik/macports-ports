@@ -5,28 +5,28 @@ PortGroup               github 1.0
 
 # Download distfiles from GitHub mirror because fetching from svn keeps being
 # problematic.
-github.setup            leahneukirchen netpbm-mirror ba9611399c049edc878be544d2a91f7178dce3dd
+github.setup            leahneukirchen netpbm-mirror d566a34acc0a433487000bb3c1afae798858e43f
 name                    netpbm
-version                 10.88.00
-svn.revision            3695
+version                 10.89.01
+svn.revision            3735
 set source_branch       advanced
 distname                ${source_branch}-r${svn.revision}
 set source_distfile     ${distfiles}
 
-set userguide_commit    4d6a81f76b3eeab25441f7614083bbb82328499c
-set userguide_revision  3698
+set userguide_commit    d9bbf089cc1180650c6222cc4ce98c89c9ccb8b9
+set userguide_revision  3730
 set userguide_branch    userguide
 set userguide_distname  ${userguide_branch}-r${userguide_revision}
 set userguide_distfile  ${userguide_distname}${extract.suffix}
 
 checksums               ${source_distfile} \
-                        rmd160  665033ffe53b21fca052b3de2cd2f5e8790ef7fe \
-                        sha256  ef8eb29f3fc4eca6e226488be075e64eb55d5a126c3f8e52c026550ced587cbe \
-                        size    2861991 \
+                        rmd160  822dd5f5b7db5edec8890b0a84245c72aab0b4e1 \
+                        sha256  6cf7f0a502c1d21c760c284175708fcbed6f957361fa793b35a85a67a41c9f9f \
+                        size    2862808 \
                         ${userguide_distfile} \
-                        rmd160  cb555031e9dd5b0f38d39a36fae31d5d95ef4e9e \
-                        sha256  cfa512468925bdb7351b17fb8c8942600c1291ebcaca3532ec2aeb586c38755c \
-                        size    1218198
+                        rmd160  971e60e3d5125360a815338b5b50a15d4f83ed9d \
+                        sha256  27c4ea2892002fd624aff32f125394f4780d40127c91d350ee9aea1a47090798 \
+                        size    1218838
 
 categories              graphics
 platforms               darwin freebsd linux

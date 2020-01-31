@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                nginx
-version             1.17.6
+version             1.17.8
 revision            0
 categories          www mail
 platforms           darwin
@@ -37,9 +37,10 @@ master_sites        https://nginx.org/download:nginx \
 
 distfiles           ${name}-${version}${extract.suffix}:nginx
 checksums           ${name}-${version}${extract.suffix} \
-                    rmd160  5c30c16cee66d44a094ce6ac09f243592b87e1fe \
-                    sha256  3cb4a5314dc0ab0a4e8a7b51ae17c027133417a45cc6c5a96e3dd80141c237b6 \
-                    size    1037527
+                    rmd160  4b98d571fe71b7e3ca32f37b30974f5cd83088ca \
+                    sha256  97d23ecf6d5150b30e284b40e8a6f7e3bb5be6b601e373a4d013768d5a25965b \
+                    size    1038627 \
+
 depends_lib         port:pcre \
                     port:zlib
 
@@ -137,13 +138,13 @@ variant dav description {Add WebDAV support to server} {
 
 variant davext description {Add WebDAV (extended) support to server} {
     set davext_filename     nginx-dav-ext-module
-    set davext_version      0.1.0
+    set davext_version      3.0.0
     set davext_distname     ${davext_filename}-${davext_version}
     distfiles-append        v${davext_version}.tar.gz:davext_module
     checksums-append        v${davext_version}.tar.gz \
-                            rmd160  78b7008e570fb4cb5d80a76011f88b5a1d34c529 \
-                            sha256  6b004eed8ea16ad8de4d304027bf0413cc323a95914e58625a7dc066481aae3a \
-                            size    6614
+                            rmd160  8d099215bde79492565a39c3c8feb7695138138e \
+                            sha256  d2499d94d82d4e4eac8425d799e52883131ae86a956524040ff2fd230ef9f859 \
+                            size    14558
 
     configure.args-append   --with-http_dav_module --add-module=${workpath}/${davext_distname}
 }
@@ -383,8 +384,8 @@ variant lua requires devel_kit description {Enable Lua module (https://github.co
                             sha256  ecea8c3d7f69dd48c6132498ddefb5d83ba9f387fa3d4da14e2abeacdfc8a3ee \
                             size    624102
 
-    configure.cflags        -I${prefix}/include/luajit-2.0/ ${configure.cflags}
-    configure.env           LUAJIT_INC=${prefix}/include/luajit-2.0/
+    configure.cflags        -I${prefix}/include/luajit-2.1/ ${configure.cflags}
+    configure.env           LUAJIT_INC=${prefix}/include/luajit-2.1/
     configure.env           LUAJIT_LIB=${prefix}/lib
     configure.args-append   --add-module=${workpath}/${ngx_lua_distname}
 

@@ -5,11 +5,11 @@ PortGroup           python 1.0
 
 # Remember to update libvirt and py-libvirt at the same time.
 name                py-libvirt
-version             5.9.0
+version             6.0.0
 revision            0
-checksums           rmd160  87e80c1055550657e58e49edd352dda934ab9934 \
-                    sha256  6cf90149baec0cfaf79aa91da08abd7e471a03f5d59669c2dcdaaec3e0592cb2 \
-                    size    202823
+checksums           rmd160  09e3427cbcb54454d9312fe8f848f9e586daf4d5 \
+                    sha256  785f64755fc78a0eafecef74676fecf2bbbd2eaa6587ef697119ef6e1a68dbfd \
+                    size    196791
 
 platforms           darwin
 license             MIT
@@ -22,12 +22,11 @@ long_description    The libvirt virtualization API python binding provides a \
                     libvirt library, to manage the virtualization capabilities \
                     of recent versions of Linux and other OSes.
 
-homepage            http://www.libvirt.org/
+homepage            https://libvirt.org
+master_sites        ${homepage}/sources/python
 distname            libvirt-python-${version}
-master_sites        ${homepage}sources/python
 
-python.default_version  27
-python.versions     27 35 36 37 38
+python.versions     35 36 37 38
 
 
 if {${name} ne ${subport}} {

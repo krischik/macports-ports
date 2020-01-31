@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-packaging
-version             19.2
+version             20.1
 revision            0
 platforms           darwin
 supported_archs     noarch
@@ -19,11 +19,11 @@ homepage            https://pypi.python.org/pypi/packaging/
 master_sites        pypi:p/packaging
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  30b0253aea8753bc2c3ce664fe839fe26dc8f27e \
-                    sha256  28b924174df7a2fa32c1953825ff29c61e2f5e082343165438812f00d3a7fc47 \
-                    size    59110
+checksums           rmd160  6b3d443c9f91fc15b76b1d841b6f274c835e4a79 \
+                    sha256  e665345f9eef0c621aa0bf2f8d78cf6d21904eef16a93f020240b704a57f1334 \
+                    size    72955
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 if {$subport ne $name} {
     depends_lib-append  port:py${python.version}-attrs \
@@ -32,7 +32,7 @@ if {$subport ne $name} {
     post-destroot {
         set docdir ${prefix}/share/doc/${subport}
         xinstall -d ${destroot}${docdir}
-        xinstall -m 644 -W ${worksrcpath} CHANGELOG.rst LICENSE LICENSE.APACHE LICENSE.BSD README.rst \
+        xinstall -m 0644 -W ${worksrcpath} CHANGELOG.rst LICENSE LICENSE.APACHE LICENSE.BSD README.rst \
            ${destroot}${docdir}
     }
 }

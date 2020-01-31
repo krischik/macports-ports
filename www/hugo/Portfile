@@ -3,11 +3,11 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/gohugoio/hugo 0.60.1 v
+go.setup            github.com/gohugoio/hugo 0.63.2 v
 revision            0
-checksums           rmd160  b7b9442705c615675a75a32a051142295ba38321 \
-                    sha256  7aaea186b099bf09bd30d805d98fef521d4d72cedcbc6c2fbc38e93345bc9560 \
-                    size    32241406
+checksums           rmd160  4ae058678ae7cc9575ab3af740dbb0374bbf19b5 \
+                    sha256  a385a80ad7d90c44a1ab5c7670127cb25fd75150d8efc6aa8dbd94287bc208d5 \
+                    size    32171957
 
 categories          www
 platforms           darwin
@@ -15,8 +15,6 @@ license             Apache-2
 maintainers         {isi.edu:calvin @cardi} openmaintainer
 description         A Fast and Flexible Static Site Generator built with love in GoLang
 long_description    ${description}
-
-depends_build-append port:git
 
 build.env-append    GO111MODULE=on
 

@@ -16,7 +16,7 @@ checksums       rmd160 a46b886ca26993610c84615fca4340ad3f955f81 \
 license         Boost-1
 categories      devel
 platforms       darwin
-maintainers     {ryandesign @ryandesign} {michaelld @michaelld} openmaintainer
+maintainers     {michaelld @michaelld} openmaintainer
 
 description     Collection of portable C++ source libraries
 
@@ -190,7 +190,7 @@ post-destroot {
     }
 }
 
-set pythons_suffixes {26 27 33 34 35 36 37}
+set pythons_suffixes {27 35 36 37 38}
 
 set pythons_ports {}
 foreach s ${pythons_suffixes} {
@@ -235,7 +235,7 @@ foreach s ${pythons_suffixes} {
 }
 
 if {![variant_isset debug]} {
-    set selected_python python27
+    set selected_python python37
     foreach s ${pythons_suffixes} {
         if {[variant_isset python${s}]} {
             set selected_python python${s}
@@ -264,7 +264,7 @@ variant no_single description {Disable building single-threaded libraries} {
 subport boost-numpy {
     revision 1
     description Boost.Numpy library
-    long_description ${description}
+    long_description {*}${description}
     depends_lib port:boost
     foreach s ${pythons_suffixes} {
         if {[variant_isset python${s}]} {
