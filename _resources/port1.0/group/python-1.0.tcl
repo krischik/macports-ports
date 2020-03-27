@@ -44,6 +44,9 @@ pre-destroot    {
 options python.rootname
 default python.rootname {[regsub ^py- [option name] ""]}
 
+default master_sites    {pypi:[string index ${python.rootname} 0]/${python.rootname}}
+default distname        {${python.rootname}-${version}}
+
 options python.versions python.version python.default_version
 option_proc python.versions python_set_versions
 default python.default_version {[python_get_default_version]}
@@ -124,26 +127,15 @@ proc python_set_versions {option action args} {
             set pyobjcflags ""
             if {${python.add_archflags}} {
                 if {[variant_exists universal] && [variant_isset universal]} {
-                    if {[vercmp [macports_version] 2.5.99] >= 0} {
                     build.env-append    LDFLAGS=${configure.universal_ldflags}
-                    } else {
-                    build.env-append    LDFLAGS="${configure.universal_ldflags}"
-                    }
                     set pycflags ${configure.universal_cflags}
                     set pycxxflags ${configure.universal_cxxflags}
                     set pyobjcflags ${configure.universal_cflags}
                 } else {
-                    if {[vercmp [macports_version] 2.5.99] >= 0} {
                     build.env-append    FFLAGS=${configure.f77_archflags} \
                                         F90FLAGS=${configure.f90_archflags} \
                                         FCFLAGS=${configure.fc_archflags} \
                                         LDFLAGS=${configure.ld_archflags}
-                    } else {
-                    build.env-append    FFLAGS="${configure.f77_archflags}" \
-                                        F90FLAGS="${configure.f90_archflags}" \
-                                        FCFLAGS="${configure.fc_archflags}" \
-                                        LDFLAGS="${configure.ld_archflags}"
-                    }
                     set pycflags ${configure.cc_archflags}
                     set pycxxflags ${configure.cxx_archflags}
                     set pyobjcflags ${configure.objc_archflags}
@@ -153,39 +145,29 @@ proc python_set_versions {option action args} {
                 set pycxxflags [portconfigure::construct_cxxflags $pycxxflags]
             }
             if {${python.set_sdkroot}} {
-                append pycflags " -isysroot${configure.sdkroot}"
-                append pycxxflags " -isysroot${configure.sdkroot}"
-                append pyobjcflags " -isysroot${configure.sdkroot}"
+                if {${configure.sdkroot} ne ""} {
+                    append pycflags " -isysroot${configure.sdkroot}"
+                    append pycxxflags " -isysroot${configure.sdkroot}"
+                    append pyobjcflags " -isysroot${configure.sdkroot}"
+                } else {
+                    append pycflags " -isysroot/"
+                    append pycxxflags " -isysroot/"
+                    append pyobjcflags " -isysroot/"
+                }
             }
             if {$pycflags ne ""} {
-                if {[vercmp [macports_version] 2.5.99] >= 0} {
                 build.env-append        CFLAGS=$pycflags
-                } else {
-                build.env-append        CFLAGS="$pycflags"
-                }
             }
             if {$pycxxflags ne ""} {
-                if {[vercmp [macports_version] 2.5.99] >= 0} {
                 build.env-append        CXXFLAGS=$pycxxflags
-                } else {
-                build.env-append        CXXFLAGS="$pycxxflags"
-                }
             }
             if {$pyobjcflags ne ""} {
-                if {[vercmp [macports_version] 2.5.99] >= 0} {
                 build.env-append        OBJCFLAGS=$pyobjcflags
-                } else {
-                build.env-append        OBJCFLAGS="$pyobjcflags"
-                }
             }
             if {${python.set_compiler}} {
                 foreach var {cc objc cxx fc f77 f90} {
                     if {[set configure.${var}] ne ""} {
-                        if {[vercmp [macports_version] 2.5.99] >= 0} {
                         build.env-append [string toupper $var]=[set configure.${var}]
-                        } else {
-                        build.env-append [string toupper $var]="[set configure.${var}]"
-                        }
                     }
                 }
             }
@@ -196,26 +178,15 @@ proc python_set_versions {option action args} {
             set pyobjcflags ""
             if {${python.add_archflags} && ${python.consistent_destroot}} {
                 if {[variant_exists universal] && [variant_isset universal]} {
-                    if {[vercmp [macports_version] 2.5.99] >= 0} {
                     destroot.env-append LDFLAGS=${configure.universal_ldflags}
-                    } else {
-                    destroot.env-append LDFLAGS="${configure.universal_ldflags}"
-                    }
                     set pycflags ${configure.universal_cflags}
                     set pycxxflags ${configure.universal_cxxflags}
                     set pyobjcflags ${configure.universal_cflags}
                 } else {
-                    if {[vercmp [macports_version] 2.5.99] >= 0} {
                     destroot.env-append FFLAGS=${configure.f77_archflags} \
                                         F90FLAGS=${configure.f90_archflags} \
                                         FCFLAGS=${configure.fc_archflags} \
                                         LDFLAGS=${configure.ld_archflags}
-                    } else {
-                    destroot.env-append FFLAGS="${configure.f77_archflags}" \
-                                        F90FLAGS="${configure.f90_archflags}" \
-                                        FCFLAGS="${configure.fc_archflags}" \
-                                        LDFLAGS="${configure.ld_archflags}"
-                    }
                     set pycflags ${configure.cc_archflags}
                     set pycxxflags ${configure.cxx_archflags}
                     set pyobjcflags ${configure.objc_archflags}
@@ -225,39 +196,29 @@ proc python_set_versions {option action args} {
                 set pycxxflags [portconfigure::construct_cxxflags $pycxxflags]
             }
             if {${python.set_sdkroot} && ${python.consistent_destroot}} {
-                append pycflags " -isysroot${configure.sdkroot}"
-                append pycxxflags " -isysroot${configure.sdkroot}"
-                append pyobjcflags " -isysroot${configure.sdkroot}"
+                if {${configure.sdkroot} ne ""} {
+                    append pycflags " -isysroot${configure.sdkroot}"
+                    append pycxxflags " -isysroot${configure.sdkroot}"
+                    append pyobjcflags " -isysroot${configure.sdkroot}"
+                } else {
+                    append pycflags " -isysroot/"
+                    append pycxxflags " -isysroot/"
+                    append pyobjcflags " -isysroot/"
+                }
             }
             if {$pycflags ne ""} {
-                if {[vercmp [macports_version] 2.5.99] >= 0} {
                 destroot.env-append     CFLAGS=$pycflags
-                } else {
-                destroot.env-append     CFLAGS="$pycflags"
-                }
             }
             if {$pycxxflags ne ""} {
-                if {[vercmp [macports_version] 2.5.99] >= 0} {
                 destroot.env-append     CXXFLAGS=$pycxxflags
-                } else {
-                destroot.env-append     CXXFLAGS="$pycxxflags"
-                }
             }
             if {$pyobjcflags ne ""} {
-                if {[vercmp [macports_version] 2.5.99] >= 0} {
                 destroot.env-append     OBJCFLAGS=$pyobjcflags
-                } else {
-                destroot.env-append     OBJCFLAGS="$pyobjcflags"
-                }
             }
             if {${python.set_compiler} && ${python.consistent_destroot}} {
                 foreach var {cc objc cxx fc f77 f90} {
                     if {[set configure.${var}] ne ""} {
-                        if {[vercmp [macports_version] 2.5.99] >= 0} {
                         destroot.env-append [string toupper $var]=[set configure.${var}]
-                        } else {
-                        destroot.env-append [string toupper $var]="[set configure.${var}]"
-                        }
                     }
                 }
             }

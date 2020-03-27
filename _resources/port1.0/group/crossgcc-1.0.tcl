@@ -18,11 +18,7 @@
 options crossgcc.target \
         crossgcc.languages
 
-if {[vercmp [macports_version] 2.5.3] <= 0} {
-    default crossgcc.languages {"c c++"}
-} else {
-    default crossgcc.languages "c c++"
-}
+default crossgcc.languages "c c++"
 
 array set crossgcc.versions_info {
     7.1.0 {bzip2 {
@@ -297,9 +293,10 @@ proc crossgcc.setup_libc {libc_name libc_version} {
                 post-extract {
                     system -W ${workpath} "tar -xf ${distpath}/${dnewlib}"
                     ln -s ${workpath}/newlib-${crossgcc.libc_version}/newlib ${workpath}/gcc-${version}/
+                    ln -s ${workpath}/newlib-${crossgcc.libc_version}/libgloss ${workpath}/gcc-${version}/
                 }
 
-                configure.args-append --with-newlib
+                configure.args-append --with-newlib --with-libgloss
             }
         }
         default {

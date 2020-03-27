@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        django django 2.2.3
+github.setup        django django 2.2.6
 name                py-django
 categories-append   www
 platforms           darwin
@@ -23,17 +23,17 @@ supported_archs     noarch
 
 if {${name} ne ${subport}} {
     if {${python.version} == 27} {
-        github.setup    django django 1.11.22
+        github.setup    django django 1.11.25
 
-        checksums       rmd160  9dd2a3321ee0c3c27aff123424a9ba5429ed9924 \
-                        sha256  c2a56ec1518670b3241705dc55ea62ce7edc224f5bc3c46742594587a0b11361 \
-                        size    7895235
+        checksums       rmd160  1ddcb49d5c28fb44ad90af067a8cca4cdec9bf69 \
+                        sha256  c42a70cff6900d15a612c7c8ef2c27edb6caf26566607d2fd1b2543cc9f093da \
+                        size    7896894
 
         github.livecheck.regex  {(1\..+?)}
     } else {
-        checksums       rmd160  29f8c3f60a1556a4be5d4f61e750cff3ab487927 \
-                        sha256  247fde8a1c5d3928e067273f024f86ac31e0a3ae456c0ccf4fb56de3c5d6dabb \
-                        size    8905910
+        checksums       rmd160  56a529ecbad5e6ebc80548147467f811ec4a9f63 \
+                        sha256  c681febae35c6cae49369c7920e100a72f3f800838fc3f371809c681b6e00b2e \
+                        size    8914096
 
         livecheck.type  none
     }
@@ -71,4 +71,6 @@ if {${name} ne ${subport}} {
         ln -s ${python.prefix}/bin/django-admin.py \
             ${destroot}${prefix}/bin/django-admin-${python.branch}.py
     }
+} else {
+    github.livecheck.regex {([0-9.]+)}
 }

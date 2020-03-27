@@ -2,12 +2,13 @@
 
 PortSystem              1.0
 PortGroup               cmake 1.0
+PortGroup               conflicts_build 1.0
 
 name                    doxygen
-version                 1.8.15
+version                 1.8.16
 revision                0
 categories              textproc devel
-maintainers             {css @cssdev} openmaintainer
+maintainers             nomaintainer
 license                 GPL-2
 description             Documentation system for several programming languages
 long_description        It can generate an on-line documentation browser \
@@ -34,17 +35,26 @@ homepage                http://www.doxygen.org/
 master_sites            http://doxygen.nl/files
 distfiles               ${distname}.src${extract.suffix}
 
-checksums               ${distname}.src${extract.suffix} \
-                        rmd160  c9f14928c77410d2f71568d4602a489d8ab889d9 \
-                        sha256  bd9c0ec462b6a9b5b41ede97bede5458e0d7bb40d4cfa27f6f622eb33c59245d \
-                        size    5097791
+checksums               rmd160  10d26e3ea9c63d7a01e9e8ecc8dd8b5ee111cc9a \
+                        sha256  ff981fb6f5db4af9deb1dd0c0d9325e0f9ba807d17bd5750636595cf16da3c82 \
+                        size    5497317
 
 installs_libs           no
+
+# 59037
+conflicts_build         libmd
 
 depends_build-append    bin:perl:perl5 \
                         bin:python2.7:python27 \
                         port:flex \
                         port:bison
+
+# 59552
+if {${os.platform} eq "darwin" && ${os.major} < 13} {
+    depends_build-append port:git
+    configure.args-append -DGIT_EXECUTABLE=${prefix}/bin/git
+}
+
 license_noconflict      perl5 python27
 
 depends_lib             port:libpng \
@@ -53,6 +63,9 @@ depends_lib             port:libpng \
 patchfiles              patch-src-portable_c.c.diff \
                         patch-CMakeLists.txt.diff \
                         patch-longtabu.diff
+
+# see #59372
+compiler.cxx_standard   2011
 
 # see #50342
 configure.args-append -DPython_ADDITIONAL_VERSIONS=2.7

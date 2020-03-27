@@ -5,7 +5,7 @@ PortGroup           active_variants 1.1
 
 name                camlimages
 version             4.2.6
-revision            0
+revision            1
 categories          ocaml devel graphics
 license             {LGPL-2 Permissive}
 maintainers         nomaintainer
@@ -58,13 +58,8 @@ destroot.args       ${build.args}
 pre-destroot {
     set ocaml_destdir "${destroot}[exec ocamlfind printconf destdir]"
     xinstall -d ${ocaml_destdir}
-    if {[vercmp [macports_version] 2.5.99] >= 0} {
-        destroot.env OCAMLFIND_DESTDIR=${ocaml_destdir} \
-                     OCAMLFIND_LDCONF=ignore
-    } else {
-        destroot.env OCAMLFIND_DESTDIR="${ocaml_destdir}" \
-                     OCAMLFIND_LDCONF=ignore
-    }
+    destroot.env    OCAMLFIND_DESTDIR=${ocaml_destdir} \
+                    OCAMLFIND_LDCONF=ignore
 }
 
 variant lablgtk2 description {add support for GTK 2} {

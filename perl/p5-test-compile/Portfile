@@ -3,17 +3,17 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26 5.28
-perl5.setup         Test-Compile v2.2.2
+perl5.branches      5.26 5.28 5.30
+perl5.setup         Test-Compile v2.3.1
 maintainers         nomaintainer
 license             {Artistic-1 GPL}
 
 description         Check whether Perl files compile correctly
 long_description    ${description}
 
-checksums           rmd160  9185c8f2901421f331a9e21b259655771a847aa1 \
-                    sha256  7853b44a9819eb3e6003260eedf904a1ad80035ea5254296ce014f96084b65d4 \
-                    size    17532
+checksums           rmd160  8416f5f695b0f6bad4560b66f3c7763ff913d91b \
+                    sha256  1174cff010011ae43e6462755ccd8a6cf0372ca506705c60586f7b1748ff4ddf \
+                    size    18096
 
 platforms           darwin
 

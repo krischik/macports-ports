@@ -39,11 +39,11 @@ if {${subport} eq ${name}} {
 } else {
 
     # devel
-    github.setup osmocom libosmocore 3097bcec581c9c4a39cd69ffd3a5b878c86bac81
-    version   20190831-[string range ${github.version} 0 7]
-    checksums rmd160 48d795847f176856fbedc66d93e56f416864071e \
-              sha256 2e0de03798f0ec08246fd45d3f6f530358ecd286656036200b43ba7cf65bcb40 \
-              size   1239585
+    github.setup osmocom libosmocore 80c8a1d281ff630770f94160ff98a6f7afeed4d8
+    version   20191022-[string range ${github.version} 0 7]
+    checksums rmd160 8215a84783be852b696aec9caba7cd09d664f1d8 \
+              sha256 3b1eeeead60c5a3570b4d3247080e098e6c6222cadc54cb38db3be7b4838f4b6 \
+              size   1252616
     revision  0
 
     # fix 'timer_clockgettime.c' to work with OSs that don't provide

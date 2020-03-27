@@ -15,11 +15,11 @@ description         Experimental Neural Net speech coding for FreeDV
 long_description    Experimental version of LPCNet being developed \
     for over the air Digital Voice experiments with FreeDV.
 
-github.setup        drowe67 LPCNet 8b78d3f5bcf7905ed3261e03f1082d587aab5371
-version             20190902
-checksums           rmd160  87a9ac0597c3f4cbed9b1f270bb229c9adb4da1b \
-                    sha256  2aa6831102bce3d690a50637ec997b5c844a8754cc58ae1cd8ffca930ea7fa2d \
-                    size    3307177
+github.setup        drowe67 LPCNet 34049f83170aaf1e6e3595f5ac086ef565f8b6b3
+version             20191102-[string range ${github.version} 0 7]
+checksums           rmd160  8528279ddda440ef85fcc7096ed27d5d10a85ce9 \
+                    sha256  8709610cfa418b3f3d45a166ec14e06b9dc9af478849754cda3b87f2fad3f9fd \
+                    size    33011015
 revision            0
 
 depends_lib-append \

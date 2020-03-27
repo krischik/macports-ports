@@ -15,11 +15,7 @@ default qt5.top_level {${configure.dir}}
 default qt5.cxxflags {}
 default qt5.ldflags {}
 default qt5.frameworkpaths {}
-if {[vercmp [macports_version] 2.5.3] <= 0} {
-    default qt5.spec_cmd {"-spec "}
-} else {
-    default qt5.spec_cmd "-spec "
-}
+default qt5.spec_cmd "-spec "
 
 # with the -r option, the examples do not install correctly (no source code)
 #     the install_sources target is not created in the Makefile(s)
@@ -33,7 +29,7 @@ platform macosx {
     # Use Xcode on macOS <= 10.9 (os.major 13) because CLT doesn't ship with an SDK on 10.9-
     # Better way is to just check if CLT SDK works correctly rather than hardcode OS
     # See: https://trac.macports.org/ticket/58779
-    if { [info exists use_xcode] && ${os.major} <= 13 } {
+    if {${os.major} <= 13} {
         use_xcode yes
     }
 }
@@ -56,18 +52,19 @@ pre-configure {
         }
     }
 
-    if { [vercmp ${xcodeversion} "7.0"] >= 0 } {
-        # starting with Xcode 7.0, the SDK for build OS version might not be available
-        # see https://trac.macports.org/ticket/53597
-        set sdks_dir ${developer_dir}/Platforms/MacOSX.platform/Developer/SDKs
-        if { ![file exists ${sdks_dir}/MacOSX${configure.sdk_version}.sdk] } {
-            configure.sdk_version
+    # starting with Xcode 7.0, the SDK for build OS version might not be available
+    # see https://trac.macports.org/ticket/53597
+    if { ${use_xcode} } {
+        if {[vercmp $xcodeversion 4.3] < 0} {
+            set sdks_dir ${configure.developer_dir}/SDKs
+        } else {
+            set sdks_dir ${configure.developer_dir}/Platforms/MacOSX.platform/Developer/SDKs
         }
-
-        # same check as before, but if macports wants to use CLT's developer_dir instead of Xcode, then we check if the build OS version is available on CLT.
-        if { [info exists configure.developer_dir] && ${developer_dir} ne ${configure.developer_dir} && ![file exists ${configure.developer_dir}/SDKs/MacOSX${configure.sdk_version}.sdk] } {
-            configure.sdk_version
-        }
+    } else {
+        set sdks_dir ${configure.developer_dir}/SDKs
+    }
+    if { ![file exists ${sdks_dir}/MacOSX${configure.sdk_version}.sdk] } {
+        configure.sdk_version
     }
 
     # set QT and QMAKE values in a cache file
@@ -136,7 +133,8 @@ pre-configure {
     set qmake5_l_flags     [join ${qmake5_l_flags}     " "]
 
     if { [vercmp ${qt5.version} 5.6] >= 0 } {
-        if { ${configure.cxx_stdlib} ne "libc++" } {
+        # see https://trac.macports.org/ticket/59128 for `${configure.cxx_stdlib} ne ""` test
+        if { ${configure.cxx_stdlib} ne "libc++" && ${configure.cxx_stdlib} ne "" } {
             # override C++ flags set in ${prefix}/libexec/qt5/mkspecs/common/clang-mac.conf
             #    so value of ${configure.cxx_stdlib} can always be used
             puts ${cache} QMAKE_CXXFLAGS-=-stdlib=libc++
@@ -155,7 +153,7 @@ pre-configure {
 
         # override C++ flags set in ${prefix}/libexec/qt5/mkspecs/common/clang-mac.conf
         #    so value of ${configure.cxx_stdlib} can always be used
-        if { ${configure.cxx_stdlib} ne "libc++" } {
+        if { ${configure.cxx_stdlib} ne "libc++" && ${configure.cxx_stdlib} ne "" } {
             puts ${cache} QMAKE_CXXFLAGS_CXX11-=-stdlib=libc++
             puts ${cache} QMAKE_LFLAGS_CXX11-=-stdlib=libc++
             puts ${cache} QMAKE_CXXFLAGS_CXX11+=-stdlib=${configure.cxx_stdlib}
@@ -166,8 +164,10 @@ pre-configure {
         }
     } else {
         # always use the same standard library
-        puts ${cache} QMAKE_CXXFLAGS+=-stdlib=${configure.cxx_stdlib}
-        puts ${cache} QMAKE_LFLAGS+=-stdlib=${configure.cxx_stdlib}
+        if { ${configure.cxx_stdlib} ne "" } {
+            puts ${cache} QMAKE_CXXFLAGS+=-stdlib=${configure.cxx_stdlib}
+            puts ${cache} QMAKE_LFLAGS+=-stdlib=${configure.cxx_stdlib}
+        }
         if {${qmake5_cxx11_flags} ne ""} {
             puts ${cache} QMAKE_CXXFLAGS+="${qmake5_cxx11_flags}"
         }

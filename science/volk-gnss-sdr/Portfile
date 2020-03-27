@@ -66,13 +66,13 @@ subport volk-gnss-sdr-next {
     long_description    ${description}: \
         This port is kept up with the VOLK-GNSS-SDR GIT next branch, which is typically updated daily to weekly.  This version of VOLK-GNSS-SDR generally contains fixes and new features that will be incorporated in an upcoming release, and compiles against the gnss-sdr-next and gnuradio-next ports.  This port may or not compile or function correctly, as it represents a work in progress.  If it does not work, check back in a few days.  Or try deactivating the currently active gnss-sdr and gnuradio ports, cleaning any current builds, and trying again.
 
-    name                volk-gnss-sdr-next
-    github.setup        gnss-sdr gnss-sdr 75e735043bc9af44e39d376673f54feeacc9c985
-    version             20190805-[string range ${github.version} 0 7]
-    checksums           rmd160 58b6f706b1f99fe9df8d7056cb9436031fe8be8a \
-                        sha256 ba524012e354fd2db6a500cfe7b79dba57a1f6ae07d9708bc2d3a89b76cc9a02 \
-                        size   3716016
-    revision            1
+    name      volk-gnss-sdr-next
+    github.setup gnss-sdr gnss-sdr 124531ba39f5f280bb984a4b3fe11863d639a385
+    version   20191027-[string range ${github.version} 0 7]
+    checksums rmd160  f53b95bfe66e479218176a17cadc64f8eb81aac0 \
+              sha256  d07dbbd90551e85ddc15d0a0c01ca608f1de875f50df381e4cd64458358abb3b \
+              size    3754796
+    revision  0
 
     conflicts volk-gnss-sdr volk-gnss-sdr-devel
 

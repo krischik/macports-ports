@@ -2,16 +2,16 @@
 
 PortSystem                                         1.0
 PortGroup           python                         1.0
-PortGroup           cxx11                          1.1
 PortGroup           java                           1.0
 PortGroup           github                         1.0
 PortGroup           compilers                      1.0
 PortGroup           xcodeversion                   1.0
 PortGroup           compiler_blacklist_versions    1.0
+PortGroup           xcode_workaround               1.0
 
 name                py-tensorflow
-version             1.14.0
-revision            4
+version             2.0.0
+revision            0
 github.setup        tensorflow tensorflow ${version} v
 platforms           darwin
 supported_archs     x86_64
@@ -26,18 +26,29 @@ homepage            https://www.tensorflow.org/
 
 github.livecheck.regex  {([0-9.]+)}
 
-checksums           rmd160  c89d7a99933fb2cac9e9d8e694c6def88c2dfa9c \
-                    sha256  fab2eb90de8dc1fc6e8e95cbc66c3aa7b92c28e3df4191017cb2901c8d3f023a \
-                    size    41341410
+checksums           rmd160  476dd5e51924d966cfed30ce5deb0f12d6d6bad8 \
+                    sha256  5c6d97f622fffdcf318b45f705368eb2d32446ca4f4ed86c8b06083559ff55cf \
+                    size    46183179
+
+if { ${os.major} < 16 } {
+    known_fail yes
+    # https://trac.macports.org/ticket/58518
+    pre-fetch {
+        ui_error "${name} ${version} requires macOS10.12 or newer."
+        return -code error "incompatible macOS version"
+    }
+}
 
 compiler.blacklist-append {clang < 840}
+# require c++11
+compiler.cxx_standard 2011
 
 patch.pre_args      -p1
 
 # Required java version
 java.version        11+
 # JDK port to install if required java not found
-java.fallback       openjdk12
+java.fallback       openjdk13
 
 # The oldest Xcode version to use default Xcode compiler
 # Note setting here should be in sync with that in bazel
@@ -58,16 +69,17 @@ if {${os.major} >= 16} {
 variant native description {Build from source for best native platform support} { }
 
 # Support python versions
-python.versions        27 35 36 37
+python.versions        37 38
 python.default_version 37
 
 if {${name} ne ${subport}} {
+    conflicts   py${python.version}-tensorflow1
 
     depends_build-append \
         port:py${python.version}-future \
         port:py${python.version}-pip \
         port:py${python.version}-mock \
-        port:bazel25 \
+        port:bazel26 \
         port:cctools
 
     depends_lib-append \
@@ -103,8 +115,8 @@ if {${name} ne ${subport}} {
     if {![variant_isset native]} {
         configure.env-append CC_OPT_FLAGS=${base_march}
         build.env-append     CC_OPT_FLAGS=${base_march}
-        notes "This version is built based on a base architecture for convenience, 
-              which may not be optimized for your system. To build a version 
+        notes "This version is built based on a base architecture for convenience,
+              which may not be optimized for your system. To build a version
               customized for your machine, use the +native variant"
     }
     # Disable Xcode detection on older OSes, as we want the
@@ -153,7 +165,7 @@ if {${name} ne ${subport}} {
         }
         # Build using the wonderful bazel build system ...
         set tf_bazel_cmd "bazel --max_idle_secs=60 --output_user_root=${workpath}"
-        set tf_bazel_build_opts "-s -c opt --config=opt"
+        set tf_bazel_build_opts "-s -c opt --verbose_failures --config=opt"
         # hack to try and transfer MP c, c++ and ld options to bazel...
         foreach opt [list {*}${configure.cflags} ] {
             set tf_bazel_build_opts "${tf_bazel_build_opts} --conlyopt '${opt}'"

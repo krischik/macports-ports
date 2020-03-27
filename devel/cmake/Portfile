@@ -4,6 +4,9 @@ PortSystem          1.0
 PortGroup           muniversal 1.0
 PortGroup           xcodeversion 1.0
 
+# Cmake is a depedency of clang
+PortGroup           clang_dependency 1.0
+
 # use legacy support if OSX <= 10.11 && Xcode < 8.
 # Xcode 8 provides "clock_gettime" while Xcode 7 doesn't.
 # legacysupport is used for 10.11 just for this specific feature.
@@ -47,10 +50,10 @@ if {${subport} eq ${name}} {
 
     # release
 
-    version   ${branch}.3
-    checksums rmd160 2707bff0caad92199e62bea45b9e68fae411d600 \
-              sha256 13958243a01365b05652fa01b21d40fa834f70a9e30efa69c02604e64f58b8f5 \
-              size   9270184
+    version   ${branch}.5
+    checksums rmd160 f264ed805dc48ae211c212032fc4aeb96318f226 \
+              sha256 fbdd7cef15c0ced06bb13024bfda0ecc0dedbcaaaa6b8a5d368c75255243beb4 \
+              size   9271925
     revision  0
 
     master_sites    ${homepage}/files/v${branch}/
@@ -76,11 +79,11 @@ if {${subport} eq ${name}} {
 
     # devel
 
-    set commit c6ed04431988ac337ea21d74f035148b6c57f894
-    version   20190915-[string range ${commit} 0 7]
-    checksums rmd160 e1fc457014ee9946e2a4041dd9d40c68089b4499 \
-              sha256 8e2fadafd8438f5232bdbe035eaca61e507b2fad0e6647f4f9edaa7ec5b0c77a \
-              size   6999101
+    set commit 9a72065fa9de6f9bdf25bbf46137c7c6b4e8196e
+    version   20191031-[string range ${commit} 0 7]
+    checksums rmd160 65c6fef5dfce11bdf38a4c8d6b02d4c96f412c9d \
+              sha256 63c7312cedb6e3e4238498ca1091f393622ab23c60d75cc30df21591520651a8 \
+              size   7053930
     revision  0
 
     use_bzip2       yes
@@ -136,8 +139,6 @@ if {${os.platform} eq "darwin" && ${os.major} <= 10 && ${cxx_stdlib} eq "libc++"
 if {${os.platform} eq "darwin" && ${os.major} == 11 && ${configure.cxx_stdlib} eq "libc++"} {
     compiler.whitelist macports-clang-3.4
 }
-# Clang 3.9 and later require cmake; avoid circular dependency.
-compiler.blacklist-append macports-clang-3.9 {macports-clang-[4-8].0}
 
 platform darwin {
     configure.env-append \

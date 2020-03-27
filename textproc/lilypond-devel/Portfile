@@ -7,7 +7,7 @@ PortGroup           cxx11 1.1
 name                lilypond-devel
 set my_name         lilypond
 version             2.19.83
-revision            2
+revision            3
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          textproc
 maintainers         {snc @nerdling} openmaintainer
@@ -157,6 +157,7 @@ compiler.blacklist  *clang* \
                     gcc-3.3 gcc-4.0 gcc-4.2
 
 compiler.fallback-append \
+                    macports-gcc-9 \
                     macports-gcc-8 \
                     macports-gcc-7 \
                     macports-gcc-6 \

@@ -4,7 +4,7 @@ PortSystem 1.0
 PortGroup python 1.0
 
 name                py-mypy
-version             0.720
+version             0.740
 license             MIT
 platforms           darwin
 maintainers         {toby @tobypeterson} openmaintainer
@@ -20,11 +20,11 @@ homepage            http://www.mypy-lang.org
 master_sites        pypi:m/mypy
 distname            mypy-${version}
 
-checksums           rmd160  91dd0978b31f14920ef75efc7fa98890f8f20228 \
-                    sha256  49925f9da7cee47eebf3420d7c0e00ec662ec6abb2780eb0a16260a7ba25f9c4 \
-                    size    1890760
+checksums           rmd160  37177c38f255252747d5b4c44a5c3f7fb10e324c \
+                    sha256  48c8bc99380575deb39f5d3400ebb6a8a1cb5cc669bbba4d3bb30f904e0a0e7d \
+                    size    2062343
 
-python.versions     37
+python.versions     37 38
 
 if {${name} ne ${subport}} {
     depends_build-append    port:py${python.version}-setuptools

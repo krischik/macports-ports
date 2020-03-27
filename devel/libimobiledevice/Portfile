@@ -48,13 +48,13 @@ configure.args      --disable-silent-rules \
                     --without-cython
 
 subport libimobiledevice-devel {
-    github.setup    libimobiledevice libimobiledevice a9e69b1252e5918b6d8ada1209ccefde301cfa26
-    version         20190906
-    revision        1
+    github.setup    libimobiledevice libimobiledevice 7dbc17f2c763a7b18bc1a867f39918c26bb5e9e5
+    version         20191108
+    revision        0
 
-    checksums       rmd160  00bd758188ce3d08edc589f2eaed3d725ffd50b6 \
-                    sha256  304d49b66331dac1b3809af06510ed7368fc2b549318eb1992a7e567dedab9dc \
-                    size    240704
+    checksums       rmd160  0c9b16fdcdedd59a6f36efcd7d30f5e29fa4f739 \
+                    sha256  1c79d810dd194c46bf786d324d133a562e0216b369dcf6bef4d558f81e464cfb \
+                    size    244808
 
     depends_lib-delete port:libusbmuxd
     depends_lib-append port:libusbmuxd-devel
@@ -66,4 +66,6 @@ subport libimobiledevice-devel {
 
 if {${subport} eq ${name}} {
     conflicts       libimobiledevice-devel
+    # SSLv3_method is removed in current openssl
+    patchfiles-append   idevice.c.patch
 }

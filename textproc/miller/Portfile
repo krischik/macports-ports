@@ -37,9 +37,8 @@ installs_libs       no
 
 set mlr_doc_dir     ${prefix}/share/doc/${name}
 
-test {
-    system -W "${worksrcpath}" "${build.cmd} check"
-}
+test.run            yes
+test.target         check
 
 pre-destroot {
     system -W "${worksrcpath}/doc" "${build.cmd} DESTDIR=\"${destroot}\" install-man"
@@ -47,7 +46,7 @@ pre-destroot {
 
 destroot {
     xinstall -m 755 ${worksrcpath}/c/mlr ${destroot}${prefix}/bin/
-    xinstall -d 755 ${destroot}${mlr_doc_dir}
+    xinstall -d -m 755 ${destroot}${mlr_doc_dir}
     copy {*}[glob ${worksrcpath}/doc/*] ${destroot}${mlr_doc_dir}/
 }
 

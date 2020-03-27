@@ -1,7 +1,6 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           cxx11 1.1
 PortGroup           github 1.0
 
 # Note - when libtorrent is next updated, consider moving to the github release
@@ -45,6 +44,8 @@ depends_lib-append \
                     path:lib/libssl.dylib:openssl \
                     port:libsigcxx2
 
+compiler.cxx_standard   2011
+
 configure.args      --disable-debug \
                     --with-kqueue
 
@@ -57,6 +58,7 @@ post-destroot {
 
 if {${os.platform} eq "darwin" && ${os.major} <= 9} {
     # currently broken, ticket #27289
+    known_fail  yes
     pre-fetch {
         return -code error "$name currently cannot be compiled on Mac OS X 10.5 or earlier."
     }

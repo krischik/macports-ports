@@ -2,6 +2,7 @@
 
 PortSystem          1.0
 PortGroup           compiler_blacklist_versions 1.0
+PortGroup           xcode_workaround 1.0
 
 name                luajit
 version             2.0.5
@@ -30,6 +31,9 @@ post-patch {
 use_configure       no
 
 compiler.blacklist  {clang < 700} macports-clang-3.3 macports-clang-3.4
+
+# changes to compiler flags must be made before `CFLAGS=...`
+xcode_workaround.type append_to_compiler_flags
 
 build.target        amalg
 build.args-append   CC="${configure.cc}" \

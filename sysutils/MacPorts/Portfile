@@ -1,7 +1,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        macports macports-base 2.6.0-rc1 v
+github.setup        macports macports-base 2.6.2 v
 name                MacPorts
 
 categories          sysutils macports
@@ -21,11 +21,11 @@ homepage            https://www.macports.org
 distname            ${name}-${version}
 github.tarball_from releases
 # testing subdir is for non-final releases only
-dist_subdir         ${name}/testing
+#dist_subdir         ${name}/testing
 use_bzip2           yes
 
-checksums           rmd160 6c08842706d4910d5f9e3ead3f19f10ac74c3fd6 \
-                    sha256 b09703946adf36c6f9ada0dbfde60f11af1d3ddaee1e3c0a6646de624dd23efc
+checksums           rmd160 1400db2449d50e77d5d30e5f0820bb339dc3b080 \
+                    sha256 1b58ccbb1cd6c6fab5e1f15b959208ef5233802fc9ac9585037d21c8e42e2b70
 
 variant keep_prefix description "Use configured prefix instead of enforcing /opt/local" {}
 if {![variant_isset keep_prefix]} {
@@ -49,6 +49,7 @@ configure.objc_archflags
 configure.ld_archflags
 compiler.cpath
 compiler.library_path
+configure.cxx_stdlib
 
 # MacPorts' configure removes ${prefix}/bin from $PATH,
 # so better do not use ccache, to avoid problems.
@@ -308,6 +309,7 @@ destroot.keepdirs    ${destroot}${prefix}/include \
                      ${destroot}${prefix}/var/run \
                      ${destroot}${prefix}/var/spool
 
+known_fail yes
 pre-activate {
     ui_error ""
     ui_error "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"

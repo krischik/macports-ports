@@ -22,11 +22,11 @@ long_description    Codec 2 is an open source speech codec designed for \
     designed for digital voice over HF radio.
 homepage            http://www.rowetel.com/codec2.html
 
-github.setup        drowe67 codec2 171530c8b0517789a54cdb42d3cfef34a7a5031c
-version             20190913
-checksums           rmd160  1c4563c8ed236559f4798c6d0abf003ca7a16fd7 \
-                    sha256  f0d29ee20cf888c28641d5bc29e91d804cfdbc107e5ff9ccbea65155d0feb509 \
-                    size    11775656
+github.setup        drowe67 codec2 d6f93b52601f2c099ff98688eed22d680dec96fe
+version             20191101-[string range ${github.version} 0 7]
+checksums           rmd160  34473d6d1b7ee4a44a0ad0f3a3e3bca60000279e \
+                    sha256  f446882d6578da2f578a8528e1ae8ee946b5bac2a1a2122381cb7e1e6eb9d4ff \
+                    size    12246011
 revision            0
 
 depends_lib-append \

@@ -4,25 +4,36 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                google-cloud-sdk
-version             263.0.0
+version             270.0.0
 categories          devel python
 license             Apache-2
 maintainers         {breun.nl:nils @breun} openmaintainer
 description         Command-line interface for Google Cloud Platform products and services
-long_description    ${description}
+long_description    Google Cloud SDK is a set of tools for Google Cloud Platform. \
+                    It contains gcloud, gsutil, and bq command-line tools, which you can \
+                    use to access Compute Engine, Cloud Storage, BigQuery, and other \
+                    products and services from the command-line. You can run these tools \
+                    interactively or in your automated scripts.
 
 platforms           darwin
 supported_archs     i386 x86_64
 
+if { ${configure.build_arch} eq "i386" } {
+    distname        ${name}-${version}-darwin-x86
+    checksums       rmd160  8dff7684914b8cfddbd112fa06f211b9f949b4b5 \
+                    sha256  d618f7b37a29168ecadd5e1b6bf70887d95d3c055e42b98f259e7c9f0dbea686 \
+                    size    22508521
+} elseif { ${configure.build_arch} eq "x86_64" } {
+    distname        ${name}-${version}-darwin-x86_64
+    checksums       rmd160  60e24b879c568ddc01297bc947375e00f34c43f7 \
+                    sha256  96f202d6d4c15c5c93ee3f034e91b98b97d79c00d1be051afecdb5a0bbf190d8 \
+                    size    22508692
+}
+
 homepage            https://cloud.google.com/sdk/
 master_sites        https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/
 
-distname            ${name}-${version}-${os.platform}-${configure.build_arch}
 worksrcdir          ${name}
-
-checksums           rmd160  0d2b6892f0463a647d5908e1e836026c16e76faf \
-                    sha256  25c32408b936209ac6f8c2260a638a062ae15c0b381c6885c72017be070f5a2b \
-                    size    21874346
 
 python.default_version 27
 

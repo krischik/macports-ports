@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           cmake 1.0
 
 name                wireshark3
-version             3.0.4
+version             3.0.6
 revision            0
 categories          net
 license             {GPL-2 GPL-3}
@@ -27,10 +27,10 @@ distfiles           wireshark-${version}${extract.suffix}
 
 worksrcdir          wireshark-${version}
 
-checksums           sha256  773bd57df2aeae1694a0b7fbfb34283ba24799cfd6299eed696630fc9ebeecbf \
-                    rmd160  01a98122fbe701946088e0924a73333c2c79654b \
-                    sha1    e7cda5bc6fe885887fb4cffedb565373c760c987 \
-                    size    30938336
+checksums           sha256  a87f4022a0c15ddbf1730bf1acafce9e75a4e657ce9fa494ceda0324c0c3e33e \
+                    rmd160  366cb5aa0018aeca034154976dde40ed405d5af2 \
+                    sha1    785ce1faa2b813a5c1b1540497fa56eb8c0eb97d \
+                    size    30846672
 
 conflicts           wireshark-devel wireshark wireshark2 wireshark22 wireshark24
 

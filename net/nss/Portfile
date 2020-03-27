@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           muniversal 1.0
 
 name                nss
-version             3.46
+version             3.47
 revision            0
 set NSS_VMAJOR      [lindex [split ${version} .] 0]
 set NSS_VMINOR      [lindex [split ${version} .] 1]
@@ -28,9 +28,9 @@ set my_release      NSS_[strsed ${version} {g/\./_/}]_RTM
 master_sites        https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/${my_release}/src/ \
                     ftp://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/${my_release}/src/
 
-checksums           rmd160  4950f21faeaa0783458b0344056a11e400639e7d \
-                    sha256  6b699649d285602ba258a4b0957cb841eafc94eff5735a9da8da0adbb9a10cef \
-                    size    76417155
+checksums           rmd160  6fb15146f8c9ec4940826c6fb3e738deb4b5d526 \
+                    sha256  6cd0c4438b616bdacc0b5f25ff1506b0d07ee97ea6c95d514c5487200a155fa7 \
+                    size    76461837
 
 # build fails with gcc-4.2 on Intel, but succeeds with gcc-4.2 on PPC
 # cc1: error: unrecognized command line option "-mpclmul"

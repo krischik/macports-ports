@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        yggdrasil-network yggdrasil-go 0.3.8 v
+github.setup        yggdrasil-network yggdrasil-go 0.3.11 v
 revision            0
 categories          net
 platforms           darwin
@@ -18,9 +18,9 @@ long_description    Yggdrasil is an early-stage implementation of a fully \
                     IPv6-capable application to communicate securely with other Yggdrasil \
                     nodes.
 
-checksums           rmd160  a108d1732704ca66167238c7802c31d52cf4a591 \
-                    sha256  d7cef3a4d53cd8c9f00c8bdb5d9b4850a5b870ed4df832fd0c4d63b7e383e72f \
-                    size    154631
+checksums           rmd160  fd0c3d3ce4b57dbf1aa4d169df4e2acb4dc01c0b \
+                    sha256  9582287d7f2782e3af71fe1576565cf2a6bb91654de4adbe797edd6745882ed6 \
+                    size    161612
 
 depends_build       port:go
 

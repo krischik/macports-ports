@@ -85,10 +85,10 @@ platform darwin {
         # 10.7 Lion and newer use the current, with a devel version also!
         if {${subport} eq ${name}} {
 
-            github.setup libuv libuv 1.32.0 v
-            checksums rmd160 86c9803f3bb94a937cd73f903d9b2406f31b60cd \
-                      sha256 bbea9c40656b122c64f637cc869f9a1abf57459fdf2542593a078d152e101ef3 \
-                      size   1242723
+            github.setup libuv libuv 1.33.1 v
+            checksums rmd160 72fa6fbcdbb09d31374eee9b1d77d67dd64b7a3e \
+                      sha256 7ba5720f058a732b48f4ed7c728795bb4ccbf13326ed09595bfe3d46277243bf \
+                      size   1251686
             revision  0
 
             conflicts libuv-devel
@@ -97,15 +97,15 @@ platform darwin {
 
         subport libuv-devel {
 
-            github.setup libuv libuv 549f52c4672a4d8198f096efa513a96b20e2f843
-            version   20190909-[string range ${github.version} 0 7]
-            checksums rmd160 fe38a09873db8a8a4a11d4d43e82f4b4e1844752 \
-                    sha256  dde7975379693ccda4eb7e92bc0b5c91b7e9dd5302649f6f7b745e2e2a98f9df \
-                    size    1242780
+            github.setup libuv libuv 780c08a63efb65aed65da57c36f1c5b10f25cc1d
+            version   20191029-[string range ${github.version} 0 7]
+            checksums rmd160 b8fd400ea1b86ca99b985b43bd6ec8523fdb1e9f \
+                      sha256 24cc2c0fba52ab31fbdc0614880e31355d425b7f2d66dc9ac66599c14ac83513 \
+                      size   1251913
             revision  0
 
             long_description ${long_description} \
-                This port is kept up with the libuv GIT 'master' branch, is typically updated weekly to monthly.
+                This port is kept up with the libuv GIT 'v1.x' branch, is typically updated weekly to monthly.
             conflicts libuv
 
             github.livecheck.branch v1.x

@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-reportlab
-version             3.5.26
+version             3.5.31
 revision            0
 categories-append   textproc
 platforms           darwin
 license             BSD
 
-python.versions     27 35 36 37
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -25,9 +25,9 @@ master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname} 
 
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  def6e55f1d4a5fb158d751b9325792a3d67880ac \
-                    sha256  739e81a32cd51be8d8225d316b1399d4b6ff6ee109963d3b5320b0718ce2aa0f \
-                    size    2857311
+checksums           rmd160  fa6fca81b9dd22ac1a0629607fff1aa75f17f26f \
+                    sha256  3e2d2ea8ac3d63c918a2b40476c2745704d0364abe2b9c844c75992132a5eac7 \
+                    size    2861798
 
 if {${name} ne ${subport}} {
     depends_build-append    port:py${python.version}-setuptools
@@ -43,4 +43,9 @@ if {${name} ne ${subport}} {
     }
 
     livecheck.type      none
+}
+
+subport py34-${python.rootname} {
+    replaced_by py35-${python.rootname}
+    PortGroup obsolete 1.0
 }

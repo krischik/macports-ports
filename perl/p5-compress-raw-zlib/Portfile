@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           perl5 1.0
 
-perl5.branches      5.26 5.28
-perl5.setup         Compress-Raw-Zlib 2.087
+perl5.branches      5.26 5.28 5.30
+perl5.setup         Compress-Raw-Zlib 2.090
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         The Compress::Raw::Zlib module provides a Perl \
@@ -13,8 +13,8 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  86d087b7bbac1445bb221046880fdd613c2aa0f1 \
-                    sha256  8c81c9e1e386b3620ea7aa4c393afe8c80d3587e4fde57b7f83106aea05bee8d \
-                    size    254083
+checksums           rmd160  90e4fc564c1e71590b7eb19b2a33a2e332b6f4ff \
+                    sha256  f2c8499abcc7df90b8ccc3767b870cbd09d305b84b251a9573237ef2cf9eaf59 \
+                    size    254413
 
 # builds using embedded zlib source, no external dependency required
