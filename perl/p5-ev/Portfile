@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         EV 4.31 ../../authors/id/M/ML/MLEHMANN
+perl5.setup         EV 4.33 ../../authors/id/M/ML/MLEHMANN
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         EV - perl interface to libev, a high performance full-featured event loop
@@ -12,9 +12,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  ba54fa7df065c8905363d526d5d5c47204589445 \
-                    sha256  8bcb1944c074220deaee8a5f43968b2bb9b658965bf17f4e4aa3469cb785b4cb \
-                    size    213829
+checksums           rmd160  d8bdf0177b3725588421e354f3bf4eed0d4b2c9a \
+                    sha256  4aee8391b88113b42187f91fd49245fdc8e9b193a15ac202f519caae2aa8ea35 \
+                    size    218067
 
 if {${perl5.major} != ""} {
     depends_build-append \

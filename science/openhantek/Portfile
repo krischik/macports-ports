@@ -6,17 +6,17 @@ PortGroup           github 1.0
 PortGroup           qt5 1.0
 PortGroup           app 1.0
 
-github.setup        OpenHantek OpenHantek6022 3.0.1
-checksums           rmd160 a07dbfa35c8912b799c91f99ef11dbe6df51d378 \
-                    sha256 b69c7cc335f5ec10d49e241cfbe839e6ac4c3aa6c9433b0ae36a33941550ef64 \
-                    size   20150030
+github.setup        OpenHantek OpenHantek6022 3.0.4
+checksums           rmd160  57d4efeb7163dff639862fc1564d513d57e2dccf \
+                    sha256  a2bb0b559e4ac5fcc9c92f620813f50a393ff29d476ecc8b80ba37fb9bb0f0ae \
+                    size    20023460
 revision            0
 
 name                openhantek
 platforms           darwin macosx
 categories          science
 license             GPL-3.0
-maintainers         {@ra1nb0w irh.it:rainbow} openmaintainer
+maintainers         {ra1nb0w @ra1nb0w} openmaintainer
 
 description         DSO software for Hantek USB digital signal oscilloscopes
 long_description    OpenHantek is a free software for Hantek and compatible \

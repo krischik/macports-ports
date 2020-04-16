@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-alembic
-version             1.4.0
+version             1.4.2
 revision            0
 categories-append   databases
 platforms           darwin
@@ -20,9 +20,9 @@ long_description    ${description}
 
 homepage            http://bitbucket.org/zzzeek/alembic
 
-checksums           rmd160  66bde458f6d5f2e74506b9aeac75381aff1588e4 \
-                    sha256  2df2519a5b002f881517693b95626905a39c5faf4b5a1f94de4f1441095d1d26 \
-                    size    1082449
+checksums           rmd160  0f4f8cae20bf34a39a527b2d4d065a2c7478480b \
+                    sha256  035ab00497217628bf5d0be82d664d8713ab13d37b630084da8e1f98facf4dbf \
+                    size    1092045
 
 if {${name} ne ${subport}} {
 

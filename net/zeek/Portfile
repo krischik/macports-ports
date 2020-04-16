@@ -1,9 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           github 1.0
+PortGroup           cmake 1.1
 
-github.setup        zeek zeek 3.0.1 v
+name                zeek
+version             3.1.2
 revision            0
 categories          net security
 platforms           darwin
@@ -18,37 +19,19 @@ long_description    ${description} Zeek is the new name for the long-established
                     also often appears in the documentation and distributions.
 
 homepage            https://www.zeek.org/
-master_sites        https://github.com/zeek/zeek/archive:zeek
+master_sites        https://old.zeek.org/downloads/
 
-distfiles           ${name}-${version}${extract.suffix}:zeek
 
-fetch.type          git
+checksums           rmd160  969f844276650cd1c9cee96aa29cbbd9fd7943a5 \
+                    sha256  1858725fd6d04a1af3c2798c341529aa0d229e838b6476f036156dc5dd254aa1 \
+                    size    32117554
 
-post-fetch {
-    # zeek uses numerous submodules that are not part of the base package
-    system -W ${worksrcpath} "git submodule update --init --recursive"
-}
-
-checksums           rmd160  d94d29d1854e7b7b4923e1231fa88d20bf79cc82 \
-                    sha256  66e838c03c448429497626903683224a61ac76ab365f5f2c5a9a14e7c7ad993a \
-                    size    13165585
-
-depends_build       path:bin/cmake:cmake \
+depends_build-append \
                     port:libgeoip \
+                    port:pkgconfig \
+                    port:swig \
                     port:swig-python
 
-variant python37 conflicts python38 description {Build using Python 3.7} {
-    set PythonBranch    37
-}
-
-variant python38 conflicts python37 description {Build using Python 3.8} {
-    set PythonBranch    38
-}
-
-if {![variant_isset python37] && ![variant_isset python38]} {
-    default_variants    +python38
-    set PythonBranch    38
-}
 
 # use the system-provided flex
 depends_lib-append  port:bison \
@@ -58,30 +41,60 @@ depends_lib-append  port:bison \
                     port:libpcap \
                     path:lib/libssl.dylib:openssl \
                     port:perl5 \
-                    port:python${PythonBranch} \
                     port:readline \
                     port:zlib
 
 variant universal {}
 
-configure.cflags-append "${configure.cflags} [get_canonical_archflags cc]"
-configure.universal_args
+compiler.cxx_standard 2017
 
-configure.args      --enable-mobile-ipv6 \
-                    --conf-files-dir=${prefix}/etc/zeek \
-                    --spooldir=${prefix}/var/spool/zeek \
-                    --logdir=${prefix}/var/log/zeek \
-                    --with-caf=${prefix}
+
+platform darwin {
+    # see https://trac.macports.org/ticket/60252
+    if {${os.major} < 18} {
+        pre-fetch {
+            ui_error "${name} @${version} requires at least macOS 10.14 Mojave"
+            return -code error "incompatible macOS version"
+        }
+        known_fail  yes
+    }
+}
+
+configure.args      -DCAF_ROOT_DIR=${prefix} \
+                    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+
+variant python37 conflicts python38 description {Build using Python 3.7} {
+    configure.args-append \
+                    -DPYTHON_EXECUTABLE=${prefix}/bin/python3.7 \
+                    -DPYTHON_CONFIG=${prefix}/Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/config-3.7m-darwin/python-config
+    depends_lib-append  \
+                    port:python37
+}
+
+variant python38 conflicts python37 description {Build using Python 3.8} {
+    configure.args-append \
+                    -DPYTHON_EXECUTABLE=${prefix}/bin/python3.8 \
+                    -DPYTHON_CONFIG=${prefix}/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/config-3.8-darwin/python-config
+    depends_lib-append  \
+                    port:python38
+}
+
+if {![variant_isset python37] && ![variant_isset python38]} {
+    default_variants \
+                    +python38
+}
+
+# fix Catalina build issue
+platform darwin 19 {
+    patchfiles-append \
+                    patch-aux-broker-src-detail-sqlite_backend.cc.diff
+}
 
 post-destroot {
     xinstall -d ${destroot}${prefix}/share/examples/${name}
     copy ${worksrcpath}/aux/zeekctl/etc/node.cfg ${destroot}${prefix}/share/examples/${name}/
     copy ${worksrcpath}/aux/zeekctl/etc/networks.cfg ${destroot}${prefix}/share/examples/${name}/
     copy ${worksrcpath}/aux/zeekctl/etc/zeekctl.cfg.in ${destroot}${prefix}/share/examples/${name}/
-
-    reinplace "s|/usr/bin/python|${prefix}/bin/python3.7|" ${destroot}${prefix}/bin/zeekctl
-
-    reinplace "s|/usr/bin/python|${prefix}/bin/python3.7|" ${destroot}${prefix}/bin/trace-summary
 
     xinstall -d ${destroot}${prefix}/Library/LaunchDaemons/
     copy ${filespath}/org.macports.zeek.plist ${destroot}${prefix}/Library/LaunchDaemons/
@@ -154,5 +167,5 @@ ${prefix}/logs -> ${prefix}/var/log/zeek
 "
 
 livecheck.type      regex
-livecheck.url       ${homepage}download/
+livecheck.url       ${master_sites}
 livecheck.regex     ${name}-(\[0-9a-z.\]+)${extract.suffix}

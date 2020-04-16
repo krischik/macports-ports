@@ -4,11 +4,11 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        kovidgoyal kitty 0.13.2 v
+github.setup        kovidgoyal kitty 0.17.2 v
 revision            0
-checksums           rmd160  9a0f1917339008ac28a8d080c616c821544d3142 \
-                    sha256  84699311cd99989fa428326264df193f9c5e449afa1d399ece324e269c5b9726 \
-                    size    2849800
+checksums           rmd160  a383b47c59905f553590bffd4693bec11d46f408 \
+                    sha256  cd8e9f5c9932155f9d5e7f5cc72dea64bc8a509f6ff0b5fb7a72b4c79e153f8e \
+                    size    3044140
 
 categories          aqua
 platforms           darwin
@@ -17,11 +17,13 @@ maintainers         nomaintainer
 description         A cross-platform, fast, feature full, GPU based terminal emulator
 long_description    ${description}
 
+homepage            https://sw.kovidgoyal.net/kitty/
+
 github.tarball_from releases
 use_xz              yes
 
 python.default_version \
-                    37
+                    38
 
 depends_build-append \
                     port:librsvg \

@@ -2,7 +2,6 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
-PortGroup           cxx11 1.1
 PortGroup           github 1.0
 PortGroup           wxWidgets 1.0
 PortGroup           app 1.0
@@ -11,7 +10,7 @@ name                limesuite
 categories          science comms
 platforms           darwin macosx
 license             Apache-2
-maintainers         {@ra1nb0w irh.it:rainbow} {michaelld @michaelld} openmaintainer
+maintainers         {ra1nb0w @ra1nb0w} {michaelld @michaelld} openmaintainer
 description         provides drivers and SDR application support for the LMS7002M RFIC
 long_description    Lime Suite is a collection of software supporting several hardware \
     platforms including the LimeSDR, drivers for the LMS7002M transceiver RFIC, and other \
@@ -21,11 +20,11 @@ homepage            https://myriadrf.org/projects/lime-suite/
 subport limesuite-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup myriadrf LimeSuite c931854ead81307206bce750c17c2301810b5545
-    version   20200129-[string range ${github.version} 0 7]
-    checksums rmd160  36a513033e9c013b119adb895d21e475d8a70e0f \
-              sha256  48c688f53ec3a6ad437b5f611d15cd87e954ef1da99748541a2e354155031f7b \
-              size    5415614
+    github.setup    myriadrf LimeSuite b14b34569bed8e6f9ee12b87a1a19799aff0443e
+    version         20200331-[string range ${github.version} 0 7]
+    checksums       rmd160  11d6877ef5b31f95b7e335c54d5506ec31264b2c \
+                    sha256  283a8ef3514f4d17e59974403232a9f5991896617916755d1175fe611decc6d9 \
+                    size    5397719
     revision  0
 
     name            limesuite-devel
@@ -39,12 +38,14 @@ if {[string first "-devel" $subport] > 0} {
     checksums       rmd160  ee57027f57c71e2ca734dacd706ec0c15e0e1870 \
                     sha256  b0aa3db383bec31b613025b58b7f15218f056e6f07c3eabaab8df9097f93854c \
                     size    5415366
-    revision        0
+    revision        1
 
     conflicts       limesuite-devel
     configure.args-append -DLIME_SUITE_EXTVER=release
 
 }
+
+compiler.cxx_standard 2011
 
 # fix where CMake files are installed; in MacPorts we strive for
 # "$PREFIX/share/cmake/$PROJECT_NAME", not "$PREFIX/lib/cmake/$PROJECT_NAME".

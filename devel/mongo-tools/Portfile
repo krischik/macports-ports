@@ -15,11 +15,11 @@ PortGroup           golang 1.0
 
 # Keep mongo-tools at the same version as mongodb.
 
-go.setup            github.com/mongodb/mongo-tools 4.2.3 r
+go.setup            github.com/mongodb/mongo-tools 4.2.5 r
 revision            0
-checksums           rmd160  bed1bd6d64a05de62a310cd0e814101b8c57d346 \
-                    sha256  676a5a4e056a7ff2ce2e16da958f61a52deb8ef2b6103b5bf6148b8647906811 \
-                    size    15019931
+checksums           rmd160  cbcc18b53ef492b880d3cba8491e52db2fc3fe7a \
+                    sha256  141318de97ab64253320e03620bc538b96fc193635d5ed9bb7ac2a3b61006046 \
+                    size    15018532
 
 categories          devel
 platforms           darwin

@@ -2,9 +2,10 @@
 
 PortSystem          1.0
 PortGroup           select 1.0
+PortGroup           java 1.0
 
 name                flyway
-version             5.2.4
+version             6.3.3
 
 categories          java devel
 license             Apache-2
@@ -23,11 +24,12 @@ master_sites        https://repo1.maven.org/maven2/org/flywaydb/flyway-commandli
 distname            ${name}-commandline-${version}
 worksrcdir          ${name}-${version}
 
-checksums           rmd160 f183243cb374a850f1c9887c1972994f1b734740 \
-                    sha256 ac42a414e316d7592c7035cd7fa14050ed02c77972196367ab8f11b9a9352a9a \
-                    size   21838203
+checksums           rmd160  90b76149cfcd0b5f8b92e725f4fc50726d3bc4f9 \
+                    sha256  e9eb7ad803931d7a53af515c6149a56e282f1b7d991766c18de51a42b9a86ef3 \
+                    size    53854259
 
-depends_run         bin:java:kaffe
+java.version        1.8+
+java.fallback       openjdk11
 
 use_configure       no
 

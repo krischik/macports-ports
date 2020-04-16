@@ -8,11 +8,11 @@ PortGroup           compiler_blacklist_versions 1.0
 
 name                mongodb
 epoch               1
-version             4.2.3
+version             4.2.5
 revision            0
-checksums           rmd160  ce03973377b61285d973b2814680dda6520be2be \
-                    sha256  008fddb13550a26fb6d22fcb9ff6409630f602254f4b661d4ebf56c2a9a45a76 \
-                    size    61565615
+checksums           rmd160  ee3dddf152a851cfce416ec458aece6d667f6f03 \
+                    sha256  63772b2191801140f50f540d1aee4c8077ad441a0968c3baf82f4e1487ff1069 \
+                    size    61641628
 
 license             SSPL
 categories          databases

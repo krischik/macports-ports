@@ -3,11 +3,12 @@
 PortSystem          1.0
 
 PortGroup           legacysupport 1.0
+
 legacysupport.newest_darwin_requires_legacy 13
 
 name                go
 epoch               2
-version             1.13.8
+version             1.14.2
 categories          lang
 platforms           darwin freebsd linux
 license             BSD
@@ -30,9 +31,9 @@ master_sites        https://storage.googleapis.com/golang/
 distfiles           ${name}${version}.src.tar.gz
 worksrcdir          ${name}
 
-checksums           rmd160  9a8c9aecadf9baef6e55b5dbf9a0a8340f28f293 \
-                    sha256  b13bf04633d4d8cf53226ebeaace8d4d2fd07ae6fa676d0844a688339debec34 \
-                    size    21631178
+checksums           rmd160  8b6d9bdb7e8d1eb9fba36d110cfcf59c6d9adc1e \
+                    sha256  98de84e69726a66da7b4e58eac41b99cbe274d7e8906eeb8a5b7eb0aadee7f7c \
+                    size    22454649
 
 depends_build       port:go-1.4
 
@@ -70,18 +71,13 @@ if {${os.platform} eq "darwin" && ${os.major} <= ${legacysupport.newest_darwin_r
     # since go doesn't use the standard CFLAGS/CXXFLAGS.
     # We need to patch the build system and set up env variables manually.
 
-    patchfiles-append   dist-support-BOOT_GO_LDFLAGS.patch
+    # Older compilers don't support the -Wno-nullability-completeness flag and if
+    # that's the case, they won't need it anyway, so just patch it out.
+    patchfiles-append   cgo-drop-no-nullability-completeless.patch
 
-    if {[vercmp [macports_version] 2.5.99] >= 0} {
-        build.env-append  "GO_EXTLINK_ENABLED=1" \
-                          "GO_LDFLAGS=\"-extldflags=${configure.ldflags}\"" \
-                          "BOOT_GO_LDFLAGS=-extldflags=${configure.ldflags}"
-    } else {
-        patchfiles-append   workaround-base-env-issue-GO_EXT_LDFLAGS.patch
-        build.env-append    GO_EXTLINK_ENABLED="1" \
-                            GO_EXT_LDFLAGS="${configure.ldflags}" \
-                            BOOT_GO_EXT_LDFLAGS="${configure.ldflags}"
-    }
+    build.env-append    "GO_EXTLINK_ENABLED=1" \
+                        "GO_LDFLAGS=\"-extldflags=${configure.ldflags}\"" \
+                        "BOOT_GO_LDFLAGS=-extldflags=${configure.ldflags}"
 
     notes-append [subst {
                     go had to be specially patched and built to work on your platform.

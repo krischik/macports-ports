@@ -7,7 +7,7 @@ PortGroup           github 1.0
 categories          science comms
 platforms           darwin macosx
 license             GPL-3
-maintainers         {@ra1nb0w irh.it:rainbow} {michaelld @michaelld} openmaintainer
+maintainers         {ra1nb0w @ra1nb0w} {michaelld @michaelld} openmaintainer
 description         GNU Radio decoders for several Amateur satellites.
 long_description    ${description} The version 1.x supports only GNU Radio 3.7.
 
@@ -15,7 +15,7 @@ github.setup daniestevez gr-satellites 1.8.2 v
 checksums rmd160 114873c096906910769783ee2c6a6b0d1114ca55 \
           sha256 0915a29cca1daed9f4640448024bc9b14e086ff941253f9b1fc31eda183c5c77 \
           size   760064
-revision  1
+revision  2
 
 # use C++11
 compiler.cxx_standard 2011

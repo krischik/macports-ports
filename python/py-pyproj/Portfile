@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pyproj
-version             2.4.2.post1
+version             2.6.0
 revision            0
 categories-append   devel
 platforms           darwin
@@ -21,9 +21,9 @@ long_description    Pyrex wrapper to provide python interfaces to PROJ.4 \
 
 homepage            https://pyproj4.github.io/pyproj
 
-checksums           rmd160  701790272ca26d079ca2e05b3d85dfed53cc9932 \
-                    sha256  1da7f86d3b5e80ba3dabfd2c904a41bb6997ad9b55b47a934035492eaa0f331e \
-                    size    463579
+checksums           rmd160  13a70c3e767598b95a0833074a3ae8643acf2228 \
+                    sha256  977542d2f8cf2981cf3ad72cedfebcd6ac56977c7aa830d9b49fa7888b56e83d \
+                    size    524241
 
 if {${name} ne ${subport}} {
     depends_build-append \

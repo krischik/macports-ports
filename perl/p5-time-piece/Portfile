@@ -4,15 +4,15 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Time-Piece 1.33
+perl5.setup         Time-Piece 1.3401 ../../authors/id/E/ES/ESAYM
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 
 description         Object-oriented time objects
 long_description    ${description}
 
-checksums           rmd160  cb678b5e8ee337fd60967cf3f22f0d57d8bdb9bb \
-                    sha256  c7e128bcee285b1e666ea9824c0491e219d482242897e386ca18de268bbee930 \
-                    size    36097
+checksums           rmd160  44da1db14ebf16e2a3e9b48bd500866a1c4e9f83 \
+                    sha256  4b55b7bb0eab45cf239a54dfead277dfa06121a43e63b3fce0853aecfdb04c27 \
+                    size    38679
 
 platforms           darwin

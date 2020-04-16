@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-keyring
-version             21.1.0
-revision            0
+version             21.2.0
+revision            1
 
 categories-append   security
 platforms           darwin
@@ -20,12 +20,10 @@ long_description    The Python keyring lib provides a easy way to access the sys
                     supports the Keychain service in Mac OS X.
 
 homepage            https://github.com/jaraco/keyring
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
-distname            ${python.rootname}-${version}
 
-checksums           rmd160  15d6e922f30db766174be44767ef807076e93a2f \
-                    sha256  1f393f7466314068961c7e1d508120c092bd71fa54e3d93b76180b526d4abc56 \
-                    size    54866
+checksums           rmd160  6c64c6f820a89aa4e022c9ee229bd2167c9de66d \
+                    sha256  197fd5903901030ef7b82fe247f43cfed2c157a28e7747d1cfcf4bc5e699dd03 \
+                    size    53978
 
 python.versions     27 35 36 37 38
 
@@ -33,25 +31,34 @@ if {${name} ne ${subport}} {
     if {${python.version} eq 27} {
         version     18.0.1
         revision    0
-        distname    ${python.rootname}-${version}
         checksums   rmd160  0e07d12c4943d18499350057a9df781fb4fcbbaf \
                     sha256  67d6cc0132bd77922725fae9f18366bb314fd8f95ff4d323a4df41890a96a838 \
                     size    48559
+
+        depends_lib-append \
+                    port:py${python.version}-entrypoints
+
     } elseif {${python.version} eq 35} {
         version     20.0.1
-        revision    0
-        distname    ${python.rootname}-${version}
+        revision    1
         checksums   rmd160  171bae4ffee2780dff9d7529c52e119abd9d0a97 \
                     sha256  963bfa7f090269d30bdc5e25589e5fd9dad2cf2a7c6f176a7f2386910e5d0d8d \
                     size    53452
+    } else {
+        depends_build-append \
+                    port:py${python.version}-toml
     }
 
     depends_build-append \
                     port:py${python.version}-setuptools_scm
 
     depends_lib-append \
-                    port:py${python.version}-setuptools \
-                    port:py${python.version}-entrypoints
+                    port:py${python.version}-setuptools
+
+    if {${python.version} in "35 36 37"} {
+        depends_lib-append \
+                port:py${python.version}-importlib-metadata
+    }
 
     post-destroot {
         set docdir ${prefix}/share/doc/${subport}

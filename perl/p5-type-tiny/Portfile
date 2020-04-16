@@ -4,18 +4,17 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Type-Tiny 1.008000 ../../authors/id/T/TO/TOBYINK
+perl5.setup         Type-Tiny 1.010001 ../../authors/id/T/TO/TOBYINK
 platforms           darwin
-supported_archs     noarch
 maintainers         nomaintainer
 license             {Artistic-1 GPL}
 
 description         Type::Tiny is a tiny class for creating Moose-like type constraint objects which are compatible with Moo, Moose and Mouse.
 long_description    ${description}
 
-checksums           rmd160  1a4d48ee93a407c77651e908e5ef226854cdae4b \
-                    sha256  e6f62db64e546378d23f1fe0f74a85c60d598ab566f976259f9d82b16290ba6e \
-                    size    426460
+checksums           rmd160  77aff64ecb294aa13a78d47799f426f9cf94a702 \
+                    sha256  f378663f62aaa7cf87f47b90f0951356d26a08468027da26962387998a6b1aae \
+                    size    436800
 
 if {${perl5.major} != ""} {
     depends_build-append \
@@ -26,4 +25,6 @@ if {${perl5.major} != ""} {
                     port:p${perl5.major}-exporter-tiny \
                     port:p${perl5.major}-ref-util-xs \
                     port:p${perl5.major}-type-tiny-xs
+
+    supported_archs noarch
 }

@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        dovecot core 2.3.9.2
+github.setup        dovecot core 2.3.10
 name                dovecot
 revision            0
 conflicts           dovecot2
@@ -22,12 +22,12 @@ long_description    Dovecot is an IMAP and POP3 server for Linux/UNIX-like\
                     it is written in C, it uses several coding techniques to\
                     avoid most of the common pitfalls.
 
-checksums           rmd160  abd637ff84bb1196f6729d767259499f2094f4b0 \
-                    sha256  574c9fc64932f5eb52563743848f84e692eedc1f92e26a7bad680aac61dde0e0 \
-                    size    3712754
+checksums           rmd160  8853f27a1464737cf0a2203770b54249629b297e \
+                    sha256  47cc06d2b005940865132f4bf468520b756d982799b6d4b0e81283dc2bd0c1b2 \
+                    size    3734697
 
 subport ${name}-sieve {
-    github.setup    dovecot pigeonhole 0.5.9
+    github.setup    dovecot pigeonhole 0.5.10
     revision        0
 
     description     Pigeonhole sieve and managesieve plugins for dovecot
@@ -68,9 +68,9 @@ subport ${name}-sieve {
 
     distname        dovecot-${core_version}-pigeonhole-${version}
 
-    checksums       rmd160  c8dee5dbf2a138a918ccc59ce0c8973e3f391bb5 \
-                    sha256  42a4afcd8a7a0528f5f78b4224eb4ea1766cd54311c5b6fccdb825b3fe419b5c \
-                    size    1043529
+    checksums       rmd160  e5a00a86aefb7cb6a4bef42ff65e7bac7e6f414c \
+                    sha256  9769d9fb14fed571deb4994a21c2c0ac3a1c9ab7f0d1bd115fdaba75e36f555b \
+                    size    1044145
 
     depends_lib-append \
                     port:${name} \
@@ -170,7 +170,7 @@ if {${name} eq ${subport}} {
     variant libstemmer description {Use libstemmer for full-text search} {
         depends_lib-append          port:libstemmer
         configure.args-append       --with-libstemmer
-}
+    }
 
     variant apns \
         description "Enable Apple Push Notification Service (APNS)" {
@@ -254,103 +254,66 @@ if {${name} eq ${subport}} {
     }
 
     variant postgresql96 \
-        conflicts postgresql82 postgresql83 postgresql84 \
-            postgresql90 postgresql91 postgresql92 postgresql93 postgresql94 \
-            postgresql95 \
+        conflicts postgresql10 postgresql11 postgresql12 \
         description "Enable PostgreSQL 9.6 support" {
         depends_lib-append          port:postgresql96
         configure.env-append        PG_CONFIG=${prefix}/lib/postgresql96/bin/pg_config
         configure.args-append       --with-pgsql
     }
 
-    variant postgresql95 \
-        conflicts postgresql82 postgresql83 postgresql84 \
-            postgresql90 postgresql91 postgresql92 postgresql93 postgresql94 \
-            postgresql96 \
-        description "Enable PostgreSQL 9.5 support" {
-        depends_lib-append          port:postgresql95
-        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql95/bin/pg_config
+    variant postgresql10 \
+        conflicts postgresql96 postgresql11 postgresql12 \
+        description "Enable PostgreSQL 10 support" {
+        depends_lib-append          port:postgresql10
+        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql10/bin/pg_config
         configure.args-append       --with-pgsql
     }
 
-    variant postgresql94 \
-        conflicts postgresql82 postgresql83 postgresql84 \
-            postgresql90 postgresql91 postgresql92 postgresql93 \
-            postgresql95 postgresql96 \
-        description "Enable PostgreSQL 9.4 support" {
-        depends_lib-append          port:postgresql94
-        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql94/bin/pg_config
+    variant postgresql11 \
+        conflicts postgresql96 postgresql10 postgresql12 \
+        description "Enable PostgreSQL 11 support" {
+        depends_lib-append          port:postgresql11
+        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql11/bin/pg_config
         configure.args-append       --with-pgsql
     }
 
-    variant postgresql93 \
-        conflicts postgresql82 postgresql83 postgresql84 \
-            postgresql90 postgresql91 postgresql92 \
-            postgresql94 postgresql95 postgresql96 \
-        description "Enable PostgreSQL 9.3 support" {
-        depends_lib-append          port:postgresql93
-        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql93/bin/pg_config
+    variant postgresql12 \
+        conflicts postgresql96 postgresql10 postgresql11 \
+        description "Enable PostgreSQL 12 support" {
+        depends_lib-append          port:postgresql12
+        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql12/bin/pg_config
         configure.args-append       --with-pgsql
     }
 
-    variant postgresql92 \
-        conflicts postgresql82 postgresql83 postgresql84 \
-            postgresql90 postgresql91 \
-            postgresql93 postgresql94 postgresql95 postgresql96 \
-        description "Enable PostgreSQL 9.2 support" {
-        depends_lib-append          port:postgresql92
-        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql92/bin/pg_config
-        configure.args-append       --with-pgsql
-    }
+    # remove 2021-03-02
+    variant postgresql95 requires postgresql11 description "Legacy compatibility variant" {}
 
-    variant postgresql91 \
-        conflicts postgresql82 postgresql83 postgresql84 \
-            postgresql90 \
-            postgresql92 postgresql93 postgresql94 postgresql95 postgresql96 \
-        description "Enable PostgreSQL 9.1 support" {
-        depends_lib-append          port:postgresql91
-        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql91/bin/pg_config
-        configure.args-append       --with-pgsql
-    }
+    # remove 2021-03-02
+    variant postgresql94 requires postgresql11 description "Legacy compatibility variant" {}
 
-    variant postgresql90 \
-        conflicts postgresql82 postgresql83 postgresql84 \
-            postgresql91 postgresql92 postgresql93 postgresql94 postgresql95 postgresql96 \
-        description "Enable PostgreSQL 9.0 support" {
-        depends_lib-append          port:postgresql90
-        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql90/bin/pg_config
-        configure.args-append       --with-pgsql
-    }
+    # remove 2021-03-02
+    variant postgresql93 requires postgresql11 description "Legacy compatibility variant" {}
 
-    variant postgresql84 \
-        conflicts postgresql82 postgresql83 \
-            postgresql91 postgresql92 postgresql93 postgresql94 postgresql95 postgresql96 \
-        description "Enable PostgreSQL 8.4 support" {
-        depends_lib-append          port:postgresql84
-        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql84/bin/pg_config
-        configure.args-append       --with-pgsql
-    }
+    # remove 2021-03-02
+    variant postgresql92 requires postgresql11 description "Legacy compatibility variant" {}
 
-    variant postgresql83 \
-        conflicts postgresql82 postgresql84 \
-            postgresql91 postgresql92 postgresql93 postgresql94 postgresql95 postgresql96 \
-        description "Enable PostgreSQL 8.3 support" {
-        depends_lib-append          port:postgresql83
-        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql83/bin/pg_config
-        configure.args-append       --with-pgsql
-    }
+    # remove 2021-03-02
+    variant postgresql91 requires postgresql11 description "Legacy compatibility variant" {}
 
-    variant postgresql82  \
-        conflicts postgresql83 postgresql84 \
-            postgresql91 postgresql92 postgresql93 postgresql94 postgresql95 postgresql96 \
-        description "Enable PostgreSQL 8.2 support" {
-        depends_lib-append          port:postgresql82
-        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql82/bin/pg_config
-        configure.args-append       --with-pgsql
-    }
+    # remove 2021-03-02
+    variant postgresql90 requires postgresql11 description "Legacy compatibility variant" {}
+
+    # remove 2021-03-02
+    variant postgresql84 requires postgresql11 description "Legacy compatibility variant" {}
+
+    # remove 2021-03-02
+    variant postgresql83 requires postgresql11 description "Legacy compatibility variant" {}
+
+    # remove 2021-03-02
+    variant postgresql82 requires postgresql11 description "Legacy compatibility variant" {}
 
     variant percona \
-        conflicts mysql5 mysql51 mysql55 mysql56 mariadb \
+        conflicts mysql57 mysql8 mariadb mariadb10.1 \
         description "Enable Percona (MySQL) support" {
             depends_lib-append          port:percona
             configure.env-append        MYSQL_CONFIG=${prefix}/lib/percona/bin/mysql_config
@@ -358,94 +321,82 @@ if {${name} eq ${subport}} {
     }
 
     variant mariadb \
-        conflicts mysql5 mysql51 mysql55 mysql56 percona \
+        conflicts mysql57 mysql8 mariadb10.1 percona \
         description "Enable MariaDB (MySQL) support" {
         depends_lib-append          port:mariadb
         configure.env-append        MYSQL_CONFIG=${prefix}/lib/mariadb/bin/mysql_config
         configure.args-append       --with-mysql
     }
 
-    variant mysql56 \
-        conflicts mysql5 mysql51 mysql55 mariadb percona \
-        description "Enable MySQL 5.6 support" {
-        depends_lib-append          port:mysql56
-        configure.env-append        MYSQL_CONFIG=${prefix}/lib/mysql56/bin/mysql_config
+    variant mariadb10.1 \
+        conflicts mysql57 mysql8 mariadb percona \
+        description "Enable MariaDB 10.1 (MySQL) support" {
+        depends_lib-append          port:mariadb-10.1
+        configure.env-append        MYSQL_CONFIG=${prefix}/lib/mariadb-10.1/bin/mysql_config
         configure.args-append       --with-mysql
     }
 
-    variant mysql55 \
-        conflicts mysql5 mysql51 mysql56 mariadb percona \
-        description "Enable MySQL 5.5 support" {
-        depends_lib-append          port:mysql55
-        configure.env-append        MYSQL_CONFIG=${prefix}/lib/mysql55/bin/mysql_config
+    variant mysql57 \
+        conflicts mysql8 mariadb mariadb10.1 percona \
+        description "Enable MySQL 5.7 support" {
+        depends_lib-append          port:mysql57
+        configure.env-append        MYSQL_CONFIG=${prefix}/lib/mysql57/bin/mysql_config
         configure.args-append       --with-mysql
     }
 
-    variant mysql51 \
-        conflicts mysql5 mysql55 mysql56 mariadb percona \
-        description "Enable MySQL 5.1 support" {
-        depends_lib-append          port:mysql51
-        configure.env-append        MYSQL_CONFIG=${prefix}/lib/mysql51/bin/mysql_config
+    variant mysql8 \
+        conflicts mysql57 mariadb mariadb10.1 percona \
+        description "Enable MySQL 8 support" {
+        depends_lib-append          port:mysql8
+        configure.env-append        MYSQL_CONFIG=${prefix}/lib/mysql8/bin/mysql_config
         configure.args-append       --with-mysql
     }
 
-    variant mysql5 \
-        conflicts mysql51 mysql55 mysql56 mariadb percona \
-        description "Enable MySQL 5.1 support" {
-        depends_lib-append          port:mysql5
-        configure.env-append        MYSQL_CONFIG=${prefix}/lib/mysql5/bin/mysql_config
-        configure.args-append       --with-mysql
-    }
+    if {[variant_isset "apns"]} {
+        set daemon_uniquename   \
+                                org.macports.${name}
+        set pushnotify_uniquename \
+                                org.macports.${name}-apns
+        startupitem.type        launchd
+        startupitem.create      no
+        # Inject our own launchd plists to include pushnotify.pl
+        startupitems \
+            name                ${name} \
+            location            LaunchDaemons \
+            uniquename          ${daemon_uniquename} \
+            plist               ${daemon_uniquename}.plist \
+            name                ${name}-apns \
+            location            LaunchDaemons \
+            uniquename          ${pushnotify_uniquename} \
+            plist               ${pushnotify_uniquename}.plist
 
-    variant no_startupitem description {Do not install a launchd plist} {}
-
-    if {![variant_isset "no_startupitem"]} {
-        if {![variant_isset "apns"]} {
-            startupitem.create      yes
-            startupitem.executable  ${prefix}/sbin/${name}
-            startupitem.pidfile     auto ${prefix}/var/run/${name}/master.pid
-        } else {
-            set daemon_uniquename   \
-                                    org.macports.${name}
-            set pushnotify_uniquename \
-                                    org.macports.${name}-apns
-            startupitem.type        launchd
-            startupitem.create      no
-            # Inject our own launchd plists to include pushnotify.pl
-            startupitems \
-                name                ${name} \
-                location            LaunchDaemons \
-                uniquename          ${daemon_uniquename} \
-                plist               ${daemon_uniquename}.plist \
-                name                ${name}-apns \
-                location            LaunchDaemons \
-                uniquename          ${pushnotify_uniquename} \
-                plist               ${pushnotify_uniquename}.plist
-
-            post-destroot {
-                xinstall -m 0755 -d \
+        post-destroot {
+            xinstall -m 0755 -d \
+                ${destroot}/Library/LaunchDaemons
+            foreach uniquename "${daemon_uniquename} ${pushnotify_uniquename}" {
+                xinstall -m 644 -W ${filespath} ${uniquename}.plist \
                     ${destroot}/Library/LaunchDaemons
-                foreach uniquename "${daemon_uniquename} ${pushnotify_uniquename}" {
-                    xinstall -m 644 -W ${filespath} ${uniquename}.plist \
-                        ${destroot}/Library/LaunchDaemons
-                    reinplace "s|@PREFIX@|${prefix}|g" \
-                        ${destroot}/Library/LaunchDaemons/${uniquename}.plist
-                    xinstall -m 0755 -d \
-                        ${destroot}${prefix}/etc/LaunchDaemons/${uniquename}
-                    move ${destroot}/Library/LaunchDaemons/${uniquename}.plist \
-                        ${destroot}${prefix}/etc/LaunchDaemons/${uniquename}/
-                    if {${startupitem.install} && [geteuid] == 0} {
-                        ln -s \
-                            ${prefix}/etc/LaunchDaemons/${uniquename}/${uniquename}.plist \
-                            ${destroot}/Library/LaunchDaemons/
-                    } else {
-                        ln -s \
-                            ${prefix}/etc/LaunchDaemons/${uniquename}/${uniquename}.plist \
-                            ${destroot}${prefix}/etc/LaunchDaemons
-                    }
+                reinplace "s|@PREFIX@|${prefix}|g" \
+                    ${destroot}/Library/LaunchDaemons/${uniquename}.plist
+                xinstall -m 0755 -d \
+                    ${destroot}${prefix}/etc/LaunchDaemons/${uniquename}
+                move ${destroot}/Library/LaunchDaemons/${uniquename}.plist \
+                    ${destroot}${prefix}/etc/LaunchDaemons/${uniquename}/
+                if {${startupitem.install} && [geteuid] == 0} {
+                    ln -s \
+                        ${prefix}/etc/LaunchDaemons/${uniquename}/${uniquename}.plist \
+                        ${destroot}/Library/LaunchDaemons/
+                } else {
+                    ln -s \
+                        ${prefix}/etc/LaunchDaemons/${uniquename}/${uniquename}.plist \
+                        ${destroot}${prefix}/etc/LaunchDaemons
                 }
             }
         }
+    } else {
+        startupitem.create      yes
+        startupitem.executable  ${prefix}/sbin/${name}
+        startupitem.pidfile     auto ${prefix}/var/run/${name}/master.pid
     }
 
     destroot.keepdirs \

@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        tj n 6.2.0 v
+github.setup        tj n 6.5.1 v
 categories          devel
 platforms           darwin
 maintainers         {amake @amake} openmaintainer
@@ -13,9 +13,9 @@ description         A simple tool to interactively manage Node.js versions
 
 long_description    ${description}
 
-checksums           rmd160  130670c9d6b73bc13498ba461e3a1a99dd257808 \
-                    sha256  468be43416ee908644ed6fd8e30e1c7ebec0c28ecb209995a5be43587d36d54f \
-                    size    26457
+checksums           rmd160  b0f54d7a6b241b517b13bffd5cbbbd6ba28121a0 \
+                    sha256  6fbc10790fe649ce99d0e70dee95695f5b39bbc0e26728ab8a50fee20bc70963 \
+                    size    28526
 
 use_configure       no
 

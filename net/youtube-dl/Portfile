@@ -3,11 +3,11 @@
 PortSystem          1.0
 
 name                youtube-dl
-version             2020.02.16
+version             2020.03.24
 revision            0
-checksums           rmd160  7aaf8706ba06f7bff0c8eb98a95d53492f8b144b \
-                    sha256  abcd19c109125a69915c6ad70fcc6b02411a64427fbb7b91a6b37217dfb9e0c6 \
-                    size    3161956
+checksums           rmd160  9c6028fbc1db93b931e8bd9a4382a11077896d70 \
+                    sha256  45a398a41e4a06862413d9c8d57e6c1fa0e60660c6f69df928b64f3595568416 \
+                    size    3165706
 
 categories          net
 platforms           darwin
@@ -19,7 +19,7 @@ description         command-line program to download videos from YouTube.com and
 
 long_description    ${name} is a small ${description}.
 
-homepage            https://rg3.github.io/youtube-dl/
+homepage            https://ytdl-org.github.io/youtube-dl/
 master_sites        https://yt-dl.org/downloads/${version}
 
 depends_build       bin:zip:zip

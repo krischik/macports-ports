@@ -1,0 +1,39 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+
+name                py-setupmeta
+version             2.6.24
+revision            0
+
+categories-append   devel
+platforms           darwin
+supported_archs     noarch
+license             MIT
+maintainers         {reneeotten @reneeotten} openmaintainer
+
+description         Simplify your setup.py
+long_description    ${description}
+
+homepage            https://github.com/zsimic/setupmeta
+
+checksums           rmd160  8a71e45efb93117116b96a17d2c17d5a8d7ff7e8 \
+                    sha256  f45a7d71f90cccc5ef317476ac3ec3c517a07430e1289eb45675db55374dbd7b \
+                    size    40841
+
+python.versions     27 37 38
+
+if {${name} ne ${subport}} {
+    depends_build-append \
+                    port:py${python.version}-setuptools
+
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} README.rst \
+            LICENSE ${destroot}${docdir}
+    }
+
+    livecheck.type  none
+}

@@ -1,7 +1,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        prometheus prometheus 2.16.0 v
+github.setup        prometheus prometheus 2.17.1 v
 github.tarball_from archive
 
 description         The Prometheus monitoring system and time series database
@@ -42,13 +42,21 @@ set prom_share_dir  ${prefix}/share/${name}
 set prom_log_dir    ${prefix}/var/log/${name}
 set prom_log_file   ${prom_log_dir}/${name}.log
 
-checksums   rmd160  54e500252e9429e0739bb7e39e79da500bf59d15 \
-            sha256  5649b33a752eb231f86649a4781af2a532d7df5afb212bf0e6ec57fd1826cbbc \
-            size    12984571
+checksums   rmd160  f18d4e10b2f34ee2721e7cdee5c83f46ad52511e \
+            sha256  d0b53411ea0295c608634ca7ef1d43fa0f5559e7ad50705bf4d64d052e33ddaf \
+            size    12822668
 
 add_users           ${prom_user} \
                     group=${prom_user} \
                     realname=Prometheus
+
+
+# promu will fail if it cannot capture the current user using the USER
+# environment variable.  So if USER is not currently set in the environment,
+# we'll set it here for purposes of the build.
+if {! [info exists env(USER)]} {
+    build.env-append "USER=${macportsuser}"
+}
 
 post-extract {
     # Link promu into the workpath

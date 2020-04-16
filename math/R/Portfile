@@ -6,12 +6,12 @@ PortGroup active_variants 1.1
 
 name                        R
 # Remember to set revision to 0 when bumping version
-version                     3.6.1
-revision                    0
+version                     3.6.3
+revision                    1
 
 set branch                  [join [lrange [split ${version} .] 0 1] .]
 categories                  math science
-maintainers                 {me.com:kjell.konis @kjellpk}
+maintainers                 {me.com:kjell.konis @kjellpk} {@i0ntempest me.com:szf1234} openmaintainer
 license                     {GPL-2 GPL-3}
 platforms                   macosx
 
@@ -29,9 +29,9 @@ homepage                    http://www.r-project.org/
 master_sites                http://cran.rstudio.com/src/base/R-3/ \
                             http://cran.r-project.org/src/base/R-3/
 
-checksums                   rmd160  0944f67117372acf342251c988d83b83839deccf \
-                            sha256  5baa9ebd3e71acecdcc3da31d9042fb174d55a42829f8315f2457080978b1389 \
-                            size    30463021
+checksums                   rmd160  ea72806550a9ce87fa1c1c9f2cec3e8ce2a2ded4 \
+                            sha256  89302990d8e8add536e12125ec591d6951022cf8475861b3690bc8bf1cefaa8f \
+                            size    33308185
 
 compilers.choose            fc f77
 compilers.setup             require_fortran
@@ -153,7 +153,8 @@ variant tests description {include tests of R installation} {
     destroot.target-append install-tests
 }
 
-variant x11 {
+variant x11 conflicts quartz {
+    require_active_variants tk x11
     depends_lib-append      port:xorg-libsm \
                             port:xorg-libice \
                             port:xorg-libX11 \
@@ -164,16 +165,32 @@ variant x11 {
                             --x-lib=${prefix}/lib
 }
 
+variant quartz conflicts x11 {
+    require_active_variants tk quartz
+    notes-append "
+        Note that +quartz will not work with R.app because of\
+        conflicts over the macOS menu."
+}
+
 variant java description {enable Java} {
     PortGroup java 1.0
     configure.args-replace --disable-java --enable-java
 }
 
-default_variants +cairo +recommended +x11
+default_variants +cairo +recommended
+
+if {![variant_isset quartz]} {
+    default_variants-append +x11
+}
 
 if {[variant_isset cairo] && [variant_isset x11]} {
     require_active_variants path:lib/pkgconfig/cairo.pc:cairo x11
     require_active_variants path:lib/pkgconfig/pango.pc:pango x11
+}
+
+if {[variant_isset cairo] && [variant_isset quartz]} {
+    require_active_variants path:lib/pkgconfig/cairo.pc:cairo quartz
+    require_active_variants path:lib/pkgconfig/pango.pc:pango quartz
 }
 
 if {![variant_isset accelerate] && ![variant_isset atlas] && ![variant_isset builtin_lapack]} {
@@ -229,6 +246,8 @@ post-destroot {
 
     ln -s ${resources}/bin/R ${destroot}${prefix}/bin/R
     ln -s ${resources}/bin/Rscript ${destroot}${prefix}/bin/Rscript
+    ln -s ${resources}/man1/R.1 ${destroot}${prefix}/share/man/man1/R.1
+    ln -s ${resources}/man1/Rscript.1 ${destroot}${prefix}/share/man/man1/Rscript.1
 }
 
 livecheck.type      regex

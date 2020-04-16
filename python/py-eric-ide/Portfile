@@ -5,7 +5,7 @@ PortGroup           python 1.0
 
 name                py-eric-ide
 set real_name       eric6
-version             20.2
+version             20.4
 revision            0
 
 categories-append   devel
@@ -26,9 +26,9 @@ homepage            https://eric-ide.python-projects.org/index.html
 master_sites        sourceforge:project/eric-ide/${real_name}/stable/${version}
 distname            ${real_name}-${version}
 
-checksums           rmd160  680f1c08bc64aa2919ea78deb8c9f7525e204297 \
-                    sha256  b16a08b5db9bc8a14529c71e1360a7b18544b522099027e9e8b30e30792afb3d \
-                    size    16223803
+checksums           rmd160  8d24d063179896fd7dc4016396144915cb102ec7 \
+                    sha256  e437393609ddf36881f6ffb95d29f76cb649cee49c5fb36f6b8ae693601891bf \
+                    size    17124396
 
 python.versions     27 37
 

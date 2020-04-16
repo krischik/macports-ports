@@ -2,10 +2,9 @@
 
 PortSystem          1.0
 PortGroup           python 1.0
-PortGroup           github 1.0
 
-github.setup        jupyterlab jupyterlab_server 1.0.6 v
 name                py-jupyterlab_server
+version             1.1.1
 revision            0
 categories-append   devel
 platforms           darwin
@@ -20,25 +19,21 @@ description         This package is used to launch an application built using Ju
 long_description    ${description}
 
 homepage            http://jupyter.org/
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  68887e10867e500609fd7b5b18e5f1b2d0cd6b69 \
-                    sha256  d0977527bfce6f47c782cb6bf79d2c949ebe3f22ac695fa000b730c671445dad \
-                    size    20753
+checksums           rmd160  d5a181d267ae9bda33f202cf47656e8fa0055e4f \
+                    sha256  b5921872746b1ca109d1852196ed11e537f8aad67a1933c1d4a8ac63f8e61cca \
+                    size    23204
 
 if {${name} ne ${subport}} {
     depends_build-append \
                         port:py${python.version}-setuptools
-    depends_lib-append  port:py${python.version}-json5 \
+    depends_lib-append  port:py${python.version}-requests \
+                        port:py${python.version}-json5 \
                         port:py${python.version}-jsonschema \
                         port:py${python.version}-notebook \
                         port:py${python.version}-jinja2
 
     livecheck.type      none
-} else {
-    livecheck.regex     {archive/v([0-9.]+)\.tar\.gz}
 }
 
 subport py35-${python.rootname} {

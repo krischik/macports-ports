@@ -1,0 +1,44 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/rancher/rke 1.1.0 v
+revision            0
+categories          devel
+platforms           darwin
+license             Apache-2
+maintainers         {emcrisostomo @emcrisostomo} \
+                    openmaintainer
+
+description         Rancher Kubernetes Engine (RKE), an extremely simple, \
+                    lightning fast Kubernetes distribution that runs \
+                    entirely within containers.
+long_description    Rancher Kubernetes Engine (RKE) is a CNCF-certified \
+                    Kubernetes distribution that runs entirely within \
+                    Docker containers. It works on bare-metal and \
+                    virtualized servers. RKE solves the problem of \
+                    installation complexity, a common issue in the \
+                    Kubernetes community.  With RKE, the installation \
+                    and operation of Kubernetes is both simplified and \
+                    easily automated, and it’s entirely independent of \
+                    the operating system and platform you’re running. \
+                    As long as you can run a supported version of \
+                    Docker, you can deploy and run Kubernetes with RKE.
+
+checksums           rmd160  0b9c141b85817cdbd1fabedd05a37013cf4d61ea \
+                    sha256  b1eb3faa756d67229eee42392d6d5fc13d1bc5e081aff6ae9df764f071cfdffe \
+                    size    5495344
+
+build.target        github.com/rancher/rke
+
+pre-build {
+    build.cmd ${go.bin} build -ldflags \
+        "\"-w -X main.VERSION=v${version}\""
+}
+
+destroot {
+    xinstall -m 755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+}
+
+github.livecheck.regex  {([^"r]+)}

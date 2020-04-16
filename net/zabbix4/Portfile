@@ -20,9 +20,9 @@ long_description    Zabbix is the ultimate open source availability and \
                     of the best commercial ones. 
 
 array set VERSIONS {
-    4  4.0.17
+    4  4.0.19
     42 4.2.8
-    44 4.4.5
+    44 4.4.7
 }
 
 set zver            [regsub -all {[^\d]} ${subport} {}]
@@ -42,9 +42,9 @@ dist_subdir         zabbix${zver}
 if {$zver == 4} {
     livecheck.regex     "zabbix-(4\.0\.\[0-9\]+).tar.gz"
     checksums \
-        rmd160  5b58d30dec15f5bc96b61cb9bf94a6c372bb2852 \
-        sha256  41f0999d1e60046cc68cacd2bb88df77ad03356894a015ea94300feeb94ac940 \
-        size    17191889
+        rmd160  8913cf0b44686d06ef54d9e178662200ed2df9e0 \
+        sha256  794deb38563b6aabd995206544dd1e70867437e5fbc4485170edb71681da5133 \
+        size    17211769
 }
 if {$zver == 42} {
     livecheck.regex     "zabbix-(4\.2\.\[0-9\]+).tar.gz"
@@ -57,9 +57,9 @@ if {$zver == 42} {
 if {$zver == 44} {
     livecheck.regex     "zabbix-(4\.4\.\[0-9\]+).tar.gz"
     checksums \
-        rmd160  dcb961c036ea585d279988dad73df898e86ffe25 \
-        sha256  94a897825b062e17b34767c0864305cee6a87476dda8bee88dcf845b24bed0ea \
-        size    19284769
+        rmd160  d2e7d8518b5522f7ff4496f7927aa6830f08782c \
+        sha256  497b8fe7905576d4d450c6fa486693c10d42915b6b55564f111957edcb9fec8d \
+        size    19413652
 }
 
 patchfiles          log_and_pid_locations.patch
@@ -166,10 +166,11 @@ if {[isFlavor agent ${subport}]} {
 
     depends_lib-append      port:curl \
                             port:OpenIPMI \
+                            path:lib/libssl.dylib:openssl \
                             port:libssh2 \
                             port:libxml2 \
                             port:net-snmp \
-                            path:lib/libssl.dylib:openssl \
+                            port:pkgconfig \
                             port:zlib
 
     depends_run-append      port:fping

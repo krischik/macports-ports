@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-jupyter_client
-version             5.3.4
+version             6.1.2
 revision            0
 platforms           darwin
 license             BSD
@@ -18,13 +18,10 @@ description         Jupyter protocol implementation and client libraries.
 long_description    ${description}
 
 homepage            https://jupyter.org
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  8dc84b386f1d095f79da23e6953b7f793e71e7b3 \
-                    sha256  60e6faec1031d63df57f1cc671ed673dced0ed420f4377ea33db37b1c188b910 \
-                    size    275850
+checksums           rmd160  5981328b81ee8583a4efa59df9e0756c72d809c1 \
+                    sha256  5724827aedb1948ed6ed15131372bc304a8d3ad9ac67ac19da7c95120d6b17e0 \
+                    size    290186
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \
@@ -33,6 +30,15 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-zmq \
                         port:py${python.version}-dateutil \
                         port:py${python.version}-tornado
+
+    if {${python.version} <= 35} {
+        version             5.3.4
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  8dc84b386f1d095f79da23e6953b7f793e71e7b3 \
+                            sha256  60e6faec1031d63df57f1cc671ed673dced0ed420f4377ea33db37b1c188b910 \
+                            size    275850
+    }
 
     livecheck.type      none
 }

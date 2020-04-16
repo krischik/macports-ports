@@ -11,7 +11,7 @@ PortGroup           conflicts_build 1.0
 mpi.setup
 
 github.setup        OSGeo gdal 3.0.3 v
-revision            1
+revision            3
 categories          gis
 license             MIT BSD
 platforms           darwin
@@ -37,11 +37,6 @@ checksums           rmd160  6ea83500ec05f5e1637fe41ae0154d0dafcc8320 \
 worksrcdir          ${worksrcpath}/gdal
 
 platform darwin {
-    # see https://trac.macports.org/ticket/55752
-    if {${os.major} < 12} {
-        patchfiles-append   MacTypes.diff
-    }
-
     # see https://trac.macports.org/ticket/56517
     if {[string match *clang* ${configure.cxx}]} {
         configure.ldflags-append -stdlib=${configure.cxx_stdlib}
@@ -50,6 +45,9 @@ platform darwin {
 
 # see https://trac.macports.org/ticket/58948
 patchfiles-append   patch-bash-completion-location.diff
+
+# see https://github.com/OSGeo/gdal/commit/d587c2b056cd37a9bf51bf8afa1b740e16c7ba2b
+patchfiles-append   patch-poppler.diff
 
 # this can be removed in a future version of MacPorts
 # see https://github.com/macports/macports-base/pull/161

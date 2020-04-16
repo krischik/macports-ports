@@ -18,7 +18,7 @@ php.pecl                yes
 
 if {[vercmp ${php.branch} 7.1] >= 0} {
     version             8.0.18
-    revision            0
+    revision            1
     checksums           rmd160  ade9d030b9725f8cdf274fa3849e02fb306ffe54 \
                         sha256  1a3cb7e98843f8d95cb9caca1a9ee2b7835caf588302b48fec469432eb0f579d \
                         size    574470
@@ -43,4 +43,13 @@ if {${name} ne ${subport}} {
     compiler.blacklist-append {clang < 900}
 
     configure.args      --with-boost=${prefix}/include
+
+    platform darwin 11 {
+        if {[vercmp ${php.branch} 7.1] >= 0 && [vercmp ${php.branch} 7.4] < 0} {
+            # Need to investigate how this was fixed for php 7.4 and
+            # possibly backport the fix.
+            # https://bugs.php.net/bug.php?id=76826
+            known_fail          yes
+        }
+    }
 }

@@ -40,13 +40,13 @@ if {${subport} eq ${name}} {
     conflicts               auto-multiple-choice-devel
 } else {
     # devel
-    set gitlab.commit       "adb638a014e0a1da2419ee092d1a19210b16d3c9"
-    set amc_revision        "201911160924"
-    set amc_date            "201911160924"
+    set gitlab.commit       "fd2136db5241e33dec5d920535d23000525b6b6d"
+    set amc_revision        "202004101300"
+    set amc_date            "202004101300"
     version                 1.4.0-${amc_revision}
-    checksums               rmd160  0b48d68161f1bace705a2fa1508e3946dd5d6d36 \
-                            sha256  a2b0ac4b9599939e8c51d05ac7528bdab0cd91ccd67dd0c08b8b86373522fbff \
-                            size    5768018
+    checksums               rmd160  bb6b8faefbca2ba5293a6ba2861fffcdc26844c2 \
+                            sha256  ce77a35e6c72d32645921cdf327e2fc9569f4146823c6d1d98d54ecdcb2edf31 \
+                            size    6522121
     build.cmd               ${prefix}/bin/gmake
     conflicts               auto-multiple-choice
 }
@@ -98,6 +98,8 @@ configure {
     }
     system -W ${worksrcpath} "${build.cmd} version_files AMCCONF=macports BASEPATH=${prefix} PERLPATH=${perl5.bin} PERLDIR=${perl5.lib} SYSTEM_TYPE=macports TEXDIR=${amc.texmflocal}/tex/latex/AMC TEXDOCDIR=${amc.texmflocal}/doc/latex/AMC"
 }
+
+build.env-append        AMCCONF=macports BASEPATH=${prefix}
 
 pre-destroot {
     destroot.args-append PERLDIR=${perl5.lib}

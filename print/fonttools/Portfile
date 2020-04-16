@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           github 1.0
 
 name                fonttools
-github.setup        fonttools fonttools 4.3.0
+github.setup        fonttools fonttools 4.7.0
 description         XML<->TrueType/OpenType Converter
 long_description    TTX is a tool to convert OpenType and TrueType fonts to \
                     and from XML. FontTools is a library for manipulating \
@@ -16,15 +16,22 @@ categories          print
 license             MIT
 maintainers         {amake @amake} openmaintainer
 
-checksums           rmd160  c24bc9d0dd5d7ac69a63e6cccd8b2b71be951da6 \
-                    sha256  3d3aeff14775a63702a969c6801ead26f478b2edfc07badf8f9304d8ffcbc6f4 \
-                    size    2277171
+checksums           rmd160  cc36f90b5e4a4bdf6e054d06d723268ebc598c9e \
+                    sha256  2f13368624256c018a5409260ca4c7bde787a3ef2a0ba628cfbb0d0c53270b24 \
+                    size    2361624
 
 python.default_version 37
 
 depends_build-append port:py${python.default_version}-setuptools
 
-default_variants     +woff2
+default_variants    +woff2 +unicode
+
+variant unicode description {Install dependencies for up-to-date Unicode support} {
+    # Whether this is needed depends on the Python runtime version: Python 3.9
+    # includes Unicode 13.0 data, so unicodedata2 v13.0.0 is not needed in that
+    # case, while older Pythons would benefit from having it.
+    depends_run-append port:py${python.default_version}-unicodedata2
+}
 
 variant woff2 description {Install dependencies for WOFF 2.0 font support} {
     depends_run-append port:py${python.default_version}-brotli

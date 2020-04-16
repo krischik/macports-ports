@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           cargo 1.0
 
-github.setup        imsnif bandwhich 0.11.0
+github.setup        imsnif bandwhich 0.13.0
 categories          net
 platforms           darwin
 maintainers         {gmail.com:herby.gillot @herbygillot} openmaintainer
@@ -21,10 +21,12 @@ long_description    bandwhich sniffs a given network interface and records IP \
                     their host name in the background using reverse DNS on a \
                     best effort basis.
 
+github.tarball_from archive
+
 checksums           ${distname}${extract.suffix} \
-                    rmd160  669635411130c73e0aff74f14663c47fd4e32f47 \
-                    sha256  814c91a66cb9f504d910b97a89f28971a6f1edcacb95b872f144eb3f7ac1d63f \
-                    size    2991681
+                    rmd160  84f77f48344164bd856d537b3e5b335b1e95369c \
+                    sha256  42b0411c0a9df0b51fa5bedaa5f04fb001fdf46cd2d7ea9a58c98f4f6e7a15d3 \
+                    size    2994854
 
 destroot {
     xinstall -m 755 ${worksrcpath}/target/[cargo.rust_platform]/release/${name} ${destroot}${prefix}/bin/

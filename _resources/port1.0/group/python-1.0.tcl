@@ -70,9 +70,10 @@ proc python_get_version {} {
         return [option python.default_version]
     }
 }
+
 proc python_get_default_version {} {
     global python.versions
-    set def_v 37
+    set def_v 38
     if {[info exists python.versions]} {
         if {${def_v} in ${python.versions}} {
             return ${def_v}
@@ -292,7 +293,9 @@ proc python_get_defaults {var} {
                 # look for "${inc_dir}*" and pick the first one found;
                 # make assumptions if none are found
                 if {[catch {set inc_dirs [glob ${inc_dir}*]}]} {
-                    if {${python.version} < 30} {
+                    # append 'm' suffix if 30 <= PyVer <= 37
+                    # Py27- and Py38+ do not use this suffix
+                    if {${python.version} < 30 || ${python.version} > 37} {
                         return ${inc_dir}
                     } else {
                         return ${inc_dir}m

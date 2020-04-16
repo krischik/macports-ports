@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         TeX-Encode 2.006
+perl5.setup         TeX-Encode 2.008
 platforms           darwin
 supported_archs     noarch
 maintainers         {gmail.com:davide.liessi @dliessi} openmaintainer
@@ -12,13 +12,11 @@ license             {Artistic-1 GPL}
 description         Encode/decode Perl utf-8 strings into TeX
 long_description    ${description}
 
-checksums           rmd160  27f9475a71b03460c8b6b2bcd7db4743229345ee \
-                    sha256  b49149ecbddad3a3a08542670520addd5c67ecffcf1ea08c5bcf968a11f8be88 \
-                    size    33897
+checksums           rmd160  0cc11e3a273f9414a380988f61715460889545e9 \
+                    sha256  137d8fb41c944e32e447f92314d84ee88a33cd81f8ec5b09e70c907d93c476b1 \
+                    size    33990
 
 if {${perl5.major} != ""} {
     depends_lib-append \
-                    port:p${perl5.major}-encode \
-                    port:p${perl5.major}-html-parser \
-                    port:p${perl5.major}-pod-latex
+                    port:p${perl5.major}-encode
 }

@@ -2,9 +2,8 @@
 
 PortSystem                  1.0
 PortGroup                   github 1.0
-PortGroup                   java 1.0
 
-github.setup                dbeaver dbeaver 6.3.4
+github.setup                dbeaver dbeaver 7.0.2
 github.tarball_from         releases
 distname                    dbeaver-ce-${version}-macosx.cocoa.x86_64
 name                        dbeaver-community
@@ -28,14 +27,15 @@ long_description            Free multi-platform database tool for developers, SQ
 
 homepage                    https://dbeaver.io/
 
-checksums                   rmd160  7a00e527c67a293991059e0668f0e62fea75c5f5 \
-                            sha256  695d598561076df7c8b2173bc79e4972af38d70ab82ed67f1b553b612c892b2b \
-                            size    59188289
+checksums                   rmd160  42818f8843db218a3e84bf17a8abbea08b3ff0c5 \
+                            sha256  49230c1fcae85b0c058155798fd5f4d771e9b8a53080713494bdd295d962e310 \
+                            size    59481220
 
-java.version                1.8+
-java.fallback               openjdk11
+depends_lib-append          port:openjdk8
 
 extract.mkdir               yes
+
+patchfiles                  openjdk8.patch
 
 use_configure               no
 

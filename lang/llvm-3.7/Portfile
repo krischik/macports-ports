@@ -26,6 +26,12 @@ platforms               darwin
 license                 NCSA
 maintainers             {jeremyhu @jeremyhu} {larryv @larryv} {kencu @kencu}
 
+# needs xcode to build
+#see https://trac.macports.org/ticket/59677
+#see https://trac.macports.org/ticket/58779
+#see https://trac.macports.org/ticket/60196
+use_xcode yes
+
 if {${subport} eq "llvm-${llvm_version}"} {
     homepage            https://llvm.org/
     description         llvm is a next generation compiler infrastructure

@@ -5,24 +5,26 @@ PortGroup           python 1.0
 
 name                py-importlib-metadata
 python.rootname     importlib_metadata
-version             1.5.0
+version             1.6.0
 revision            0
 categories-append   devel
 platforms           darwin
+supported_archs     noarch
 license             Apache
 
-python.versions     27 35 36 37 38
+# keep version for PY27 and PY34, these are (indirect) dependencies of py-virtualenv
+python.versions     27 34 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
 description         Library to access the metadata for a Python package.
 long_description    ${description}
 
-homepage            http://importlib-metadata.readthedocs.io/
+homepage            https://importlib-metadata.readthedocs.io/
 
-checksums           rmd160  e785528c04bbd208293f6983c2427ca169e5144d \
-                    sha256  06f5b3a99029c7134207dd882428a66992a9de2bef7c2b699b5641f9886c3302 \
-                    size    26738
+checksums           rmd160  4e0acae7ed1babbd221aa40f51730c2dcb2aca0a \
+                    sha256  34513a8a0c4962bc66d35b359558fd8a5e10cd472d37aec5f66858addef32c1e \
+                    size    27136
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -30,11 +32,23 @@ if {${name} ne ${subport}} {
 
     depends_lib-append  port:py${python.version}-zipp
 
+
+    if {${python.version} eq 34} {
+        version         1.0.0
+        epoch           1
+        revision        0
+        checksums       rmd160  d85c4afae2456a17c35bfc008641499918c2cd84 \
+                        sha256  a82ca8c109e194d7d6aee3f7531b0470dd4dd6b36ec14fd55087142a96bd55a7 \
+                        size    28194
+        depends_lib-append \
+                        port:py${python.version}-pathlib2
+    }
+
     if {${python.version} eq 27} {
         depends_lib-append \
-                        port:py${python.version}-pathlib2 \
                         port:py${python.version}-contextlib2 \
-                        port:py${python.version}-configparser
+                        port:py${python.version}-configparser \
+                        port:py${python.version}-pathlib2
     }
 
     livecheck.type      none

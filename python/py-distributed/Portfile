@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-distributed
-version             2.10.0
+version             2.14.0
 revision            0
 categories-append   devel
 platforms           darwin
@@ -22,9 +22,9 @@ long_description    Dask.distributed is a lightweight library for distributed \
 
 homepage            https://distributed.readthedocs.io/en/latest/
 
-checksums           rmd160  cabeca04324d117ad6ba73191f94d0cb741c9f81 \
-                    sha256  2f8cca741a20f776929cbad3545f2df64cf60207fb21f774ef24aad6f6589e8b \
-                    size    981569
+checksums           rmd160  a3866d0e358528a7101e16b17a4d9f9479ffb97c \
+                    sha256  d9d49536fefc4238417de89bc6ddcc1cfa64da90d52b74128a16d9d28a823089 \
+                    size    623803
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \
