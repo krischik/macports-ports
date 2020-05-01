@@ -3,14 +3,14 @@
 PortSystem      1.0
 PortGroup       github 1.0
 
-github.setup    tmux tmux 3.0a
+github.setup    tmux tmux 3.1a
 if {${subport} eq ${name}} {
     revision        0
     conflicts       tmux-devel
 }
 subport tmux-devel {
-    github.setup    tmux tmux 533c5ee7ad8c6d6e4eb2d05d8fc61c1e11a2705e
-    version         20200414-[string range ${github.version} 0 6]
+    github.setup    tmux tmux 5af694394018940819c0734be9b5fd44df1bf857
+    version         20200429-[string range ${github.version} 0 6]
     revision        0
     conflicts       tmux
 }
@@ -30,14 +30,14 @@ depends_lib     port:libevent port:ncurses
 
 if {${subport} eq ${name}} {
     github.tarball_from     releases
-    checksums               rmd160  2b781a3632c11098184f787774742b5e5af761ce \
-                            sha256  4ad1df28b4afa969e59c08061b45082fdc49ff512f30fc8e43217d7b0e5f8db9 \
-                            size    546377
+    checksums               rmd160  b0cb14a79e078ec9ce4f3d6c6a99be57452109d8 \
+                            sha256  10687cbb02082b8b9e076cf122f1b783acc2157be73021b4bedb47e958f4e484 \
+                            size    561121
 }
 subport tmux-devel {
-    checksums               rmd160  5cec69527b0d62f2ec4eeb14235eca783ae3028c \
-                            sha256  f46c672994429b25fc489454ff10c59b84a25ced5572681fae93239dddf4dce0 \
-                            size    738066
+    checksums               rmd160  43c16b4483a7dc1b238ff2543d154a12371f1b15 \
+                            sha256  709687fc170b765aa376913224af0ab6e83bb184edbca43390ea21beb18c327c \
+                            size    748493
 
     use_autoreconf          yes
     autoreconf.cmd          ./autogen.sh
