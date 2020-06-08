@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-xdis
-version             4.3.2
+version             4.6.0
 platforms           darwin
 supported_archs     noarch
 license             GPL-2
@@ -23,9 +23,9 @@ long_description \
 
 homepage            https://github.com/rocky/python-xdis
 
-checksums           rmd160  ee1f951c35255c569c68bc06021ec669a27d67af \
-                    sha256  0efc601c13a3cd9e70aba369a7380da051427c5a1d502fd42e90d9e397cf20d9 \
-                    size    219750
+checksums           rmd160  165c22d498a5b4167b4d478fb89b1f7f122a8462 \
+                    sha256  d4cad319d3ea644ea7b9f8c8b45440263e7bf8e02a5a8c3f546a6ff27d1b3de1 \
+                    size    224124
 
 python.versions     27 35 36 37 38
 
@@ -34,12 +34,15 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-setuptools \
                         port:py${python.version}-six
 
-    depends_test-append port:py${python.version}-pytest
+    post-patch {
+        reinplace "s|PYTHON ?= python|PYTHON ?= ${python.bin}|g" ${worksrcpath}/test/Makefile
+    }
 
-    test.run            yes
-    test.cmd            py.test-${python.branch}
-    test.target
-    test.env            PYTHONPATH=${worksrcpath}/build/lib
+    test.run        yes
+    test.dir        ${build.dir}/test
+    test.cmd        make
+    test.target     check-full
+    test.env        PYTHONPATH=${worksrcpath}/build/lib
 
     livecheck.type  none
 }

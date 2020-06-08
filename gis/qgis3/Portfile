@@ -8,7 +8,7 @@ PortGroup           github  1.0
 PortGroup           qt5     1.0
 PortGroup           active_variants 1.1
 
-github.setup        qgis QGIS 3_12_1 final-
+github.setup        qgis QGIS 3_12_3 final-
 name                qgis3
 version             [string map {_ .} ${github.version}]
 revision            0
@@ -25,9 +25,9 @@ license             GPL-2+
 
 homepage            http://www.qgis.org/
 
-checksums           rmd160  5aa3fbc7415974d4a2bd3bc49f1205c3725c9db9 \
-                    sha256  c4a9d60a7b899b3f8082e1b747c9c93c95b37d2860f9c38619372d455476d321 \
-                    size    128866860
+checksums           rmd160  a2e1e02f6a0c0ae109a1f304ef3558691d194fb4 \
+                    sha256  bc6d1f021608e9d111d0c8d734705fc3cd6408fa6d8dbee5df803194deee71a2 \
+                    size    130062716
 
 depends_lib-append  port:libiconv \
                     port:expat \
@@ -138,9 +138,12 @@ configure.args-append   "-DAPPLE_IOKIT_LIBRARY=${configure.sdkroot}/System/Libra
 configure.args-append   "-DWITH_SERVER=OFF"
 
 variant server description "Builds with the server (FCGI) option" {
-    
-    return -code error "The +server option is currently broken (doesn’t link properly)"
     depends_lib-append      port:fcgi
+
+    pre-configure {
+        return -code error "The +server option is currently broken (doesn’t link properly)"
+    }
+
     configure.args-delete   "-DWITH_SERVER=OFF"
     configure.args-append   "-DWITH_SERVER=ON"
 }

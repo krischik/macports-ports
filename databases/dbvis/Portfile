@@ -4,7 +4,7 @@ PortSystem                  1.0
 PortGroup                   java 1.0
 
 name                        dbvis
-version                     11.0
+version                     11.0.3
 categories                  databases
 platforms                   darwin
 supported_archs             x86_64
@@ -22,9 +22,9 @@ master_sites                ${homepage}/product_download/dbvis-${version}/media/
 distname                    dbvis_macos_[strsed $version g/\\./_/]
 extract.suffix              .tgz
 
-checksums                   rmd160  54fe0db3506ab573ec5423be27169f3112548342 \
-                            sha256  2cae8a5e54971e8fca8db364470c83dd2ede1d3443b6e062ba3ebde05be3e2bc \
-                            size    89370363
+checksums                   rmd160  f97ea2901ff50b7ba91e4d45c7734a5d682b42a2 \
+                            sha256  74bbcf99465a484f5a2abdf5a62ad850c2f0f0de2d1a90fed19112b6fb49f108 \
+                            size    89412209
 
 java.version                1.8+
 java.fallback               openjdk11

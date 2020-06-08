@@ -1,6 +1,7 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           compiler_blacklist_versions 1.0
 
 name                mu
 platforms           darwin
@@ -31,14 +32,25 @@ if {${subport} eq ${name}} {
     PortGroup       github 1.0
     PortGroup       elisp 1.0
 
-    github.setup    djcb mu 1.4.3
-    checksums       rmd160  07f8218872d9d5c0adc3a1ccd9f7e7b0fd527351 \
-                    sha256  959eeb393171e95aa366c9c4cc94d9c5ed632db8a51b58a4927cfa52eca05ad6 \
-                    size    2311619
+    github.setup    djcb mu 1.4.9
+    checksums       rmd160  2bcf09b3eff967117a831c83442843192115b52c \
+                    sha256  7fe6cd7c5f63d4918c6ad36977b254d7eb33ee379891814428dbd16b26912867 \
+                    size    2309553
     revision        0
 
     compiler.c_standard   1999
     compiler.cxx_standard 2014
+    # Configure check thinks above is not enough on OSX 10.9 (using /usr/bin/clang++)
+    # checking whether /usr/bin/clang++ supports C++14 features with -std=gnu++14... no
+    # checking whether /usr/bin/clang++ supports C++14 features with -std=gnu++1y... no
+    # checking whether /usr/bin/clang++ supports C++14 features with -std=c++14... no
+    # checking whether /usr/bin/clang++ supports C++14 features with +std=c++14... no
+    # checking whether /usr/bin/clang++ supports C++14 features with -h std=c++14... no
+    # checking whether /usr/bin/clang++ supports C++14 features with -std=c++1y... no
+    # checking whether /usr/bin/clang++ supports C++14 features with +std=c++1y... no
+    # checking whether /usr/bin/clang++ supports C++14 features with -h std=c++1y... no
+    # configure: error: *** A compiler with support for C++14 language features is required.
+    compiler.blacklist-append {clang < 700}
 
     depends_build-append \
         port:pkgconfig

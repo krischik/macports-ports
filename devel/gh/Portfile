@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        cli cli 0.7.0 v
+github.setup        cli cli 0.9.0 v
 name                gh
 categories          devel
 platforms           darwin
@@ -21,11 +21,12 @@ homepage            https://cli.github.com/
 github.tarball_from releases
 distname            gh_${version}_macOS_amd64
 
-checksums           rmd160  d8ad93d44aca68e1e2068f4c19242100ea464001 \
-                    sha256  88a22c7421510a2e8f64ee6e78048d51382f9abd07ca4d275b0fb5fcd3871173 \
-                    size    6231965
+checksums           rmd160  41bd96c98e530f9eda9959a8853edff7ce4e4054 \
+                    sha256  aa2216395b74437209bca15565ec31eb14b37e2205989f08920f71575df435c5 \
+                    size    6154114
 
 use_configure       no
+installs_libs       no
 
 build {}
 
@@ -34,5 +35,5 @@ destroot {
 
     set docdir ${prefix}/share/doc/${name}
     xinstall -d ${destroot}${docdir}
-    xinstall -m 0644 -W ${worksrcpath} LICENSE README.md CHANGELOG.md ${destroot}${docdir}
+    xinstall -m 0644 -W ${worksrcpath} LICENSE ${destroot}${docdir}
 }

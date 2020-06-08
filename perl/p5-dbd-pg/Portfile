@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         DBD-Pg 3.11.1
+perl5.setup         DBD-Pg 3.12.1
 license             {Artistic-1 GPL}
 categories          perl databases
 maintainers         nomaintainer
@@ -14,9 +14,9 @@ long_description    DBD::Pg is a Perl module which works with the DBI \
 
 platforms           darwin
 
-checksums           rmd160  f14a8f1937c7866c07be4f15cb7809547226677b \
-                    sha256  6c7af4c96e5e16c904bdf02c0d6711582c1b3cbea2f2904b35429a573ce7905b \
-                    size    275438
+checksums           rmd160  9c728a48319ce0fec6fd5411ca6c47b9362db2f0 \
+                    sha256  4c4aae7c9529320080e94ab9202523d495135faaa648c752fb99dff57bebbbb6 \
+                    size    277046
 
 if {${perl5.major} ne ""} {
     depends_build-append \

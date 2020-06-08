@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-jupyterlab
-version             2.1.1
+version             2.1.4
 revision            0
 categories-append   devel
 platforms           darwin
@@ -24,9 +24,9 @@ long_description    JupyterLab enables you to work with documents and \
 
 homepage            https://jupyter.org/
 
-checksums           rmd160  b112660f4d07e2ddfc5f1668444d2bc963ba9565 \
-                    sha256  2dec7e509ffa3892c67d9ac7c89d7c6a860c151d969d89420d9e20e753b2fb29 \
-                    size    8531648
+checksums           rmd160  4021cf824a513b38c058a7b0186820b9daf004b0 \
+                    sha256  7b5bd4a05330a01c8522ee7f1cda5cb2e0d96412d9e1e879a19b3afb63d4ac69 \
+                    size    8431001
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \

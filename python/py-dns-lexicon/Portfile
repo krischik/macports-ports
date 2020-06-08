@@ -5,7 +5,7 @@ PortGroup           github 1.0
 PortGroup           python 1.0
 
 set realname        lexicon
-github.setup        AnalogJ ${realname} 3.3.19 v
+github.setup        AnalogJ ${realname} 3.3.24 v
 name                py-dns-lexicon
 revision            0
 categories-append   net
@@ -18,9 +18,9 @@ platforms           darwin
 
 python.versions     27 36 37 38
 
-checksums           rmd160  ed3faa2c11eaedf118a3166c4183eabf0a976b39 \
-                    sha256  593a98fa7eb460cab5f8fea610614984cf5b5bdc9473b4ac2d756275377bebef \
-                    size    3271611
+checksums           rmd160  7246c7d0a8e533ace2c747cbe99264235c299f7c \
+                    sha256  890e5a1e6467f3e27bdb16a9954bd824685de5464409a09fd31feabdfe7d6861 \
+                    size    3092109
 
 if {${name} ne ${subport}} {
     depends_build-append \
