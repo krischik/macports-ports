@@ -45,7 +45,7 @@ if {${fstar.stable}} {
     # Strip everything but <major>.<minor>
     fstar.release       [regsub {^([^\.]+\.[^\.]+).*} ${fstar.version} {\1}]
 } else {
-    fstar.version       20200527
+    fstar.version       20200623
     fstar.release       devel
 }
 
@@ -157,13 +157,13 @@ subport fstar {
 }
 
 subport fstar-devel {
-    github.setup        ${github.author} ${github.project} 62287c1e4c058cbafdf8828d1859132f07d3e1e7
+    github.setup        ${github.author} ${github.project} 4559e1b4ffdac20e581a7cc69a3d324e2f29cda8
     version             ${fstar.version}-[string range ${github.version} 0 6]
     revision            0
 
-    checksums           rmd160  774ef846e57d5d0d1e0d08c96a290b8027dc8a3d \
-                        sha256  876624919c94831a36bad5bc14dedbd7e4aeb2ca2495427473d604e42ea0e637 \
-                        size    7633711
+    checksums           rmd160  f0cdde0a007465c6f4ec8bbfd7f9bf8f2edc9a67 \
+                        sha256  2fac89ceef9164bbb486fafbe68592a60028b12733285d024b02a258f6e87b70 \
+                        size    7647899
     github.tarball_from tarball
 
     patchfiles-append   fstar-devel/patch-tests_machine__integers_Makefile
@@ -207,13 +207,13 @@ subport kremlin {
 }
 
 subport kremlin-devel {
-    github.setup        ${github.author} ${fstar.project} 7bd4559ade655e106d1f4a7137ae570eee534fe5
+    github.setup        ${github.author} ${fstar.project} 0f08f1243331ffc62ba3f1b8d8b06e4de8479943
     version             ${fstar.version}-[string range ${github.version} 0 6]
     revision            0
 
-    checksums           rmd160  8012a2be4e9216e293b55799e2f9eb0a2cec274b \
-                        sha256  44d18b233246c4491465957e056a890d068ee789fe81ae2c2133adb1f6aab450 \
-                        size    829792
+    checksums           rmd160  78eecc0f9ab7c6905a87a478d688233ab692b37b \
+                        sha256  7a8dbfe0f25f94cfa8ed41ab380cb9c9ab6fdfebec93081fdcc6dd485e50aecb \
+                        size    829817
 
     patchfiles-append   kremlin-devel/patch-clang-driver-options \
                         kremlin-devel/patch-fix-make-command \

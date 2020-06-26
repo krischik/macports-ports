@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-virtualenv
-version             20.0.21
+version             20.0.25
 revision            0
 
 categories-append   devel
@@ -20,9 +20,9 @@ long_description    virtualenv is a tool to create isolated Python \
 
 homepage            https://virtualenv.pypa.io
 
-checksums           rmd160  fe3058e221b83bcee7146cc0063121b841267ab9 \
-                    sha256  a116629d4e7f4d03433b8afa27f43deba09d48bc48f5ecefa4f015a178efb6cf \
-                    size    8044843
+checksums           rmd160  e3e195df0b477657beea11aa22d43cb0b4ef92d6 \
+                    sha256  f332ba0b2dfbac9f6b1da9f11224f0036b05cdb4df23b228527c2a2d5504aeed \
+                    size    8059847
 
 # keep older Python versions here, do add the EOL version to the list below
 python.versions     27 34 35 36 37 38

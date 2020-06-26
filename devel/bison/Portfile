@@ -6,7 +6,7 @@ name                bison
 subport             bison-runtime {}
 
 epoch               1
-version             3.6.2
+version             3.6.4
 if {${subport} eq "bison"} {
     revision        0
 } else {
@@ -53,9 +53,9 @@ homepage            https://www.gnu.org/software/bison
 master_sites        gnu
 use_xz              yes
 
-checksums           rmd160  9ea331347f5e176f912914ef19319a92ddab2056 \
-                    sha256  4a164b5cc971b896ce976bf4b624fab7279e0729cf983a5135df7e4df0970f6e \
-                    size    2468224
+checksums           rmd160  beabcfa3b49a7ba301d68405ed9d0e64f192717b \
+                    sha256  8b13473b31ca7fcf65e5e8a74224368ffd5df19275602a9c9567ba393f18577d \
+                    size    2472456
 
 configure.args      --disable-silent-rules \
                     ac_cv_prog_HAVE_GCJ_IN_PATH= \
