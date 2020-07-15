@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/kubernetes-sigs/kustomize 3.6.1 kustomize/v
+go.setup            github.com/kubernetes-sigs/kustomize 3.8.0 kustomize/v
 revision            0
 
 categories          devel
@@ -23,9 +23,9 @@ long_description    kustomize lets you customize raw, template-free YAML files f
 
 homepage            https://kustomize.io
 
-checksums           rmd160  cc71ad44aff462fb037903dd6e81ca3928333bdb \
-                    sha256  01b8d26b167e11789ea46d01cb48c13f65a8c498fe92fb24675177d98045fdd0 \
-                    size    2479806
+checksums           rmd160  c5a0f47be7d373d1565ee84dbfb6d971f114f105 \
+                    sha256  7f5ae33acc867a277f74b6a13bc0daa69d552131f218572e9f3b5a29247a3771 \
+                    size    25660994
 
 build.dir           ${worksrcpath}/${name}
 

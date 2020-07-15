@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-setupmeta
-version             2.7.9
+version             2.7.11
 revision            0
 
 categories-append   devel
@@ -18,9 +18,9 @@ long_description    ${description}
 
 homepage            https://github.com/zsimic/setupmeta
 
-checksums           rmd160  342dfe652fd96dd224890e536b27ca6c3ba94651 \
-                    sha256  8351e2519144656f95eaca6c590af4f4d881016d9b3330aa4c06edfcef7e25dd \
-                    size    42900
+checksums           rmd160  4c4a14826b156f2c00d4a258e5e07bea2ba867b6 \
+                    sha256  ffc9bf2c6fb89fe0e1ba2e22c45789ac2443084006e00d01ed68b034f663360c \
+                    size    43557
 
 python.versions     27 37 38
 

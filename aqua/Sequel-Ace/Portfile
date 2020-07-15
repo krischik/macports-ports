@@ -5,7 +5,7 @@ PortGroup           xcode 1.0
 PortGroup           xcodeversion 1.0
 PortGroup           github 1.0
 
-github.setup        Sequel-Ace Sequel-Ace 2.0.2
+github.setup        Sequel-Ace Sequel-Ace 2.1.2
 license             MIT
 categories          aqua devel databases
 maintainers         {amake @amake} openmaintainer
@@ -15,11 +15,11 @@ long_description \
     a fast, easy-to-use Mac database management application for working with \
     MySQL & MariaDB databases
 
-checksums           md5     dc50bd6315e5ed979f958d0686d37600 \
-                    sha1    3ab2c4e01e5c8042b9cad7b21572f4a78905f440 \
-                    rmd160  af66c5521f8ae4502ba6ef3edffa7ce67ce28257 \
-                    sha256  4dd9bed119c89192917985c5c397d0f34fe1f6ca8473dfde4ab444c21f62809a \
-                    size    11750591
+checksums           md5     c0de12e34636aaa6ed4dc685faeab059 \
+                    sha1    4adc8118240500461bc5959ea43d0620c21539bd \
+                    rmd160  57156f8c7a726cae22b725ff07158a2503c677f4 \
+                    sha256  3f509b8bec97f49382c39a0f0a521982c7636a4977c50f93f38e3afdb18f8570 \
+                    size    43965919
 
 minimum_xcodeversions-append {17 10.0}
 
