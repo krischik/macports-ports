@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        nicolargo glances 3.1.0 v
+github.setup        nicolargo glances 3.1.4.1 v
+revision            0
 categories          sysutils
 license             GPL-3
 maintainers         {g5pw @g5pw} openmaintainer
@@ -17,13 +18,13 @@ long_description    Glances is a cross-platform monitoring tool which aims to pr
 
 platforms           darwin
 
-checksums           rmd160  64d3b6dcf1081e18f018fb637fe71d21ada309cb \
-                    sha256  e4f5c35dd73ceafc05f3f428ca4bcca2438402104404b8860845c1b67ae990c3 \
-                    size    6688747
+checksums           rmd160  300ca1378a1e70cefbd727c490208006a26f3280 \
+                    sha256  eaf8bce4cd4503b7217ae1d825d6dd93ab03d8a66daee402b086b63f73419ed6 \
+                    size 6803273
 
 python.default_version 37
 depends_lib         port:py${python.version}-psutil \
-                    port:py${python.version}-setuptools
+                    port:py${python.version}-future
 
 patch {
     reinplace "s|/usr/local|${prefix}|" setup.py

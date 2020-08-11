@@ -2,10 +2,10 @@
 
 PortSystem              1.0
 PortGroup               github 1.0
-PortGroup               cxx11 1.1
+PortGroup               makefile 1.0
 PortGroup               legacysupport 1.0
 
-github.setup            jarun nnn 2.6 v
+github.setup            jarun nnn 3.2 v
 revision                0
 categories              sysutils
 license                 BSD
@@ -14,28 +14,19 @@ platforms               darwin
 description             tiny, lightning fast, feature-packed file manager
 long_description        ${name} is a tiny, lightning fast, feature-packed file manager.
 
-checksums               rmd160  82d6a4877a0cfdb1e40a36e66947ba576d8989c7 \
-                        sha256  c746247df27f406a857cbc27595121ed3cb1644c89aeab7f854cafea8b26a277 \
-                        size    78704
+checksums               rmd160  8a3ee3f18dda47f9cb720d306fabde5b87c3335a \
+                        sha256  5de81b8c91e0ef720e7c1bce23b5790fe90ea527291f16e529cd8c1aeb9dc00e \
+                        size    143157
 
 installs_libs           no
-
-patchfiles              patch-Makefile.diff
 
 depends_build           port:pkgconfig
 
 depends_lib             port:readline \
-                        port:ncurses
+                        port:ncurses \
+                        port:pcre
 
-compiler.blacklist-append *gcc-4.*
+compiler.c_standard     2011
 
-# see https://lists.macports.org/pipermail/macports-dev/2018-November/thread.html#39694
-configure.cmd           printenv
-configure.pre_args
-configure.universal_args
-configure.post_args     {>> Makefile.inc}
-
-configure.env-append    PREFIX=${prefix} \
-                        CFLAGS_OPTIMIZATION=
-
-configure.cflags-append -std=c11
+build.args-append       CFLAGS_OPTIMIZATION="" \
+                        O_PCRE=1

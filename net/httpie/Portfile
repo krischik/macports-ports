@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        jakubroztocil httpie 1.0.3
+github.setup        jakubroztocil httpie 2.0.0
 
 maintainers         {g5pw @g5pw} openmaintainer
 categories          net
@@ -20,13 +20,24 @@ platforms           darwin
 license             BSD
 homepage            http://httpie.org
 
-python.default_version      37
+variant python36 conflicts python37 python38 description "Use Python 3.6" {}
+variant python37 conflicts python36 python38 description "Use Python 3.7" {}
+variant python38 conflicts python36 python37 description "Use Python 3.8" {}
+
+if {[variant_isset python36]} {
+    python.default_version 36
+} elseif {[variant_isset python37]} {
+    python.default_version 37
+} else {
+    default_variants +python38
+    python.default_version 38
+}
 
 depends_lib-append  port:py${python.version}-requests \
                     port:py${python.version}-pygments
 
-checksums           rmd160  2ddbd8d0ed0fa034cfd6f3a9ca876a30eca60254 \
-                    sha256  256fde37651095da48dcee5e4f8f54fdcdd1bbfea9e743e89e57942265648342 \
-                    size    1745842
+checksums           rmd160  6b81e8cf12827d91ac73ec2571161d22558a441f \
+                    sha256  1d469d19248b74853fd4d8d35e37e073f56d57b4ad9be6aebe5457970c5eeedf \
+                    size    1752564
 
 python.link_binaries_suffix

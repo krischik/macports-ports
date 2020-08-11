@@ -3,12 +3,11 @@
 PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           cmake 1.1
-PortGroup           cxx11 1.1
 
 platforms           darwin macosx
 categories          science
 license             MIT
-maintainers         {@ra1nb0w irh.it:rainbow} {michaelld @michaelld} openmaintainer
+maintainers         {ra1nb0w @ra1nb0w} {michaelld @michaelld} openmaintainer
 
 description         Soapy SDR plugin for Audio devices
 long_description    ${description}
@@ -19,12 +18,14 @@ checksums           rmd160  33abfd40e489471fcec1da2363bda51e0c900b87 \
                     size    93936
 revision            0
 
+compiler.cxx_standard 2011
+
 depends_build-append \
     port:pkgconfig
 
 depends_lib-append \
     port:SoapySDR \
-    port:hamlib \
+    path:lib/libhamlib.dylib:hamlib \
     port:rtaudio
 
 configure.args-append \

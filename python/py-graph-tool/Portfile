@@ -12,7 +12,7 @@ epoch               20190711
 categories          python science
 platforms           darwin
 license             GPL-3
-maintainers         skewed.de:tiago {mmoll @mamoll}
+maintainers         {skewed.de:tiago @count0}
 description         Efficient python graph module
 long_description    graph-tool is an efficient python module for manipulation \
                     and statistical analysis of graphs. The internal data \
@@ -66,7 +66,7 @@ if {${name} ne ${subport}} {
     depends_build-append port:pkgconfig
     depends_lib-append port:boost \
                        port:cairomm \
-                       port:cgal \
+                       port:cgal4 \
                        port:expat \
                        path:bin/dot:graphviz \
                        port:py${python.version}-numpy \

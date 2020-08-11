@@ -5,28 +5,28 @@ PortGroup               github 1.0
 
 # Download distfiles from GitHub mirror because fetching from svn keeps being
 # problematic.
-github.setup            leahneukirchen netpbm-mirror ba9611399c049edc878be544d2a91f7178dce3dd
+github.setup            leahneukirchen netpbm-mirror f71958bde7fda4f9b2c7a8f1ace344a1919be180
 name                    netpbm
-version                 10.88.00
-svn.revision            3695
+version                 10.90.03
+svn.revision            3819
 set source_branch       advanced
 distname                ${source_branch}-r${svn.revision}
 set source_distfile     ${distfiles}
 
-set userguide_commit    4d6a81f76b3eeab25441f7614083bbb82328499c
-set userguide_revision  3698
+set userguide_commit    20f75c419c7ec309a187ade1f49b0cb41dc6581c
+set userguide_revision  3812
 set userguide_branch    userguide
 set userguide_distname  ${userguide_branch}-r${userguide_revision}
 set userguide_distfile  ${userguide_distname}${extract.suffix}
 
 checksums               ${source_distfile} \
-                        rmd160  665033ffe53b21fca052b3de2cd2f5e8790ef7fe \
-                        sha256  ef8eb29f3fc4eca6e226488be075e64eb55d5a126c3f8e52c026550ced587cbe \
-                        size    2861991 \
+                        rmd160  bc0d964892f9735faff5ebff3ada21be9b53a5d9 \
+                        sha256  1af0a1cf55a8408a46e1e5455c60f2600795bbc25fed5aa5490acebc2cc8ba0f \
+                        size    2867256 \
                         ${userguide_distfile} \
-                        rmd160  cb555031e9dd5b0f38d39a36fae31d5d95ef4e9e \
-                        sha256  cfa512468925bdb7351b17fb8c8942600c1291ebcaca3532ec2aeb586c38755c \
-                        size    1218198
+                        rmd160  5e423a9f22d4efdba6e59d2bb3be8038ffad8744 \
+                        sha256  215016fafa94fed9c03cfa991c5059c22e2bd3129abf05e996603b36481ebc02 \
+                        size    1219595
 
 categories              graphics
 platforms               darwin freebsd linux
@@ -42,16 +42,17 @@ long_description        A whole bunch of utilities for primitive manipulation \
                         magnifying and cropping.
 
 homepage                http://netpbm.sourceforge.net/
+github.tarball_from     archive
 
 distfiles               ${source_distfile}:source \
                         ${userguide_distfile}:userguide
 
 master_sites            ${github.master_sites}:source \
-                        ${github.homepage}/tarball/${userguide_commit}:userguide
+                        ${github.homepage}/archive/${userguide_commit}:userguide
 
 post-extract {
-    move ${workpath}/${github.author}-${github.project}-[string range ${git.branch} 0 6] ${workpath}/${distname}
-    move ${workpath}/${github.author}-${github.project}-[string range ${userguide_commit} 0 6] ${workpath}/${userguide_distname}
+    move ${workpath}/${github.project}-${git.branch} ${workpath}/${distname}
+    move ${workpath}/${github.project}-${userguide_commit} ${workpath}/${userguide_distname}
 
     set newest_mtime 0
     fs-traverse item ${worksrcpath} {
@@ -80,7 +81,7 @@ patchfiles              patch-lib-Makefile.diff \
 
 variant universal {}
 
-configure.cflags-append -fno-common
+configure.cflags-append -fno-common -D_DARWIN_C_SOURCE
 
 set jasperlib           -ljasper
 set ldreloc             NONE

@@ -3,10 +3,12 @@
 PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           cmake  1.1
+PortGroup           compiler_blacklist_versions 1.0
+PortGroup           conflicts_build 1.0
 
-github.setup        fmtlib fmt 5.3.0
+github.setup        fmtlib fmt 6.2.0
 name                libfmt
-homepage            http://fmtlib.net
+homepage            https://fmt.dev
 categories          devel
 platforms           darwin
 maintainers         nomaintainer
@@ -17,11 +19,17 @@ long_description    \
     fmt (formerly cppformat) is an open-source formatting library. \
     It can be used as a safe alternative to printf or as a fast alternative to C++ IOStreams.
 
-checksums           rmd160  7ab5001c8144d8d3d25b1726295e1447d065d694 \
-                    sha256  7b40e266c16cbcc16a9d8743713d012be3188872c4bce5dde3556cdf3b5846d2 \
-                    size 662560
+checksums           rmd160  f889aa1482832a170cabf73625092c123d65d1d8 \
+                    sha256  ad53b9cb55bf3d4199766a399ae8ff2ea4ea72b462205f7afc464d770d5e1e47 \
+                    size    733517
+
+conflicts_build     gtest
 
 compiler.cxx_standard   2011
+# avoid
+#   error: default initialization of an object of const type 'const Answer' without a user-provided default constructor
+# error would be valid except Answer is empty
+compiler.blacklist-append {clang < 800}
 
 configure.args-append \
     -DBUILD_SHARED_LIBS=ON

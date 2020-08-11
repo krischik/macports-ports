@@ -1,0 +1,37 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/rancher/cli 2.4.3 v
+name                rancher-cli
+revision            0
+categories          devel
+platforms           darwin
+license             Apache-2
+maintainers         {emcrisostomo @emcrisostomo} \
+                    openmaintainer
+
+description         The Rancher Command Line Interface (CLI) is a unified \
+                    tool for interacting with your Rancher Server.
+long_description    The Rancher CLI (Command Line Interface) is a unified \
+                    tool that you can use to interact with Rancher.  With \
+                    this tool, you can operate Rancher using a command \
+                    line rather than the GUI.
+
+checksums           rmd160  330c1bbb4a3c3ec3f5fc4f4c29341388b3af7273 \
+                    sha256  fd5b14c5d373885e3a300dc5c1668e4fed561128bd6aa254be0e4d0170d1acce \
+                    size    2040198
+
+build.target        github.com/rancher/cli
+
+pre-build {
+    build.cmd ${go.bin} build -ldflags \
+        "\"-w -X main.VERSION=${version}\""
+}
+
+destroot {
+    xinstall -m 755 ${worksrcpath}/cli ${destroot}${prefix}/bin/rancher
+}
+
+github.livecheck.regex  {([^"r]+)}

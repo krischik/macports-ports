@@ -13,7 +13,7 @@ cmake.generator     Ninja
 
 name                webkit2-gtk
 conflicts           webkit2-gtk-devel
-version             2.26.1
+version             2.28.2
 revision            0
 
 description         Apple's WebKit2 HTML rendering library for GTK+3
@@ -30,9 +30,9 @@ distname            webkitgtk-${version}
 
 dist_subdir         webkit-gtk
 
-checksums           rmd160  c5634e5a457a4eccc631043b9d7a61448f64278e \
-                    sha256  6b4b21801d2b1008422a1075dbd6fb4ae8b5127503faf657cf9671289d9cd155 \
-                    size    19327444
+checksums           rmd160  a626f58cf30b6dd1ef8a63c165ce85770c4da675 \
+                    sha256  b9d23525cfd8d22c37b5d964a9fe9a8ce7583042a2f8d3922e71e6bbc68c30bd \
+                    size    21427772
 
 depends_build-append \
                     port:gperf \
@@ -79,8 +79,14 @@ depends_lib-append  port:atk \
 # 5. change some int64_t to gint64 to stop typedef errors in gstreamer
 patchfiles-append   patch-webkit2gtk-macports.diff
 
-# fix name collision that breaks build with clang-9.0
-patchfiles-append   patch-webkit2gtk-source-javascriptcore-tools-jsdollarvm-handle.diff
+# and a few more for webkit2-gtk-2.27.2
+patchfiles-append   patch-webkit2gtk-272-macports.diff
+
+# and a few more for 282
+patchfiles-append   patch-webkit2gtk-2282-unprotected-egl-changes.diff
+
+# os log is only available on newer systems.
+patchfiles-append   patch-webkit2gtk-2282-os-log-availability.diff
 
 # enable Netscape plugin architecture on macOS
 # or can be explicitly disabled with the following addition if preferred
@@ -90,9 +96,6 @@ patchfiles-append    patch-enable-plugin-architecture-unix.diff
 # add a link library to WebCore. I am not sure this is still needed; builds and
 # runs without this patch.
 patchfiles-append    patch-bundle-link-webcore.diff
-
-# https://gitlab.gnome.org/GNOME/jhbuild/commit/e8b48870602c3a8e474e54cf1c6151b98651aae9
-patchfiles-append    WebKit-icu-65.1-fix.patch
 
 # it is preferred to use the WebKit built in bmalloc if it builds on a given os.
 # it has improved security features, but not all systems can build it at present.
@@ -151,6 +154,12 @@ variant minibrowser description {Build and install MiniBrowser (for testing)} {
     depends_run-append       port:adwaita-icon-theme
 }
 
+# see https://trac.macports.org/ticket/56792
+# no success at building universal after considerable attempts
+# errors out in the javascript interpreter
+# muniversal PG does not fix it. disabling the JIT does not fix it
+# help wanted, if suitably motivated
+universal_variant   no
 
 # the above code presently builds as-in on 10.13 and up
 if {${os.platform} eq "darwin" && ${os.major} <= 16} {
@@ -193,6 +202,9 @@ if {${os.platform} eq "darwin" && ${os.major} <= 16} {
         patchfiles-append       patch-webcore-platform-audio-directconvolver-disable-veclib.diff
     }
 
+    # there is a missing header that manifests on 10.7 and less
+    patchfiles-append patch-webkit2gtk-source-javascriptcore-jit-executableallocator-missingfcntl-h-older-systems.diff
+
     # add dep for newer ruby and spec this for build
     # https://trac.macports.org/ticket/52016
     depends_build-append    port:ruby25
@@ -213,6 +225,12 @@ if {${os.platform} eq "darwin" && ${os.major} <= 16} {
         configure.cxxflags-append -include ${filespath}/snowmath.h
     }
 }
+
+notes-append "
+If you are porting new software to use webkit2gtk on Apple systems,\
+you will likely need to define BUILDING_GTK__ to get the correct\
+behaviour from WebKitAvailability.h.
+"
 
 livecheck.type      regex
 livecheck.url       http://webkitgtk.org/releases/

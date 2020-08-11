@@ -3,14 +3,11 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        hamlib hamlib 3.3
-github.tarball_from releases
-
 name                hamlib
 categories          science
 platforms           darwin
 license             LGPL GPL
-maintainers         {@ra1nb0w irh.it:rainbow} openmaintainer
+maintainers         {ra1nb0w @ra1nb0w} openmaintainer
 
 description         Ham Radio Control Libraries
 
@@ -20,12 +17,51 @@ long_description    Flexible and portable shared libraries that offer a \
 
 homepage            https://hamlib.github.io
 
-checksums           rmd160  e9a09b5878101b44802adf2a82cb697e3560c918 \
+subport hamlib-devel {}
+if {[string first "-devel" $subport] > 0} {
+    PortGroup       legacysupport 1.0
+
+    # clock_gettime
+    legacysupport.newest_darwin_requires_legacy 15
+
+    github.setup    Hamlib Hamlib 10fce9f4b50a702fe622551429675522c94c812d
+    version         20200622-[string range ${github.version} 0 7]
+    checksums       rmd160  cecf770eef0f073d5c92d6a7fb220a86a4bfdc98 \
+                    sha256  5c5eec3c6dedb3b78a6012a7843d1d1b70a06bde460f36ee0b666b79d420818a \
+                    size    1474719
+    revision        0
+
+    name            hamlib-devel
+    long_description ${long_description} This port is kept up with the Hamlib \
+        GIT 'master' branch, is typically updated weekly to monthly.
+    conflicts       hamlib
+
+    use_autoconf    yes
+    autoconf.cmd    ./bootstrap
+
+    # need for autoconf
+    depends_build-append \
+        port:autoconf    \
+        port:automake    \
+        port:libtool
+
+} else {
+
+    github.setup    Hamlib Hamlib 3.3
+    github.tarball_from releases
+    checksums       rmd160  e9a09b5878101b44802adf2a82cb697e3560c918 \
                     sha256  c90b53949c767f049733b442cd6e0a48648b55d99d4df5ef3f852d985f45e880 \
                     size    2192119
+    revision        0
 
-depends_build       port:pkgconfig
+    conflicts       hamlib-devel
 
-depends_lib         port:libtool \
-                    port:libusb-compat \
-                    port:libxml2
+}
+
+depends_build-append \
+    port:pkgconfig
+
+depends_lib-append \
+    port:libtool \
+    port:libusb-compat \
+    port:libxml2

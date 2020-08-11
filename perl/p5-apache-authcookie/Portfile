@@ -5,7 +5,7 @@ PortGroup           perl5 1.0
 PortGroup           active_variants 1.1
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Apache-AuthCookie 3.27
+perl5.setup         Apache-AuthCookie 3.30
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 
@@ -15,13 +15,13 @@ long_description    ${description}
 platforms           darwin
 supported_archs     noarch
 
-checksums           rmd160  800c6c10ca7e6d0fb5651401bfa40c669376d115 \
-                    sha256  58daeb3e44c681ff88f8fb00e4aabaa7a40cbee73dbdb84fcf6c285b15d357bd
+checksums           rmd160  d1a1d6e792807205a06cbd1da52c4d345e8c4866 \
+                    sha256  1f71b94d3d55a950a4b32dae4e90f6e76c8157508a7e2aee50621b179aadb1fb \
+                    size    62722
 
 if {${perl5.major} != ""} {
     depends_build-append \
-                    port:p${perl5.major}-apache-test \
-                    port:p${perl5.major}-uri
+                    port:p${perl5.major}-apache-test
 
     depends_lib-append \
                     port:apache2 \
@@ -29,13 +29,8 @@ if {${perl5.major} != ""} {
                     port:p${perl5.major}-class-load \
                     port:p${perl5.major}-hash-multivalue \
                     port:p${perl5.major}-http-body \
+                    port:p${perl5.major}-uri \
                     port:p${perl5.major}-www-form-urlencoded
-
-    variant apache22 description "use apache22 instead of apache2" {
-        # remove after 2020-05-02
-        ui_error "Please do not install this variant since Apache 2.2 is obsolete."
-        return -code error
-    }
 
     set required_variant [string map {. _} "perl${perl5.major}"]
 

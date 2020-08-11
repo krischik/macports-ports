@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         B-COW 0.001
+perl5.setup         B-COW 0.004 ../../authors/id/A/AT/ATOOMIC
 license             {Artistic-1 GPL}
 maintainers         {devans @dbevans} openmaintainer
 description         B::COW - additional B helpers to check Copy-On-Write status
@@ -12,6 +12,6 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  0bc34f1a7055fe088a5adcea12d0439106c9ede1 \
-                    sha256  8d5c3dfe09bbc9100cc56635816d0758c1b32777122246ef652661712a74b0d8 \
-                    size    18005
+checksums           rmd160  7e923587e6217bde4d63e41d746ca39612827349 \
+                    sha256  fcafb775ed84a45bc2c06c5ffd71342cb3c06fb0bdcd5c1b51b0c12f8b585f51 \
+                    size    18295

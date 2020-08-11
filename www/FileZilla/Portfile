@@ -4,11 +4,11 @@ PortSystem          1.0
 PortGroup           wxWidgets 1.0
 
 name                FileZilla
-version             3.42.1
-revision            1
+version             3.48.1
+revision            0
 categories          www aqua
 platforms           darwin
-maintainers         nomaintainer
+maintainers         {@lhaeger gmx.net:lothar.haeger} openmaintainer
 license             GPL-2+
 
 description         Open-source FTP, FTPS, and SFTP client
@@ -20,9 +20,9 @@ long_description    FileZilla Client is a fast and reliable cross-platform \
 homepage            https://filezilla-project.org/
 master_sites        https://download.filezilla-project.org/client
 
-checksums           rmd160  e939da6e7f2414d43844747a51abe3442eb820e3 \
-                    sha256  4fc62e3b137707344d3fc0ebd65b85e428ac394ac9fd3a2efc3a78cebc667e20 \
-                    size    4987250
+checksums           rmd160  7d52dc1c1550f04b129240dd09c6a605b7ff14b4 \
+                    sha256  abffd877ff9006e8e50ce4957393f0a27cc0a7360e626123ef15974eee13ef5d \
+                    size    4774251
 
 # wxWidgets-3.0 with support for C++11 on < 10.9
 wxWidgets.use       wxWidgets-3.0-cxx11
@@ -45,7 +45,8 @@ use_bzip2           yes
 worksrcdir          filezilla-${version}
 
 patchfiles          patch-src-interface-buildinfo.cpp.diff \
-                    patch-skip-dylibcopy.diff
+                    patch-skip-dylibcopy.diff \
+                    patch-src-interface-mainfrm.h.diff
 
 # http://trac.filezilla-project.org/ticket/5473
 # http://sourceforge.net/p/tinyxml/patches/51/
@@ -57,7 +58,7 @@ configure.args      --with-tinyxml=builtin \
 
 configure.env       WXRC=${wxWidgets.wxrc}
 
-compiler.cxx_standard   2014
+compiler.cxx_standard   2017
 compiler.thread_local_storage   yes
 
 destroot {
@@ -65,5 +66,5 @@ destroot {
 }
 
 livecheck.type      regex
-livecheck.url       ${homepage}download.php?type=client
-livecheck.regex     /${name}_(\[0-9.\]+)
+livecheck.url       ${master_sites}
+livecheck.regex     ${name}_(\[0-9.\]+)_src\\.tar\\.bz2

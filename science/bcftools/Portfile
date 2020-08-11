@@ -3,7 +3,12 @@
 PortSystem              1.0
 PortGroup               github 1.0
 
-github.setup            samtools bcftools 1.9
+github.setup            samtools bcftools 1.10.2
+revision                0
+checksums               rmd160  e1fceeef5ffd339b6cb214065ae130ad2bd0fe30 \
+                        sha256  f57301869d0055ce3b8e26d8ad880c0c1989bf25eaec8ea5db99b60e31354e2c \
+                        size    3702679
+
 categories              science
 platforms               darwin
 maintainers             {ryandesign @ryandesign} openmaintainer
@@ -17,15 +22,12 @@ long_description        BCFtools implements utilities for variant calling (in \
                         BCF files. The program is intended to replace the \
                         Perl-based tools from vcftools.
 
-checksums               rmd160  59b9997aaa509ba84c41b7e78821f31eca8d90dc \
-                        sha256  6f36d0e6f16ec4acf88649fb1565d443acf0ba40f25a9afd87f14d14d13070c8 \
-                        size    3134355
-
 homepage                http://www.htslib.org/
 github.tarball_from     releases
 use_bzip2               yes
 
 depends_lib             port:bzip2 \
+                        port:curl \
                         port:xz \
                         port:zlib
 
@@ -39,7 +41,7 @@ destroot.args-append    prefix=${prefix}
 
 post-destroot {
     xinstall -d ${destroot}${prefix}/share/doc/${name}
-    xinstall -m 644 -W ${worksrcpath} \
+    xinstall -m 0644 -W ${worksrcpath} \
         AUTHORS LICENSE README \
         ${destroot}${prefix}/share/doc/${name}
 }

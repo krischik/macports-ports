@@ -1,0 +1,31 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        tj n 6.5.1 v
+categories          devel
+platforms           darwin
+maintainers         {amake @amake} openmaintainer
+license             MIT
+
+description         A simple tool to interactively manage Node.js versions
+
+long_description    ${description}
+
+checksums           rmd160  b0f54d7a6b241b517b13bffd5cbbbd6ba28121a0 \
+                    sha256  6fbc10790fe649ce99d0e70dee95695f5b39bbc0e26728ab8a50fee20bc70963 \
+                    size    28526
+
+use_configure       no
+
+build {}
+
+destroot.args       PREFIX=${destroot}${prefix}
+
+notes {
+Set the environment variable N_PREFIX to install to a user-writable area:
+
+    export N_PREFIX=$HOME/.n
+
+}

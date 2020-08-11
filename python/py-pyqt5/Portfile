@@ -4,32 +4,28 @@ PortSystem              1.0
 PortGroup               python 1.0
 
 name                    py-pyqt5
+python.rootname         PyQt5
 # we the next bump check --allow-sip-warnings if needed
-version                 5.13.1
+version                 5.15.0
 revision                0
 categories-append       devel
 platforms               darwin
-maintainers             {mmoll @mamoll} openmaintainer
+maintainers             nomaintainer
 description             PyQt5 is a set of Python bindings for the Qt5 toolkit
 long_description        ${description}. The bindings \
                         are implemented as a set of Python modules and contain over 620 classes.
 homepage                https://www.riverbankcomputing.com/software/pyqt/intro
 license                 GPL-3
-master_sites            https://www.riverbankcomputing.com/static/Downloads/PyQt5/${version}/
-distname                PyQt5_gpl-${version}
-checksums               rmd160  3b68fe4e6c86e666145e71925e0226f4e2ab672a \
-                        sha256  54b7f456341b89eeb3930e786837762ea67f235e886512496c4152ebe106d4af \
-                        size    3162737
-
-livecheck.type          regex
-livecheck.url           https://www.riverbankcomputing.com/software/pyqt/download5
-livecheck.regex         >PyQt5_gpl-(\[0-9.\]*).tar.gz<
+checksums               rmd160  065cebf73a5ee6fd3dfcaeec022cdea4264e6dd7 \
+                        sha256  c6f75488ffd5365a65893bc64ea82a6957db126fbfe33654bcd43ae1c30c52f9 \
+                        size    3262004
 
 python.versions 27 35 36 37 38
 subport "${name}-common" {}
 
 foreach py_ver ${python.versions} {
     subport "py${py_ver}-pyqt5-webengine" {}
+    subport "py${py_ver}-pyqt5-chart" {}
 }
 
 if {${subport} eq "${name}-common"} {
@@ -49,27 +45,11 @@ if {${subport} eq "${name}-common"} {
         file copy ${worksrcpath}/sip/Enginio ${destroot}${prefix}/share/sip/PyQt5
     }
 
-} elseif {[string first "webengine" ${subport}] != -1} {
+} elseif {[string first "webengine" ${subport}] != -1 || [string first "chart" ${subport}] != -1} {
     PortGroup           qmake5 1.0
-
-    version             5.13.1
-    revision            0
-    description         PyQt5 Webengine bindings
-    long_description    ${description}
-    master_sites        https://www.riverbankcomputing.com/static/Downloads/PyQtWebEngine/${version}
-    distname            PyQtWebEngine_gpl-${version}
-    checksums           rmd160  88d23dacc583ca028b7444c3233d82901e2ad7da \
-                        sha256  8d8c1262005d8465653a848bf67327fb338e0d3c2d26090a6f7eb071dbb42092 \
-                        size    44883
-
-    livecheck.type      regex
-    livecheck.url       https://www.riverbankcomputing.com/software/pyqtwebengine/download
-    livecheck.regex     >PyQtWebEngine_gpl-(\[0-9.\]*).tar.gz<
 
     compiler.cxx_standard 2011
     depends_lib-append  port:py${python.version}-pyqt5
-    qt5.depends_component \
-                        qtwebengine
     use_configure       yes
     configure.pre_args
     configure.cmd       "${python.bin} configure.py"
@@ -85,6 +65,35 @@ if {${subport} eq "${name}-common"} {
     build.target        all
     destroot.cmd        ${build.cmd}
     destroot.destdir    DESTDIR=${destroot}
+
+    if {[string first "webengine" ${subport}] != -1} {
+        python.rootname     PyQtWebEngine
+        version             5.15.0
+        revision            0
+        description         PyQt5 Webengine bindings
+        long_description    ${description}
+        checksums           rmd160  4ae8b330e6e1f78f5df78de6830eef5d2d9ded85 \
+                            sha256  670812688e40bf75f70ddf01eadd897d231300318d3856b275bf8e7e0085bf75 \
+                            size    48308
+
+        # this upstream patch can be removed with the next update
+        patchfiles-append   patch-qtwebengine-with-qt-5.14.diff
+
+        qt5.depends_component \
+                            qtwebengine
+    } elseif {[string first "chart" ${subport}] != -1} {
+        python.rootname     PyQtChart
+        version             5.15.0
+        revision            0
+        description         PyQt5 Charts bindings
+        long_description    ${description}
+        checksums           rmd160  76d3fd824ef730218f655032b44753f7cf2ca3a0 \
+                            sha256  796b1a966759c78859d019bbac6b88b8e1c72ffebf65acf2be3cd9f45c756661 \
+                            size    68423
+
+        qt5.depends_component \
+                            qtcharts
+    }
 
 } elseif {${name} ne ${subport}} {
     PortGroup           qmake5 1.0
@@ -153,14 +162,6 @@ if {${subport} eq "${name}-common"} {
         }
     }
 
-    # variant is obsolete since py-pyqt5 version 5.12.1, remove after March 26, 2020
-    variant webengine description {Build QtWebEngine module (obsolete, use the py-pyqt5-webengine port)} {
-        notes "
-        The +webengine variant is obsolete because PyQtWebEngine is not included anymore in the PyQt5 bindings.\
-        If you need PyQtWebEngine, please install the py-pyqt5-webengine port.
-        "
-    }
-
     variant webkit description {Build QtWebKit module} {
         qt5.depends_component   qtwebkit
         configure.args-delete   --disable=QtWebKit \
@@ -170,5 +171,4 @@ if {${subport} eq "${name}-common"} {
     variant graceful description {Don't abort (crash) on Python errors} {
         patchfiles-append       patch-no-abort-on-python-errors.diff
     }
-
 }

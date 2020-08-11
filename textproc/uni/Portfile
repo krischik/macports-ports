@@ -1,0 +1,27 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/arp242/uni 1.1.1 v
+
+categories          textproc
+license             MIT
+installs_libs       no
+
+maintainers         {gmail.com:herby.gillot @herbygillot} openmaintainer
+
+checksums           rmd160  61331f93c959c543e3406c39330e04fbe525d70e \
+                    sha256  0090f70b2bdbe7135c79737a851d4bedb1d227c94731edda3f24770f078beb6f \
+                    size    412661
+
+description         uni queries the Unicode database from the commandline.
+long_description    Query the Unicode database from the commandline, with \
+                    good support for emojis. Includes full support for \
+                    Unicode 12.1 (May 2019) with full Emoji support (a \
+                    surprisingly large amount of emoji pickers don't deal \
+                    with emoji sequences very well).
+
+destroot {
+    xinstall -m 755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+}

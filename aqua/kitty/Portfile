@@ -4,24 +4,26 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        kovidgoyal kitty 0.13.2 v
+github.setup        kovidgoyal kitty 0.17.4 v
 revision            0
-checksums           rmd160  9a0f1917339008ac28a8d080c616c821544d3142 \
-                    sha256  84699311cd99989fa428326264df193f9c5e449afa1d399ece324e269c5b9726 \
-                    size    2849800
+checksums           rmd160  f1a921592b0945edfa9c0af5633ff4290d165935 \
+                    sha256  9c4a32588a52051552f3daffccd14445327e132138bb5afb486f12e4f0308f2a \
+                    size    3068456
 
 categories          aqua
-platforms           darwin
+platforms           macosx
 license             GPL-3
 maintainers         nomaintainer
 description         A cross-platform, fast, feature full, GPU based terminal emulator
 long_description    ${description}
 
+homepage            https://sw.kovidgoyal.net/kitty/
+
 github.tarball_from releases
 use_xz              yes
 
 python.default_version \
-                    37
+                    38
 
 depends_build-append \
                     port:librsvg \
@@ -44,4 +46,13 @@ pre-build {
 
 destroot {
     copy "${worksrcpath}/kitty.app" ${destroot}${applications_dir}
+}
+
+if {${os.major} <= 15} {
+    # https://github.com/kovidgoyal/kitty/issues/2700
+    known_fail      yes
+    pre-fetch {
+        ui_error "${name} @${version} requires macOS 10.12 or later."
+        return -code error "incompatible OS X version"
+    }
 }

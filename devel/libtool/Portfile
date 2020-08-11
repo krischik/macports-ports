@@ -5,7 +5,7 @@ PortGroup           clang_dependency 1.0
 
 name                libtool
 version             2.4.6
-revision            6
+revision            9
 categories          devel sysutils
 platforms           darwin freebsd
 # Scripts are GPL-2+, libltdl is LGPL-2+, but all parts that tend to be
@@ -22,7 +22,8 @@ homepage            https://www.gnu.org/software/libtool
 
 master_sites        gnu
 checksums           rmd160  6f4b4c3e89426652da3acffa707f71bb4ccee26a \
-                    sha256  e3bd4d5d3d025a36c21dd6af7ea818a2afcd4dfc1ea5a17b39d7854bcd0c06e3
+                    sha256  e3bd4d5d3d025a36c21dd6af7ea818a2afcd4dfc1ea5a17b39d7854bcd0c06e3 \
+                    size    1806697
 
 # To clean up libtool 2.4.6 distfile.
 depends_build       bin:xattr:xattr
@@ -31,10 +32,14 @@ license_noconflict  xattr
 # Ignore architecture of xattr port, if used (#58083).
 depends_skip_archcheck-append xattr
 
-patchfiles          hardcode-m4.patch asan.patch
+patchfiles          hardcode-m4.patch asan.patch dynamic_lookup-11.patch
 post-patch {
     # Stop build from trying to regenerate these after patching.
     touch ${worksrcpath}/doc/libtool.1 ${worksrcpath}/doc/libtoolize.1
+    touch ${worksrcpath}/aclocal.m4 ${worksrcpath}/libltdl/aclocal.m4
+    touch ${worksrcpath}/Makefile.in ${worksrcpath}/libltdl/Makefile.in
+    touch ${worksrcpath}/config-h.in ${worksrcpath}/libltdl/config-h.in
+    touch ${worksrcpath}/configure ${worksrcpath}/libltdl/configure
 }
 
 # Leopard and later provide GNU M4 1.4.6, which works fine. Tiger's

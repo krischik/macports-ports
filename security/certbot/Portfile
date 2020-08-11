@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        certbot certbot 0.40.1 v
+github.setup        certbot certbot 1.5.0 v
 revision            0
 categories          security
 license             Apache-2
@@ -15,9 +15,9 @@ long_description    ${description}
 platforms           darwin
 homepage            https://certbot.eff.org/
 
-checksums           rmd160  ee36c112ca51e762b79917120ae4e4e476379181 \
-                    sha256  9a826e780eece017fffa7c9759844b5e826d8afa85ecb2695b0b03d391feb796 \
-                    size    1353285
+checksums           rmd160  d5b1ae4ca435713239a3826ad479888c967d129d \
+                    sha256  81a409feb67ebad87221f02baeacf7c9a4e8b1a9025d5e19176854042e4b5ab7 \
+                    size    1387572
 
 if {[variant_isset python27]} {
     python.default_version 27
@@ -50,12 +50,14 @@ depends_lib         port:py${python.version}-acme \
                     port:py${python.version}-zope-component \
                     port:py${python.version}-zope-deferredimport \
                     port:py${python.version}-zope-deprecation \
-                    port:py${python.version}-zopehookable
+                    port:py${python.version}-zope-hookable
+
+build.dir           ${worksrcpath}/${name}
 
 post-patch {
-    reinplace "s|/etc/|${prefix}/etc/|" ${worksrcpath}/certbot/compat/misc.py
-    reinplace "s|/var/lib/|${prefix}/var/db/|" ${worksrcpath}/certbot/compat/misc.py
-    reinplace "s|/var/log/|${prefix}/var/log/|" ${worksrcpath}/certbot/compat/misc.py
+    reinplace "s|/etc/|${prefix}/etc/|" ${worksrcpath}/certbot/certbot/compat/misc.py
+    reinplace "s|/var/lib/|${prefix}/var/db/|" ${worksrcpath}/certbot/certbot/compat/misc.py
+    reinplace "s|/var/log/|${prefix}/var/log/|" ${worksrcpath}/certbot/certbot/compat/misc.py
 }
 
 variant python27 conflicts python36 python37 python38 description {Use Python 2.7} {
@@ -73,46 +75,11 @@ if {![variant_isset python27] && ![variant_isset python36] && ![variant_isset py
 }
 
 #
-#   py-acme is a dependency of, and comes packaged together with certbot
-#
-
-# subport py-acme {
-#     categories          python security
-#     description         ACME protocol implementation in Python.
-#     long_description    ${description}
-#
-#     build.dir           ${worksrcpath}/acme
-#
-#     if {${name} ne ${subport}} {
-#         depends_build-append \
-#                         port:py${python.version}-funcsigs \
-#                         port:py${python.version}-mock \
-#                         port:py${python.version}-nose \
-#                         port:py${python.version}-setuptools
-#
-#         depends_lib-append  \
-#                         port:py${python.version}-asn1 \
-#                         port:py${python.version}-cryptography \
-#                         port:py${python.version}-idna \
-#                         port:py${python.version}-josepy \
-#                         port:py${python.version}-ndg_httpsclient \
-#                         port:py${python.version}-openssl \
-#                         port:py${python.version}-requests \
-#                         port:py${python.version}-requests-toolbelt \
-#                         port:py${python.version}-pyrfc3339 \
-#                         port:py${python.version}-six \
-#                         port:py${python.version}-tz \
-#                         port:py${python.version}-werkzeug
-#     }
-# }
-
-#
 # integration with local webservers
 # for use with "http-01 challenge"
 #
 
 subport ${name}-apache {
-    revision            1
     description         The certbot Apache plugin for http-01 challenges
     long_description    The Apache plugin currently supports modern OSes based on Debian, \
                         Fedora, SUSE, Gentoo and Darwin. This automates both obtaining \
@@ -127,7 +94,6 @@ subport ${name}-apache {
 }
 
 subport ${name}-nginx {
-    revision            1
     description         The certbot Nginx plugin for http-01 challenges
     long_description    The Nginx plugin should work for most configurations. We \
                         recommend backing up Nginx configurations before using it (though \
@@ -143,7 +109,7 @@ subport ${name}-nginx {
 
     post-patch {
         reinplace "s|%PREFIX%|${prefix}|" \
-        ${worksrcpath}/certbot-nginx/certbot_nginx/constants.py
+        ${worksrcpath}/certbot-nginx/certbot_nginx/_internal/constants.py
     }
 }
 

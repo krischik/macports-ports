@@ -3,7 +3,8 @@
 PortSystem          1.0
 
 name                xterm
-version             350
+version             356
+revision            0
 categories          x11
 license             X11
 platforms           darwin
@@ -17,26 +18,23 @@ homepage            https://invisible-island.net/xterm/
 master_sites        ftp://ftp.invisible-island.net/pub/xterm/ \
                     https://invisible-mirror.net/archives/xterm/
 
-checksums           rmd160  c129107aeaba3ef0c55d8a7430610ff109b7818d \
-                    sha256  aefb59eefd310268080d1a90a447368fb97a9a6737bfecfc3800bf6cc304104d \
-                    size    1399138
+checksums           rmd160  ea1b148159935f870d29ab4db4404253fb2f807c \
+                    sha256  38c5182fc4108390b21b54d2b84b7c92444221f39bb35129913149c4bf9629c7 \
+                    size    1413652
 
 extract.suffix      .tgz
 
-depends_build \
-	port:xorg-xorgproto
+depends_build       port:xorg-xorgproto
 
-depends_run \
-	bin:luit:luit
+depends_run         bin:luit:luit
 
-depends_lib \
-	port:ncurses \
-	port:expat \
-	port:zlib \
-	port:xorg-libXaw \
-	port:Xft2
+depends_lib         port:ncurses \
+                    port:expat \
+                    port:zlib \
+                    port:xorg-libXaw \
+                    port:Xft2
 
-patchfiles PR-7191532.patch
+patchfiles          PR-7191532.patch
 
 patch.pre_args -p1
 

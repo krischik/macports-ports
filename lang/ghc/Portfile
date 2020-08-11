@@ -4,12 +4,13 @@ PortSystem          1.0
 PortGroup           gpg_verify 1.0
 
 name                ghc
-version             8.6.5
-revision            1
+version             8.10.1
+revision            0
 categories          lang haskell
 maintainers         {ieee.org:s.t.smith @essandess} openmaintainer
 license             BSD
 platforms           darwin
+supported_archs     x86_64
 
 description The Glorious Glasgow Haskell Compilation System
 long_description    \
@@ -25,7 +26,7 @@ long_description    \
         GHC comes with a generational garbage collector,    \
         and a space and time profiler.
 
-homepage        http://haskell.org/${name}
+homepage            http://haskell.org/${name}
 
 # Bootstrapped ghc is the default build
 variant prebuilt \
@@ -37,16 +38,15 @@ use_xz              yes
 master_sites        https://downloads.haskell.org/~${name}/${version}
 distfiles           ${distname}-x86_64-apple-darwin${extract.suffix} \
                     ${distname}-testsuite${extract.suffix}
-checksums           ${distname}-x86_64-apple-darwin${extract.suffix} \
-                    rmd160  618664b03640f58ebe28999c1c3bd3fc56c8ff7c \
-                    sha256  dfc1bdb1d303a87a8552aa17f5b080e61351f2823c2b99071ec23d0837422169 \
-                    size    159042284 \
-                    ${distname}-testsuite${extract.suffix} \
-                    rmd160  9e4cb087bc8163feab7793f835916bdfd277868b \
-                    sha256  21391cb63a8a6b327f6c9519217a3dad39493e72c48967008ae35af142ca895f \
-                    size    1910060
 
-supported_archs     x86_64
+checksums           ${distname}-x86_64-apple-darwin${extract.suffix} \
+                    rmd160  5798ed5082418e20603ea022228a3a1015253848 \
+                    sha256  65b1ca361093de4804a7e40b3e68178e1ef720f84f743641ec8d95e56a45b3a8 \
+                    size    192889416 \
+                    ${distname}-testsuite${extract.suffix} \
+                    rmd160  225d1aba26458102330a730b96ae4500cf00d0bc \
+                    sha256  37cf67b04bcf00ae78914e4612db9d959bc5bd455a27ea5f6461100137c0b800 \
+                    size    2091988
 
 gpg_verify.use_gpg_verification \
                     yes
@@ -81,7 +81,7 @@ extract.only        ${distname}-x86_64-apple-darwin${extract.suffix} \
                     ${distname}-testsuite${extract.suffix}
 
 # use these to specify python versions, python3 required
-set python3_version 3.7
+set python3_version 3.8
 set python3_version_nickname \
                     [join [lrange [split ${python3_version} .] 0 1] {}]
 
@@ -100,9 +100,9 @@ if { [variant_isset "prebuilt"] } {
                     ${distname}-src${extract.suffix}
     checksums-append \
                     ${distname}-src${extract.suffix} \
-                    rmd160  2640736ab93348a6f9550d914d811c0e62b77e50 \
-                    sha256  4d4aa1e96f4001b934ac6193ab09af5d6172f41f5a5d39d8e43393b9aafee361 \
-                    size    19092168
+                    rmd160  99cd5da02c02364bdfb9b171f14012bea32b843a \
+                    sha256  4e3b07f83a266b3198310f19f71e371ebce97c769b14f0d688f4cbf2a2a1edf5 \
+                    size    19781652
 
     depends_build-append \
                     port:alex \
@@ -123,11 +123,12 @@ if { [variant_isset "prebuilt"] } {
 
     # add the bootstrap binary and the sphinx-build binary to PATH
     configure.env-append \
-        PATH=$env(PATH):${bootstrap_dir}/bin:${frameworks_dir}/Python.framework/Versions/${python3_version}/bin
+        GHC=${bootstrap_dir}/bin/ghc \
+        "PATH=$env(PATH):${bootstrap_dir}/bin:${frameworks_dir}/Python.framework/Versions/${python3_version}/bin"
 
     # overwrite `build.env`
     build.env \
-        PATH=$env(PATH):${bootstrap_dir}/bin:${frameworks_dir}/Python.framework/Versions/${python3_version}/bin
+        "PATH=$env(PATH):${bootstrap_dir}/bin:${frameworks_dir}/Python.framework/Versions/${python3_version}/bin"
 
     pre-build {
         # test: move extracted testsuite directory to src
@@ -167,36 +168,32 @@ if { [variant_isset "prebuilt"] } {
                 ${f}
         }
 
-        system -W ${srcpath}/${distname} "\
-            export \
-                PATH=$env(PATH):${bootstrap_dir}/bin:${frameworks_dir}/Python.framework/Versions/${python3_version}/bin ; \
-            ./boot \
-            "
+        # see https://trac.macports.org/wiki/UsingTheRightCompiler
+        configure.env-append CC=${configure.cc}
+        build.env-append     CC=${configure.cc} \
+                             CXX=${configure.cxx}
+        system -W ${srcpath}/${distname} "patch -p0 < ${filespath}/patch-gmp-ghc.mk.diff"
+
+        system -W ${srcpath}/${distname} \
+            "export PATH=$env(PATH):${bootstrap_dir}/bin:${frameworks_dir}/Python.framework/Versions/${python3_version}/bin ;\
+            ./boot"
 
         # configure
         # install the final compiler to destroot
         configure.pre_args \
             --prefix=${destroot}${prefix}
-        set configure_args \
-            --with-ghc=${bootstrap_dir}/bin/ghc
         configure.dir ${srcpath}/${distname}
-        system -W ${srcpath}/${distname} "\
-            export \
-                PATH=/usr/bin:$env(PATH):${bootstrap_dir}/bin:${frameworks_dir}/Python.framework/Versions/${python3_version}/bin ; \
-            ${configure.cmd} ${configure.pre_args} ${configure_args} \
-            "
+        system -W ${srcpath}/${distname} \
+            "export ${configure.env};\
+            ${configure.cmd} ${configure.pre_args}"
 
         # build and destroot the second stage: `make && make install`
-        system -W ${srcpath}/${distname} "\
-            export \
-                PATH=/usr/bin:$env(PATH):${bootstrap_dir}/bin:${frameworks_dir}/Python.framework/Versions/${python3_version}/bin ; \
-            ${build.cmd} [portbuild::build_getjobsarg] \
-            "
-        system -W ${srcpath}/${distname} "\
-            export \
-                PATH=/usr/bin:$env(PATH):${bootstrap_dir}/bin:${frameworks_dir}/Python.framework/Versions/${python3_version}/bin ; \
-            ${build.cmd} ${destroot.pre_args} \
-            "
+        system -W ${srcpath}/${distname} \
+           "export ${build.env};\
+           ${build.cmd} [portbuild::build_getjobsarg]"
+        system -W ${srcpath}/${distname} \
+           "export ${build.env};\
+           ${build.cmd} ${destroot.pre_args}"
     }
 }
 
@@ -207,7 +204,7 @@ configure.pre_args  --prefix=${bootstrap_dir}
 # note: this command does not change the destroot PATH environment, so export
 # PATH explicitly in the necessary system command below
 build.env-append \
-    PATH=$env(PATH):${bootstrap_dir}/bin
+    "PATH=$env(PATH):${bootstrap_dir}/bin"
 
 # Note: `make install` in bootstrap build cannot use a parallel build
 use_parallel_build  no
@@ -233,9 +230,10 @@ post-activate {
     system "${prefix}/bin/ghc-pkg recache"
 }
 
+test.run            yes
+test.env-append     "PATH=$env(PATH):${bootstrap_dir}/bin"
 test.dir            ${worksrcpath}/testsuite
 test.target         test
-test.run            yes
 
 notes "The GHC User Manual is available at:
 
@@ -244,3 +242,9 @@ notes "The GHC User Manual is available at:
 
 Copy/edit ${prefix}/etc/ghci.conf to your directory ~/.ghc
 for a user-specific startup configuration."
+
+# livecheck broken on downloads.haskell.org
+# See: https://lists.macports.org/pipermail/macports-dev/2019-December/041581.html
+#livecheck.type      regex
+#livecheck.url       https://downloads.haskell.org/~${name}
+#livecheck.regex     (\\d+(?:\\.\\d+){1,3})

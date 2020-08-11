@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        xonsh xonsh 0.9.13
+github.setup        xonsh xonsh 0.9.18
 revision            0
 categories          shells
 platforms           darwin
@@ -21,11 +21,11 @@ long_description    ${description} \
                     macOS, and Windows. Xonsh is meant for the daily use of \
                     experts and novices alike.
 
-checksums           rmd160  f2bc6f32f4c02a030cfce935178dd87bb7ae96b1 \
-                    sha256  ad469eccc0b53638af772babffc44450b0d5a89ea9f40fff13d2666377eeb699 \
-                    size    2432219
+checksums           rmd160  a52803b74b261abc73b0e2b8467f9d66677bab08 \
+                    sha256  27bb9460968d5c7d31ae53d92f77fe1cfbc0f4dcc7ba69240eadec7d6fbf0baa \
+                    size    2523022
 
-python.versions     34 35 36 37 38
+python.versions     36 37 38
 
 depends_lib-append  port:py${python.version}-prompt_toolkit \
                     port:py${python.version}-pygments \
@@ -43,6 +43,6 @@ variant python38 conflicts python36 python37 description {Use Python 3.8} {
     python.default_version 38
 }
 
-if {![variant_isset python34] && ![variant_isset python35] && ![variant_isset python36] && ![variant_isset python38]} {
-    default_variants +python37
+if {![variant_isset python36] && ![variant_isset python37]} {
+    default_variants +python38
 }

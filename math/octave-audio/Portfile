@@ -3,17 +3,20 @@
 PortSystem          1.0
 PortGroup           octave 1.0
 
-octave.setup        audio 1.1.4
+octave.setup        audio 2.0.1
+revision            0
 octave.config_h     yes
-revision            5
 platforms           darwin
 license             GPL-2+ public-domain
-maintainers         nomaintainer
+maintainers         {mps @Schamschula} openmaintainer
 description         Audio recording, processing, and playing tools.
 long_description    ${description}
 
-checksums           rmd160 0f38a8ef8b7d6571ce6d20ca00f6a636f32976f0 \
-                    sha256 1cc95684b48bc2b2681036b65ed78fe5bc6323ca94b43dea6c005303dd7320e4
+checksums           rmd160  459c5cbc34e9f0c61b7ff990a8e740ea69ecfef8 \
+                    sha256  485973d617309c5b7d8d3392deffdd97e3411f5f7c181a89cf63dd3749d3458c \
+                    size    353327
 
-# respect objective-c flags
-patchfiles-append   patch-objcflags.diff
+configure.env-append \
+                    RTMIDI_CFLAGS=-pthread -D__UNIX_JACK__ -D__MACOSX_CORE__ -I/include/rtmidi
+
+depends_lib         port:rtmidi

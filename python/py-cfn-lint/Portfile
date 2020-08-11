@@ -5,24 +5,29 @@ PortGroup           python 1.0
 PortGroup           github 1.0
 
 name                py-cfn-lint
-github.setup        aws-cloudformation cfn-python-lint 0.24.3 v
+github.setup        aws-cloudformation cfn-python-lint 0.29.0 v
 revision            0
 
 platforms           darwin
 supported_archs     noarch
 license             MIT
-maintainers         {yan12125 @yan12125} openmaintainer
+maintainers         nomaintainer
 
 description         Checks cloudformation for practices and behaviour that could potentially be improved
 long_description    ${description}
 
-checksums           sha256  83b3cb310fe4867a95db2c01f880db19e55d933ae1ad815005e61508de2115f7 \
-                    rmd160  103398d03391afa068fd256554d94ba0ec0b1132 \
-                    size    3404450
+checksums           sha256  30597e0191ec3893f507e70e2d8d179f4c114321280298e6b145c5a3d3e15e06 \
+                    rmd160  ea75c05578d7c4bbfdb7fcd1db38b9a5a920c1b1 \
+                    size    3860511
 
-python.versions     37
+python.versions     37 38
 
 if {${name} ne ${subport}} {
+    post-patch {
+        reinplace "s|\'cfn-lint\'|\'cfn-lint-${python.branch}\'|g" \
+            ${worksrcpath}/test/integration/__init__.py
+    }
+
     depends_lib-append \
                     port:py${python.version}-setuptools
 
@@ -39,9 +44,9 @@ if {${name} ne ${subport}} {
                     port:py${python.version}-pytest
 
     test.run        yes
-    test.env-append PYTHONPATH=build/lib
     test.cmd        py.test-${python.branch}
-    test.target     test
+    test.target
+    test.env-append PYTHONPATH=build/lib
 
     livecheck.type  none
 }

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           legacysupport 1.0
 
-github.setup        okbob pspg 2.5.3
+github.setup        okbob pspg 3.0.4
 
 categories          databases
 license             BSD
@@ -12,11 +12,11 @@ platforms           darwin
 maintainers         {lbschenkel @lbschenkel} openmaintainer
 
 description         pspg is a Unix pager optimized for table browsing
-long_description    ${description}
+long_description    {*}${description}
 
-checksums           rmd160  29dab972f7afad2565e479698d04bde606fcc0ec \
-                    sha256  7b6889c69b46c8af6586eaecd69aae5d4420b6a63a4e7b54de1e01304644c023 \
-                    size    1345128
+checksums           rmd160  0e07716fcf4f8d902fea0646abc6d82415fbcdcb \
+                    sha256  a9b23952831e5c4480e350cffd10420820d99428026f0548a109c3afab8e2e16 \
+                    size    1363160
 
 depends_lib         port:ncurses port:readline
 configure.args      PANEL_LIBS=-lpanel \

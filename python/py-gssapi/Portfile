@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        pythongssapi python-gssapi 1.6.1 v
+github.setup        pythongssapi python-gssapi 1.6.5 v
 github.tarball_from releases
 
 name                py-gssapi
@@ -17,9 +17,9 @@ long_description    Python-GSSAPI provides both low-level and high level wrapper
                     around the GSSAPI C libraries. While it focuses on the Kerberos \
                     mechanism, it should also be useable with other GSSAPI mechanisms.
 
-checksums           rmd160  14a9d3a668772d158c6a75605a1666c05a3b975c \
-                    sha256  e5a1877226d403f7e5dd60f8731a7f0d8ba1358e36f582942615b1da04b45c2e \
-                    size    91970
+checksums           rmd160  687119622b3813fad7c26f8bd22a8e8bb3ccc4ed \
+                    sha256  523e532e17e2b0724070069a02ff3428e5fe02d0ef7c35510f3c91a193a398c6 \
+                    size    92893
 
 python.versions     38
 
@@ -28,4 +28,11 @@ if {${name} ne ${subport}} {
                             port:py${python.version}-cython
     depends_lib-append      port:py${python.version}-decorator \
                             port:py${python.version}-six
+
+    # Uses GSS.framework on macOS >= 10.7
+    if {${os.platform} eq "darwin" && ${os.major} < 11} {
+        depends_lib-append  port:kerberos5
+    }
+
+    livecheck.type          none
 }

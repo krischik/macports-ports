@@ -4,7 +4,7 @@ PortSystem          1.0
 
 name                sudo
 epoch               1
-version             1.8.29
+version             1.9.1
 revision            1
 categories          sysutils security
 license             ISC
@@ -23,14 +23,12 @@ homepage            http://www.sudo.ws/sudo/
 master_sites        ${homepage}dist/ \
                     ${homepage}dist/OLD/
 
-checksums           rmd160  706c7c8ec2a90b2e464e138384335b7de91d1c25 \
-                    sha256  ce53ffac9604e23321334d8ba8ac59ded2bcf624fdb9dbde097ab2049bf29c7c \
-                    size    3338260
+checksums           rmd160  eb4dd1e0558c37aad5b18c30571e27e9ca956cf3 \
+                    sha256  294116cefe10a02773917fc7440d8384b925955bc96a6e0eaa1977c83b34adff \
+                    size    3834744
 
-patchfiles          patch-sudoers.in.diff
-
-# see ​https://bugzilla.sudo.ws/show_bug.cgi?id=904
-patchfiles-append   patch-src-limits.c.diff
+patchfiles          patch-configure.diff \
+                    patch-sudoers.in.diff
 
 configure.args      --infodir=${prefix}/share/info \
                     --mandir=${prefix}/share/man \

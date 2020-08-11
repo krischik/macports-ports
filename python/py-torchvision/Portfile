@@ -6,13 +6,13 @@ PortGroup           github            1.0
 PortGroup           cxx11             1.1
 
 name                py-torchvision
-version             0.4.1
+version             0.6.0
 revision            0
 github.setup        pytorch vision ${version} v
 
-checksums           rmd160  d39a6a8f4348e69c5132817d03b56cf9e0d858b7 \
-                    sha256  e420819c487788441947e4067b9b1c67f8a406e0f838f0766992512f001e1181 \
-                    size    1707732
+checksums           rmd160  49a97e74e1a6e0c25d4c575dc6b77d48e7be414a \
+                    sha256  f0067dc93d0d15f63c910c19f974113f1c28e2a5a95a259462316480d522fe50 \
+                    size    5946233
 
 platforms           darwin
 supported_archs     x86_64
@@ -29,8 +29,10 @@ homepage            https://github.com/pytorch/vision
 github.livecheck.regex  {([0-9.]+)}
 
 # Support python versions
-python.versions     27 35 36 37 38
+python.versions        36 37 38
 python.default_version 37
+
+compiler.cxx_standard 2011
 
 if {${name} ne ${subport}} {
 

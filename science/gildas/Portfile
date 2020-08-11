@@ -5,7 +5,7 @@ PortGroup           compilers 1.0
 PortGroup           active_variants 1.1 
 
 name                gildas
-version             201911a
+version             202006b
 set my_version      [string tolower [clock format [clock scan 2000-[string range ${version} 4 5]-10] -format %b]][string range ${version} 2 3][string range ${version} 6 end]
 categories          science
 platforms           darwin
@@ -30,23 +30,27 @@ master_sites        http://www.iram.fr/~gildas/dist/ \
 distname            ${name}-src-${my_version}
 use_xz              yes
 
-checksums           rmd160  0916fd97c9af1ab69ea6fa5d8a77cee738892582 \
-                    sha256  09e0044104b9ce5bf530c63a813bc7431232f1000ab9363b2d7f6543f3af3a86 \
-                    size    41909684
+checksums           rmd160  b7fc1d33feddf2c6a9b66dd9515a182ee6507ac7 \
+                    sha256  53473b9115f24e00282835533b708865600dcd8b7aaa1c37242eaa996e5216a4 \
+                    size    42994200
 
 patch.pre_args      -p1
 patchfiles          patch-admin-Makefile.def.diff \
                     patch-admin-Makefile.python.diff \
+                    patch-admin-Makefile.build.diff \
                     patch-admin-gildas-env.sh.diff \
                     patch-admin-define-system.sh.diff
 
 depends_lib         port:gtk2 \
                     port:libpng \
-                    port:python27 \
-                    port:py27-numpy
+                    port:python38 \
+                    port:py38-numpy
 
+# coreutils needed to use GNU gsort instead of native BSD sort as older version
+# of sort do not support sort -V:
 depends_build       port:cfitsio \
-                    port:pkgconfig
+                    port:pkgconfig \
+                    port:coreutils
 
 set my_build_opts   ""
 variant openmp description {Add OpenMP support} {set my_build_opts "-o openmp"}
@@ -59,13 +63,7 @@ compilers.enforce_some_fortran cfitsio
 
 compilers.choose    fc
 compilers.setup     -g95 -gcc44 -gcc45 -gcc46 require_fortran
-configure.python    ${prefix}/bin/python2.7
-
-post-extract {
-    if {![gcc_variant_isset]} {
-        reinplace -W ${worksrcpath}/admin "s|-Wrealloc-lhs-all||" define-system.sh
-    }
-}
+configure.python    ${prefix}/bin/python3.8
 
 configure {
     set cxxstdlib {}
@@ -73,6 +71,7 @@ configure {
         set cxxstdlib [string map {lib -l} ${configure.cxx_stdlib}]
     }
 
+    reinplace -W ${worksrcpath}/admin "s|@PREFIX@|${prefix}|g" define-system.sh
     reinplace -W ${worksrcpath}/admin "s|@CC@|${configure.cc}|g" Makefile.def Makefile.python gildas-env.sh define-system.sh
     reinplace -W ${worksrcpath}/admin "s|@CCFLAGS@|${configure.cflags}|g" Makefile.def Makefile.python gildas-env.sh define-system.sh
     reinplace -W ${worksrcpath}/admin "s|@FC@|${configure.fc}|g" Makefile.def Makefile.python gildas-env.sh define-system.sh
@@ -81,7 +80,7 @@ configure {
     reinplace -W ${worksrcpath}/admin "s|@CPP@|${configure.cpp}|g" Makefile.def Makefile.python gildas-env.sh define-system.sh
     reinplace -W ${worksrcpath}/admin "s|@CPPFLAGS@|${configure.cppflags}|g" Makefile.def Makefile.python gildas-env.sh define-system.sh
     reinplace -W ${worksrcpath}/admin "s|@LDFLAGS@|${configure.ldflags}|g" Makefile.def Makefile.python gildas-env.sh define-system.sh
-    reinplace -W ${worksrcpath}/admin "s|@PYTHON@|${configure.python}|g" Makefile.def Makefile.python gildas-env.sh define-system.sh
+    reinplace -W ${worksrcpath}/admin "s|@PYTHON@|${configure.python}|g" Makefile.build Makefile.def Makefile.python gildas-env.sh define-system.sh
     reinplace -W ${worksrcpath}/admin "s|@STDCXXLIB@|${cxxstdlib}|g" Makefile.def Makefile.python gildas-env.sh define-system.sh
 }
 

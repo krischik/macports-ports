@@ -5,7 +5,7 @@ PortGroup           java 1.0
 
 name                NetBeans
 set name_lower      [string tolower ${name}]
-version             11.2
+version             12.0
 categories          aqua devel java
 license             Apache-2
 maintainers         openmaintainer {amake @amake}
@@ -26,9 +26,9 @@ platforms           darwin
 distname            ${name_lower}-${version}-bin
 master_sites        apache:${name_lower}/${name_lower}/${version}
 
-checksums           rmd160  8afa40b6f65845801f290d34f129eab969a8ebd9 \
-                    sha256  6f3f77b042bddaa1e100f133747d0f59bad437adcdc662efda5fc961a170bb2d \
-                    size    338524882
+checksums           rmd160  a31595c00b29fed66d8c5a94d23715d5fdfebe8d \
+                    sha256  85d91529c18f672322af58d21cae853178d574dd35d53a6cfe45992b99c64545 \
+                    size    374859809
 
 worksrcdir          ${name_lower}
 
@@ -67,4 +67,4 @@ universal_variant   no
 
 livecheck.type      regex
 livecheck.url       https://netbeans.apache.org/download/index.html
-livecheck.regex     {Apache NetBeans (\d+(?:\.\d+)*)}
+livecheck.regex     {\(NB (\d+(?:\.\d+)*)\)}

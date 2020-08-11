@@ -2,11 +2,14 @@
 
 PortSystem          1.0
 
+PortGroup           github 1.0
+
+github.setup        asciidoc asciidoc-py3 9.0.0rc2
+revision            0
+checksums           rmd160  9aefd68ccfc3d82117f5d4a54a7c628c69203c8c \
+                    sha256  3f7adf5c02a5e0a8d874281cde35ac49df6bf0ba255c56a51cafc5279d999b43 \
+                    size    1145267
 name                asciidoc
-version             8.6.9
-revision            3
-checksums           sha256  78db9d0567c8ab6570a6eff7ffdf84eadd91f2dfc0a92a2d0105d323cab4e1f0 \
-                    rmd160  f19936593e3bed2755d77d38dd78a4769f77c7fa
 
 categories          textproc
 license             GPL-2+
@@ -23,19 +26,29 @@ long_description \
 
 platforms           darwin
 supported_archs     noarch
+installs_libs       no
 
 homepage            http://asciidoc.org/
-master_sites        sourceforge
 
-depends_lib         port:python27
-depends_run         port:docbook-xml-4.5 \
-                    port:fop \
+use_autoreconf      yes
+depends_lib         port:python38 \
                     port:libxml2 \
-                    port:libxslt
+                    port:libxslt \
+                    port:docbook-xml-4.5 \
+                    port:docbook-xsl-nons
+depends_run         port:fop
 # Other runtime dependencies include dblatex, w3m and epubcheck, but those are
 # rarely used and large. See #52758.
 
-configure.python    ${prefix}/bin/python2.7
+configure.python    ${prefix}/bin/python3.8
+
+pre-configure {
+    reinplace "s:^\tpython3 :\t${configure.python} :" \
+        ${worksrcpath}/Makefile.in
+    reinplace "s:#!/usr/bin/env python3:#!${configure.python}:" \
+        ${worksrcpath}/asciidoc.py \
+        ${worksrcpath}/a2x.py
+}
 
 destroot.target install docs vimdir=${prefix}/share/vim/vimfiles/
 
@@ -43,13 +56,9 @@ pre-destroot {
     xinstall -d ${destroot}${prefix}/share/vim/vimfiles
 }
 
-post-destroot {
-    reinplace "s:#!/usr/bin/env python:#!${prefix}/bin/python2.7:" \
-        ${destroot}${prefix}/bin/asciidoc \
-        ${destroot}${prefix}/bin/a2x
-}
-
 platform darwin {
     # Avoid hidden dependency on gsed
     configure.env-append SED=/usr/bin/sed
 }
+
+test.run            yes

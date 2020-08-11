@@ -2,12 +2,15 @@
 
 PortSystem          1.0
 PortGroup           select 1.0
+PortGroup           clang_dependency 1.0
 
 name                python38
 
-version             3.8.0
 epoch               1
+# Remember to keep py38-tkinter and py38-gdbm's versions sync'd with this
+version             3.8.3
 revision            0
+
 set major           [lindex [split $version .] 0]
 set branch          [join [lrange [split ${version} .] 0 1] .]
 
@@ -25,9 +28,9 @@ master_sites        ${homepage}ftp/python/${version}/
 
 distname            Python-${version}
 use_xz              yes
-checksums           rmd160  ada4ef83d6315ab854e1f1e430db142b40260e7e \
-                    sha256  b356244e13fb5491da890b35b13b2118c3122977c2cd825e3eb6e7d462030d84 \
-                    size    17829824
+checksums           rmd160  f52a96c9edac6c135114c8d0766e5f64bea7fb0f \
+                    sha256  dfab5ec723c218082fe3d5d7ae17ecbdebffa9a1aea4d64aa3a2ecdd2e795864 \
+                    size    17912964
 
 patchfiles          patch-setup.py.diff \
                     patch-Lib-cgi.py.diff \
@@ -35,6 +38,12 @@ patchfiles          patch-setup.py.diff \
                     patch-Lib-ctypes-macholib-dyld.py.diff \
                     patch-libedit.diff \
                     patch-configure-xcode4bug.diff
+
+if {${os.platform} eq "darwin" && ${os.major} < 10} {
+    # work around no copyfile and/or pthread_threadid_np on older systems
+    patchfiles-append  patch-no-copyfile-on-Tiger.diff \
+                       patch-threadid-older-systems.diff
+}
 
 depends_build       port:pkgconfig
 depends_lib         port:bzip2 \
@@ -51,7 +60,7 @@ depends_run         port:python_select \
                     port:python3_select
 
 # blacklist llvm-gcc-4.2 compiler known to produce bad code
-compiler.blacklist  *llvm-gcc-4.2
+compiler.blacklist-append  *llvm-gcc-4.2
 
 # ensurepip arg may be removed later, now conflicts with pip and setuptools
 # packages
@@ -94,8 +103,11 @@ platform darwin {
     set confdir     config-${branch}-darwin
 
     post-configure {
+        # poll() misbehaves on 10.8 and older
         # See https://trac.macports.org/ticket/18376
-        system -W ${worksrcpath} "ed - pyconfig.h < ${filespath}/pyconfig.ed"
+        if {${os.platform} eq "darwin" && ${os.major} <= 12} {
+            system -W ${worksrcpath} "ed - pyconfig.h < ${filespath}/pyconfig.ed"
+        }
     }
 
     post-build {
@@ -108,7 +120,7 @@ platform darwin {
         # the behavior of `python-config --ldflags` here.
         system -W ${buildlibdir} "awk -F : \
             \"/'LINKFORSHARED'/ {printf \\\"%s: '-L${framewdir}/lib/python${branch}/${confdir}\
-            -lpython${branch}m -ldl -framework CoreFoundation',\\n\\\", \\\$1; getline; next} {print}\"\
+            -lpython${branch} -ldl -framework CoreFoundation',\\n\\\", \\\$1; getline; next} {print}\"\
             _sysconfigdata__darwin_darwin.py > _sysconfigdata__darwin_darwin.py.new"
         file rename -force ${buildlibdir}/_sysconfigdata__darwin_darwin.py.new \
             ${buildlibdir}/_sysconfigdata__darwin_darwin.py
@@ -129,7 +141,7 @@ platform darwin {
 
         ln -s ${framewdir}/share/man/man1/python${branch}.1 ${destroot}${prefix}/share/man/man1/
         ln -s ${framewdir}/lib/pkgconfig/python-${branch}.pc ${destroot}${prefix}/lib/pkgconfig/
-        ln -s ${framewdir}/lib/pkgconfig/python-${branch}.pc ${destroot}${prefix}/lib/pkgconfig/python-${branch}m.pc
+        ln -s ${framewdir}/lib/pkgconfig/python-${branch}-embed.pc ${destroot}${prefix}/lib/pkgconfig/
 
         # Also make the sysconfig changes in the Makefile
         reinplace {s|^\(LINKFORSHARED=\).*$|\1 -L$(LIBPL) -lpython$(VERSION)$(ABIFLAGS) $(LIBS) $(SYSLIBS)|} \

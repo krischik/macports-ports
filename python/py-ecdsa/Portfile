@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-ecdsa
-version             0.14
+version             0.15
 revision            0
 categories-append   devel security
 platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -20,13 +20,14 @@ long_description    ${description}
 
 homepage            https://github.com/warner/python-ecdsa
 
-checksums           rmd160  103c0b6c221aa57e05d93532376f192c70d050ac \
-                    sha256  4c8367f83216f9185c9b500d700c494e593af62a7980bfdfad9bd41e7969d69a \
-                    size    100260
+checksums           rmd160  aaeba796ec51455deb06d4accc01535aeac26302 \
+                    sha256  8f12ac317f8a1318efa75757ef0a651abe12e51fc1af8838fb91079445227277 \
+                    size    122119
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                        port:py${python.version}-setuptools
+                        port:py${python.version}-setuptools \
+                        port:py${python.version}-six
 
     livecheck.type      none
 }

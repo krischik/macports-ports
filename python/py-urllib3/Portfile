@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-urllib3
-version             1.25.6
+version             1.25.9
 revision            0
 categories-append   devel net
 platforms           darwin
 license             MIT
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -18,13 +18,10 @@ description         HTTP library with thread-safe connection pooling, file post,
 long_description    ${description}
 
 homepage            https://urllib3.readthedocs.io/
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  ac87ad7f9bfebeb8599ce8b15a36b0f2264772f6 \
-                    sha256  9a107b99a5393caf59c7aa3c1249c16e6879447533d0887f4336dde834c7be86 \
-                    size    248292
+checksums           rmd160  8e110cf646403b479129233ce7c16cff4f935576 \
+                    sha256  3018294ebefce6572a474f0604c2021e33b3fd8006ecd11d62107a5d2a963527 \
+                    size    254921
 
 if {${name} ne ${subport}} {
     depends_build-append \

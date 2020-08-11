@@ -4,12 +4,12 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-mahotas
-version             1.4.8
+version             1.4.10
 revision            0
 platforms           darwin
 license             MIT
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -17,13 +17,10 @@ description         Set of functions for image processing and computer vision in
 long_description    ${description}
 
 homepage            http://luispedro.org/software/mahotas/
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  102972159ecf6b4abf909f5e7f4b8d4d1d8a6012 \
-                    sha256  cb9264a7d9f84e639c920d486a81edcdc896b48d602ae2de9482483555ad967e \
-                    size    1531399
+checksums           rmd160  f34acfcc65ed94f8de104e3ca1633274f5c6567e \
+                    sha256  2e1bf5c058f439f2dab1b11d1bfe03d1d99b3761375a4a4159a9f379e0d9447e \
+                    size    1530962
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \

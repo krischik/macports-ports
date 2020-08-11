@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-alembic
-version             1.3.0
+version             1.4.2
 revision            0
 categories-append   databases
 platforms           darwin
@@ -19,15 +19,22 @@ description         A database migration tool for SQLAlchemy.
 long_description    ${description}
 
 homepage            http://bitbucket.org/zzzeek/alembic
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  416c95093e56ed7621d19a41ac50f538d200d44d \
-                    sha256  e6c6a4243e89c8d3e2342a1562b2388f3b524c9cac2fccc4d2c461a1320cc1c1 \
-                    size    1055486
+checksums           rmd160  0f4f8cae20bf34a39a527b2d4d065a2c7478480b \
+                    sha256  035ab00497217628bf5d0be82d664d8713ab13d37b630084da8e1f98facf4dbf \
+                    size    1092045
 
 if {${name} ne ${subport}} {
+
+    if {${python.version} <= 35} {
+        version             1.3.3
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  e42a3a976700ea2d457599b06f039ed5429d7402 \
+                            sha256  d412982920653db6e5a44bfd13b1d0db5685cbaaccaf226195749c706e1e862a \
+                            size    1072775
+    }
+
     depends_lib-append  port:py${python.version}-setuptools \
                         port:py${python.version}-sqlalchemy \
                         port:py${python.version}-mako \
@@ -35,9 +42,4 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-dateutil
 
     livecheck.type      none
-}
-
-subport py34-${python.rootname} {
-    replaced_by py35-${python.rootname}
-    PortGroup obsolete 1.0
 }

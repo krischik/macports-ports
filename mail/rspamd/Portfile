@@ -1,10 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; truncate-lines: t; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
 
-PortSystem                                      1.0
-PortGroup           cmake                       1.1
-PortGroup           github                      1.0
+PortSystem          1.0
+PortGroup           cmake 1.1
+PortGroup           compiler_blacklist_versions 1.0
+PortGroup           github 1.0
 
-github.setup        rspamd rspamd 2.1
+github.setup        rspamd rspamd 2.5
 revision            0
 
 categories          mail
@@ -20,10 +21,9 @@ long_description    ${description}  Rspamd core is written in C language using e
                     paradigma. Plugins for rspamd can be written in lua. Rspamd is designed to\
                     process connections completely asynchronous and do not block anywhere in code.
 
-checksums           rmd160  004212a5698a03402c95e097cec8707f04dd9049 \
-                    sha256  e9ee7cbacff18bbeb7d323354772753a9157573690707b237d65f14a99f41a63 \
-                    size    4233619
-
+checksums           rmd160  14d0c402471006e049fc31eede3c336a986475c4 \
+                    sha256  e1bb01e28ee301f02a61541399a8d9a6edb9a474c0881201c262e3404069994c \
+                    size    4491466
 
 depends_build-append \
                     port:pkgconfig
@@ -43,7 +43,7 @@ depends_lib-append  \
                     port:lua \
                     port:luajit \
                     path:lib/libopenblas.dylib:OpenBLAS \
-                    port:openssl \
+                    path:lib/libssl.dylib:openssl \
                     port:perl5 \
                     port:ragel \
                     port:sqlite3 \
@@ -52,7 +52,10 @@ depends_lib-append  \
 depends_run-append \
                     port:hiredis \
                     port:redis
- 
+
+# fatal error: error in backend: Cannot select: intrinsic %llvm.x86.aesni.aesenclast
+compiler.blacklist  {clang < 800}
+
 # Critical dependency note: port:pcre and port:pcre2 break the rspamd binary;
 # use native /usr/lib/libpcre.dylib.  See https://github.com/rspamd/rspamd/issues/2884
 # Do not use the library provided by port:pcre without pcre jit debugging

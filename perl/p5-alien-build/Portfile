@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Alien-Build 1.92 ../../authors/id/P/PL/PLICEASE
+perl5.setup         Alien-Build 2.26 ../../authors/id/P/PL/PLICEASE
 license             {Artistic-1 GPL}
 maintainers         {devans @dbevans} openmaintainer
 description         Alien::Build - Build external dependencies for use in CPAN
@@ -12,9 +12,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  f3d383169c392123cb9186594b88e1783020de49 \
-                    sha256  cd95173a72e988bdd7270a22699e6c9764b6aed6e6c4c022c623b1ce72040a79 \
-                    size    270414
+checksums           rmd160  3072bd8a57f39585d2a07aa2bae53e4dd6b72a9e \
+                    sha256  b104566f2c82e12913a276f1485270bb5f5b6bcb6ff9dbe3d098e99d8d74cf71 \
+                    size    313223
 
 if {${perl5.major} != ""} {
     depends_build-append \
@@ -26,10 +26,15 @@ if {${perl5.major} != ""} {
                     port:p${perl5.major}-ffi-checklib \
                     port:p${perl5.major}-file-chdir \
                     port:p${perl5.major}-file-which \
-                    port:p${perl5.major}-module-load \
                     port:p${perl5.major}-path-tiny \
                     port:p${perl5.major}-test-simple \
                     port:p${perl5.major}-text-parsewords
 
     supported_archs noarch
 }
+
+# temporary fix for MetaCPAN web API issue
+# https://github.com/Perl5-Alien/Alien-Build/issues/204
+livecheck.type      regex
+livecheck.url       https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/
+livecheck.regex     "${perl5.module}-(\\d+(?:\\.\\d+)*)"

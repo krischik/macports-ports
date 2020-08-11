@@ -3,11 +3,11 @@
 PortSystem          1.0
 
 name                libgphoto2
-version             2.5.23
+version             2.5.25
 revision            0
-checksums           rmd160  1410e0b512e12eec19bf367fa4b463d8d141fb49 \
-                    sha256  d8af23364aa40fd8607f7e073df74e7ace05582f4ba13f1724d12d3c97e8852d \
-                    size    7616078
+checksums           rmd160  a1a2d5707f1b9f9ab329b4fb1752ead5dd3579f8 \
+                    sha256  7c0e98f438c2b128186afe16ce7833a12fa36f87d01467e837b9d27e7a167f3a \
+                    size    7299325
 
 categories          devel
 platforms           darwin

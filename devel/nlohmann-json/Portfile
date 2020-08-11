@@ -4,24 +4,24 @@ PortSystem                      1.0
 
 PortGroup                       github 1.0
 PortGroup                       cmake 1.1
-PortGroup                       cxx11 1.1
 
-github.setup                    nlohmann json 3.5.0 v
+github.setup                    nlohmann json 3.8.0 v
 name                            nlohmann-json
 categories                      devel
 platforms                       darwin
 supported_archs                 noarch
 license                         MIT
-maintainers                     {gmail.com:g.litenstein @Lord-Kamina} openmaintainer
+maintainers                     {gmail.com:g.litenstein @Lord-Kamina} {ra1nb0w @ra1nb0w} openmaintainer
 description                     Nlohmann JSON for modern C++.
 long_description                Nlohmann is a header-only (and optionally single-header) JSON library \
                                 written in vanilla C++11. Has Unicode support\; DOM and SAX parsers, among other features.
-checksums                       rmd160  5cba080556d2383773fe84ab54efb39fafccf1ce \
-                                sha256  f7905c052c00ec615a6e459f2dcc21b7b9c1b2e0f36f4436d0543f15db51ca09 \
-                                size    114794375
-                                
-depends_build-append            port:gmake
 
+checksums                       rmd160  fa0e0cab99e413337baa55895c0ae967502b2bb8 \
+                                sha256  60c85e3a600123cf6e0ff0f44a5c9ce61e256530923f0567f2ee286f3c1c4573 \
+                                size    6811654
+
+compiler.cxx_standard           2011
+                                
 configure.ccache                no
 configure.args-append           -DBUILD_TESTING=OFF -DJSON_BuildTests=OFF
 

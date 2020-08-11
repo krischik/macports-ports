@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pandas
-version             0.25.3
+version             1.0.5
 revision            0
 categories-append   science
 license             BSD
 platforms           darwin
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -18,17 +18,14 @@ description         Powerful data structures for data analysis and statistics
 
 long_description    ${description}
 
-homepage            http://pandas.pydata.org
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
+homepage            https://pandas.pydata.org
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  cb526595c8b38bd4973a49ebebb61c165421628b \
-                    sha256  52da74df8a9c9a103af0a72c9d5fdc8e0183a90884278db7f386b5692a2220a4 \
-                    size    12632585
+checksums           rmd160  239dd942f2ab792c0e1fb9a3afb8292c09570fd9 \
+                    sha256  69c5d920a0b2a9838e677f78f4dde506b95ea8e4d30da25859db6469ded84fa8 \
+                    size    5007108
 
 if {${name} ne ${subport}} {
-    if {${python.version} < 35} {
+    if {${python.version} eq 27} {
         version             0.24.2
         revision            0
         distname            ${python.rootname}-${version}
@@ -41,7 +38,16 @@ if {${name} ne ${subport}} {
                             port:py${python.version}-matplotlib \
                             port:py${python.version}-bottleneck \
                             port:py${python.version}-numexpr
+    } elseif {${python.version} eq 35} {
+        version             0.25.3
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  cb526595c8b38bd4973a49ebebb61c165421628b \
+                            sha256  52da74df8a9c9a103af0a72c9d5fdc8e0183a90884278db7f386b5692a2220a4 \
+                            size    12632585
     }
+
+    use_parallel_build  no
 
     depends_build-append \
                         port:py${python.version}-setuptools \

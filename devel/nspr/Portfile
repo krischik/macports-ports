@@ -4,7 +4,7 @@ PortSystem  1.0
 PortGroup           muniversal 1.0
 
 name                nspr
-version             4.23
+version             4.26
 revision            0
 categories          devel
 maintainers         nomaintainer
@@ -12,15 +12,15 @@ license             {MPL-1.1 GPL-2+ LGPL-2.1+}
 platforms           darwin
 
 description         A platform-neutral API for system level and libc like functions.
-long_description    ${description}
+long_description    {*}${description}
 
 homepage            http://www.mozilla.org/projects/nspr
 master_sites        http://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${version}/src/ \
                     ftp://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${version}/src/
 
-checksums           rmd160  0e18bc1e11fa1ac8be1cef4e222e2b068546926d \
-                    sha256  4b9d821037faf5723da901515ed9cac8b23ef1ea3729022259777393453477a4 \
-                    size    1078660
+checksums           rmd160  7ad7072be6a9fbccb739716941e1dac0cc7b2af5 \
+                    sha256  fc9d142d85b74ffd2e6374a0c9016f3f2dac074225e24df3070e5a72d31b773d \
+                    size    1079778
 
 worksrcdir          ${worksrcdir}/nspr
 

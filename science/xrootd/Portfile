@@ -6,14 +6,8 @@ PortGroup           compiler_blacklist_versions  1.0
 PortGroup           github                       1.0
 PortGroup           legacysupport                1.0
 
-github.setup        xrootd xrootd 4.11.0 v
-version             ${github.version}
-revision            1
-
-livecheck.version   ${version}
-livecheck.type      regex
-livecheck.url       ${github.homepage}/tags
-livecheck.regex     v(\[0-9.\]+)${extract.suffix}
+github.setup        xrootd xrootd 4.12.3 v
+revision            0
 
 categories          science
 maintainers         {jonesc @cjones051073} openmaintainer
@@ -26,14 +20,14 @@ platforms           darwin
 
 homepage            http://xrootd.org/
 
-checksums           rmd160  43be6fb80e8fd2996f28b319e6ce228814d15d86 \
-                    sha256  5bce2056d9fdc48cc980d5a5dd1a5cdf45df01322ec77aefb2e1765b0f416250 \
-                    size    2579978
+checksums           rmd160  dcd61b2e7e8c9ab5a5e02613af2cb2a72aca2cc1 \
+                    sha256  2fc295d9fde801f21458fd35128ce673f6549b35f91e52003e7a4c55d7b5b774 \
+                    size    2607052
 
 depends_build-append port:cctools \
                      port:pkgconfig
 
-depends_lib         port:curl \
+depends_lib-append  port:curl \
                     port:libxml2 \
                     port:json-c \
                     port:swig \
@@ -47,7 +41,7 @@ cmake.out_of_source yes
 # Force a compatible compiler
 compiler.blacklist-append *gcc* {clang < 900} {macports-clang-3.[0-9]} {macports-clang-[4-5].0}
 
-configure.cxxflags-append --std=c++11
+configure.cxxflags-append -std=c++11
 compiler.cxx_standard  2011
 configure.args-append -DENABLE_CRYPTO=False \
                       -DENABLE_READLINE=False \
@@ -59,7 +53,7 @@ configure.args-append -DENABLE_CRYPTO=False \
                       -DCMAKE_CXX_FLAGS="${configure.cxxflags}" \
                       -DCMAKE_INSTALL_MANDIR="share/man"
 
-set python_v        3.7
+set python_v        3.8
 set python_v_nodot  [string map {. {}} $python_v]
 variant python${python_v_nodot} description "Enable python ${python_v} bindings" {
     configure.python        ${prefix}/bin/python${python_v}
@@ -90,3 +84,6 @@ variant kerberos description {Build with Kerberos 5 Support} {
     configure.args-append   -DENABLE_KRB5=True -DKERBEROS5_ROOT_DIR="${prefix}"
     depends_lib-append      port:kerberos5
 }
+
+# Exclude pre-release candidates
+github.livecheck.regex  {([0-9.]+)}

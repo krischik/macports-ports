@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-hypothesis
-version             4.41.3
+version             5.10.0
 revision            0
 categories-append   devel
 platforms           darwin
 license             MPL-2
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {khindenburg @kurthindenburg} openmaintainer
 
@@ -25,24 +25,29 @@ homepage            https://pypi.python.org/pypi/hypothesis
 master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  03c8be341bfcb751ca2d3d070cb7e119d88a473d \
-                    sha256  33e9e0d56ba235de5ccf1c8dc7b2d788e221b0b5d2a8486f9dca89b342b56e46 \
-                    size    214921
+checksums           rmd160  c5fe92c1be802bf45f743388e2cd0df092617817 \
+                    sha256  57f0e74e21c437b7acc7c3a06c8773a0327d8f58bf5cb1682dc55e8860e79325 \
+                    size    230877
 
 if {${name} ne ${subport}} {
     depends_build-append  port:py${python.version}-setuptools
     depends_lib-append    port:py${python.version}-attrs \
-                          port:py${python.version}-coverage
+                          port:py${python.version}-sortedcontainers
     if {${python.version} eq 27} {
-        depends_lib-append    port:py${python.version}-enum34
+        version             4.57.1
+        revision            0
+        epoch               1
+        # Below distname is required for this to work
+        distname            ${python.rootname}-${version}
+
+        checksums           rmd160  a7d04bf21c941fd427b0c1af5e9ab5bd87fc6610 \
+                            sha256  3c4369a4b0a1348561048bcda5f1db951a1b8e2a514ea8e8c70d36e656bf6fa0 \
+                            size    233528
+
+        depends_lib-append  port:py${python.version}-enum34
+
+        livecheck.type      none
     }
 
     livecheck.type      none
-
-    notes "Welcome to the next major version of Hypothesis!\
-    If you were running on the last version of Hypothesis 3.x without\
-    any Hypothesis deprecation warnings (or using private APIs), this\
-    upgrade should cause no issues.\
-    See https://hypothesis.readthedocs.io/en/latest/changes.html#v4-0-0\
-    for more information."
 }

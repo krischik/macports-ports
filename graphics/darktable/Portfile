@@ -5,9 +5,8 @@ PortGroup               github 1.0
 PortGroup               active_variants 1.1
 PortGroup               app 1.0
 PortGroup               cmake 1.1
-PortGroup               cxx11 1.1
 
-github.setup            darktable-org darktable 2.6.2 release-
+github.setup            darktable-org darktable 3.0.2 release-
 revision                0
 categories              graphics
 platforms               darwin
@@ -25,13 +24,12 @@ long_description        Darktable is a virtual lighttable and darkroom for \
 
 homepage                https://www.darktable.org/
 
-
 github.tarball_from     releases
 use_xz                  yes
 
-checksums               rmd160  aa53751d60e7ada728651eb2bc56e0f90a898ccf \
-                        sha256  9cb9efbb09a40375ff05cef89343235a621c58339539e44985470a029a7ffb45 \
-                        size    3512572
+checksums               rmd160  4081955fde2b33b931e4317708bdcb13ae291efa \
+                        sha256  6abaf661fe9414e92bdb33b58b98ef024ccf6132b7876abaf0751ec2109f36fb \
+                        size    3931240
 
 # avoid
 #     Unknown build type: MACPORTS.  Please specify one of:
@@ -58,6 +56,7 @@ depends_lib-append      port:atk \
                         port:gdk-pixbuf2 \
                         port:gettext \
                         path:lib/pkgconfig/glib-2.0.pc:glib2 \
+                        port:gmic \
                         port:gtk-osx-application-gtk3 \
                         port:gtk3 \
                         port:ilmbase \
@@ -125,15 +124,23 @@ app.icon                packaging/macosx/Icons.icns
 
 universal_variant       no
 
+compiler.cxx_standard   2014
+
 # compiling src/osx/osx.mm with GCC results in a cascade of errors
+compiler.blacklist      *gcc*
+
 variant openmp description {enable support for OpenMP} {
     configure.args-replace  -DUSE_OPENMP=OFF -DUSE_OPENMP=ON
-    compiler.whitelist      macports-clang-7.0 \
-                            macports-clang-6.0 \
-                            macports-clang-5.0 \
-                            macports-clang-3.7
-    compiler.fallback       macports-clang-7.0
+}
+if {[variant_isset openmp]} {
+    compiler.openmp_version 4.0
+    if {[info exists compiler.log_verbose_output]} {
+        compiler.log_verbose_output no
+    } else {
+        configure.cppflags-append -fopenmp
+        configure.ldflags-append  -fopenmp
+    }
 }
 
 livecheck.url       https://github.com/darktable-org/darktable/releases
-livecheck.regex     {darktable-(\d+(?:\.\d+)*)}
+livecheck.regex     {darktable (\d+(?:\.\d+)*) released}

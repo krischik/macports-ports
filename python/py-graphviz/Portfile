@@ -1,10 +1,10 @@
-# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:et:sw=4:ts=4:sts=4
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem              1.0
 PortGroup               python 1.0
 PortGroup               github 1.0
 
-github.setup            xflr6 graphviz 0.12
+github.setup            xflr6 graphviz 0.14
 name                    py-graphviz
 categories-append       graphics devel
 license                 MIT
@@ -15,11 +15,11 @@ long_description        This package facilitates the creation and rendering of g
 supported_archs         noarch
 installs_libs           no
 
-checksums               rmd160  a95b770d327f9593ce2b4b57a3fbcdcecf696264 \
-                        sha256  418279f94b5006751b3d78afcbd54ed353d9bbc5eb2c989663320e4cf58281b9 \
-                        size    147674
+checksums               rmd160  38fb478b2af22b594a62d457699a52c857000688 \
+                        sha256  8198c298091670490cf8709ebfd4c34e1b4b47a82e3f48e01656f4daa006bd9c \
+                        size    153990
 
-python.versions         27 34 35 36 37
+python.versions         27 35 36 37 38
 
 if {${name} ne ${subport}} {
 

@@ -5,13 +5,13 @@ PortGroup compilers 1.0
 PortGroup active_variants 1.1
 
 name                        R
-#Remember to remove revision line when bumping version
-version                     3.5.1
-revision                    3
+# Remember to set revision to 0 when bumping version
+version                     4.0.1
+revision                    0
 
 set branch                  [join [lrange [split ${version} .] 0 1] .]
 categories                  math science
-maintainers                 {me.com:kjell.konis @kjellpk}
+maintainers                 {me.com:kjell.konis @kjellpk} {@i0ntempest me.com:szf1234} openmaintainer
 license                     {GPL-2 GPL-3}
 platforms                   macosx
 
@@ -24,14 +24,14 @@ long_description \
     classical statistical tests, time-series analysis, classification, \
     clustering, ...) and graphical techniques, and is highly extensible.
 
-homepage                    http://www.r-project.org/
+homepage                    https://www.r-project.org/
 
-master_sites                http://cran.rstudio.com/src/base/R-3/ \
-                            http://cran.r-project.org/src/base/R-3/
+master_sites                https://cran.rstudio.com/src/base/R-4/ \
+                            https://cran.r-project.org/src/base/R-4/
 
-checksums                   rmd160  394b122f4477b0c8e87c48fcc8cf4a1f8282a9bc \
-                            sha256  0463bff5eea0f3d93fa071f79c18d0993878fd4f2e18ae6cf22c1639d11457ed \
-                            size    29812849
+checksums                   rmd160  3f58ea44cce29950ce0f75e4c9fe0a63c8d33cc5 \
+                            sha256  95fe24a4d8d8f8f888460c8f5fe4311cec656e7a1722d233218bc03861bc6f32 \
+                            size    33189511
 
 compilers.choose            fc f77
 compilers.setup             require_fortran
@@ -153,7 +153,8 @@ variant tests description {include tests of R installation} {
     destroot.target-append install-tests
 }
 
-variant x11 {
+variant x11 conflicts quartz {
+    require_active_variants tk x11
     depends_lib-append      port:xorg-libsm \
                             port:xorg-libice \
                             port:xorg-libX11 \
@@ -164,16 +165,32 @@ variant x11 {
                             --x-lib=${prefix}/lib
 }
 
+variant quartz conflicts x11 {
+    require_active_variants tk quartz
+    notes-append "
+        Note that R with quartz variant will not work with R.app because\
+        of conflicts over the macOS menu."
+}
+
 variant java description {enable Java} {
     PortGroup java 1.0
     configure.args-replace --disable-java --enable-java
 }
 
-default_variants +cairo +recommended +x11
+default_variants +cairo +recommended
+
+if {![variant_isset quartz]} {
+    default_variants-append +x11
+}
 
 if {[variant_isset cairo] && [variant_isset x11]} {
     require_active_variants path:lib/pkgconfig/cairo.pc:cairo x11
     require_active_variants path:lib/pkgconfig/pango.pc:pango x11
+}
+
+if {[variant_isset cairo] && [variant_isset quartz]} {
+    require_active_variants path:lib/pkgconfig/cairo.pc:cairo quartz
+    require_active_variants path:lib/pkgconfig/pango.pc:pango quartz
 }
 
 if {![variant_isset accelerate] && ![variant_isset atlas] && ![variant_isset builtin_lapack]} {
@@ -229,6 +246,8 @@ post-destroot {
 
     ln -s ${resources}/bin/R ${destroot}${prefix}/bin/R
     ln -s ${resources}/bin/Rscript ${destroot}${prefix}/bin/Rscript
+    ln -s ${resources}/man1/R.1 ${destroot}${prefix}/share/man/man1/R.1
+    ln -s ${resources}/man1/Rscript.1 ${destroot}${prefix}/share/man/man1/Rscript.1
 }
 
 livecheck.type      regex

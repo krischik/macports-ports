@@ -4,32 +4,38 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-fsspec
-version             0.5.2
+version             0.7.4
 revision            0
 categories-append   devel
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     36 37
+python.versions     35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
 description         File-system specification
 long_description    ${description}
 
-homepage            http://github.com/intake/filesystem_spec
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
+homepage            https://github.com/intake/filesystem_spec
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  3c42ee233fe38440340c4dfcf40371df39a2b036 \
-                    sha256  6531a5fa9ea6bf27a5180d225558a8a7aa5d7c3cbf7e8b146dd37ac699017937 \
-                    size    64153
+checksums           rmd160  88843c0128d526cb245083357e449a5f6a30bdc8 \
+                    sha256  7075fde6d617cd3a97eac633d230d868121a188a46d16a0dcb484eea0cf2b955 \
+                    size    79178
 
 if {${name} ne ${subport}} {
     depends_build-append \
-                         port:py${python.version}-setuptools
+                        port:py${python.version}-setuptools
+
+    if {${python.version} eq 35} {
+        version             0.6.3
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  49da12e32d62292ad34e072ab91c69b56852eb3e \
+                            sha256  7a6d48af15b2416c5007706039e6d46d083c89229e7cdf6474b5ef5e7e687b00 \
+                            size    103663
+    }
 
     livecheck.type      none
 }

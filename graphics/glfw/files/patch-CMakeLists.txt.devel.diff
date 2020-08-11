@@ -1,6 +1,6 @@
 --- CMakeLists.txt.orig
 +++ CMakeLists.txt
-@@ -315,7 +315,11 @@
+@@ -300,7 +300,11 @@
  #--------------------------------------------------------------------
  include(CMakePackageConfigHelpers)
  
@@ -11,9 +11,9 @@
 +
 +set(GLFW_CONFIG_PATH "${GLFW_CMAKE_CONFIG_PATH}/cmake/glfw3")
  
- configure_package_config_file(src/glfw3Config.cmake.in
+ configure_package_config_file(CMake/glfw3Config.cmake.in
                                src/glfw3Config.cmake
-@@ -345,6 +349,9 @@
+@@ -328,6 +332,9 @@
  
  if (DOXYGEN_FOUND AND GLFW_BUILD_DOCS)
      add_subdirectory(docs)
@@ -23,9 +23,9 @@
  endif()
  
  #--------------------------------------------------------------------
-@@ -365,6 +372,11 @@
-     install(FILES "${GLFW_BINARY_DIR}/src/glfw3.pc"
-             DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+@@ -353,6 +360,11 @@
+                 DESTINATION "${CMAKE_INSTALL_DOCDIR}")
+     endif()
  
 +    if (DOXYGEN_FOUND AND GLFW_BUILD_DOCS)
 +        install(FILES "${GLFW_BINARY_DIR}/docs/html"
@@ -34,4 +34,4 @@
 +
      # Only generate this target if no higher-level project already has
      if (NOT TARGET uninstall)
-         configure_file(cmake_uninstall.cmake.in
+         configure_file(CMake/cmake_uninstall.cmake.in

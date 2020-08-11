@@ -3,20 +3,17 @@
 PortSystem          1.0
 PortGroup           python 1.0
 
-set _name           xarray
-set _n              [string index ${_name} 0]
+name                py-xarray
+version             0.15.1
+revision            0
 
-name                py-${_name}
-version             0.12.3
 categories-append   science math
 platforms           darwin
 supported_archs     noarch
 license             Apache-2
-
 maintainers         {petr @petrrr} openmaintainer
 
 description         Provides N-D labeled arrays and datasets in Python
-
 long_description    \
     xarray (formerly xray) is an open source project and Python package that \
     aims to bring the labeled data power of pandas to the physical sciences, \
@@ -24,29 +21,48 @@ long_description    \
 
 homepage            https://github.com/pydata/xarray
 
-distname            ${_name}-${version}
-master_sites        pypi:${_n}/${_name}/
-
-checksums           rmd160  577ccb87f98bc4234a36b0f99929d19cfa3fe697 \
-                    sha256  9310e610af988acb57a2627b10025a250bcbe172e66d3750a6dd3b3c5357da56 \
-                    size    1793550
+checksums           rmd160  215db3e091b5d6712390116a4006cda7fbab226b \
+                    sha256  64e3138d87b641e22fe7a003c94abc685896b247b63e434505c1e6b38c91a8fb \
+                    size    1934184
 
 python.versions     27 35 36 37 38
 
 if {${name} ne ${subport}} {
-    depends_build-append    port:py${python.version}-setuptools
+    if {${python.version} eq 35} {
+        version     0.13.0
+        revision    0
+        distname    ${python.rootname}-${version}
+        checksums   rmd160  ac1dd2421efed8f0a4ef0ab2c4e7f30551ef2e88 \
+                    sha256  80e5746ffdebb96b997dba0430ff02d98028ef3828e6db6106cbbd6d62e32825 \
+                    size    1821280
+    } elseif {${python.version} eq 27} {
+        version     0.11.3
+        revision    0
+        epoch       1
+        distname    ${python.rootname}-${version}
+        checksums   rmd160  647d3ff71ea80ec48935d3c6375c060bbd66e457 \
+                    sha256  cc3dceb680d67746168c46771e4aa7d2624519a7faf120421f16d6ddfdb984dd \
+                    size    1720693
 
-    depends_lib-append      port:py${python.version}-numpy \
-                            port:py${python.version}-pandas
+        depends_test-append \
+                    port:py${python.version}-mock
+    } else {
+        depends_build-append \
+                    port:py${python.version}-setuptools_scm
+    }
+
+    depends_lib-append \
+                    port:py${python.version}-numpy \
+                    port:py${python.version}-pandas \
+                    port:py${python.version}-setuptools
+
+    depends_test-append \
+                    port:py${python.version}-pytest
+
+    test.run        yes
+    test.cmd        py.test-${python.branch}
+    test.target
+    test.env        PYTHONPATH=${worksrcpath}/build/lib
 
     livecheck.type  none
-} else {
-    livecheck.type  regex
-    livecheck.url   https://pypi.python.org/pypi/${_name}/json
-    livecheck.regex "\"${_name}-(\[.\\d\]+)\\${extract.suffix}\""
-}
-
-subport py34-${python.rootname} {
-    replaced_by py35-${python.rootname}
-    PortGroup obsolete 1.0
 }

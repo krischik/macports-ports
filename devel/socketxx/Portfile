@@ -2,30 +2,31 @@
 
 PortSystem              1.0
 PortGroup               cmake 1.1
-PortGroup               cxx11 1.1
 
 name                    socketxx
 # There seems to be little upstream work on socketxx (a.k.a. socket++).
 # Use the version supplied by GDCM instead.
-set gdcm_version        3.0.1
+set gdcm_version        3.0.5
 # see ${worksrcpath}/CMakeLists.txt
 version                 1.12.12
-revision                0
+revision                2
 categories              devel
 license                 BSD
 maintainers             {mcalhoun @MarcusCalhoun-Lopez} openmaintainer
 platforms               darwin
 description             a family of C++ classes that gives the same interface as the iostream classes for input and output for communication between processes
-long_description        Socket++ is ${description}.
+long_description        Socket++ is {*}${description}.
 
 homepage                https://github.com/malaterre/socketxx-1
 master_sites            sourceforge:gdcm
 distname                gdcm-${gdcm_version}
 dist_subdir             gdcm
 
-checksums               rmd160  0dd7e5458ee9747a8e310b8df44cbf974611a8be \
-                        sha256  4bd0caa18632d3af5cb672cf9b7051cd9ef5ba42eca3d31412d3c8a3166a0a27 \
-                        size    3857842
+checksums               rmd160  3150b9dc8219baedec372463992d380432ab7620 \
+                        sha256  9f1f32ba553ed5df0d9251427a824e4646d7d47dbdfb3afef0c9c3b5b677a2c4 \
+                        size    3862334
+
+compiler.cxx_standard   2011
 
 worksrcdir              gdcm-${gdcm_version}/Utilities/socketxx
 

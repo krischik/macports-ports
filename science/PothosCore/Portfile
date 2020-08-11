@@ -3,12 +3,11 @@
 PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           cmake 1.1
-PortGroup           cxx11 1.1
 
 platforms           darwin macosx
 categories          science
 license             Boost-1
-maintainers         {@ra1nb0w irh.it:rainbow} {michaelld @michaelld} openmaintainer
+maintainers         {ra1nb0w @ra1nb0w} {michaelld @michaelld} openmaintainer
 
 description         Pothos data-flow framework
 long_description    ${description}
@@ -17,7 +16,9 @@ github.setup        pothosware PothosCore 0.6.1 pothos-
 checksums           rmd160  da4d2a054f3e6731cc67841fe28083ada806b874 \
                     sha256  3ccb1e1f7774cf40d58bab22a3ee93aae5d8341df6ae30acd7750e794264bd57 \
                     size    258129
-revision            0
+revision            1
+
+compiler.cxx_standard 2011
 
 depends_build-append \
     port:pkgconfig
@@ -25,7 +26,7 @@ depends_build-append \
 depends_lib-append \
     port:poco \
     port:muparserx \
-    port:json-modern-cpp
+    port:nlohmann-json
 
 configure.args-append \
     -DPOTHOS_EXTVER=release \

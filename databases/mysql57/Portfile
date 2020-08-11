@@ -5,7 +5,7 @@ PortGroup           conflicts_build 1.0
 
 name                mysql57
 set name_mysql      ${name}
-version             5.7.28
+version             5.7.30
 set boost_version   1.59.0
 # Set revision_client and revision_server to 0 on version bump.
 set revision_client 0
@@ -45,9 +45,9 @@ if {$subport eq $name} {
                         ${boost_distname}${extract.suffix}:boost
 
     checksums           ${distname}${extract.suffix} \
-                        rmd160  2ab8cddf7479aac8f5eaddd5a23cd4ee62b042d3 \
-                        sha256  298b58b7448a8ceff0ba4ab67f63ea58cef0863055730d76241dff42efe2cfdb \
-                        size    54419008 \
+                        rmd160  90a5e160c4f6980bb00494c7c1918abca68831e6 \
+                        sha256  940fa1b986165e8cd87ff6fb7bac0bb5e75e47a1fea81972512cad8acd2f3f92 \
+                        size    54386443 \
                         ${boost_distname}${extract.suffix} \
                         rmd160  a7974be69a426e8a56b880a412d6c418e4cd751c \
                         sha256  47f11c8844e579d02691a607fbd32540104a9ac7a2534a8ddaef50daf502baac \
@@ -55,6 +55,7 @@ if {$subport eq $name} {
 
     depends_lib-append  port:ncurses \
                         port:libedit \
+                        port:cyrus-sasl2 \
                         path:lib/libssl.dylib:openssl \
                         port:zlib
     depends_run-append  port:mysql_select
@@ -68,7 +69,6 @@ if {$subport eq $name} {
 
     patch.pre_args  -p1
     patchfiles      patch-cmake-install_layout.cmake.diff \
-                    patch-cmake-install_layout.cmake-yassl.diff \
                     patch-configure.cmake.diff \
                     patch-innodb_memcached-daemon_memcached-include-memcached-util.h.diff \
                     patch-lockpool.diff \
@@ -160,15 +160,6 @@ if {$subport eq $name} {
         }
     }
 
-    variant openssl description {Enable OpenSSL support} {
-        depends_lib-append      path:lib/libssl.dylib:openssl
-
-        patchfiles-delete       patch-cmake-install_layout.cmake-yassl.diff
-
-        configure.args-delete   -DWITH_SSL:STRING=bundled
-        configure.args-append   -DWITH_SSL:STRING=${prefix}
-    }
-
     notes "
 On activation if no ${prefix}/etc/${name_mysql}/my.cnf file exists one
 will be created which loads
@@ -198,7 +189,7 @@ subport ${name_mysql}-server {
     revision            ${revision_server}
     license             BSD
     description         Run ${name_mysql} as server
-    long_description    ${description}
+    long_description    {*}${description}
 
     supported_archs     noarch
     distfiles

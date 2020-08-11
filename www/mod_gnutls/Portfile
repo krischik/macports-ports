@@ -3,8 +3,8 @@
 PortSystem          1.0
 
 name                mod_gnutls
-version             0.9.0
-revision            0
+version             0.10.0
+revision            2
 categories          www security crypto
 license             Apache-2
 platforms           darwin
@@ -22,11 +22,29 @@ long_description    \
 homepage            https://mod.gnutls.org
 master_sites        ${homepage}/downloads/
 
-checksums           rmd160  c942079c658ad365eeda57c88c62f758c1b4c393 \
-                    sha256  6b0d8d8add73012268307719146789b48533cde4a8ca4bbd53c1c9c579d440be \
-                    size    435869
+checksums           rmd160  bc943831413b8e0fa06d0da9022d50f46954c4c7 \
+                    sha256  dd4a5ae24805155d08757a88ff07992aaa1952422e8df7d2b7b2a6fa870900f9 \
+                    size    448138
 
 use_bzip2           yes
+
+variant python37 conflicts python38 description {Build using Python 3.7} {
+    configure.env   PYTHON=${prefix}/bin/python3.7
+    depends_lib-append \
+                    port:python37 \
+                    port:py37-yaml
+}
+
+variant python38 conflicts python37 description {Build using Python 3.8} {
+    configure.env   PYTHON=${prefix}/bin/python3.8
+    depends_lib-append \
+                    port:python38 \
+                    port:py38-yaml
+}
+
+if {![variant_isset python37] && ![variant_isset python38]} {
+    default_variants    +python38
+}
 
 depends_build       port:pkgconfig
 
@@ -39,12 +57,6 @@ patchfiles          patch-src-gnutls_sni.c.diff
 set apxs            ${prefix}/bin/apxs
 set httpd_conf      ${prefix}/etc/apache2/httpd.conf
 set mdir            ${destroot}${prefix}/lib/apache2/modules/
-
-variant apache22 description "use apache22 instead of apache2" {
-    # remove after 2020-05-04
-    ui_error "Please do not install this variant since Apache 2.2 is obsolete."
-    return -code error
-}
 
 configure.args      --disable-silent-rules \
                     --with-apxs=${apxs} \

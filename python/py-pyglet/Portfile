@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pyglet
-version             1.4.6
+version             1.5.7
 revision            0
 categories-append   devel graphics
 platforms           darwin
 license             BSD
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -18,19 +18,25 @@ description         A cross-platform windowing and multimedia library for Python
 long_description    ${description}
 
 homepage            http://pyglet.readthedocs.org/
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
 use_zip             yes
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  11940934ed883bf7b3cc60e9fc51aa3439cdd4ae \
-                    sha256  7b0ecf94b03bc86d3a4114d36db122cec0e4d5ea7fe8d0b09c989c4eda148aa4 \
-                    size    5116381
+checksums           rmd160  cb0798a7d45ff30dd18238da995425275875dbd4 \
+                    sha256  3faac2dad34946aecbce79a8658f89155436fe5c07332229160c6eba302ff40d \
+                    size    3160434
 
 if {${name} ne ${subport}} {
     depends_build-append \
                         port:py${python.version}-setuptools
+
+    if {${python.version} <= 35} {
+        version             1.4.10
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  7bb3f66eafcfafe00d83a2c556c699b0eb1d81e9 \
+                            sha256  c57e3e18246f45e4d6bb3d29e39d128d6e72b05f4212b10353adc3ba260ceb65 \
+                            size    5121084
+    }
 
     livecheck.type      none
 }

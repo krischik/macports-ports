@@ -4,7 +4,7 @@ PortSystem                  1.0
 PortGroup                   java 1.0
 
 name                        dbvis
-version                     10.0.24
+version                     11.0.3
 categories                  databases
 platforms                   darwin
 supported_archs             x86_64
@@ -22,9 +22,9 @@ master_sites                ${homepage}/product_download/dbvis-${version}/media/
 distname                    dbvis_macos_[strsed $version g/\\./_/]
 extract.suffix              .tgz
 
-checksums                   rmd160  8d88f5d08d9c26b67a4cc8c780aa88cb83d07af2 \
-                            sha256  f6d8f31d04482f40f8081104a405514a96aa51dc45ef028b97ec5aade5247c2e \
-                            size    80097999
+checksums                   rmd160  f97ea2901ff50b7ba91e4d45c7734a5d682b42a2 \
+                            sha256  74bbcf99465a484f5a2abdf5a62ad850c2f0f0de2d1a90fed19112b6fb49f108 \
+                            size    89412209
 
 java.version                1.8+
 java.fallback               openjdk11
@@ -40,5 +40,5 @@ destroot {
 }
 
 livecheck.type              regex
-livecheck.url               ${homepage}/CheckForUpdate/?dbvisVersion=10.0.0&dbvisEdition=Free&channels=feature&channels=maintenance
+livecheck.url               ${homepage}/CheckForUpdate/?dbvisVersion=11.0.0&dbvisEdition=Free&channels=feature&channels=maintenance
 livecheck.regex             "www.dbvis.com/download/(\[0-9.\]+)"

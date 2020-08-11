@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Net-GitHub 0.95
+perl5.setup         Net-GitHub 1.01
 license             {Artistic-1 GPL}
 maintainers         {devans @dbevans} openmaintainer
 description         Net::GitHub - Perl Interface for github.com
@@ -12,9 +12,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  d396164ecaf3d4a19f6d9dfb18ecf9a106af0f09 \
-                    sha256  5bfb28fd30992906106d6bcc782c9485c35334190a3ca4941a5e9ae752bddb93 \
-                    size    41676
+checksums           rmd160  580f5b96637abd5783dbc526625f96a0a218c2c2 \
+                    sha256  9b96f03608aaab6ab3505a0f76948a608075c7aa245c8e3ece190e0749dd33c3 \
+                    size    43983
 
 if {${perl5.major} != ""} {
     depends_lib-append \

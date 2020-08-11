@@ -22,22 +22,8 @@ platforms           darwin
 compiler.blacklist-append cc {*gcc-3*} {*gcc-4.[0-7]} {clang < 800.0.38}
 platform darwin i386 {
     compiler.blacklist-append {macports-clang-[3-4].*}
-    compiler.fallback-append macports-clang-5.0 macports-clang-6.0 macports-clang-7.0
 }
 
-#Define target based on version of OS
-#OS 10.5 supports down to Intel Core Solo (Intel) or PowerPC G4
-if {${os.major} == 9} { 
-    if {${os.arch} eq "i386" || [variant_isset universal]} {
-        set blas_arch "YONAH"
-    } else {
-        set blas_arch "PPCG4"
-    }
-}
-#OS 10.6 supports down to Intel Core Solo architecture
-if {${os.major} == 10} { 
-    set blas_arch "YONAH"
-} 
 #OS 10.7-10.11 supports down to iMac 7,1, with Intel Core 2 Duo architecture
 #OS 10.12-13 supports down to iMac 10,1, with Intel Core 2 Duo architecture
 if {${os.major} >= 11 && ${os.major} <= 17} { 
@@ -55,19 +41,18 @@ if {![info exists blas_arch]} {
 subport OpenBLAS-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    xianyi OpenBLAS 4c6a4573582167c21a654076ea58db3c47987448
-    version         20191106-[string range ${github.version} 0 7]
-    checksums       rmd160 f1b0cf9e888cbe33edbc8ed64359e91ef3358f78 \
-                    sha256 befbbfaeed84cee32ade7382a5929938aec4e8df7a348854a3f794567722e48b \
-                    size   12034880
+    github.setup    xianyi OpenBLAS dfe819f3bdab1583b82fa8dddff691bd46ae81a8
+    version         20200625-[string range ${github.version} 0 7]
+    checksums       rmd160  78c2ea354dbab1c7d8b30f47d9c38452cdc6418a \
+                    sha256  84ff25573dffa347f93147c95cf26e9b0ac3acde30770a79ad78844ad8f39ebb \
+                    size    12283878
     revision        0
 
     name            ${github.project}-devel
     conflicts       OpenBLAS
 
     patchfiles      patch-libnoarch.devel.diff \
-                    patch-OpenBLAS-i386-Apple.diff \
-                    patch-revert-5f6206fa-c_check-only.diff
+                    patch-OpenBLAS-i386-Apple.diff
 
     github.livecheck.branch develop
 
@@ -76,10 +61,10 @@ if {[string first "-devel" $subport] > 0} {
 
 } else {
 
-    github.setup    xianyi OpenBLAS 0.3.7 v
-    checksums       rmd160 1e3698279f8d3084bfe9b34f22b33bfa56d8dbbf \
-                    sha256 c8943b3ce749c3f5c1eb5a72982178f5f6e383b54f09525983aa6b0ca2966d49 \
-                    size   11991860
+    github.setup    xianyi OpenBLAS 0.3.10 v
+    checksums       rmd160  4bfbdbc17a6fc4f1fa8ab8500068a4852ef5086a \
+                    sha256  308398cb50689baa328a3b0612b159a708b193304367cef00722fd70147bdc36 \
+                    size    12249713
     revision        0
 
     conflicts       OpenBLAS-devel

@@ -1,0 +1,40 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           makefile 1.0
+
+name                mafft
+version             7.470
+revision            0
+
+categories          science
+platforms           darwin
+license             BSD
+maintainers         {reneeotten @reneeotten} openmaintainer
+
+description         Multiple alignment program for amino acid or nucleotide sequences
+long_description    ${description}
+
+homepage            https://mafft.cbrc.jp/alignment/software/
+master_sites        ${homepage}
+distname            mafft-${version}-without-extensions-src
+
+checksums           rmd160  afd5888d12712def43508ec394deb5d995d6deb3 \
+                    sha256  fbf9d6186988ede1860ac03fd7a878f789709a9f50f4536f6bfc73e687b04b3a \
+                    size    614336
+
+extract.suffix      .tgz
+
+patchfiles-append   patch-Makefile.diff
+
+build.dir           ${worksrcpath}/core
+
+post-destroot {
+    set docdir ${prefix}/share/doc/${name}
+    xinstall -d ${destroot}${docdir}
+    xinstall -m 0644 -W ${worksrcpath} license readme ${destroot}${docdir}
+}
+
+livecheck.type      regex
+livecheck.url       ${homepage}/source.html
+livecheck.regex     mafft-(\[0-9.\]+)-without-extensions-src${extract.suffix}

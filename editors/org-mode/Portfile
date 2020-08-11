@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           elisp 1.0
 
 name                org-mode
-version             9.2.6
+version             9.3.7
 categories          editors
 license             GPL-3+
 maintainers         {dports @drkp}
@@ -20,9 +20,9 @@ homepage            https://orgmode.org/
 master_sites        ${homepage}
 distname            org-${version}
 
-checksums           rmd160  3bff97ae0afe7cb69c5f10b50bdde703844efc8d \
-                    sha256  e2f026d0ad611aeb38a9a42681b46fd4344e2593f94e9b9ab7c65c5625811a81 \
-                    size    5720665
+checksums           rmd160  82c6d4d3ed03e622ab9f87bc33cb121888372f63 \
+                    sha256  34f61ef3ac588d14ef30a32b467c31486fc09447ee00562f194d5c0d5cde06ee \
+                    size    4675448
 
 depends_lib         path:${emacs_binary}:${emacs_binary_provider}
 depends_build       port:texinfo
@@ -57,6 +57,7 @@ variant contrib description "Include additional contributed packages" {
 }
 
 platform darwin 10 {
+    known_fail  yes
     pre-fetch {
         ui_error "${name} @${version} does not build on Mac OS X 10.6"
         return -code error "incompatible Mac OS X version"

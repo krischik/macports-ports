@@ -20,9 +20,9 @@ long_description    Zabbix is the ultimate open source availability and \
                     of the best commercial ones. 
 
 array set VERSIONS {
-    4  4.0.14
+    4  4.0.20
     42 4.2.8
-    44 4.4.1
+    44 4.4.8
 }
 
 set zver            [regsub -all {[^\d]} ${subport} {}]
@@ -35,16 +35,16 @@ livecheck.url \
     https://www.zabbix.com/download_sources
 homepage            http://www.zabbix.com/
 master_sites \
-    sourceforge:project/zabbix/ZABBIX%20Latest%20Stable/${version} \
-    sourceforge:project/zabbix/ZABBIX%20Release%20Candidates/${version}
+    https://cdn.zabbix.com/stable/${version}
+
 dist_subdir         zabbix${zver}
 
 if {$zver == 4} {
     livecheck.regex     "zabbix-(4\.0\.\[0-9\]+).tar.gz"
     checksums \
-        rmd160  8bdf1912a0b180080fe746ca9f90608c2445f55f \
-        sha256  6b76424f750d213fe60b41440539e1dd9e2676d532a07cb2e93807c35cefed45 \
-        size    17180904
+        rmd160  d58810b19d55b7d81de9924bef8cd5276d3001f3 \
+        sha256  7c401f2cbe0b76882b1a65f7de82422ac39e544039f6cf6ab5b1b85c23e9d840 \
+        size    17215217
 }
 if {$zver == 42} {
     livecheck.regex     "zabbix-(4\.2\.\[0-9\]+).tar.gz"
@@ -57,9 +57,9 @@ if {$zver == 42} {
 if {$zver == 44} {
     livecheck.regex     "zabbix-(4\.4\.\[0-9\]+).tar.gz"
     checksums \
-        rmd160  12b4c8da56fa1e1c4b30bc8145b09231ccd0c29a \
-        sha256  0bf74e597dd41a558305fe17a2b1ed6fe2d77044b87696a92e4227fbf315564a \
-        size    20449635
+        rmd160  f2814c77fa6703bb80f25f891b9832570c63079b \
+        sha256  c0562245c75fc86c2c22d9a8e521c147dea832056b869d27488ea6130a253651 \
+        size    19457802
 }
 
 patchfiles          log_and_pid_locations.patch
@@ -166,10 +166,11 @@ if {[isFlavor agent ${subport}]} {
 
     depends_lib-append      port:curl \
                             port:OpenIPMI \
+                            path:lib/libssl.dylib:openssl \
                             port:libssh2 \
                             port:libxml2 \
                             port:net-snmp \
-                            port:openssl \
+                            port:pkgconfig \
                             port:zlib
 
     depends_run-append      port:fping

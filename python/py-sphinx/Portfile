@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-sphinx
-version             2.2.1
+version             3.1.1
 categories-append   textproc devel
 license             BSD
 maintainers         {jmr @jmroot} openmaintainer
@@ -21,12 +21,13 @@ platforms           darwin
 supported_archs     noarch
 
 homepage            https://www.sphinx-doc.org/
-master_sites        pypi:S/Sphinx/
+python.rootname     Sphinx
 
-checksums           rmd160 fedd0a3f50457896139f865a42bc57e58b0a3001 \
-                    sha256 31088dfb95359384b1005619827eaee3056243798c62724fd3fa4b84ee4d71bd
+checksums           md5 ebff53712e5d081963b51d36bc7d3fc7 \
+                    rmd160 12886ed607c6fb8ac39875b50926a0729ec81565 \
+                    sha256 74fbead182a611ce1444f50218a1c5fc70b6cc547f64948f5182fb30a2a20258
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 if {$subport ne $name} {
     depends_lib     port:py${python.version}-docutils \
@@ -57,8 +58,6 @@ if {$subport ne $name} {
                             port:py${python.version}-sphinxcontrib-serializinghtml \
                             port:py${python.version}-sphinxcontrib-qthelp
     }
-
-    distname        Sphinx-${version}
 
     select.group    sphinx
     select.file     ${filespath}/py${python.version}-sphinx

@@ -4,12 +4,15 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-importlib-metadata
-version             0.23
+python.rootname     importlib_metadata
+version             1.6.1
 revision            0
 categories-append   devel
 platforms           darwin
 license             Apache
+supported_archs     noarch
 
+# keep version for PY27 and PY34, these are (indirect) dependencies of py-virtualenv
 python.versions     27 34 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
@@ -17,14 +20,11 @@ maintainers         {stromnov @stromnov} openmaintainer
 description         Library to access the metadata for a Python package.
 long_description    ${description}
 
-homepage            http://importlib-metadata.readthedocs.io/
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
+homepage            https://importlib-metadata.readthedocs.io/
 
-distname            importlib_metadata-${version}
-
-checksums           rmd160  a639e5712fbea87d1441d172adf1276bd6a7f78c \
-                    sha256  aa18d7378b00b40847790e7c27e11673d7fed219354109d0e7b9e5b25dc3ad26 \
-                    size    25172
+checksums           rmd160  edc6d02a5eeb8f2e6c9e075c2219b25c07f4d65b \
+                    sha256  0505dd08068cfec00f53a74a0ad927676d7757da81b7436a6eefe4c7cf75c545 \
+                    size    29039
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -32,7 +32,14 @@ if {${name} ne ${subport}} {
 
     depends_lib-append  port:py${python.version}-zipp
 
-    if {${python.version} < 35} {
+
+    if {${python.version} eq 34} {
+        version         1.0.0
+        epoch           1
+        revision        0
+        checksums       rmd160  d85c4afae2456a17c35bfc008641499918c2cd84 \
+                        sha256  a82ca8c109e194d7d6aee3f7531b0470dd4dd6b36ec14fd55087142a96bd55a7 \
+                        size    28194
         depends_lib-append \
                         port:py${python.version}-pathlib2
     }
@@ -40,7 +47,8 @@ if {${name} ne ${subport}} {
     if {${python.version} eq 27} {
         depends_lib-append \
                         port:py${python.version}-contextlib2 \
-                        port:py${python.version}-configparser
+                        port:py${python.version}-configparser \
+                        port:py${python.version}-pathlib2
     }
 
     livecheck.type      none

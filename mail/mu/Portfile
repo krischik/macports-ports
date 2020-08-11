@@ -1,12 +1,13 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           compiler_blacklist_versions 1.0
 
 name                mu
 platforms           darwin
 categories          mail
 license             GPL-3
-maintainers         {@ra1nb0w irh.it:rainbow} openmaintainer
+maintainers         {ra1nb0w @ra1nb0w} openmaintainer
 
 description         Command-line tools to index and search email (aka maildir-utils)
 long_description \
@@ -31,11 +32,25 @@ if {${subport} eq ${name}} {
     PortGroup       github 1.0
     PortGroup       elisp 1.0
 
-    github.setup    djcb mu 1.2
-    checksums       rmd160  30ff45c6f6009c15d731f8609ca5dc31943010c9 \
-                    sha256  b65827bc95c5a936374775e85d32cd02ec18fd072b8cd5013ce4d002ec06f315 \
-                    size    2297792
+    github.setup    djcb mu 1.4.10
+    checksums       rmd160  e51f51665063cfb4f2251685ae54f4cd25cacf77 \
+                    sha256  0628ac92a28077772c45760c6a545dcfb8e889f77f2e9d281192fec72df07cea \
+                    size    2309594
     revision        0
+
+    compiler.c_standard   1999
+    compiler.cxx_standard 2014
+    # Configure check thinks above is not enough on OSX 10.9 (using /usr/bin/clang++)
+    # checking whether /usr/bin/clang++ supports C++14 features with -std=gnu++14... no
+    # checking whether /usr/bin/clang++ supports C++14 features with -std=gnu++1y... no
+    # checking whether /usr/bin/clang++ supports C++14 features with -std=c++14... no
+    # checking whether /usr/bin/clang++ supports C++14 features with +std=c++14... no
+    # checking whether /usr/bin/clang++ supports C++14 features with -h std=c++14... no
+    # checking whether /usr/bin/clang++ supports C++14 features with -std=c++1y... no
+    # checking whether /usr/bin/clang++ supports C++14 features with +std=c++1y... no
+    # checking whether /usr/bin/clang++ supports C++14 features with -h std=c++1y... no
+    # configure: error: *** A compiler with support for C++14 language features is required.
+    compiler.blacklist-append {clang < 700}
 
     depends_build-append \
         port:pkgconfig

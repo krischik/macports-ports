@@ -2,7 +2,6 @@
 
 PortSystem          1.0
 PortGroup           github 1.0
-PortGroup           cxx11 1.1
 PortGroup           muniversal 1.0
 PortGroup           mpi 1.0
 PortGroup           active_variants   1.1
@@ -11,8 +10,8 @@ PortGroup           legacysupport 1.0
 PortGroup           conflicts_build 1.0
 mpi.setup
 
-github.setup        OSGeo gdal 3.0.1 v
-revision            3
+github.setup        OSGeo gdal 3.1.0 v
+revision            1
 categories          gis
 license             MIT BSD
 platforms           darwin
@@ -31,18 +30,13 @@ long_description    GDAL is a translator library for raster geospatial \
 
 homepage            https://www.gdal.org/
 
-checksums           rmd160  a0b7be0a5e21d3eef8884783c94963c2f91e6f3d \
-                    sha256  f6b8147f031cb93291535c3d632e8cacdb8f445b9f9b0e3eb8cff7a8d3f76359 \
-                    size    22392099
+checksums           rmd160  efccd737eae5b4cb996fee9d0b21f485015e24be \
+                    sha256  0c01b70175ad508e187ca44faf1fce062f290267ff02d2170490cb006fe34271 \
+                    size    27741245
 
 worksrcdir          ${worksrcpath}/gdal
 
 platform darwin {
-    # see https://trac.macports.org/ticket/55752
-    if {${os.major} < 12} {
-        patchfiles-append   MacTypes.diff
-    }
-
     # see https://trac.macports.org/ticket/56517
     if {[string match *clang* ${configure.cxx}]} {
         configure.ldflags-append -stdlib=${configure.cxx_stdlib}
@@ -50,10 +44,15 @@ platform darwin {
 }
 
 # see https://trac.macports.org/ticket/58948
-patchfiles-append   patch-bash-completion-location.diff
+#patchfiles-append   patch-bash-completion-location.diff
 
-# As suggested by Ryan in #56908
+# this can be removed in a future version of MacPorts
+# see https://github.com/macports/macports-base/pull/161
 compiler.blacklist-append {clang < 800}
+
+compiler.cxx_standard     2014
+# See https://trac.macports.org/ticket/56908
+compiler.thread_local_storage yes
 
 depends_build-append \
                     port:bash-completion \
@@ -184,7 +183,7 @@ variant grass description {Enable GRASS 7 GIS I/O} {
     }
 
     configure.args-delete   --without-grass
-    configure.args-append   --with-grass=${prefix}/share/grass76
+    configure.args-append   --with-grass=${prefix}/share/grass78
 }
 
 variant mrsid description {Enable MrSID file format} {
@@ -328,7 +327,7 @@ variant xerces description {Enable xerces XML support for GML file format} {
 }
 
 # Database variants
-set postgresql_suffixes {95 96 10 11}
+set postgresql_suffixes {95 96 10 11 12}
 
 set portsgresql_variants {}
 foreach s ${postgresql_suffixes} {
@@ -343,7 +342,8 @@ foreach s ${postgresql_suffixes} {
     variant ${p} description "Enable PostgreSQL ${v} support" conflicts {*}${c} "
         depends_lib-append      port:${p}
         configure.args-delete   --without-pg
-        configure.args-append   --with-pg=${prefix}/lib/postgresql${s}/bin/pg_config
+        configure.args-append   --with-pg=yes
+        configure.env-append    PKG_CONFIG_PATH=${prefix}/lib/postgresql${s}/pkgconfig:${prefix}/lib/pkgconfig
     "
 }
 
@@ -455,7 +455,7 @@ post-destroot {
             bin/ogrlineref \
             bin/ogrtindex \
             bin/testepsg \
-            lib/libgdal.26.dylib] \
+            lib/libgdal.27.dylib] \
             {
                 if {${configure.cxx_stdlib} eq "libc++"} {
                     system "install_name_tool -change \

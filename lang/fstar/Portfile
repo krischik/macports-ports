@@ -45,7 +45,7 @@ if {${fstar.stable}} {
     # Strip everything but <major>.<minor>
     fstar.release       [regsub {^([^\.]+\.[^\.]+).*} ${fstar.version} {\1}]
 } else {
-    fstar.version       20191018
+    fstar.version       20200623
     fstar.release       devel
 }
 
@@ -85,7 +85,6 @@ if {${fstar.project} eq "fstar"} {
                             code.
 
     patchfiles              patch-z3-path \
-                            patch-examples-fix-tests \
                             patch-fix-get_exec_dir
 
     post-patch {
@@ -125,7 +124,7 @@ if {${fstar.project} eq "fstar"} {
     description             A tool for extracting low-level F* programs to readable C code
     long_description        KreMLin is a tool that extracts an F* program to readable C code.
 
-    patchfiles              kremlin/patch-clang-driver-options
+    compiler.c_standard     2011
 
     depends_run-append      port:kremlin_select
 
@@ -146,40 +145,33 @@ if {${fstar.project} eq "fstar"} {
 # Subport-specific configuration
 subport fstar {
     github.setup        ${github.author} ${github.project} ${fstar.version} V
-    revision            6
+    revision            7
 
     distname            V${version}
     checksums           rmd160  bec45d793880ecf815bdc3d79cdb58f7f6ba7414 \
                         sha256  baa60f5f8a6c0dd5237a4fc7de5b8e940a3c620d680d255ae0057cf765163618 \
                         size    7173479
 
-    patchfiles-append   patch-ocaml4.08
+    patchfiles-append   fstar-stable/patch-ocaml4.08 \
+                        fstar-stable/patch-examples-fix-tests
 }
 
 subport fstar-devel {
-    github.setup        ${github.author} ${github.project} e7470859142b9e23ddb9066085d863900421dfe9
+    github.setup        ${github.author} ${github.project} 4559e1b4ffdac20e581a7cc69a3d324e2f29cda8
     version             ${fstar.version}-[string range ${github.version} 0 6]
-    revision            2
+    revision            0
 
-    checksums           rmd160  ae54b9427ed68d0279da35c96c3dd8a276353d1a \
-                        sha256  a8d14a9ab60452abe1ab645e81ce6804056fabd14f699012cfa7d141e4ae3719 \
-                        size    7195677
+    checksums           rmd160  f0cdde0a007465c6f4ec8bbfd7f9bf8f2edc9a67 \
+                        sha256  2fac89ceef9164bbb486fafbe68592a60028b12733285d024b02a258f6e87b70 \
+                        size    7647899
     github.tarball_from tarball
 
-    post-patch {
-        # Disable the known-broken kv_parsing test
-        if {${github.version} ne "e7470859142b9e23ddb9066085d863900421dfe9"} {
-            ui_error "Please verify that the kv_parsing test is still broken" 
-        }
-
-        reinplace -E {s|^kv_parsing.*|\\|g} \
-            examples/Makefile
-    }
+    patchfiles-append   fstar-devel/patch-tests_machine__integers_Makefile
 }
 
 subport kremlin {
     github.setup        ${github.author} ${fstar.project} 0.9.6.0 v
-    revision            9
+    revision            10
 
     distname            v${version}
     worksrcdir          kremlin-${version}
@@ -187,7 +179,8 @@ subport kremlin {
     # Updated z3 hints; can be generated after a valid test run via:
     #   tar -Jcf files/kremlin-0.9.6.0-test-hints.tar.xz -C work kremlin-0.9.6.0/test/.hints
     distfiles-append    kremlin-stable/kremlin-${version}-test-hints.tar.xz
-    patchfiles-append   kremlin-stable/patch-fstar-0.9.7.0 \
+    patchfiles-append   kremlin-stable/patch-clang-driver-options \
+                        kremlin-stable/patch-fstar-0.9.7.0 \
                         kremlin-stable/patch-fstar-discover-path \
                         kremlin-stable/patch-fix-make-command
 
@@ -214,15 +207,16 @@ subport kremlin {
 }
 
 subport kremlin-devel {
-    github.setup        ${github.author} ${fstar.project} e324b7e63e24d0822e753051b9dc7f7ab294bc00
+    github.setup        ${github.author} ${fstar.project} 0f08f1243331ffc62ba3f1b8d8b06e4de8479943
     version             ${fstar.version}-[string range ${github.version} 0 6]
-    revision            4
+    revision            0
 
-    checksums           rmd160  b02e8630d700b8065bd83f3938bf5806d74e4d22 \
-                        sha256  be69d4ae8d7f0f38675addc29bf4dae4879805dfe94abba41b3d81a6e2829999 \
-                        size    739359
+    checksums           rmd160  78eecc0f9ab7c6905a87a478d688233ab692b37b \
+                        sha256  7a8dbfe0f25f94cfa8ed41ab380cb9c9ab6fdfebec93081fdcc6dd485e50aecb \
+                        size    829817
 
-    patchfiles-append   kremlin-devel/patch-fix-make-command \
+    patchfiles-append   kremlin-devel/patch-clang-driver-options \
+                        kremlin-devel/patch-fix-make-command \
                         kremlin-devel/patch-fstar-discover-path \
                         kremlin-devel/patch-test_system_system.h
 
@@ -238,7 +232,7 @@ if {${fstar.project} eq "fstar"} {
     build.target        ocaml-fstar-ocaml
 
     test.run            yes
-    test.env            KREMLIN_HOME=${kremlin.home}
+    test.env            KREMLIN_HOME=${kremlin.home}/home
     test.dir            ${worksrcpath}
     test.target         all
     test.args           -C examples \
@@ -295,9 +289,20 @@ if {${fstar.project} eq "fstar"} {
         # Provide a link to our z3 binary
         ln -shf ../../z3-fstar/bin/z3 ${destroot}${fstar.home}/bin/z3
 
-        # Provide a "home" symlink for symmetry with the KreMLin port's
-        # "home" directory
-        ln -shf . ${destroot}${fstar.home}/home
+        # Provide compatibility symlinks for projects that expect F*'s
+        # source layout
+        set fstar_compat_home ${destroot}${fstar.home}/home
+        xinstall -d -m 755 ${fstar_compat_home}
+        foreach {fstar_src fstar_dest} {
+            lib/fstar               ulib
+            bin                     bin
+            share/fstar/examples    examples
+            share/fstar/contrib     ucontrib
+        } {
+            ln -shf \
+                ../${fstar_src} \
+                ${fstar_compat_home}/${fstar_dest}
+        }
     }
 
     notes "
@@ -324,7 +329,7 @@ if {${fstar.project} eq "fstar"} {
     #
     # If we exclude it, we can rely on auto-detection of kremlin.home, which
     # allows us to run krml in-place (e.g. for tests)
-    build.args              FSTAR_HOME=${fstar.home} \
+    build.args              FSTAR_HOME=${fstar.home}/home \
                             KREMLIN_HOME=${worksrcpath}
 
     test.run                yes
@@ -332,14 +337,8 @@ if {${fstar.project} eq "fstar"} {
                             -j ${build.jobs}
 
     destroot.args           PREFIX=${destroot}${kremlin.home} \
-                            FSTAR_HOME=${fstar.home} \
+                            FSTAR_HOME=${fstar.home}/home \
                             KREMLIN_HOME=${worksrcpath}
-
-    post-patch {
-        # Fix path to the fstar example sources
-        reinplace {s|\$(FSTAR_HOME)/examples|$(FSTAR_HOME)/share/fstar/examples|g} \
-            test/Makefile
-    }
 
     post-destroot {
         # KreMLin-specific cleanup up the installed files.

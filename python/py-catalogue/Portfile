@@ -1,0 +1,70 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+PortGroup           python 1.0
+
+github.setup        explosion catalogue 2.0.0 v
+revision            0
+name                py-${github.project}
+
+categories-append   devel
+platforms           darwin
+supported_archs     noarch
+license             MIT
+maintainers         nomaintainer
+
+description         Super lightweight function registries for your library
+long_description    catalogue is a tiny, zero-dependencies library\
+                    that makes it easy to add function (or object)\
+                    registries to your code. Function registries are\
+                    helpful when you have objects that need to be both\
+                    easily serializable and fully\
+                    customizable. Instead of passing a function into\
+                    your object, you pass in an identifier name, which\
+                    the object can use to lookup the function from the\
+                    registry. This makes the object easy to serialize,\
+                    because the name is a simple string. If you\
+                    instead saved the function, you'd have to use\
+                    Pickle for serialization, which has many drawbacks.
+
+checksums           rmd160  d0d0b96bd45e1eadbe9be40f6cddab32fa79fb7c \
+                    sha256  89bbad38ea3311309c178422db88989dfd3e5722927774823c94a1bbaccd5265 \
+                    size    8380
+
+python.versions     35 36 37 38
+
+if {${name} ne ${subport}} {
+    if {${python.version} == 35} {
+        github.setup    explosion catalogue 1.0.0 v
+        revision        0
+        checksums       rmd160  4c9cd255190c1fe4ac4d477732212b00a673df14 \
+                        sha256  172d02f89b5b53fcccace7e8c9a43eb94639489bb08ea709b323a5dcf20e6756 \
+                        size    8417
+    }
+
+    depends_build-append \
+                    port:py${python.version}-setuptools
+
+    if {${python.version} < 38} {
+        depends_build-append \
+                    port:py${python.version}-importlib-metadata
+    }
+
+    depends_test-append \
+                    port:py${python.version}-pytest
+
+    test.run        yes
+    test.cmd        py.test-${python.branch}
+    test.target
+    test.env        PYTHONPATH=${worksrcpath}/build/lib
+
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} README.md LICENSE \
+            ${destroot}${docdir}
+    }
+
+    livecheck.type  none
+}

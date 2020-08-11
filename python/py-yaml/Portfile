@@ -4,13 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-yaml
-version             5.1.2
+python.rootname     PyYAML
+version             5.3.1
 revision            0
 categories-append   devel
 platforms           darwin
 license             MIT
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -21,13 +22,10 @@ long_description    PyYAML is a YAML parser and emitter for Python, which \
                     serializing and deserializing native Python objects.
 
 homepage            https://github.com/yaml/pyyaml
-master_sites        pypi:P/PyYAML
 
-distname            PyYAML-${version}
-
-checksums           rmd160  d39318d6b982cf78959f1b83f55bde92f022dd83 \
-                    sha256  01adf0b6c6f61bd11af6e10ca52b7d4057dd0be0343eb9283c878cf3af56aee4 \
-                    size    265034
+checksums           rmd160  be7bb32b55e7957fa54d746d0bab77ee3afb7136 \
+                    sha256  b8eac752c5e14d3eca0e6dd9199cd627518cb5ec06add0de9d32baeee6fe645d \
+                    size    269377
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -55,6 +53,4 @@ if {${name} ne ${subport}} {
     }
 
     livecheck.type      none
-} else {
-    livecheck.name      PyYAML
 }

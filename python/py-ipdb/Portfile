@@ -5,13 +5,13 @@ PortGroup           github 1.0
 PortGroup           python 1.0
 PortGroup           select 1.0
 
-github.setup        gotcha ipdb 0.12.2
+github.setup        gotcha ipdb 0.13.2
 revision            0
 name                py-ipdb
-license             BSD
+
 platforms           darwin
 supported_archs     noarch
-
+license             BSD
 maintainers         nomaintainer
 
 description         An enhanced Interactive Python shell
@@ -21,9 +21,9 @@ long_description    Provide an interactive shell superior to Python's default. \
                     other systems with Python as the underlying language.  \
                     Allow interactive testing of threaded graphical toolkits.
 
-checksums           rmd160  7b82a04779f08717b93883582f12677229997310 \
-                    sha256  b3bc714535adfc7ddbbc38be06deabba88dd95506c21ccd2ee54980ef46baee5 \
-                    size    8133
+checksums           rmd160  937ef96e6d9c3ee2413aed56484fde6a164b7274 \
+                    sha256  d6698ed37149bed6587dbcbab6d8d1f973fdb49a37b922e3314c569a4ae5f2a1 \
+                    size    10622
 
 python.versions     27 35 36 37 38
 
@@ -40,7 +40,6 @@ if {${name} ne ${subport}} {
     }
 
     test.run        yes
-    test.env        PYTHONPATH=${worksrcpath}/build/lib
 
     depends_run     port:ipdb_select
 

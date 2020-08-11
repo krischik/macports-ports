@@ -222,7 +222,6 @@ set portfetch::mirror_sites::sites(cpan) {
     http://www.msg.com.mx/CPAN/modules/by-module/
     http://www.namesdir.com/mirrors/cpan/modules/by-module/
     https://www.perl.com/CPAN/modules/by-module/
-    http://www.pirbot.com/mirrors/cpan/modules/by-module/
     https://www.planet-elektronik.de/CPAN/modules/by-module/
 }
 
@@ -378,25 +377,26 @@ set portfetch::mirror_sites::sites(gentoo) {
 }
 
 set portfetch::mirror_sites::sites(gimp) {
-    http://artfiles.org/gimp.org/pub/
-    http://gimp.cp-dev.com/
-    http://download.gimp.org/pub/
-    http://ftp.gtk.org/pub/
-    http://ftp.gwdg.de/pub/grafik/
+    https://artfiles.org/gimp.org/pub/
+    https://download.gimp.org/mirror/pub/
+    https://ftp.gwdg.de/pub/grafik/
     http://gimp.mirrors.hoobly.com/pub/
-    http://mirror.ibcp.fr/pub/
-    ftp://sunsite.icm.edu.pl/pub/graphics/
-    ftp://ftp.is.co.za/mirror/ftp.gimp.org/
+    https://mirror.ibcp.fr/pub/
+    https://ftp.icm.edu.pl/pub/graphics/
+    https://sunsite.icm.edu.pl/pub/graphics/
+    http://ftp.is.co.za/mirror/ftp.gimp.org/
     https://www.mirrorservice.org/sites/ftp.gimp.org/pub/
-    http://piotrkosoft.net/pub/mirrors/ftp.gimp.org/pub/gimp/pub/
     http://www.ring.gr.jp/pub/graphics/
-    http://ftp.sunet.se/pub/gimp/
-    ftp://ftp.tpnet.pl/pub/graphics/
-    http://mirror.umd.edu/gimp/
-    http://ftp.iut-bm.univ-fcomte.fr/
-    http://ftp.cc.uoc.gr/mirrors/
-    http://mirrors.fe.up.pt/mirrors/ftp.gimp.org/pub/
-    http://ftp.snt.utwente.nl/pub/software/gimp/
+    https://ftp.sunet.se/pub/gimp/
+    https://mirror.umd.edu/gimp/
+    https://ftp.cc.uoc.gr/mirrors/
+    https://ftp.snt.utwente.nl/pub/software/gimp/
+    https://mirrors.ukfast.co.uk/sites/gimp.org/pub/
+    https://mirrors.dotsrc.org/gimp/
+    https://ftp.fau.de/gimp/
+    http://mirror.rise.ph/
+    https://ftp.lysator.liu.se/pub/
+    https://mirrors.syringanetworks.net/gimp/
 }
 
 set portfetch::mirror_sites::sites(gnome) {
@@ -504,13 +504,14 @@ set portfetch::mirror_sites::sites(macports) {
 global os.platform os.major
 set distfiles_scheme [expr {${os.platform} eq "darwin" && ${os.major} < 10 ? "http" : "https"}]
 
+# Servers that support http.
 set portfetch::mirror_sites::sites(macports_distfiles) "
     ${distfiles_scheme}://distfiles.macports.org/:mirror
     http://aarnet.au.distfiles.macports.org/pub/macports/distfiles/:mirror
     http://aus.us.distfiles.macports.org/macports/distfiles/:mirror
     http://cjj.kr.distfiles.macports.org/:mirror
     http://cph.dk.distfiles.macports.org/:mirror
-    http://fco.it.distfiles.macports.org/mirrors/macports-distfiles/:mirror
+    http://fco.it.distfiles.macports.org/:mirror
     http://jnb.za.distfiles.macports.org/distfiles/:mirror
     http://jog.id.distfiles.macports.org/macports/distfiles/:mirror
     http://kmq.jp.distfiles.macports.org/:mirror
@@ -520,8 +521,14 @@ set portfetch::mirror_sites::sites(macports_distfiles) "
     http://nue.de.distfiles.macports.org/:mirror
     ${distfiles_scheme}://pek.cn.distfiles.macports.org/macports/distfiles/:mirror
     http://ykf.ca.distfiles.macports.org/MacPorts/mpdistfiles/:mirror
-    http://ywg.ca.distfiles.macports.org/mirror/macports/distfiles/:mirror
 "
+
+# Servers that only support https.
+if {${distfiles_scheme} eq "https"} {
+    append portfetch::mirror_sites::sites(macports_distfiles) "
+        https://ywg.ca.distfiles.macports.org/mirror/macports/distfiles/:mirror
+    "
+}
 
 # To update this list use:
 # $ curl -s http://dev.mysql.com/downloads/mirrors.html | grep -E '>HTTP<' | sed -e 's,.*href="\(.*\)">.*,    \1/Downloads/:nosubdir,g' -e 's,//Downloads/:nosubdir,/Downloads/:nosubdir,g' | sort -u

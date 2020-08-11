@@ -3,11 +3,11 @@
 PortSystem          1.0
 
 name                msmtp
-version             1.8.6
+version             1.8.11
 revision            0
 categories          mail
 platforms           darwin
-maintainers         {@ra1nb0w irh.it:rainbow} openmaintainer
+maintainers         {ra1nb0w @ra1nb0w} openmaintainer
 license             GPL-3+
 description         SMTP client that can be used as an SMTP plugin for Mutt
 long_description    msmtp is an SMTP client that can be used as an SMTP \
@@ -21,9 +21,9 @@ homepage            https://marlam.de/msmtp/
 master_sites        ${homepage}releases/
 use_xz              yes
 
-checksums           rmd160  3c9b157bdaf6a2d116cf2c081076aa8e09cc45a4 \
-                    sha256  6625f147430c65ba8527f52c4fe5d4d33552d3c0fb6d793ba7df819a3b3042e1 \
-                    size    339732
+checksums           rmd160  5528b78c70971f7d1fb6f596f8bed6f9310ef462 \
+                    sha256  f25f0fa177ce9e0ad65c127e790a37f35fb64fee9e33d90345844c5c86780e60 \
+                    size    356492
 
 depends_build       port:pkgconfig
 depends_lib         port:gettext \

@@ -2,7 +2,6 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
-PortGroup           cxx11 1.1
 PortGroup           github 1.0
 PortGroup           wxWidgets 1.0
 PortGroup           app 1.0
@@ -11,7 +10,7 @@ name                limesuite
 categories          science comms
 platforms           darwin macosx
 license             Apache-2
-maintainers         {@ra1nb0w irh.it:rainbow} {michaelld @michaelld} openmaintainer
+maintainers         {ra1nb0w @ra1nb0w} {michaelld @michaelld} openmaintainer
 description         provides drivers and SDR application support for the LMS7002M RFIC
 long_description    Lime Suite is a collection of software supporting several hardware \
     platforms including the LimeSDR, drivers for the LMS7002M transceiver RFIC, and other \
@@ -21,11 +20,11 @@ homepage            https://myriadrf.org/projects/lime-suite/
 subport limesuite-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup myriadrf LimeSuite a5b3a10fe4db258b267d686a91b845e4375dfdc8
-    version   20191106-[string range ${github.version} 0 7]
-    checksums rmd160 781fc97242f46e093ff4e424619b90a15496dd5f \
-              sha256 c8c5078c52fda8623b58eaa7a3d964eb25c671817f8cc35c6bba6f68569d2efe \
-              size   5345722
+    github.setup    myriadrf LimeSuite 04707b37cf18e49b5af22882c9ccd2bdbcd617b2
+    version         20200617-[string range ${github.version} 0 7]
+    checksums       rmd160  3a86eb296b2144b5a6b075481e923925483855eb \
+                    sha256  5a38fb108bfaba89d881580d1f5297e7230124d45e8c523da89fdc8b3127e6ae \
+                    size    5398305
     revision  0
 
     name            limesuite-devel
@@ -35,16 +34,18 @@ if {[string first "-devel" $subport] > 0} {
 
 } else {
 
-    github.setup    myriadrf LimeSuite 19.04.0 v
-    checksums       rmd160  9b702a15565df94169bb47538522c8cec3774645 \
-                    sha256  1e4d5ac1b6f81ba730e46411a32eb93878f1eb8874574eb01d3c981c918add92 \
-                    size    5357853
-    revision        2
+    github.setup    myriadrf LimeSuite 20.01.0 v
+    checksums       rmd160  ee57027f57c71e2ca734dacd706ec0c15e0e1870 \
+                    sha256  b0aa3db383bec31b613025b58b7f15218f056e6f07c3eabaab8df9097f93854c \
+                    size    5415366
+    revision        1
 
     conflicts       limesuite-devel
     configure.args-append -DLIME_SUITE_EXTVER=release
 
 }
+
+compiler.cxx_standard 2011
 
 # fix where CMake files are installed; in MacPorts we strive for
 # "$PREFIX/share/cmake/$PROJECT_NAME", not "$PREFIX/lib/cmake/$PROJECT_NAME".

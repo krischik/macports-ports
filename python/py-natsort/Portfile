@@ -4,8 +4,9 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-natsort
-version             6.0.0
+version             7.0.1
 revision            0
+
 platforms           darwin
 supported_archs     noarch
 license             MIT
@@ -19,18 +20,27 @@ long_description    When you try to sort a list of strings that \
                     a function `natsorted` that helps sort lists \
                     'naturally', either as real numbers (i.e. \
                     signed/unsigned floats or ints), or as versions.
-homepage            https://github.com/SethMMorton/${python.rootname}
 
+homepage            https://github.com/SethMMorton/${python.rootname}
 master_sites        pypi:n/${python.rootname}
 distname            ${python.rootname}-${version}
 
-checksums           rmd160  bc57ebaf0994b8c2c5286a2442173dd9506627db \
-                    sha256  ff3effb5618232866de8d26e5af4081a4daa9bb0dfed49ac65170e28e45f2776 \
-                    size    140718
+checksums           rmd160  12dbd8191dab402be86a7181a6822ecba1d67a80 \
+                    sha256  a633464dc3a22b305df0f27abcb3e83515898aa1fd0ed2f9726c3571a27258cf \
+                    size    139272
 
-python.versions     27 34 35 36 37
+python.versions     27 35 36 37 38
 
 if {${subport} ne ${name}} {
+    if {${python.version} eq 27} {
+        version     6.2.1
+        revision    0
+        distname    ${python.rootname}-${version}
+        checksums   rmd160  79f2de364df9c25343a213dab0ee5eb681b35b51 \
+                    sha256  c5944ffd2343141fa5679b17991c398e15105f3b35bb11beefe66c67e08289d5 \
+                    size    141650
+    }
+
     depends_lib-append \
                     port:py${python.version}-setuptools
 
@@ -41,7 +51,7 @@ if {${subport} ne ${name}} {
         set docdir ${prefix}/share/doc/${subport}
         xinstall -d ${destroot}${docdir}
         xinstall -m 0644 -W ${worksrcpath} README.rst LICENSE \
-            CHANGELOG.rst ${destroot}${docdir}
+            CHANGELOG.md ${destroot}${docdir}
     }
 
     livecheck.type  none

@@ -1,7 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem      1.0
+PortGroup       compiler_blacklist_versions 1.0
 PortGroup       github 1.0
+PortGroup       legacysupport 1.1
+
+# https://trac.macports.org/ticket/59132
+legacysupport.newest_darwin_requires_legacy 10
 
 github.setup    ipmitool ipmitool eed9d59
 
@@ -33,7 +38,8 @@ depends_build   port:autoconf \
                 port:libtool \
                 port:curl \
                 port:coreutils
-depends_lib     path:lib/libssl.dylib:openssl
+depends_lib     path:lib/libssl.dylib:openssl \
+                port:readline
 
 checksums \
     rmd160  e2d76e0c1ca496d63e249e0e9204dbc992ed4e41 \
@@ -42,6 +48,11 @@ checksums \
 
 configure.args --enable-intf-lanplus --enable-ipmishell
 configure.cppflags-append   -Ds6_addr16=__u6_addr.__u6_addr16
+
+compiler.c_standard    2011
+# Work around MacPorts base C11 compiler selection bug.
+# https://github.com/macports/macports-base/pull/196
+compiler.blacklist-append {clang < 500}
 
 pre-configure {
     system -W ${worksrcpath} "./bootstrap"

@@ -9,7 +9,7 @@ license         LGPL
 platforms       macosx
 maintainers     {michaelld @michaelld} openmaintainer
 description     Fast Light Tool Kit
-homepage        http://www.fltk.org/
+homepage        https://www.fltk.org/
 
 long_description \
     FLTK (pronounced fulltick) \
@@ -51,12 +51,12 @@ if {${subport} eq ${name}} {
     long_description ${long_description} \
         This port provides the snapshot released of FLTK, typically updated a few times a month.
 
-    github.setup fltk fltk ee9ada967806dae72aa1b9ddad7b95b94f4dd2a3
-    version   20191110-[string range ${github.version} 0 7]
-    checksums rmd160 ab3521d451f1ad777765b7f887b2046c52daa49e \
-              sha256 96f59b8cc0dc1c00b3861500ba4d0ffc2e0daf6ea02bbbd1c3a217fb306fcb0f \
-              size   6026154
-    revision  0
+    github.setup    fltk fltk f9a63b5ed5040f0c45b69ad06d2ffdeda8841e80
+    version         20200602-[string range ${github.version} 0 7]
+    checksums       rmd160  4f4339c62c37c65f48b9b92bc82af87d511be699 \
+                    sha256  7660a6e4c965a79f678cf082dd62a7eb3ee9cbdb92f98062c6eece35f3fd7bd4 \
+                    size    6086939
+    revision        0
 
     patchfiles-append \
         patch-fluid-Makefile.devel.diff

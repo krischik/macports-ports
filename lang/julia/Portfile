@@ -8,7 +8,7 @@ PortGroup           compilers 1.0
 compilers.choose    fc f77 f90
 compilers.setup     require_fortran -g95
 
-github.setup        JuliaLang julia 1.2.0 v
+github.setup        JuliaLang julia 1.4.1 v
 revision            0
 categories-append   lang math science
 maintainers         {ieee.org:s.t.smith @essandess} openmaintainer
@@ -26,9 +26,11 @@ github.tarball_from releases
 distfiles           ${name}-${version}-full${extract.suffix}
 
 checksums           ${name}-${version}-full${extract.suffix} \
-                    rmd160  79eda79405d7148c3123c4103b4a096d54112a5f \
-                    sha256  2419b268fc5c3666dd9aeb554815fe7cf9e0e7265bc9b94a43957c31a68d9184 \
-                    size    123450012
+                    rmd160  7e2b390d24c77f717b8eecbe3a5285dae7e9ea4a \
+                    sha256  b21585db55673ac0668c163678fcf2aad11eb7c64bb2aa03a43046115fab1553 \
+                    size    132815888 \
+
+extract.only        ${distfiles}
 
 gpg_verify.use_gpg_verification \
                     yes
@@ -102,5 +104,13 @@ pre-test {
 }
 
 test.run            yes
+
+if {${os.platform} eq "darwin" && ${os.major} < 14} {
+    known_fail      yes
+    pre-fetch {
+        ui_error "${name} @${version} requires OS X 10.10 or later"
+        return -code error "incompatible OS X version"
+    }
+}
 
 github.livecheck.regex  {([^"-]+)}

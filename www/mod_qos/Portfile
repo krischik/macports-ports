@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                mod_qos
-version             11.64
+version             11.66
 revision            0
 categories          www
 license             Apache-2
@@ -15,9 +15,9 @@ platforms           darwin
 homepage            http://mod-qos.sourceforge.net/index.html
 master_sites        sourceforge:project/mod-qos/
 
-checksums           rmd160  b3ee6b81c0c7c353acbb47be18210e2f16b982fa \
-                    sha256  4038b0ef393fd58270e5670d6e3d2fdd438ca73d603babb6bf49938aa803d6a0 \
-                    size    1244994
+checksums           rmd160  1e8c75f16c0e1369e619251a1aed89b2642d5f19 \
+                    sha256  4ad65fc568d4a92ddb6fc2230587a36749a035267dc8b9ebb145faaae5b5eaa4 \
+                    size    1247819
 
 depends_build       port:autoconf \
                     port:automake

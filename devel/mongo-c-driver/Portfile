@@ -4,10 +4,10 @@ PortSystem          1.0
 PortGroup           cmake 1.1
 PortGroup           github 1.0
 
-github.setup        mongodb mongo-c-driver 1.15.1
-checksums           rmd160  568f30d4b906e38f7d8d1f22ba0289577b9ace12 \
-                    sha256  4ee47c146ff0059d15ab547a0c2a87f7113f063e1c625e51f8c5174853b07765 \
-                    size    6699867
+github.setup        mongodb mongo-c-driver 1.16.2
+checksums           rmd160  9ecb0253e9d5c2bd0dc04a5eb74b23662cd5fe83 \
+                    sha256  0a722180e5b5c86c415b9256d753b2d5552901dc5d95c9f022072c3cd336887e \
+                    size    6888287
 
 categories          devel
 platforms           darwin
@@ -23,7 +23,7 @@ configure.args-append \
                     -DENABLE_UNINSTALL=OFF
 
 if {${subport} eq ${name}} {
-    revision        1
+    revision        0
 
     categories-append \
                     databases
@@ -44,6 +44,9 @@ if {${subport} eq ${name}} {
                     port:libbson \
                     port:snappy \
                     port:zlib
+
+    patchfiles-append \
+                    overlinking.patch
 
     configure.args-append \
                     -DENABLE_BSON=SYSTEM \

@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                cvs-fast-export
-version             1.45
+version             1.53
 categories          devel
 license             GPL-2
 platforms           darwin
@@ -24,9 +24,9 @@ long_description    This program analyzes a collection of RCS files in a CVS \
 homepage            http://www.catb.org/~esr/cvs-fast-export/
 master_sites        ${homepage}
 
-checksums           rmd160  03278304aa7f3add2544e6418855d99031ca0ac3 \
-                    sha256  9fb094899c8987d820e4827d5aa263dbecaf66f07c40bb9c68feb10bae79fda6 \
-                    size    517917
+checksums           rmd160  8ebf7a9cf6db8a857f511fa9f9a252bbb3c4668a \
+                    sha256  4bc759cebe3c058553bfebff7636c8da97d25981807736c41595a5b83052ed07 \
+                    size    472991
 
 depends_build       port:flex \
                     port:bison \
@@ -37,15 +37,17 @@ depends_build       port:flex \
 # these are build dependencies only (used to generate files)
 license_noconflict  bison openssl
 
-patchfiles          patch-Makefile.diff
-
-post-patch {
-    reinplace "s|@@PREFIX@@|${prefix}|g"        ${worksrcpath}/Makefile
-    reinplace "s|@@FLEX@@|${prefix}/bin/flex|g" ${worksrcpath}/Makefile
-    reinplace "s|@@CC@@|${configure.cc}|g"      ${worksrcpath}/Makefile
-    reinplace "s|@@A2X@@|${prefix}/bin/a2x|g"   ${worksrcpath}/Makefile
-}
-
 use_configure       no
 
 build.target        cvs-fast-export
+
+build.post_args-append \
+                    prefix=${prefix} \
+                    CC=${configure.cc} \
+                    FLEX=${prefix}/bin/flex \
+                    A2X=${prefix}/bin/a2x
+destroot.post_args-append \
+                    prefix=${prefix} \
+                    CC=${configure.cc} \
+                    FLEX=${prefix}/bin/flex \
+                    A2X=${prefix}/bin/a2x

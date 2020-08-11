@@ -2,11 +2,10 @@
 
 PortSystem          1.0
 PortGroup           qmake5 1.0
-PortGroup           cxx11  1.1
 
 name                qt5-qtcreator
 
-version             4.9.2
+version             4.12.1
 revision            0
 categories          devel aqua
 platforms           darwin
@@ -21,12 +20,18 @@ homepage            http://qt-project.org/wiki/Category:Tools::QtCreator
 distname            qt-creator-opensource-src-${version}
 master_sites        https://download.qt.io/official_releases/qtcreator/[join [lrange [split ${version} .] 0 1] .]/${version}/
 
-checksums           rmd160  b1e8d068d7ef1e9b8b630c84c1d9d9dd54f2fcc2 \
-                    sha256  914844191fc3a2fd58792cfd54aeffb80f0855bcbf6431b37ee3898879e6ab4a \
-                    size    32432457
+checksums           rmd160  c2a27b4323e331fdebde23a88458f5325b50e16f \
+                    sha256  4022738235c549808ef807bfdb8e96da6c44ce8c408c03be4a91b0395997f766 \
+                    size    43456155
 
-pre-fetch {
-    if {${os.platform} eq "darwin" && ${os.major} < 16} {
+compiler.cxx_standard \
+                    2014
+
+# see README.md
+qt5.min_version     5.11
+if {${os.platform} eq "darwin" && ${os.major} < 16} {
+    known_fail      yes
+    pre-fetch {
         # last version that runs on Lion is 3.6.1
         # see https://trac.macports.org/ticket/58504
         ui_error "${subport} requires OS X 10.12 or later"
@@ -52,9 +57,9 @@ if { ${subport} eq ${name}  } {
     depends_lib-append     port:qbs
     configure.args-append  "QBS_INSTALL_DIR=${prefix}"
 
-    depends_lib-append     port:llvm-8.0 \
-                           port:clang-8.0
-    configure.args-append  "LLVM_INSTALL_DIR=${prefix}/libexec/llvm-8.0"
+    depends_lib-append     port:llvm-9.0 \
+                           port:clang-9.0
+    configure.args-append  "LLVM_INSTALL_DIR=${prefix}/libexec/llvm-9.0"
 
     depends_build-append port:python27
     set python_framework ${frameworks_dir}/Python.framework/Versions/2.7
@@ -90,26 +95,9 @@ if { ${subport} eq ${name}  } {
         #
         # modify for our purposes
         #
-        # for unknown reason, using system instead of exec results in "QWidget: Cannot create a QWidget without QApplication"
-        #
-        # surround sdktool with catch since, as of 4.2.0, sdktool causes Tcl to register an error when asked to create a file
-        #
-        set sdktool ${destroot}${qt_apps_dir}/Qt\ Creator.app/Contents/Resources/sdktool
+        set sdktool ${destroot}${qt_apps_dir}/Qt\ Creator.app/Contents/Resources/libexec/sdktool
 
-        if { [catch {
-            exec                                             \
-                "${sdktool}"                                 \
-                addQt                                        \
-                --id    qt.5.macports                        \
-                --name  "Qt %{Qt:Version} from MacPorts"     \
-                --qmake "${qt_qmake_cmd}"                    \
-                --type  Qt4ProjectManager.QtVersion.Desktop
-        } msg] } {
-            if { ![file exists ${destroot}${qt_apps_dir}/Qt\ Creator.app/Contents/Resources/QtProject/qtcreator/qtversion.xml] } {
-                ui_error ${msg}
-                return -code error "sdktool failure"
-            }
-        }
+        system "\"${sdktool}\" addQt --id qt.5.macports --name \"Qt %{Qt:Version} from MacPorts\" --qmake \"${qt_qmake_cmd}\" --type Qt4ProjectManager.QtVersion.Desktop"
 
         if { [variant_isset universal] } {
             foreach arch ${universal_archs} {
@@ -121,24 +109,7 @@ if { ${subport} eq ${name}  } {
                     set qt_qmake_spec_arch ${qt_qmake_spec_64}
                 }
 
-                if { [catch {
-                    exec                                                                   \
-                        "${sdktool}"                                                       \
-                        addKit                                                             \
-                        --id             qt.5.macports_${arch}_kit                         \
-                        --name           "Desktop Qt %{Qt:Version} from MacPorts ${arch}"  \
-                        --Ctoolchain     x86-macos-generic-mach_o-${toolchain_bit}bit      \
-                        --Cxxtoolchain   x86-macos-generic-mach_o-${toolchain_bit}bit      \
-                        --qt             qt.5.macports                                     \
-                        --debuggerengine 256                                               \
-                        --devicetype Desktop                                               \
-                        --mkspec     ${qt_qmake_spec_arch}
-                } msg] } {
-                    if { ![file exists ${destroot}${qt_apps_dir}/Qt\ Creator.app/Contents/Resources/QtProject/qtcreator/profiles.xml] } {
-                        ui_error ${msg}
-                        return -code error "sdktool failure"
-                    }
-                }
+                system "\"${sdktool}\" addKit --id qt.5.macports_${arch}_kit --name \"Desktop Qt %{Qt:Version} from MacPorts ${arch}\" --Ctoolchain x86-macos-generic-mach_o-${toolchain_bit}bit --Cxxtoolchain x86-macos-generic-mach_o-${toolchain_bit}bit --qt qt.5.macports --debuggerengine 256 --devicetype Desktop --mkspec ${qt_qmake_spec_arch}"
             }
         } else {
             if { ${build_arch} eq "i386" } {
@@ -147,25 +118,13 @@ if { ${subport} eq ${name}  } {
                 set toolchain_bit 64
             }
 
-            if { [catch {
-                exec                                                                         \
-                    "${sdktool}"                                                             \
-                    addKit                                                                   \
-                    --id             qt.5.macports_${build_arch}_kit                         \
-                    --name           "Desktop Qt %{Qt:Version} from MacPorts ${build_arch}"  \
-                    --Ctoolchain     x86-macos-generic-mach_o-${toolchain_bit}bit            \
-                    --Cxxtoolchain   x86-macos-generic-mach_o-${toolchain_bit}bit            \
-                    --qt             qt.5.macports                                           \
-                    --debuggerengine 256                                                     \
-                    --devicetype     Desktop                                                 \
-                    --mkspec         ${qt_qmake_spec}
-            } msg] } {
-                if { ![file exists ${destroot}${qt_apps_dir}/Qt\ Creator.app/Contents/Resources/QtProject/qtcreator/profiles.xml] } {
-                    ui_error ${msg}
-                    return -code error "sdktool failure"
-                }
-            }
+            system "\"${sdktool}\" addKit --id qt.5.macports_${build_arch}_kit --name \"Desktop Qt %{Qt:Version} from MacPorts ${build_arch}\" --Ctoolchain x86-macos-generic-mach_o-${toolchain_bit}bit --Cxxtoolchain x86-macos-generic-mach_o-${toolchain_bit}bit --qt qt.5.macports --debuggerengine 256 --devicetype Desktop --mkspec ${qt_qmake_spec}"
         }
+
+        # as of version 4.11, sdktool seems to install the configuation files in a place that the application cannot find
+        move \
+            ${destroot}${qt_apps_dir}/Qt\ Creator.app/Contents/Resources/libexec/QtProject \
+            ${destroot}${qt_apps_dir}/Qt\ Creator.app/Contents/Resources/
 
         # N.B. that at some point in the future, QtCreator.ini may need to be created
         #    to include more search locations for documentation and examples
@@ -188,7 +147,7 @@ subport ${name}-docs {
 
         foreach dir "qtcreator qtcreator-dev" {
             xinstall -m 0644 "${worksrcpath}/bin/Qt Creator.app/Contents/Resources/doc/${dir}.qch" ${destroot}${qt_docs_dir}
-            copy ${worksrcpath}/doc/${dir} ${destroot}${qt_docs_dir}
+            copy ${worksrcpath}/doc/html/${dir} ${destroot}${qt_docs_dir}
         }
     }
 }

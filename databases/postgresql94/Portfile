@@ -7,8 +7,8 @@ PortGroup muniversal 1.0
 
 #remember to update the -doc and -server as well
 name			postgresql94
-version			9.4.24
-revision        1
+version			9.4.26
+revision        0
 
 categories		databases
 platforms		darwin
@@ -26,9 +26,9 @@ master_sites		http://ftp3.de.postgresql.org/pub/Mirrors/ftp.postgresql.org/sourc
 			postgresql:source/v${version}/
 distname		postgresql-${version}
 
-checksums           rmd160  ef2761b5c01444d0c5ebb0b6c15a97fba02aa9fd \
-                    sha256  52253d67dd46a7463a9d7c5e82bf959931fa4c11ec56293150210fa82a0f9429 \
-                    size    16842941
+checksums           rmd160  5e5e98408ff58e48ededa425fbcf6e0bb76795f8 \
+                    sha256  f5c014fc4a5c94e8cf11314cbadcade4d84213cfcc82081c9123e1b8847a20b9 \
+                    size    16871195
 
 use_bzip2		yes
 

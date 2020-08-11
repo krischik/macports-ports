@@ -11,9 +11,9 @@ PortGroup           xcodeversion                  1.0
 PortGroup           legacysupport                 1.0
 
 # Please also check if Gate needs a revbump after root6 update
-github.setup        root-project root 6-18-04 v
+github.setup        root-project root 6-20-06 v
 version             [string map {- .} ${github.version}]
-revision            2
+revision            0
 livecheck.version   ${github.version}
 
 # Use git commit
@@ -32,9 +32,9 @@ livecheck.url       ${github.homepage}/tags
 # Also, skip anything with trailing rcX etc.
 livecheck.regex     {v(6[-.]\d[02468][-.]\d{2}).tar.gz}
 
-checksums           rmd160  2af3a2f7c1f92ff7fe135bd32ee9ebb43b023504 \
-                    sha256  e9c135a83a6090576ff67f2765f9d10f9697416637fb7486a80294cf09235884 \
-                    size    165952672
+checksums           rmd160  07a402a6a0a440fdab717c9464c92ab8c88866b9 \
+                    sha256  ae49258e456747d5125f33b1f2894e74372cd3c5a98c200c474899b8d068e70c \
+                    size    168231776
 
 name                root${version_major}
 categories          science
@@ -52,7 +52,7 @@ platforms           darwin
 dist_subdir         root/${version}_1
 
 # Force a compatible compiler
-set gcc_ver          9
+set gcc_ver          10
 configure.fc         ${prefix}/bin/gfortran-mp-${gcc_ver}
 configure.f77        ${prefix}/bin/gfortran-mp-${gcc_ver}
 configure.f90        ${prefix}/bin/gfortran-mp-${gcc_ver}
@@ -61,7 +61,7 @@ depends_build-append port:gcc${gcc_ver}
 compiler.blacklist-append *gcc* {clang < 920} {macports-clang-3.[0-9]} {macports-clang-[4-6].0}
 
 # If using Macports clang, make sure its added as a runtime dep as well as cling will need it.
-foreach clang_v { 7.0 8.0 9.0 } {
+foreach clang_v { 7.0 8.0 9.0 10 } {
     if { ${configure.compiler} eq "macports-clang-${clang_v}"} {
         depends_run-append port:clang-${clang_v}
     }
@@ -101,9 +101,7 @@ select.file         ${filespath}/${name}
 # port specific location
 set install_prefix ${prefix}/libexec/root${version_major}
 
-patch.pre_args      -p1
-
-#                -DCMAKE_Fortran_COMPILER=${prefix}/bin/gfortran-mp-${configure.f77} \     
+patch.pre_args      -p1   
 
 configure.args-append \
                     -Dgnuinstall=ON \
@@ -185,28 +183,8 @@ if        { ${os.major} >= 18 } {
     compiler.blacklist-append macports-clang-5.0
 } else {
     # force use of MP clang 5.0
-    compiler.blacklist-append clang macports-clang-8.0 macports-clang-7.0
+    compiler.blacklist-append clang {macports-clang-[7-9].0}
     compiler.cxx_standard 2011
-}
-
-# Setup the C++ runtime on OSX10.8 (Darwin 12) and older
-if { ${os.major} <= 12 && ${configure.cxx_stdlib} ne "libc++" } {
-    # Use macports stdc++ on older systems
-    if       { ${configure.compiler} eq "macports-clang-5.0" } {
-        require_active_variants clang-5.0 libstdcxx
-    } elseif { ${configure.compiler} eq "macports-clang-6.0" } {
-        require_active_variants clang-6.0 libstdcxx
-    } elseif { ${configure.compiler} eq "macports-clang-7.0" } {
-        require_active_variants clang-7.0 libstdcxx
-    } elseif { ${configure.compiler} eq "macports-clang-8.0" } {
-        require_active_variants clang-8.0 libstdcxx
-    }
-    default_variants-append +libstdcxx
-    pre-configure {
-        foreach f [ exec find ${worksrcpath} -name "*.cmake" -or -name "*.in" -or -name "Makefile.*" ] {
-            reinplace "s|stdlib=libc++|stdlib=${configure.cxx_stdlib}|g" $f
-        }
-    }
 }
 
 # Configure the C++ runtime to use
@@ -216,9 +194,13 @@ if { ${configure.cxx_stdlib} ne "libc++" } {
 
 # Configure the graphics backend. cocoa on OSX10.8 and newer. X11 otherwise
 if { ${os.major} >= 12 } {
-    default_variants-append +cocoa
+    if {![variant_isset x11]} {
+        default_variants-append +cocoa
+    }
 } else {
-    default_variants-append +x11
+    if {![variant_isset cocoa]} {
+        default_variants-append +x11
+    }
 }
 
 # Enable xrootd support by default
@@ -229,6 +211,7 @@ if { ${os.major} >= 12 } {
 # No longer compiles on OSX10.6, due to update to internal LLVM version.
 # Disable build on this platform.
 if { ${os.major} <= 10 } {
+    known_fail yes
     pre-fetch {
         ui_error "${name} is not supported on this OSX release."
         return -code error "Unsupported OSX version"

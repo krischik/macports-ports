@@ -4,8 +4,8 @@ PortSystem              1.0
 PortGroup               active_variants 1.1
 
 name                    mail-server
-version                 1.0
-revision                2
+version                 1.2
+revision                0
 categories              mail net
 platforms               darwin
 supported_archs         noarch
@@ -14,26 +14,25 @@ license                 GPL-3
 distfiles
 
 description             Mail server configuration
-long_description ${description} \
-    Mail server working configuration that provides a basic, working, \
-    easily modifiable mail server. The configuration is built using \
-    postfix for the MTA, dovecot for the MDA, solr for fast search, \
-    rspamd for a milter, and clamav for email virus scans. The \
-    configuration includes a surrogate TLS certificate, DKIM, and \
-    Apple Push Notification Service (APNS) capability for iOS devices.
+
+long_description        Mail server working configuration that provides a basic, working,\
+                        easily modifiable mail server. The configuration is built using\
+                        postfix for the MTA, dovecot for the MDA, solr for fast search,\
+                        rspamd for a milter, and clamav for email virus scans. The\
+                        configuration includes a surrogate TLS certificate, DKIM, and\
+                        Apple Push Notification Service (APNS) capability for iOS devices.
 
 homepage                https://www.postfix.org/
 
 set postfix_required_variants \
                         [lsort {dovecot_sasl pcre smtputf8 tls}]
-set dovecot2_required_variants \
-                        [lsort {gssapi solr}]
+set dovecot_required_variants \
+                        [lsort {solr}]
 
 depends_lib-append      port:dcc \
-                        port:dovecot2 \
-                        port:dovecot2-sieve \
-                        port:logrotate \
-                        port:openssl \
+                        port:dovecot \
+                        port:dovecot-sieve \
+                        path:lib/libssl.dylib:openssl \
                         port:postfix \
                         port:rspamd \
                         port:sf-pwgen
@@ -47,9 +46,24 @@ depends_lib-append      port:apache-solr8 \
 
 depends_run-append      port:clamav-server
 
-variant initialize \
-    description {Initialize all configuration files. Existing
-        configurations files are not overwritten by default.} {}
+variant initialize_always \
+    description {Always initialize all configuration files. Intended\
+        for development and troubleshooting only. Working deployments\
+        must disable this variant to prevent configuration files\
+        being overwritten at the next upgrade. Existing configuration\
+        files are not overwritten by default.} {
+    ui_warn \
+        "
+\tAll configuration files will be initialized because
+\tthe variant +initialize_always is set. Please disable
+\tthis variant for working deployments.
+"
+}
+
+variant logrotate \
+    description {Use mail-server logrotate configuration.} {
+    depends_lib-append      port:logrotate
+}
 
 use_configure           no
 
@@ -64,7 +78,7 @@ pre-build {
 
     if { [catch {set result [registry_active postfix]}]
         || [lindex [lindex ${result} 0] 3] \
-            != "+[join ${postfix_required_variants} +]" } {
+            ne "+[join ${postfix_required_variants} +]" } {
         append required_variants_message "\
 Postfix not installed with required variants. Please install:
 
@@ -73,22 +87,22 @@ Postfix not installed with required variants. Please install:
 "
         set required_variants_flag false
     }
-    if { [catch {set result [registry_active dovecot2]}]
+    if { [catch {set result [registry_active dovecot]}]
         || [lindex [lindex ${result} 0] 3] \
-            != "+[join ${dovecot2_required_variants} +]" } {
+            ne "+[join ${dovecot_required_variants} +]" } {
         append required_variants_message "\
 Dovecot not installed with required variants. Please install:
 
-    sudo port -pN install dovecot2 +[join ${dovecot2_required_variants} +] \[+apns\]
+    sudo port -pN install dovecot +[join ${dovecot_required_variants} +] \[+apns\]
 
 "
         set required_variants_flag false
     }
-    if {${required_variants_flag} != true} {
+    if {${required_variants_flag} ne true} {
         ui_error ${required_variants_message}
         # one of these will exit with error if the ports are not installed at all
         registry_active postfix
-        registry_active dovecot2
+        registry_active dovecot
     }
 }
 
@@ -266,22 +280,24 @@ destroot {
     }
 
     # logrotate
-    foreach d {
-        logrotate.d
-        } {
-        xinstall -m 0755 -d ${destroot}${prefix}/etc/${d}.macports
-        foreach f [glob -nocomplain ${filespath}/prefix/etc/${d}/*] {
-            if {[file isfile ${f}]} {
-                xinstall -m 0644 ${f} \
-                    ${destroot}${prefix}/etc/${d}.macports/[file tail ${f}]
+    if { [variant_isset "logrotate"] } {
+        foreach d {
+            logrotate.d
+            } {
+            xinstall -m 0755 -d ${destroot}${prefix}/etc/${d}.macports
+            foreach f [glob -nocomplain ${filespath}/prefix/etc/${d}/*] {
+                if {[file isfile ${f}]} {
+                    xinstall -m 0644 ${f} \
+                        ${destroot}${prefix}/etc/${d}.macports/[file tail ${f}]
+                }
             }
         }
-    }
-    foreach f {
-        logrotate.conf
-        } {
-        xinstall -m 0644 ${filespath}/prefix/etc/${f} \
-            ${destroot}${prefix}/etc/${f}.macports
+        foreach f {
+            logrotate.conf
+            } {
+            xinstall -m 0644 ${filespath}/prefix/etc/${f} \
+                ${destroot}${prefix}/etc/${f}.macports
+        }
     }
 
     # TLS certificate surrogate
@@ -298,7 +314,7 @@ destroot {
     xinstall -m 0644 \
         ${filespath}/prefix/etc/certificates/ca/intermediate/openssl_intermediate.cnf \
         ${destroot}${tls_ca_dir}/intermediate
-    if { [variant_isset "initialize"]
+    if { [variant_isset "initialize_always"]
          && [file exists ${tls_ca_dir}]
         } {
         delete ${tls_ca_dir}.previous
@@ -309,6 +325,14 @@ destroot {
 }
 
 destroot.keepdirs ${destroot}${prefix}/var/log/mail
+
+proc plutil_startup {plcmds label} {
+    global prefix startupitem.location
+    foreach cmd ${plcmds} {
+        system -W ${prefix}/etc/${startupitem.location}/${label} \
+            "/usr/bin/plutil ${cmd} ${label}.plist"
+    }
+}
 
 # Network configuration
 # hard-coded examples
@@ -325,12 +349,41 @@ set DOMAINTLD           [string toupper ${domaintld}]
 set relayhost           mymailrelay.tld
 
 post-activate {
+    # modify the launch daemons
+    plutil_startup [list \
+        "-remove KeepAlive" \
+        "-insert RunAtLoad -bool YES" \
+        ] \
+        org.macports.${name}
+    # Cf. port logrotate's ${prefix}/share/logrotate/org.macports.logrotate.plist.example
+    if { [variant_isset "logrotate"] } {
+        plutil_startup [list \
+            "-remove KeepAlive" \
+            "-insert RunAtLoad -bool YES" \
+            "-replace ProgramArguments \
+                -xml '<array> \
+                        <string>${prefix}/sbin/logrotate</string> \
+                        <string>${prefix}/etc/logrotate.conf</string> \
+                      </array>'" \
+            "-insert StartCalendarInterval \
+                -xml '<dict> \
+                        <key>Hour</key> \
+                        <integer>5</integer> \
+                        <key>Minute</key> \
+                        <integer>30</integer> \
+                      </dict>'" \
+            ] \
+            org.macports.${name}.logrotate
+    }
+
     # use network settings for installed example configuration
     set fullhost [exec /bin/hostname -f]
-    set host [lindex [split ${fullhost} .] 0]
-    set domaintld [join [lrange [split ${fullhost} .] end-1 end] .]
-    set domain [lindex [split ${domaintld} .] 0]
-    set tld [lindex [split ${domaintld} .] end]
+    if { [llength [split ${fullhost} .]] >= 3 } {
+        set host [lindex [split ${fullhost} .] 0]
+        set domaintld [join [lrange [split ${fullhost} .] 1 end] .]
+        set domain [lindex [split ${domaintld} .] 0]
+        set tld [lindex [split ${domaintld} .] end]
+    }
     set HOST            [string toupper ${host}]
     set DOMAIN          [string toupper ${domain}]
     set TLD             [string toupper ${tld}]
@@ -349,7 +402,7 @@ post-activate {
 "
 
     proc install_initial_configuration {f_or_d} {
-        if { [variant_isset "initialize"]
+        if { [variant_isset "initialize_always"]
              && [file exists ${f_or_d}]
             } {
             delete ${f_or_d}.previous
@@ -357,7 +410,7 @@ post-activate {
                 ${f_or_d} \
                 ${f_or_d}.previous
         }
-        if { [variant_isset "initialize"]
+        if { [variant_isset "initialize_always"]
              || ![file exists ${f_or_d}]
             } {
             if { [file isfile ${f_or_d}.macports] } {
@@ -400,7 +453,7 @@ post-activate {
     xinstall -m 0777 -g mail -d /private/var/mail/${tld}.${domain}.mail/attachments/
 
     # solr configuration
-    if { [variant_isset "initialize"] } {
+    if { [variant_isset "initialize_always"] } {
         system "sudo -u solr -g solr sh <<SOLR_DELETE_DOVECOT
             solr8 stop -p 8983 2>/dev/null || true
             solr8 start -p 8983 2>/dev/null || true
@@ -501,16 +554,13 @@ SOLR_DELETE_DOVECOT
     }
 
     # logrotate configuration
-    foreach f_or_d {
-        logrotate.conf
-        logrotate.d
-        } {
-        install_initial_configuration ${prefix}/etc/${f_or_d}
-    }
-    if { ![file exists /Library/LaunchDaemons/org.macports.logrotate.plist] } {
-        xinstall -m 0644 \
-            ${prefix}/share/logrotate/org.macports.logrotate.plist.example \
-            /Library/LaunchDaemons/org.macports.logrotate.plist  
+    if { [variant_isset "logrotate"] } {
+        foreach f_or_d {
+            logrotate.conf
+            logrotate.d
+            } {
+            install_initial_configuration ${prefix}/etc/${f_or_d}
+        }
     }
 
     # TLS certificate surrogate -- certificate authority chain of trust
@@ -672,14 +722,19 @@ TLS_CERTIFICATE_SURROGATE
         ${certificates_dir}/${fullhost}.${certificate_sha1}.chain.pem
 
     # configure all template files with local settings
-    foreach d_or_f {
-        postfix
-        dovecot
-        rspamd
-        redis.conf
-        logrotate.conf
-        logrotate.d
-        } {
+    set d_or_f_templates { \
+        postfix \
+        dovecot \
+        rspamd \
+        redis.conf \
+    }
+    if { [variant_isset "logrotate"] } {
+        append d_or_f_templates { \
+            logrotate.conf \
+            logrotate.d \
+        }
+    }
+    foreach d_or_f ${d_or_f_templates} {
         fs-traverse f ${prefix}/etc/${d_or_f} {
             if { [file isfile ${f}]
                  && ![string match ".macports" ${f}]
@@ -716,7 +771,7 @@ TLS_CERTIFICATE_SURROGATE
 
     # dovecot sieve functions
     # dovecot must be built with `--with-lucene` for sievec to work here
-    if { ![catch {set result [registry_active dovecot2]}]
+    if { ![catch {set result [registry_active dovecot]}]
          && [string match "*solr*" [lindex [lindex ${result} 0] 3]] } {
         foreach d {
             sieve
@@ -730,7 +785,7 @@ TLS_CERTIFICATE_SURROGATE
     } else {
         ui_msg "dovecot plugin 'fts_lucene' not installed. Please install:
 
-    sudo port -pN install dovecot2 +[join ${dovecot2_required_variants} +]
+    sudo port -pN install dovecot +[join ${dovecot_required_variants} +]
 
 and rerun `sudo port install ${name}`. Ensure that the sieve scripts
 in ${prefix}/etc/dovecot/sieve*/*.sieve are compiled with sievec.
@@ -738,18 +793,18 @@ in ${prefix}/etc/dovecot/sieve*/*.sieve are compiled with sievec.
     }
 
     # PAM authentication
-    if ![file exists /etc/pam.d/smtp] {
+    if { ![file exists /etc/pam.d/smtp] } {
         xinstall -m 0644 ${prefix}/etc/postfix/etc/pam.d/smtp /etc/pam.d/
     }
-    if ![file exists /etc/pam.d/imap] {
+    if { ![file exists /etc/pam.d/imap] } {
         xinstall -m 0644 ${prefix}/etc/dovecot/etc/pam.d/imap /etc/pam.d/
     }
 
     # TLS PFS
-    if ![file exists ${prefix}/var/lib/postfix/dh2048.pem] {
+    if { ![file exists ${prefix}/var/lib/postfix/dh2048.pem] } {
         system -W ${prefix}/var/lib/postfix "sudo -u _postfix openssl dhparam -out dh2048.pem 2048"
     }
-    if ![file exists ${prefix}/etc/dovecot/dh2048.pem] {
+    if { ![file exists ${prefix}/etc/dovecot/dh2048.pem] } {
         # create a shorter, faster DH parameter file for the default installation
         system -W ${prefix}/etc/dovecot "openssl dhparam -out dh2048.pem 2048"
     }
@@ -763,53 +818,82 @@ in ${prefix}/etc/dovecot/sieve*/*.sieve are compiled with sievec.
         _rspamd
         } {
         system "dseditgroup -o edit -a ${u} -t user mail"
-    }    
+    }
 }
 
-startupitem.create     yes
+startupitem.create      yes
 
-startupitem.start      "port load clamav-server
+if { [variant_isset "logrotate"] } {
+    startupitems \
+            name        ${name} \
+            start       "port load clamav-server
 \tport load apache-solr8
 \tport load redis
 \tport load dcc
 \tport load postfix
-\tport load dovecot2
-\tport load rspamd"
-
-startupitem.stop      "port unload apache-solr8
+\tport load dovecot
+\tport load rspamd" \
+            stop        "port unload apache-solr8
 \tport unload dcc
 \tport unload postfix
-\tport unload dovecot2
-\tport unload rspamd"
-
-startupitem.restart      "port reload apache-solr8
+\tport unload dovecot
+\tport unload rspamd" \
+            restart     "port reload apache-solr8
 \tport reload redis
 \tport reload dcc
 \tport unload postfix ; \\
 \tsleep 1 ; \\
 \tport load postfix
-\tport unload dovecot2 ; \\
+\tport unload dovecot ; \\
 \tsleep 1 ; \\
-\tport load dovecot2
-\tport reload rspamd"
+\tport load dovecot
+\tport reload rspamd" \
+            name        ${name}.logrotate \
+            executable  ${prefix}/sbin/logrotate
+} else {
+    startupitem.start   "port load clamav-server
+\tport load apache-solr8
+\tport load redis
+\tport load dcc
+\tport load postfix
+\tport load dovecot
+\tport load rspamd"
 
-notes "A mail server is a complex, interdependent set of tools that must
+    startupitem.stop    "port unload apache-solr8
+\tport unload dcc
+\tport unload postfix
+\tport unload dovecot
+\tport unload rspamd"
+
+    startupitem.restart "port reload apache-solr8
+\tport reload redis
+\tport reload dcc
+\tport unload postfix ; \\
+\tsleep 1 ; \\
+\tport load postfix
+\tport unload dovecot ; \\
+\tsleep 1 ; \\
+\tport load dovecot
+\tport reload rspamd"
+}
+
+notes "A mail server is a complex, interdependent set of tools that must\
 all be configured correctly to provide secure, reliable email.
 
-Users must reconfigure this installation for their own system, network,
-and security model specifics by editing all necessary files and checking
+Users must reconfigure this installation for their own system, network,\
+and security model specifics by editing all necessary files and checking\
 file permissions. A subset of these settings are visible in the files:
 
         port contents mail-server
         port file mail-server
 
-Full deployment also requires a working DNS configuration on both the LAN
-and the internet, including SPF and DKIM records, trusted TLS certificates,
+Full deployment also requires a working DNS configuration on both the LAN\
+and the internet, including SPF and DKIM records, trusted TLS certificates,\
 port forwarding, possibly a mail replay, and more.
 
 Postfix and dovecot must be installed with these variants:
         sudo port -pN install postfix +[join ${postfix_required_variants} +]
-        sudo port -pN install dovecot2 +[join ${dovecot2_required_variants} +]
+        sudo port -pN install dovecot +[join ${dovecot_required_variants} +]
 
 These are the locations and network settings for the default configuration:
 
@@ -841,7 +925,7 @@ These are the locations and network settings for the default configuration:
     Spam/Ham training (default behavior):
         Move/Copy email to the folders Spam_train or Notspam_train.
 
-The configuration also includes a surrogate TLS certificate and DKIM settings
+The configuration also includes a surrogate TLS certificate and DKIM settings\
 that must be changed before deployment.
 
     TLS:
@@ -850,15 +934,17 @@ that must be changed before deployment.
     DKIM:
         ${prefix}/var/lib/rspamd/dkim
 
-The ports dns-server and logrotate provide necessary DNS service on the LAN
-and log rotation capabilities:
+The ports dns-server provide necessary DNS service on the LAN; variant\
++logrotate provides log rotation capabilities:
 
-        sudo port install dns-server logrotate
+        sudo port install dns-server
+        sudo port install mail-server +logrotate
 
-This port assume indepedent installation and management of DNS and
-log rotation; mail-server includes example logrotate configuration files.
+This port assume indepedent installation and management of DNS and\
+log rotation; mail-server includes example logrotate configuration files\
+and a logroate launchdaemon.
 
-The port's launch daemon controls launching for each of the dependendent
+The port's launch daemon controls launching for each of the dependendent\
 services. These may be controlled independently, e.g.
 
         sudo port load clamav-server
@@ -866,7 +952,7 @@ services. These may be controlled independently, e.g.
         sudo port load redis
         sudo port load dcc
         sudo port load postfix
-        sudo port load dovecot2
+        sudo port load dovecot
         sudo port load rspamd
 
 and if installed independently,
@@ -882,11 +968,21 @@ and if installed independently,
         * _The Book of Postfix_, by Patrick Koetter and Ralf Hildebrandt
 
     Known issues:
-        * The Postfix service does not reliably start after reboot,
-          presumably due to an issue with launchd. A workaround
+        * The Postfix service does not reliably start after reboot,\
+          presumably due to an issue with launchd. A workaround\
           after rebooting is to issue the commands:
 
-          sudo port unload postfix ; sleep 5 ; sudo port load postfix
-"
+          sudo port unload postfix ; sleep 5 ; sudo port load postfix"
+
+if { [variant_isset "initialize_always"] } {
+    if {[exists notes]} {
+        # leave a blank line after the existing notes
+        notes-append ""
+    }
+    notes-append \
+        "The variant +initialize_always is set, which initializes\
+        all configuration files. Please disable this variant for\
+        working deployments."
+}
 
 livecheck.type         none

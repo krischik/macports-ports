@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Future 0.41 ../../authors/id/P/PE/PEVANS
+perl5.setup         Future 0.45 ../../authors/id/P/PE/PEVANS
 
 platforms           darwin
 maintainers         {@chrstphrchvz gmx.us:chrischavez} openmaintainer
@@ -16,9 +16,9 @@ description         Future - represent an operation awaiting completion
 
 long_description    ${description}
 
-checksums           rmd160  18de5d20edb65da4ca0bcfb1bb1157d727619b08 \
-                    sha256  f8f769943d33392d6311e56fa0a1e86619ad560c2fc300362125e8ed8172ba3f \
-                    size    91675
+checksums           rmd160  44d5885131a0e66abac48c56bb194b5d4805a79a \
+                    sha256  ce8cab6bb940434ffbf2465771bf6ed55df36ddca5bebc1024e7d4d07802a6c0 \
+                    size    95758
 
 if {${perl5.major} != ""} {
     depends_build-append \

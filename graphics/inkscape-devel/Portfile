@@ -9,11 +9,10 @@ cmake.generator     Ninja
 name                inkscape-devel
 conflicts           inkscape inkscape-gtk3-devel
 epoch               1
-set git_commit      39435a2e
-set git_date        20190925
-version             0.92.4-${git_date}
-revision            1
-license             GPL-2 LGPL-2.1
+set git_commit      6c0c36ef
+set git_date        20200515
+version             0.92.5-${git_date}
+license             GPL-3+
 maintainers         {devans @dbevans}
 categories          graphics gnome
 platforms           darwin
@@ -28,14 +27,18 @@ long_description    Inkscape is an multi-platform, Open-Source Vector Graphics E
 homepage            http://www.inkscape.org/
 
 fetch.type          git
-git.url             -b 0.92.x --depth 200 https://gitlab.com/inkscape/inkscape.git
+git.url             -b 0.92.x --depth 500 https://gitlab.com/inkscape/inkscape.git
 git.branch          ${git_commit}
 
-set python_major    2
-set python_minor    7
+set python_major    3
+set python_minor    8
 set python_version  ${python_major}${python_minor}
 
+# this port only uses boost headers during build
+# and does not link with any boost libraries
+# no need to rebuild due to boost library ABI changes
 depends_build-append \
+                    port:boost \
                     port:pkgconfig \
                     port:libtool \
                     port:intltool \
@@ -50,7 +53,6 @@ depends_lib-append  port:desktop-file-utils \
                     port:dbus-glib \
                     port:lcms2 \
                     port:poppler \
-                    port:boost \
                     port:ImageMagick \
                     port:libcdr-0.1 \
                     port:libexif \
@@ -62,8 +64,6 @@ depends_lib-append  port:desktop-file-utils \
                     port:python${python_version} \
                     port:py${python_version}-lxml \
                     port:py${python_version}-numpy
-
-patchfiles          patch-poppler-0.82.diff
 
 post-patch {
     reinplace "s|\"python-interpreter\", \"python\"|\"python-interpreter\", \"python${python_major}.${python_minor}\"|g" ${worksrcpath}/src/extension/implementation/script.cpp

@@ -10,7 +10,7 @@ categories          devel
 platforms           darwin
 
 license             LGPL-2.1
-maintainers         {ijackson @JacksonIsaac} openmaintainer
+maintainers         {ijackson @JacksonIsaac} {@i0ntempest me.com:szf1234} openmaintainer
 
 description         A cross-platform software protocol library \
     and tools to communicate with iOS devices natively.
@@ -39,7 +39,7 @@ depends_build-append \
                     port:pkgconfig
 
 depends_lib         port:libplist \
-                    port:openssl \
+                    path:lib/libssl.dylib:openssl \
                     port:libusbmuxd
 
 configure.cmd       ./autogen.sh
@@ -48,16 +48,16 @@ configure.args      --disable-silent-rules \
                     --without-cython
 
 subport libimobiledevice-devel {
-    github.setup    libimobiledevice libimobiledevice 7dbc17f2c763a7b18bc1a867f39918c26bb5e9e5
-    version         20191108
+    github.setup    libimobiledevice libimobiledevice 80eec8b83cca16d7a7c7cf9fc53422505cf31225
+    version         20200520
     revision        0
 
-    checksums       rmd160  0c9b16fdcdedd59a6f36efcd7d30f5e29fa4f739 \
-                    sha256  1c79d810dd194c46bf786d324d133a562e0216b369dcf6bef4d558f81e464cfb \
-                    size    244808
+    checksums       rmd160  f5c4f02839dbc35e9112704d30d7d9504aa0509b \
+                    sha256  c297d107501dbb5798163d2da917f3914b50c2456c399b289cdcd75e0f248837 \
+                    size    255716
 
-    depends_lib-delete port:libusbmuxd
-    depends_lib-append port:libusbmuxd-devel
+    depends_lib-replace port:libusbmuxd port:libusbmuxd-devel   
+    depends_lib-replace port:libplist port:libplist-devel
 
     conflicts       libimobiledevice
 

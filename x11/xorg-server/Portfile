@@ -5,7 +5,7 @@ PortGroup       compiler_blacklist_versions 1.0
 
 name            xorg-server
 conflicts       xorg-server-devel xorg-server-1.18
-version         1.20.5
+version         1.20.8
 revision        0
 categories      x11 devel
 license         X11
@@ -20,28 +20,28 @@ master_sites    https://xorg.freedesktop.org/archive/individual/xserver/
 
 distname        xorg-server-${version}
 
-checksums       rmd160  4b8c60978045bff8974524180e59b070fb1f1dec \
-                sha256  a81d8243f37e75a03d4f8c55f96d0bc25802be6ec45c3bfa5cb614c6d01bac9d \
-                size    6126757
+checksums       rmd160  74f2a5ab7b482d2aded54fd412e9c0d673f270ba \
+                sha256  d17b646bee4ba0fb7850c1cc55b18e3e8513ed5c02bdf38da7e107f84e2d0146 \
+                size    6309640
 
 use_bzip2       yes
 use_parallel_build yes
 
 # Yes, mesa is a *BUILD* dependency
-depends_build \
+depends_build-append \
         port:pkgconfig \
         port:mesa \
         port:xorg-xorgproto \
         port:xorg-xtrans
 
 # This xinit dependency needs to be port: not bin: because we specifically run ${prefix}/bin/startx from bundle-main.c
-depends_run \
+depends_run-append \
         port:xinit \
         port:quartz-wm \
         port:xorg-fonts \
         port:xkeyboard-config
 
-depends_lib \
+depends_lib-append \
         path:lib/pkgconfig/pixman-1.pc:libpixman \
         port:xorg-libxkbfile \
         port:xorg-libXfont \
@@ -74,6 +74,7 @@ configure.env-append \
 
 patchfiles \
         0001-os-connection-Improve-abstraction-for-launchd-secure.patch \
+        0001-xquartz-Add-stub-ddxInputThread.patch \
         0002-randr-Initialize-RandR-even-if-there-are-currently-n.patch \
         0003-glx-Initialize-glx-even-if-there-are-currently-no-sc.patch \
         5000-sdksyms.sh-Use-CPPFLAGS-not-CFLAGS.patch \
@@ -134,6 +135,10 @@ platform macosx {
                 # Xplugin.h is missing on Tiger and incorrect on Leopard
                 configure.cppflags-append -I${filespath}/include
         }
+}
+
+variant xcsecurity description "Enable Security Extensions" {
+    configure.args-append  --enable-xcsecurity
 }
 
 variant docs description "Install extra documentation" {

@@ -5,7 +5,7 @@ PortGroup           github 1.0
 PortGroup           python 1.0
 PortGroup           select 1.0
 
-github.setup        google yapf 0.28.0 v
+github.setup        google yapf 0.30.0 v
 revision            0
 name                py-yapf
 
@@ -18,9 +18,9 @@ maintainers         {reneeotten @reneeotten} openmaintainer
 description         A formatter for Python files
 long_description    YAPF is based off of 'clang-format', developed by Daniel Jasper.
 
-checksums           rmd160  b7b611bbb7ff8a9bc62736a8ee6c3fff24b7cf06 \
-                    sha256  19c73900965b223646b91bb3a091b1b4cf1f868b528ffe69fd6085a0de0df276 \
-                    size    157996
+checksums           rmd160  2c1f9e2dfa6f6479b3c18b084ea20fbedc4ce05b \
+                    sha256  91fd45b4def04a3c5632e9207f523a8b21c29bdd5f2c6af236d827a08155d3c7 \
+                    size    168307
 
 python.versions     27 35 36 37 38
 
@@ -32,7 +32,6 @@ if {${subport} ne ${name}} {
                     port:yapf_select
 
     test.run        yes
-    test.cmd        ${python.bin} setup.py
 
     post-destroot {
         set docdir ${prefix}/share/doc/${subport}

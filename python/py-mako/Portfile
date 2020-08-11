@@ -4,14 +4,15 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-mako
-version             1.1.0
+python.rootname     Mako
+version             1.1.3
 revision            0
 categories-append   www
 platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -33,13 +34,10 @@ long_description    Mako is a template library written in Python. \
                     Python calling and scoping semantics.
 
 homepage            https://www.makotemplates.org/
-master_sites        pypi:M/Mako
 
-distname            Mako-${version}
-
-checksums           rmd160  8cfac09fc9ca66cfff9954bf85d22ca24bc9406b \
-                    sha256  a36919599a9b7dc5d86a7a8988f23a9a3a3d083070023bab23d64f7f1d1e0a4b \
-                    size    463945
+checksums           rmd160  69b6d7462a127223c9ad60bcec03423ce348ced5 \
+                    sha256  8195c8c1400ceb53496064314c6736719c6f25e7479cd24c77be3d9361cddc27 \
+                    size    477440
 
 if {${name} ne ${subport}} {
     # Mako depends on pkg_resources from setuptools
@@ -48,6 +46,4 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-markupsafe
 
     livecheck.type      none
-} else {
-    livecheck.name      Mako
 }

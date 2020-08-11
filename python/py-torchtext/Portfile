@@ -5,13 +5,13 @@ PortGroup           python                      1.0
 PortGroup           github                      1.0
 
 name                py-torchtext
-version             0.4.0
+version             0.6.0
 revision            0
 github.setup        pytorch text ${version}
 
-checksums           rmd160  473c770dd8c865db8277839f5210a8a771580bed \
-                    sha256  8140783d24b98233496a53ac08325fa9655d76289fbb51257f980c733e069900 \
-                    size    1553293
+checksums           rmd160  bf5108b0200347ed68357de578fec1a765ec12ed \
+                    sha256  ca92120befca63a5891bd0b6a03752f03eef3e32d96fe466cfc0e9a6cd3ba4aa \
+                    size    1876689
 
 platforms           darwin
 supported_archs     x86_64
@@ -27,8 +27,8 @@ homepage            https://github.com/pytorch/text
 
 github.livecheck.regex  {([0-9.]+)}
 
-# Support python versions
-python.versions     27 35 36 37 38
+# Supported python versions
+python.versions     36 37 38
 
 if {${name} ne ${subport}} {
 

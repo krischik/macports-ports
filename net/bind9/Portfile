@@ -1,8 +1,8 @@
 PortSystem 1.0
+PortGroup  legacysupport 1.0
 
 name			bind9
-version			9.14.7
-revision		2
+version			9.16.4
 categories		net
 maintainers		{geeklair.net:dluke @danielluke}
 platforms		darwin freebsd sunos
@@ -24,25 +24,26 @@ homepage		https://www.isc.org/
 distname		bind-${version}
 master_sites		isc:${name}/${version}
 
-checksums	rmd160	6caf6e1a7ea03e311c6bcdd1cca63547e230f86b \
-		sha256	cea0f54e5908f77ffd21eb312ee9dd4f3f8f93ca312c6118f27d6c0fba45291d \
-		size	6320994
+checksums	rmd160	6debe010ff34a7e9f137fb089753d6d0ecc9d52c \
+		sha256	7522088d3daac8bcabaae37998178e09139ef5ccae6631cb1d8a625b770f370a \
+		size	3465172
+
+use_xz			yes
 
 depends_build		port:pkgconfig
 
 depends_lib		path:lib/libssl.dylib:openssl  \
+			port:libuv \
 			port:libxml2 \
-			port:python37 \
-			port:py37-ply
+			port:python38 \
+			port:py38-ply
 
 use_parallel_build	no
 universal_variant	no
 
 compiler.blacklist	gcc-4.2
 
-#- configure hack to use pkgc-config for libxml2 libraries because
-#- xml2-config includes the icu libraries and we overlink otherwiwse
-patchfiles		atomics.patch patch-configure.diff
+patchfiles		atomics.patch
 
 test.run		yes
 test.target		test
@@ -57,9 +58,8 @@ configure.env		STD_CDEFINES=-DDIG_SIGCHASE=1
 
 configure.args		--mandir=${prefix}/share/man \
 				--with-openssl=${prefix} \
-				--with-libxml2=${prefix} \
 				--without-libjson \
-				--with-python=${prefix}/bin/python3.7
+				--with-python=${prefix}/bin/python3.8
 
 platform darwin 8 {
 	configure.args-append --with-dlopen=no \

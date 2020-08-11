@@ -3,11 +3,11 @@
 PortSystem          1.0
 
 name                libxl
-version             3.8.6.1
+version             3.8.8.0
 revision            0
-checksums           rmd160  4c6076b84077aacdb344890ba559e3830eb951cb \
-                    sha256  33f76e1dc3da1f0f2f3b5172a0aa76fb15413cf971bdd371b9ae5ef04501b613 \
-                    size    14353869
+checksums           rmd160  8ef919e63acd060df3d2ddd5d221a1b1da8ad0b9 \
+                    sha256  f7eb58cccf2f6bdab0ad01b2e480fe38ab537839685a165cf03edda1a0041574 \
+                    size    14334386
 
 set branch          [join [lrange [split ${version} .] 0 2] .]
 categories          textproc

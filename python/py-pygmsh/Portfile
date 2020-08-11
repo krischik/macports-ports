@@ -6,7 +6,7 @@ PortGroup           python 1.0
 
 name                py-pygmsh
 set real_name       pygmsh
-github.setup        nschloe pygmsh 6.0.2 v
+github.setup        nschloe pygmsh 6.1.1 v
 revision            0
 supported_archs     noarch
 
@@ -25,12 +25,13 @@ python.versions     27 36 37 38
 
 platforms           darwin
 
-checksums           rmd160  8832d25ca8ce6977074edfb7a9f5231c16c08987 \
-                    sha256  909851738e6c6f2ae98c2fcb842f8cd5a489f4116204afcc845c18d3acd85c9c \
-                    size    41204
+checksums           rmd160  e5d0131497b62a8b8eacff55eeaf47c0eee791c1 \
+                    sha256  1e1b20bf2476155046e89c86b5feac3d894f71b4905f3cb16ea020b6b3dbdc70 \
+                    size    54870
 
 if {${name} ne ${subport}} {
     depends_lib-append  \
                     port:py${python.version}-pbr \
-                    port:py${python.version}-setuptools
+                    port:py${python.version}-setuptools \
+                    port:py${python.version}-wheel
 }

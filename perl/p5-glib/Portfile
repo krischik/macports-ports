@@ -4,16 +4,16 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Glib 1.3291 ../../authors/id/X/XA/XAOC
+perl5.setup         Glib 1.3293 ../../authors/id/X/XA/XAOC
 platforms           darwin
 maintainers         nomaintainer
 license             LGPL-2.1+
 description         Glib - Perl wrappers for the GLib utility and Object libraries
 long_description    ${description}
 
-checksums           rmd160  359dfe55a4cbb74a3ba72747699415e849d4d53e \
-                    sha256  b983cdd87b9d3b5537edb110842313356237ab01b020b5f547f86f7e902b1f72 \
-                    size    301944
+checksums           rmd160  d9f65ff571d9d7dc4a3d68ff29b8eccd2feb5ea4 \
+                    sha256  7316a0c1e7cc5cb3db7211214f45d7bdc2354365a680ac4bd3ac8bf06d1cb500 \
+                    size    302831
 
 if {${perl5.major} != ""} {
     depends_lib-append \

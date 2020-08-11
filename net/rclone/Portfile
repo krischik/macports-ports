@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/ncw/rclone 1.49.5 v
+go.setup            github.com/ncw/rclone 1.51.0 v
 homepage            http://rclone.org
 categories          net
 maintainers         {eborisch @eborisch} openmaintainer
@@ -16,9 +16,9 @@ long_description \
 license             MIT
 
 checksums \
-    rmd160  0af22331ef9fdd0e976f9f9fc4d5704d33815fb5 \
-    sha256  9781f1200f307841fcead2faaeee795649f64ecb494d61651161b8bf45f67bbb \
-    size    18200548
+    rmd160  7216339e960301ab34262b85f97a7a9035ceb5ab \
+    sha256  492d4264d8daef341267ebfd64298ddec0597b9f1edcfd5a9c53c1d8ba209dbb \
+    size    18835108
 
 platforms           darwin
 

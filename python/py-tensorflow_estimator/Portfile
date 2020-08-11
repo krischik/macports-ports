@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-tensorflow_estimator
-version             2.0.1
+version             2.2.0
 revision            0
 platforms           darwin
 supported_archs     noarch
@@ -19,23 +19,23 @@ long_description    TensorFlow Estimator is a high-level TensorFlow API \
 
 homepage            https://github.com/tensorflow/estimator
 
-master_sites        https://files.pythonhosted.org/packages/fc/08/8b927337b7019c374719145d1dceba21a8bb909b93b1ad6f8fb7d22c1ca1/
+master_sites        https://files.pythonhosted.org/packages/a4/f5/926ae53d6a226ec0fda5208e0e581cffed895ccc89e36ba76a8e60895b78/
 
 distname            tensorflow_estimator-${version}-py2.py3-none-any
 
-checksums           rmd160  ee478944d668bf57c2a7221355986f559c1a8650 \
-                    sha256  aa8deab25d09a9730dfbae8ec58f4eb00ec2a90b5ca3dcbd8fa0717103d3bbb3 \
-                    size    449864
+checksums           rmd160  5fb6ade2358a3b7e51a45ddd9af89381890db656 \
+                    sha256  d09dacdd127f2579cea8d5af21f4a918036b8ae246adc82f26b61f91cc247dc2 \
+                    size    454574
 
-livecheck.url   https://pypi.org/project/tensorflow-estimator/
-livecheck.type  regex
-livecheck.regex /project/tensorflow-estimator/(\\d+(\\.\\d+)+)/
+livecheck.url       https://pypi.org/project/tensorflow-estimator/
+livecheck.type      regex
+livecheck.regex     /project/tensorflow-estimator/(\\d+(\\.\\d+)+)/
 
-extract.suffix  .whl
+extract.suffix     .whl
 extract.only
 
 python.versions        37 38
-python.default_version 37
+python.default_version 38
 
 if {${name} ne ${subport}} {
     conflicts   py${python.version}-tensorflow_estimator1

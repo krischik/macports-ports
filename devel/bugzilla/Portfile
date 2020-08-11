@@ -22,7 +22,7 @@ long_description    Bugzilla is a Defect Tracking System or \
                     quickly become a favorite of hundreds of \
                     organizations across the globe.
 
-homepage            http://www.bugzilla.org/
+homepage            https://www.bugzilla.org/
 master_sites        http://ftp.mozilla.org/pub/mozilla.org/webtools/
 
 checksums           rmd160  af53b39d035de36f636f615e3e3dabef6d051772 \
@@ -67,12 +67,6 @@ depends_lib         port:apache2 \
                     port:p${perl5.major}-file-mimeinfo \
                     port:p${perl5.major}-io-stringy \
                     port:patchutils
-
-variant apache22 description "use apache22 instead of apache2" {
-    # remove after 2020-04-30
-    ui_error "Please do not install this variant since Apache 2.2 is obsolete."
-    return -code error
-}
 
 variant mysql5 conflicts mysql57 description "Use mysql5 database" {
     depends_lib-append  path:bin/mysql_config5:mysql5

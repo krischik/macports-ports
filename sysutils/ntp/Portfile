@@ -1,13 +1,14 @@
 PortSystem 1.0
 
 name		ntp
-version		4.2.8p13
-revision	2
+version		4.2.8p15
+revision	0
 categories	sysutils net
 maintainers	{geeklair.net:dluke @danielluke}
 description	NTP is a protocol designed to synchronize the clocks of computers over a network.
 #license	NTP (http://www.eecis.udel.edu/~mills/ntp/html/copyright.html), see http://opensource.org/licenses/NTP
 license		Permissive
+PortGroup	legacysupport 1.0
 
 long_description	NTP is an implementation of RFC-5905. It is widely \
 			used to synchronize a computer to Internet time \
@@ -15,16 +16,22 @@ long_description	NTP is an implementation of RFC-5905. It is widely \
 homepage	http://www.ntp.org/
 master_sites	https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-[join [lrange [split ${version} .] 0 1] .]/
 
-checksums	md5	ea040ab9b4ca656b5229b89d6b822f13 \
-		rmd160	5d85e2a01bafa0bb755ab49e462f6dd7f96ce3d0 \
-		sha256	288772cecfcd9a53694ffab108d1825a31ba77f3a8466b0401baeca3bc232a38 \
-		size	6949363
+checksums	md5	e1e6b23d2fc75cced41801dbcd6c2561 \
+		rmd160	4653211d8c258a4a9edf1b2445a77223330176a2 \
+		sha256	f65840deab68614d5d7ceb2d0bb9304ff70dcdedd09abb79754a87536b849c19 \
+		size	7015970
 
 platforms	darwin
 
-configure.args	--with-ntpsnmpd=no --enable-ipv6 ac_cv_search_nlist=no
+configure.args  --with-ntpsnmpd=no \
+                --enable-ipv6 \
+                --enable-SHM \
+                --enable-GPSD \
+                --enable-NMEA \
+                --enable-ATOM \
+                ac_cv_search_nlist=no
 
-depends_lib	port:openssl port:libevent port:libedit
+depends_lib	path:lib/libssl.dylib:openssl port:libevent port:libedit
 depends_build	port:pkgconfig
 
 startupitem.create	yes

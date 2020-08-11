@@ -64,11 +64,11 @@ subport zmq22 {
 }
 
 subport zmq-devel {
-    github.setup zeromq libzmq af86d93d5f9634c5f28664c667510b044f2a149c
-    version   20191102-[string range ${github.version} 0 7]
-    checksums rmd160 a2e69ac0f44c06c1333c320a8d3cbefe2aab776f \
-              sha256 4121e573ac1fa48540acdcf500dff58f473fb31eeed63ebf2b2309582a5031ea \
-              size   876884
+    github.setup zeromq libzmq c1d195641d81c702e342772cd48aa3ad3481a352
+    version   20200520-[string range ${github.version} 0 7]
+    checksums rmd160 7927dfe091ab759e1bf9ee00d0f2f39f1f5a839e \
+              sha256 1ec15f01638605198b0062c4b13a3f0d5181e791926b166e0bd442eaf646d2b1 \
+              size   908640
     revision  0
 
     conflicts    zmq zmq22 zmq3

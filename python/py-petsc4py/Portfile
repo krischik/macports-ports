@@ -5,9 +5,9 @@ PortGroup           python 1.0
 PortGroup           bitbucket 1.0
 PortGroup           mpi 1.0
 
-bitbucket.setup     petsc petsc4py 3.8.1
-revision            0
+bitbucket.setup     petsc petsc4py 3.13.0
 name                py-petsc4py
+revision            0
 categories-append   math
 license             BSD
 platforms           darwin
@@ -18,15 +18,15 @@ long_description    PETSc is a suite of data structures and routines for the sca
                     differential equations. It employs the MPI standard for all \
                     message-passing communication.
 
-maintainers         nomaintainer
+maintainers         {mcalhoun @MarcusCalhoun-Lopez} openmaintainer
 
-checksums           rmd160  a86fd9d249f498e74822375b2bc4c0ceae8cc96b \
-                    sha256  da07ffef7da61164ad75b23af59860fea467ae47532302d91b7b4ec561aa0f9c \
-                    size    223053
+checksums           rmd160  b0c59e9795aecb871f199dc4f1f7e8d11f242c6f \
+                    sha256  fd41d9c399f8a110f33b62c46ece776755113116bf42d4984053ea3a52a3efae \
+                    size    248812
 
 mpi.setup           require
 
-python.versions     27 35 36
+python.versions     27 35 36 37 38
 
 build.env-append    PETSC_DIR=${prefix}/lib/petsc
 destroot.env-append PETSC_DIR=${prefix}/lib/petsc

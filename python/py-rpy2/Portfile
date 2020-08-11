@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-rpy2
-version             3.2.0
+version             3.3.4
 revision            0
 categories-append   science
 platforms           darwin
 license             {MPL-1.1 LGPL-2.1+}
 
-python.versions     27 34 35 36 37
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -22,13 +22,10 @@ long_description    rpy2 is a redesign and rewrite of rpy. It is providing a \
                     structures and functions.
 
 homepage            http://rpy.sourceforge.net/rpy2.html
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  21702e958112d5cf6224479a97298dfd3c9ae246 \
-                    sha256  18025f53c1a32b7b38ed319c81f8445b9a8809e0ecba210634b67764d68da978 \
-                    size    161566
+checksums           rmd160  76449ab2e91ec35586510f187b187f0950273465 \
+                    sha256  763601b1c5d0195a53341c5b053b419e48eab163cdb8908e313ce7c1f207a3d1 \
+                    size    174031
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-cffi \
@@ -48,25 +45,13 @@ if {${name} ne ${subport}} {
                             sha256  004d13734a7b9a85cbc1e7a93ec87df741e28db1273ab5b0d9efaac04a9c5f98 \
                             size    191192
 
-        depends_lib-append  port:py${python.version}-singledispatch
+        depends_lib-append  port:py${python.version}-singledispatch \
+                            port:py${python.version}-six
 
         depends_lib-delete  port:py${python.version}-cffi \
                             port:py${python.version}-pytest \
                             port:py${python.version}-jinja2 \
                             port:py${python.version}-simplegeneric
-    } elseif {${python.version} eq 34} {
-        version             3.0.4
-        revision            0
-
-        distname            ${python.rootname}-${version}
-
-        checksums           rmd160  3d243a160a1205f2a48ee606702364f031a0e0c6 \
-                            sha256  2af5158a5d56af7f7bf5e54d8d7e87b6f115ff40f056d82f93cad0cbf6acc0cb \
-                            size    117524
-    } else {
-        patchfiles-append   patch-setup.py.diff
-        configure.env-append \
-                            PYTHON_LDFLAGS="-framework R"
     }
 
     depends_build-append \
@@ -75,8 +60,12 @@ if {${name} ne ${subport}} {
     # To continue using your custom R installation instead of MacPorts' R,
     # you have to remove this dependency line and make sure that your R
     # is in MacPorts' binpath, see your macports.conf for details.
-    depends_lib-append  port:R \
-                        port:py${python.version}-six
+    depends_lib-append  port:R
 
     livecheck.type      none
+}
+
+subport py35-${python.rootname} {
+    replaced_by py36-${python.rootname}
+    PortGroup obsolete 1.0
 }

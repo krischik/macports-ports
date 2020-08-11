@@ -4,7 +4,10 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pyhamcrest
-version             1.9.0
+version             2.0.2
+if {${subport} eq "py27-pyhamcrest"} {
+    version         1.10.1
+}
 platforms           darwin
 license             BSD
 maintainers         {mcalhoun @MarcusCalhoun-Lopez} openmaintainer
@@ -16,11 +19,16 @@ homepage            https://github.com/hamcrest/PyHamcrest
 master_sites        pypi:P/PyHamcrest
 distname            PyHamcrest-${version}
 
-checksums           rmd160  f5fa85ec3e29c3ec41e28ae8e690700fbf2025a1 \
-                    sha256  8ffaa0a53da57e89de14ced7185ac746227a8894dbd5a3c718bf05ddbd1d56cd \
-                    size    376623
+checksums           rmd160  0a0710b31bbdc3c6984d789f6d4b3188af16ec51 \
+                    sha256  412e00137858f04bde0729913874a48485665f2d36fe9ee449f26be864af9316 \
+                    size    44329
+if {${subport} eq "py27-pyhamcrest"} {
+    checksums       rmd160  a6cbdb42ba7340e932a94ec120d6c77b1eec86f9 \
+                    sha256  f7ae19ddfd71f11a421bcec9608d708c0fab816db98b51fdbc672a6d99a30874 \
+                    size    43021
+}
 
-python.versions     27 35 36 37
+python.versions     27 35 36 37 38
 
 if {${name} ne ${subport}} {
     depends_build-append \

@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-click
-version             7.0
+version             7.1.2
 revision            0
 categories-append   devel
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -19,13 +19,10 @@ description         A simple wrapper around optparse for powerful command line u
 long_description    ${description}
 
 homepage            https://github.com/mitsuhiko/click
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            Click-${version}
-
-checksums           rmd160  a32c3039391514af61a2fe4b23fccb35c6f35084 \
-                    sha256  5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7 \
-                    size    286192
+checksums           rmd160  fdad02d3ace749f9a10f8f33b22bfdc05fcb5f4e \
+                    sha256  d2b5255c7c6349bc1bd1e59e08cd12acbbd63ce649f2588755783aa94dfb6b1a \
+                    size    297279
 
 if {${name} ne ${subport}} {
     depends_build-append \

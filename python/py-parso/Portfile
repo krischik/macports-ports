@@ -1,27 +1,28 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           github 1.0
 PortGroup           python 1.0
 
-github.setup        davidhalter parso 0.5.1 v
-
 name                py-parso
+version             0.7.0
+revision            0
 categories-append   devel
 platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
 description         A Python Parser
 long_description    ${description}
 
-checksums           rmd160  aebee4e55b16d0eee0f0e4030d5d62cb92ec0a6b \
-                    sha256  ac34a33f8b3606460af46140ce961ad7431a049009dd207270cbabeb6b3e03df \
-                    size    388107
+homepage            https://github.com/davidhalter/parso
+
+checksums           rmd160  454f986c7a3141c98725fc2bcc9b892ba905ae96 \
+                    sha256  908e9fae2144a076d72ae4e25539143d40b8e3eafbaeae03c1bfe226f4cdf12c \
+                    size    399099
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -29,9 +30,12 @@ if {${name} ne ${subport}} {
 
     depends_test-append \
                         port:py${python.version}-pytest
+
     test.run            yes
     test.cmd            py.test-${python.branch}
     test.target
+    test.env            PYTHONPATH=${worksrcpath}/build/lib
+
 
     livecheck.type      none
 }

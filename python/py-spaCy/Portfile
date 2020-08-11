@@ -2,19 +2,18 @@
 
 PortSystem                                      1.0
 PortGroup           python                      1.0
-PortGroup           cxx11                       1.1
 PortGroup           github                      1.0
 PortGroup           mpi                         1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 name                py-spaCy
-version             2.1.8
+version             2.2.4
 revision            0
 github.setup        explosion spaCy ${version} v
 
-checksums           rmd160  1b72d15fe8459657a34140d0f5145f91801d2485 \
-                    sha256  1148a02e4d16098a7f0eca646d444b5a9152b8200864abae374d31497df3a26d \
-                    size    30442029
+checksums           rmd160  e8767e6e38da0396c7f61f31819986524ad08340 \
+                    sha256  817343b98a3ab2673f0645bc62c74d76cb9778c27c79c5d0c22572dadac5744d \
+                    size    4875280
 
 platforms           darwin
 supported_archs     x86_64
@@ -32,11 +31,13 @@ homepage            https://spacy.io
 github.livecheck.regex {([0-9.]+)}
 
 # Support python versions
-python.versions     35 36 37 38
+python.versions     36 37 38
+python.default_version 38
 
-mpi.setup           -gcc44 -gcc45 -clang33 -clang34 -clang37 -clang39 -clang40 -gfortran -g95
+mpi.setup           -gcc44 -gcc45 -clang33 -clang34 -clang37 -gfortran -g95
 
 # Compiler selection
+compiler.cxx_standard 2014
 compiler.blacklist-append *gcc* {clang < 900} {macports-clang-3.[0-9]} macports-clang-4.0
 
 if {${name} ne ${subport}} {
@@ -51,6 +52,7 @@ if {${name} ne ${subport}} {
     depends_lib-append \
         port:py${python.version}-blis \
         port:py${python.version}-cymem \
+        port:py${python.version}-catalogue \
         port:py${python.version}-cython \
         port:py${python.version}-jsonschema \
         port:py${python.version}-mmh3 \

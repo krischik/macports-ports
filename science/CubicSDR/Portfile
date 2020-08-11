@@ -2,7 +2,6 @@
 
 PortSystem          1.0
 PortGroup           cmake 1.1
-PortGroup           cxx11 1.1
 PortGroup           github 1.0
 PortGroup           wxWidgets 1.0
 
@@ -10,7 +9,7 @@ name                CubicSDR
 categories          science comms
 platforms           darwin macosx
 license             GPL-2
-maintainers         {@ra1nb0w irh.it:rainbow} {michaelld @michaelld} openmaintainer
+maintainers         {ra1nb0w @ra1nb0w} {michaelld @michaelld} openmaintainer
 description         Cross-Platform Software-Defined Radio Application
 long_description    CubicSDR is the software portion of Software Defined \
     Radio. By Using hardware that converts RF spectrum into a digital \
@@ -18,24 +17,26 @@ long_description    CubicSDR is the software portion of Software Defined \
     functions in software instead of traditional hardwre.
 homepage            https://www.cubicsdr.com
 
-github.setup        cjcliffe CubicSDR 31323fe3c2f4ffc0d2f072f7e37ec26ebe2de609
-version             20191029-[string range ${github.version} 0 7]
-checksums           rmd160 b16465d1257b6b5af8e22f77fbc6706794445339 \
-                    sha256 a71fc7f84bec7aa3b4cf2bbc171c4931867219cd38822cc06e78b455e1735da2 \
-                    size   35463490
+github.setup        cjcliffe CubicSDR b564a0ddde6bd0d852ff37ab5c5208375da3d8eb
+version             20200419-[string range ${github.version} 0 7]
+checksums           rmd160  fa19ea331d69017964246f496b6012e48637456f \
+                    sha256  64e4f5772fa562f4bafeb0e56ac69a50f869d31c31b9794962f13fc078f5a59e \
+                    size    35493737
 revision            0
+
+compiler.cxx_standard 2011
 
 # CubicSDR requires wxWidgets.use of wxWidgets-3.1 or newer -- "3.2"
 # by the wxWidgets PG -- which is what this provides. selecting 3.0
 # does not work.
 wxWidgets.use       wxWidgets-3.2
 
-# CHECK every version if upstream has fixed the behaviour
-# opengl widget doesn't work well with Retina display
-# therefore for user experience I disable it
-# see https://github.com/cjcliffe/CubicSDR/issues/758
+# CHECK if upstream has merged it
+# enable out-of-tree patch the fix retina display
 patchfiles-append \
-    disable-highdpi.patch
+    enable-highdpi.patch
+configure.args-append \
+    -DUSE_OSX_RETINA=1
 
 depends_lib-append \
     port:liquid-dsp \
@@ -50,7 +51,7 @@ configure.cxxflags-append \
     -D_WCHAR_H_CPLUSPLUS_98_CONFORMANCE_
 
 variant hamlib description {Support hamlib for radio control functions} {
-    depends_lib-append      port:hamlib
+    depends_lib-append      path:lib/libhamlib.dylib:hamlib
     configure.args-append   -DUSE_HAMLIB=1
 }
 

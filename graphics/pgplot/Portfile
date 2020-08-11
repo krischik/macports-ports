@@ -6,7 +6,7 @@ PortGroup           compilers 1.0
 name                pgplot
 conflicts           miriad
 version             5.2.2
-revision            11
+revision            12
 categories          graphics devel
 license             Noncommercial
 platforms           darwin
@@ -55,6 +55,9 @@ if { [string match *64 ${build_arch}] } {
 
 # Tell the compiler not to treat backslash characters as C-style escape sequences.
 configure.fcflags-append -fno-backslash
+
+# see https://trac.macports.org/ticket/60442
+compilers.allow_arguments_mismatch yes
 
 set compat_version  [join [lrange [split ${version} .] 0 0] .]
 
@@ -174,7 +177,7 @@ destroot {
         xinstall -m 644 ${fl} ${destroot}${prefix}/lib
     }
 
-    foreach fl [glob -directory ${destroot.dir} -nocomplain *.h] {
+    foreach fl [glob -directory ${destroot.dir} -nocomplain *.h *.inc] {
         xinstall -m 644 ${fl} ${destroot}${prefix}/include
     }
 

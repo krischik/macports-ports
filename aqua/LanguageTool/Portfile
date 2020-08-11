@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           java 1.0
 
 name                LanguageTool
-version             4.7
+version             4.9
 categories          aqua textproc java
 license             LGPL-2.1
 maintainers         {amake @amake} openmaintainer
@@ -18,9 +18,9 @@ platforms           darwin
 supported_archs     noarch
 master_sites        https://languagetool.org/download/
 
-checksums           rmd160  000570eb395ad5ed770bd202cd92c0759322e806 \
-                    sha256  4f00f71930871600cb8fe53a8c4d4c9c60f05711c979fd313be1c6c674efde3c \
-                    size    162808617
+checksums           rmd160  4dec4d49ac5c540ae28b01baf3ce45ccfff7855b \
+                    sha256  2e6998563a3ee4b142ffe91eb20d3ae3e15ade5f507964b9dc2ec19373329b35 \
+                    size    217243576
 
 java.version        1.8+
 

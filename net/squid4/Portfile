@@ -3,7 +3,7 @@
 PortSystem 1.0
 
 name            squid4
-version         4.9
+version         4.12
 categories      net
 platforms       darwin
 license         GPL-2+
@@ -31,9 +31,9 @@ master_sites    https://mirror.aarnet.edu.au/pub/squid/squid/ \
 
 distname        squid-${version}
 use_xz          yes
-checksums       md5 5c2e335dd1e8ced9dda6e0e11894b344 \
-                sha1 43c90a1a2eb4d1613f1bfc603ad08e8a835be319 \
-                rmd160 164d000671dba370ebd1b1d1e36137b1d9d7df67
+checksums       md5 ad7a4a8a0031cae3435717a759173829 \
+                sha1 316b8a343aa542b5e7469d33b9d726bee00679c6 \
+                rmd160 5d593efe84ca34c39a21bab523e75621dec4e9bb
 
 patchfiles      patch-cf.data.pre.diff \
                 patch-compat_types.h.diff \

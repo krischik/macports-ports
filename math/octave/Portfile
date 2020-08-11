@@ -5,11 +5,9 @@ PortGroup           compilers  1.0
 PortGroup           muniversal 1.0
 PortGroup           compiler_blacklist_versions 1.0
 PortGroup           linear_algebra 1.0
-# see https://lists.gnu.org/archive/html/octave-maintainers/2016-05/msg00286.html
-PortGroup           cxx11 1.1
 
 name                octave
-version             5.1.0
+version             5.2.0
 set package_version 5.x.x
 revision            2
 categories          math science
@@ -26,9 +24,13 @@ homepage            https://www.gnu.org/software/octave
 
 master_sites        gnu:octave
 
-checksums           rmd160  b8b4469d70f1b67be688e12ff551e6b614c70213 \
-                    sha256  e36b1124cac27c7caa51cc57de408c31676d5f0096349b4d50b57bfe1bcd7495 \
-                    size    32034788
+checksums           rmd160  2877818d2bb06d99bfbb24f93c0f743d73047969 \
+                    sha256  2fea62b3c78d6f38e9451da8a4d26023840725977dffee5250d3d180f56595e1 \
+                    size    33360285
+
+# see https://lists.gnu.org/archive/html/octave-maintainers/2016-05/msg00286.html
+compiler.cxx_standard \
+                    2011
 
 # if there is an error bulding octave package, avoid
 #    error: structure has no member 'dir'
@@ -70,7 +72,13 @@ patchfiles-append patch-link_location.diff
 patchfiles-append patch-qt5-cxxflags.diff
 
 # see https://savannah.gnu.org/patch/index.php?9806
+set java_version 1.8
 patchfiles-append patch-java_version.diff
+post-patch {
+    reinplace \
+        "s|__MACPORTS_JAVA_VERSION__|${java_version}|g" \
+        ${worksrcpath}/Makefile.in
+}
 
 post-patch {
     if { ${os.arch} eq "i386" } {
@@ -88,9 +96,7 @@ post-patch {
     }
     reinplace \
         "s|__MACPORTS_canonical_host_type__|${short_host_name}|g" \
-        configure
-    reinplace \
-        "s|__MACPORTS_canonical_host_type__|${short_host_name}|g" \
+        configure \
         build-aux/subst-config-vals.in.sh
 }
 
@@ -225,10 +231,6 @@ depends_build-append \
     port:pkgconfig
 
 compilers.choose    fc f77 f90 cc cxx
-
-# overrule cxx11 PortGroup because octave can use GCC compilers
-#    even if configure.cxx_stdlib is libc++
-compiler.blacklist-delete *gcc*
 
 # GCC 6 fails in several ways
 #  in order to use the Carbon framework, -fpermissive is required
@@ -394,13 +396,7 @@ pre-configure {
 variant java description {enable Java interface} {
     PortGroup java 1.0
     configure.args-replace --disable-java --enable-java
-    java.version 1.8
-    post-patch {
-        reinplace \
-            "s|__MACPORTS_JAVA_VERSION__|${java.version}|g" \
-            ${worksrcpath}/Makefile.in \
-            ${worksrcpath}/scripts/java/module.mk
-    }
+    java.version ${java_version}+
 }
 # java variant seems to cause problems for both users and build bots
 #    https://lists.macosforge.org/pipermail/macports-users/2016-May/thread.html#41052
@@ -461,24 +457,6 @@ if {[variant_isset fltk] || [variant_isset qt4] || [variant_isset qt5]} {
 
 if { ([variant_isset fltk] && [variant_isset qt4]) || ([variant_isset fltk] && [variant_isset qt5]) } {
     notes-append "unless octave is run with --no-gui-libs, graphics_toolkit(\"fltk\") will cause a crash"
-}
-
-variant jit description {enable JIT compiler (EXPERIMENTAL)} {
-    # JIT requires LLVM, so select a version to use
-    set llvm_ver 7.0
-
-    # prevent multiple versions of llvm being required
-    # if clangXY compiler is requested, use llvm-X.Y
-    foreach clang ${compilers.clang_variants} {
-        if { [variant_exists ${clang}] && [variant_isset ${clang}] } {
-            set llvm_ver [string index ${clang} end-1].[string index ${clang} end]
-        }
-    }
-
-    depends_lib-append port:llvm-${llvm_ver}
-    configure.args-replace --disable-jit --enable-jit
-    configure.env-append LLVM_CONFIG=${prefix}/bin/llvm-config-mp-${llvm_ver}
-    configure.cxxflags-append -std=c++11
 }
 
 variant sound description {enable audio support (file I/O and playback)} {
@@ -626,16 +604,6 @@ if {${magickDefault}} {
     default_variants-append +graphicsmagick
 }
 
-# see https://trac.macports.org/ticket/53021
-foreach gccVar ${compilers.gcc_variants} {
-    if {[variant_exists ${gccVar}] && [variant_isset ${gccVar}] } {
-        if {[vercmp ${xcodeversion} 7.0] >= 0} {
-            patchfiles-append patch-force_cxx.diff
-        }
-        break
-    }
-}
-
 post-destroot {
     # put any startup commands in ${destroot}${prefix}/share/octave/${version}/m/startup/octaverc
     # see https://www.gnu.org/software/octave/doc/interpreter/Startup-Files.html
@@ -692,6 +660,7 @@ post-activate {
 test.run    yes
 test.target check
 
+# please remove on 2020-03-09
 subport ${name}-devel {
     replaced_by ${name}
     PortGroup   obsolete 1.0

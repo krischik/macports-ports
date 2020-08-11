@@ -2,8 +2,17 @@
 
 PortSystem              1.0
 
+# clock_gettime
+PortGroup               legacysupport 1.0
+legacysupport.newest_darwin_requires_legacy 15
+
 name                    ezstream
-version                 0.6.0
+version                 1.0.1
+revision                0
+checksums               rmd160  49e9e1c0780cbb093ef59fff8568077a539df475 \
+                        sha256  fc4bf494897a8b1cf75dceefb1eb22ebd36967e5c3b5ce2af9858dbb94cf1157 \
+                        size    512284
+
 categories              audio
 platforms               darwin
 maintainers             {ryandesign @ryandesign} openmaintainer
@@ -19,12 +28,12 @@ long_description        ${name} is a ${description}. It began as the \
 homepage                http://www.icecast.org/ezstream/
 master_sites            https://downloads.xiph.org/releases/ezstream/
 
-checksums               rmd160  b859b39f89e363103330c1720d8c33a32f893f69 \
-                        sha256  f86eb8163b470c3acbc182b42406f08313f85187bd9017afb8b79b02f03635c9 \
-                        size    250448
+depends_build           port:check \
+                        port:pkgconfig
 
-depends_build           port:pkgconfig
 depends_lib             port:libiconv \
                         port:libshout2 \
                         port:libxml2 \
                         port:taglib
+
+patchfiles-append       sys-types.patch

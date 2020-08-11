@@ -5,11 +5,11 @@ PortGroup           github 1.0
 PortGroup           qmake5 1.0
 
 epoch               1
-github.setup        svn-all-fast-export svn2git 1.0.16
-revision            0   
-checksums           rmd160  9ecaeeb0745903e20bb350437769e934c91f45f7 \
-                    sha256  94c0269e10ea4470ffbb844d9de7d4a0e6fc6dafb11656a18a37a3b2dba7cc15 \
-                    size    44494
+github.setup        svn-all-fast-export svn2git 1.0.18
+revision            0
+checksums           rmd160  e4cf7edc8b22cdfc18abf5c01b51ae36566dc53d \
+                    sha256  edd776db0cdddb3bc8f2e3a711bd15580e965024c27d8674cf624e62b75b0aac \
+                    size    53514
 
 categories          devel
 platforms           darwin
@@ -18,7 +18,9 @@ license             GPL-3+
 
 description         converts a Subversion repository into one or more Git repositories
 
-long_description    svn2git provides the svn-all-fast-export program which ${description}.
+long_description    svn2git provides the svn-all-fast-export program which {*}${description}.
+
+github.tarball_from archive
 
 depends_lib-append  port:apr \
                     port:subversion

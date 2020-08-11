@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pexpect
-version             4.7.0
+version             4.8.0
 revision            0
 categories-append   devel
 platforms           darwin
 license             ISC
 supported_archs     noarch
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -23,14 +23,11 @@ long_description    Pexpect is a pure Python module for spawning child \
                     your script to spawn a child application and control \
                     it as if a human were typing commands.
 
-homepage            http://pexpect.readthedocs.org/
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
+homepage            https://pexpect.readthedocs.org/
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  4c4642ac6d8af988fcfb96e59714ec9dcfb61e9f \
-                    sha256  9e2c1fd0e6ee3a49b28f95d4b33bc389c89b20af6a1255906e90ff1262ce62eb \
-                    size    153747
+checksums           rmd160  c9f6299e57e4c9b29c57b16ceaf0d3303da91683 \
+                    sha256  fc65a43959d153d0114afe13997d439c22823a27cefceb5ff35c2178c6784c0c \
+                    size    157037
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-ptyprocess

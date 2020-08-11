@@ -1,0 +1,40 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        qri-io qri 0.9.8 v
+
+categories          devel net
+license             GPL-3
+platforms           darwin
+
+maintainers         {gmail.com:herby.gillot @herbygillot} openmaintainer
+
+checksums           rmd160  4ea2fb04eb4f180f83ad14a419921a97b39865f1 \
+                    sha256  ca1968aa157dc591ccb95efc979e8364bc95bc6cb4191339f206a635ca923adc \
+                    size    4507517
+
+description         A global dataset version control system (GDVCS) built on \
+                    the distributed web.
+
+long_description    Qri is a global dataset version control system (GDVCS) \
+                    built on the distributed web. Qri is global, specific to \
+                    datasets, provides version control and runs on the \
+                    distributed web, seeking to  solve common data problems \
+                    around discovery, trust, friction & synchronization.
+
+homepage            https://qri.io/
+
+depends_build       port:go
+build.env           GO111MODULE=on
+build.target        build
+
+installs_libs       no
+use_configure       no
+use_parallel_build  no
+
+destroot {
+    set gopath [exec go env GOPATH]
+    copy "${gopath}/bin/qri" ${destroot}${prefix}/bin/
+}

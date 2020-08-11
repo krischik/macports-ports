@@ -1,0 +1,33 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/ultralist/ultralist 0.9.6
+
+homepage            https://ultralist.io/
+
+description         Simple task management for tech folks.
+
+long_description    Ultralist is a task management system for technical \
+                    people. It is a command-line component that is very fast \
+                    and stays out of the way.  Ultralist is based off of the \
+                    Getting Things Done system. It has a concept of due \
+                    dates, projects, and contexts.
+
+categories          office
+license             MIT
+installs_libs       no
+
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+checksums           rmd160  4e97b2f17365ab5cbdab47f0b48ebff5f2b4f971 \
+                    sha256  c7fa433dae99488aa42369a82fb0344dffa94109108630548fca52b9e11fb5e1 \
+                    size    2060395
+
+build.args-append   -o ${workpath}/${name}
+
+destroot {
+    xinstall -m 755 ${workpath}/${name} ${destroot}${prefix}/bin/
+}

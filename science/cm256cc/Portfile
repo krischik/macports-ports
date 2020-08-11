@@ -7,7 +7,7 @@ PortGroup           cmake 1.1
 platforms           darwin macosx
 categories          science
 license             BSD
-maintainers         {@ra1nb0w irh.it:rainbow} openmaintainer
+maintainers         {ra1nb0w @ra1nb0w} openmaintainer
 
 description         Fast GF(256) Cauchy MDS Block Erasure Codec in C++
 long_description    ${description}
@@ -23,6 +23,9 @@ supported_archs     x86_64 i386
 
 depends_lib-append \
     port:boost
+
+compiler.cxx_standard \
+                    2011
 
 test.run            yes
 test.cmd            ./cm256_test

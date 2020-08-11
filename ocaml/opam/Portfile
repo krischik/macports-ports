@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        ocaml opam 2.0.5
+github.setup        ocaml opam 2.0.7
 
 name                opam
 revision            1
@@ -20,9 +20,9 @@ long_description    OPAM is a package manager for OCaml that can install \
 github.tarball_from releases
 distname            opam-full-${version}
 
-checksums           rmd160  5eac031210343fda4f027fe2637270c735c6d055 \
-                    sha256  776c7e64d6e24c2ef1efd1e6a71d36e007645efae94eaf860c05c1929effc76f \
-                    size    7922459
+checksums           rmd160  c6b472dd2d6cb14dd5066077fb08bb46e10845fe \
+                    sha256  9c0dac1094ed624158fff13000cdfa8edbc96798d32b9fab40b0b5330f9490a2 \
+                    size    7929123
 
 depends_build       port:ocaml
 

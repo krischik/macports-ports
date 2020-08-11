@@ -3,10 +3,10 @@
 PortSystem 1.0
 
 name                file
-version             5.37
-checksums           rmd160  e01826cca438ffc467b169a8f4fd760f9843f5fc \
-                    sha256  e9c13967f7dd339a3c241b7710ba093560b9a33013491318e88e6b8b57bae07f \
-                    size    887682
+version             5.39
+checksums           rmd160  9ada72181abd2df4a2c2917b51df7b2f7f6a8a06 \
+                    sha256  f05d286a76d9556243d0cb05814929c2ecf3a5ba07963f8f70bfaaa70517fad1 \
+                    size    954266
 
 categories          sysutils
 license             BSD
@@ -29,7 +29,8 @@ master_sites        freebsd \
                     ftp://ftp.gw.com/mirrors/pub/unix/${name}/
 
 patchfiles          patch-magic-Makefile.am.diff \
-                    patch-getline.diff
+                    patch-getline.diff \
+                    patch-daylight.diff
 
 configure.args      --disable-silent-rules \
                     --enable-fsect-man5

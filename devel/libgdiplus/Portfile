@@ -4,7 +4,7 @@ PortSystem              1.0
 PortGroup               active_variants 1.1
 
 name                    libgdiplus
-version                 6.0.2
+version                 6.0.5
 revision                0
 categories              devel
 platforms               darwin
@@ -18,9 +18,9 @@ long_description        An implementation of the GDI+ API for Mono, an \
 homepage                https://www.mono-project.com/Libgdiplus
 master_sites            https://download.mono-project.com/sources/libgdiplus/
 
-checksums               rmd160  4b11e8dd15edb86d21170a215c62681c777a9df3 \
-                        sha256  716cf8fbbca6963022d5f1510b58a44cf8f40380cf6f7433d68c3db651f6f904 \
-                        size    1377140
+checksums               rmd160  dca604e6298a95d55a5e4d45d0186c4e0e592b38 \
+                        sha256  b81e4e5cc3e4831b2945de08bef26eb1bdcd795aeaf8f971b221c51213a025ef \
+                        size    1391332
 
 depends_build           port:pkgconfig
 

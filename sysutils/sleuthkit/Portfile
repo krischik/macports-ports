@@ -3,12 +3,12 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        sleuthkit sleuthkit 4.7.0 sleuthkit-
+github.setup        sleuthkit sleuthkit 4.9.0 sleuthkit-
 revision            0
 
-checksums           rmd160  73898f5cea21bc411f8cb439d277b368e35447bb \
-                    sha256  ef49f9da608a910b54444c84d964cea9e141fc179b85500476362217d9a4b32b \
-                    size    9378718
+checksums           rmd160  da7fdf5f20cfb5cfec4924e2d8662395922b6cdd \
+                    sha256  52ff21b1285238506794dd19d940203fe5daa9260039f9012d9040dc96a713c6 \
+                    size    4229408
 
 categories          sysutils
 maintainers         nomaintainer

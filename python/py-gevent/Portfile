@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-gevent
-version             1.4.0
+version             20.6.2
 revision            0
 categories-append   devel
 platforms           darwin
 license             MIT
 supported_archs     i386 x86_64
 
-python.versions     27 34 35 36 37
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -22,13 +22,10 @@ long_description    gevent is a coroutine-based Python networking \
                     synchronous API on top of libevent event loop.
 
 homepage            http://gevent.org
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  37d748a02b6b9c4f59efc4f86b7d56ae8a9f35ec \
-                    sha256  1eb7fa3b9bd9174dfe9c3b59b7a09b768ecd496debfc4976a9530a3e15c990d1 \
-                    size    5169595
+checksums           rmd160  c3631ad8c30b301b55910c63793b2f9baf6ce371 \
+                    sha256  a23c2abf08e851c988723f6a2996d495f513a2c0dc70f9956af03af8debdb5d1 \
+                    size    5806612
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -36,14 +33,31 @@ if {${name} ne ${subport}} {
                         port:py${python.version}-cython
     depends_lib-append  port:libev \
                         port:c-ares \
+                        port:libuv \
                         port:py${python.version}-greenlet \
                         port:py${python.version}-cffi
 
-    build.env-append    LIBEV_EMBED=0 \
-                        CARES_EMBED=0
+    build.env-append    GEVENTSETUP_EMBED=0
+    destroot.env-append GEVENTSETUP_EMBED=0
 
-    destroot.env-append LIBEV_EMBED=0 \
-                        CARES_EMBED=0
+    if {${python.version} < 36} {
+        version             1.4.0
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  37d748a02b6b9c4f59efc4f86b7d56ae8a9f35ec \
+                            sha256  1eb7fa3b9bd9174dfe9c3b59b7a09b768ecd496debfc4976a9530a3e15c990d1 \
+                            size    5169595
+
+        depends_lib-delete  port:libuv
+
+        build.env-delete    GEVENTSETUP_EMBED=0
+        build.env-append    LIBEV_EMBED=0 \
+                            CARES_EMBED=0
+
+        destroot.env-delete GEVENTSETUP_EMBED=0
+        destroot.env-append LIBEV_EMBED=0 \
+                            CARES_EMBED=0
+    }
 
     livecheck.type      none
 }

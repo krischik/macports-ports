@@ -4,26 +4,37 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-jmespath
-version             0.9.3
+version             0.10.0
+revision            0
+categories-append   devel
 platforms           darwin
-license             Permissive
-maintainers         nomaintainer
+license             MIT
+supported_archs     noarch
+
+python.versions     27 35 36 37 38
+
+maintainers         {stromnov @stromnov} openmaintainer
 
 description         JSON Matching Expressions
 long_description    ${description}
 
-homepage            https://github.com/boto/${python.rootname}
-master_sites        pypi:j/${python.rootname}
-distname            ${python.rootname}-${version}
+homepage            https://github.com/jmespath/jmespath.py
 
-checksums           rmd160 f32368be518c86643a14f1769ccf242cbcaa52d3 \
-                    sha256 6a81d4c9aa62caf061cb517b4d9ad1dd300374cd4706997aff9cd6aedd61fc64 \
-                    size   22967
-
-python.versions     27 35 36 37
+checksums           rmd160  b30e2bb3da45621fa1817d71620e6bca58ca7cf3 \
+                    sha256  b85d0567b8666149a93172712e68920734333c0ce7e89b78b3e987f71e5ed4f9 \
+                    size    21607
 
 if {${name} ne ${subport}} {
-    depends_build-append port:py${python.version}-setuptools
+    depends_lib-append  port:py${python.version}-setuptools
+
+    if {${python.version} <= 35} {
+        version             0.9.5
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  63588595770b70980a67a6338938a49a0608424f \
+                            sha256  cca55c8d153173e21baa59983015ad0daf603f9cb799904ff057bfb8ff8dc2d9 \
+                            size    27084
+    }
 
     livecheck.type      none
 }

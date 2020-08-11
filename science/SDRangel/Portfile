@@ -10,23 +10,28 @@ name                  SDRangel
 platforms             darwin macosx
 categories            science
 license               GPL-3.0
-maintainers           {@ra1nb0w irh.it:rainbow} {michaelld @michaelld} openmaintainer
+maintainers           {ra1nb0w @ra1nb0w} {michaelld @michaelld} openmaintainer
 
 description           SDRangel is an Open Source Qt5 / OpenGL 3.0+ SDR \
     and signal analyzer frontend to various hardware.
 long_description    ${description}
 
-github.setup          f4exb sdrangel 4.11.12 v
-checksums             rmd160 100774da68a47c3e848b345185fd4b1cf3405c86 \
-                      sha256 0047cf8e06d62230389cb3a41e1d5dcf48a6c6b40c6c75c0776a350218b9399c \
-                      size  24206217
+github.setup          f4exb sdrangel 4.14.10 v
+checksums             rmd160  03b5bedae58b82d5c32fd2a8bf8dba0ca8761919 \
+                      sha256  34d3b9e6a936cce9119f2401437df1fa0c7f60ede8398b0dbe3eb9de43e91468 \
+                      size    24473724
 revision              0
 
 compiler.c_standard   2011
 compiler.cxx_standard 2011
 
-patchfiles-append \
-    leandsdr_dvbs2.h.patch
+# TEMPORARY
+# https://trac.macports.org/ticket/60012
+# https://github.com/f4exb/sdrangel/issues/467
+patchfiles-append     disable-remotetx.patch
+
+# revert https://github.com/f4exb/sdrangel/issues/492
+patchfiles-append     revert_cm256cc.patch
 
 depends_lib-append \
     port:boost \

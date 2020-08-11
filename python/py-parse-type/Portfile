@@ -1,0 +1,68 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+PortGroup           python 1.0
+
+github.setup        jenisys parse_type 0.5.3 v
+revision            0
+name                py-parse-type
+
+categories-append   devel
+platforms           darwin
+supported_archs     noarch
+license             BSD
+maintainers         nomaintainer
+
+description         parse_type extends the parse module\
+                    (opposite of string.format())
+
+long_description    parse_type extends the parse module (opposite of\
+                    string.format()) with the following features:\
+                    build type converters for common use cases\
+                    (enum/mapping, choice)\; build a type converter\
+                    with a cardinality constraint (0..1,0..*,1..*)\;\
+                    from the type converter with cardinality=1.\;\
+                    compose a type converter from other type\
+                    converters\; an extended parser that supports the\
+                    CardinalityField naming schema and creates missing\
+                    type variants (0..1,0..*,1..*) from the primary\
+                    type converter
+
+checksums           rmd160  65ca2556dafa0feac8f28178373b12327cc56e9f \
+                    sha256  8c41fee4ebaf269a3e94e2ab7d7338a6da70588c6063ed51af8848ecd87e3956 \
+                    size    269675
+
+python.versions     27 35 36 37 38
+
+if {${name} ne ${subport}} {
+    depends_build-append \
+                    port:py${python.version}-setuptools
+
+    depends_run-append \
+                    port:py${python.version}-parse \
+                    port:py${python.version}-six
+
+    if {${python.version} == 27} {
+        depends_run-append \
+                    port:py${python.version}-enum34
+     }
+
+    depends_test-append \
+                    port:py${python.version}-pytest
+
+    test.run        yes
+    test.cmd        py.test-${python.branch}
+    test.args       -o addopts=''
+    test.target
+    test.env        PYTHONPATH=${worksrcpath}/build/lib
+
+    post-destroot {
+        set docdir ${prefix}/share/doc/${subport}
+        xinstall -d ${destroot}${docdir}
+        xinstall -m 0644 -W ${worksrcpath} README.rst LICENSE \
+            ${destroot}${docdir}
+    }
+
+    livecheck.type  none
+}

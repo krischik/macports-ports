@@ -2,10 +2,9 @@
 
 PortSystem              1.0
 PortGroup               cmake 1.1
-PortGroup               cxx11 1.1
 
 name                    gdcm
-version                 3.0.1
+version                 3.0.5
 revision                1
 categories              science graphics
 license                 BSD
@@ -17,14 +16,26 @@ long_description        Grassroots DiCoM is a C++ library for DICOM medical file
 homepage                https://sourceforge.net/projects/gdcm/
 master_sites            sourceforge
 
-checksums               rmd160  0dd7e5458ee9747a8e310b8df44cbf974611a8be \
-                        sha256  4bd0caa18632d3af5cb672cf9b7051cd9ef5ba42eca3d31412d3c8a3166a0a27 \
-                        size    3857842
+checksums               rmd160  3150b9dc8219baedec372463992d380432ab7620 \
+                        sha256  9f1f32ba553ed5df0d9251427a824e4646d7d47dbdfb3afef0c9c3b5b677a2c4 \
+                        size    3862334
+
+if {![variant_isset applications]} {
+    compiler.cxx_standard   2011
+} else {
+    # poppler requires C++14
+    compiler.cxx_standard   2014
+}
+
+# fix error with newer Poppler
+patchfiles-append       patch-poppler.diff
+# fix another error with newer Poppler
+patchfiles-append       patch-poppler_const.diff
 
 depends_build-append    port:pkgconfig
 
 depends_lib-append      port:zlib \
-                        port:openssl \
+                        path:lib/libssl.dylib:openssl \
                         port:expat \
                         port:jsoncpp port:json-c \
                         port:socketxx \
@@ -47,18 +58,18 @@ configure.args-append   -DGDCM_BUILD_SHARED_LIBS=ON \
                         -DGDCM_USE_VTK=ON
 
 variant applications description {build Application} {
-    PortGroup             qt5 1.0
-    depends_lib-append    port:poppler \
-                          port:libxml2
-    configure.args-append -DGDCM_BUILD_APPLICATIONS=ON \
-                          -DGDCM_USE_SYSTEM_POPPLER=ON \
-                          -DGDCM_USE_SYSTEM_LIBXML2=ON \
-                          -DCMAKE_CXX_STANDARD=11
+    PortGroup               qt5 1.0
+    depends_lib-append      port:poppler \
+                            port:libxml2
+    configure.args-append   -DGDCM_BUILD_APPLICATIONS=ON \
+                            -DGDCM_USE_SYSTEM_POPPLER=ON \
+                            -DGDCM_USE_SYSTEM_LIBXML2=ON \
+                            -DCMAKE_CXX_STANDARD=14
 }
 
 # installation seems to hang
 #variant docs description {Build source documentation} {
-#    depends_build-append  port:doxygen \
-#                          port:libxslt
-#    configure.args-append -DGDCM_DOCUMENTATION=ON
+#    depends_build-append    port:doxygen \
+#                            port:libxslt
+#    configure.args-append   -DGDCM_DOCUMENTATION=ON
 #}

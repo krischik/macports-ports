@@ -7,7 +7,8 @@
 
 global available_qt_versions
 array set available_qt_versions {
-    qt5   {qt5-qtbase   5.13}
+    qt5   {qt5-qtbase   5.14}
+    qt513 {qt513-qtbase 5.13}
     qt511 {qt511-qtbase 5.11}
     qt59  {qt59-qtbase  5.9}
     qt58  {qt58-qtbase  5.8}
@@ -17,6 +18,11 @@ array set available_qt_versions {
     qt53  {qt53-qtbase  5.3}
 }
 #qt5-kde {qt5-kde 5.8}
+
+global custom_qt_versions
+array set custom_qt_versions {
+    phantomjs-qt {phantomjs-qt-qtbase 5.5}
+}
 
 # Qt has what is calls reference configurations, which are said to be thoroughly tested
 # Qt also has configurations which are "occasionally tested" or are "[d]eployment only"
@@ -115,6 +121,7 @@ proc qt5.get_default_name {} {
         #
         # macOS Sierra (10.12)
         #
+        # Qt 5.14: Not Supported
         # Qt 5.13: Supported
         # Qt 5.12: Supported
         # Qt 5.11: Supported
@@ -123,12 +130,13 @@ proc qt5.get_default_name {} {
         # Qt 5.8:  Supported
         # Qt 5.7:  Not Supported but seems to work
         #
-        return qt5
+        return qt513
         #
     } elseif { ${os.major} == 17 } {
         #
         # macOS High Sierra (10.13)
         #
+        # Qt 5.14: Supported
         # Qt 5.13: Supported
         # Qt 5.12: Supported
         # Qt 5.11: Supported
@@ -140,6 +148,7 @@ proc qt5.get_default_name {} {
         #
         # macOS Mojave (10.14)
         #
+        # Qt 5.14: Supported
         # Qt 5.13: Supported
         # Qt 5.12: Supported
         #
@@ -149,6 +158,7 @@ proc qt5.get_default_name {} {
         #
         # macOS Catalina (10.15)
         #
+        # Qt 5.14: Supported
         # Qt 5.13: Not Supported but seems to work
         # Qt 5.12: Not Supported but seems to work
         #
@@ -190,6 +200,12 @@ if {[info exists name]} {
     }
 }
 
+if {[info exists qt5.custom_qt_name]} {
+    set qt5.name       ${qt5.custom_qt_name}
+    set qt5.base_port  [lindex $custom_qt_versions(${qt5.name}) 0]
+    set qt5.version    [lindex $custom_qt_versions(${qt5.name}) 1]
+}
+
 if {[tbool just_want_qt5_version_info]} {
     return
 }
@@ -197,6 +213,9 @@ if {[tbool just_want_qt5_version_info]} {
 # standard install directory
 global qt_dir
 set qt_dir               ${prefix}/libexec/qt5
+if {[info exists qt5.custom_qt_name]} {
+    set qt_dir           ${prefix}/libexec/${qt5.custom_qt_name}
+}
 
 # standard Qt non-.app executables directory
 global qt_bins_dir
@@ -427,6 +446,12 @@ namespace eval qt5pg {
             lib/pkgconfig/Qt5Declarative.pc
             ""
         }
+        qtquick3d {
+            5.14
+            6.0
+            lib/pkgconfig/Qt5Quick3D.pc
+            ""
+        }
         qtquickcontrols {
             5.1
             6.0
@@ -437,6 +462,12 @@ namespace eval qt5pg {
             5.6
             6.0
             lib/pkgconfig/Qt5QuickControls2.pc
+            ""
+        }
+        qtquicktimeline {
+            5.14
+            6.0
+            libexec/qt5/qml/QtQuick/Timeline/libqtquicktimelineplugin.dylib
             ""
         }
         qtremoteobjects {
@@ -711,6 +742,12 @@ foreach {qt_test_name qt_test_info} [array get available_qt_versions] {
         set private_building_qt5 true
     }
 }
+foreach {qt_test_name qt_test_info} [array get custom_qt_versions] {
+    set qt_test_base_port [lindex ${qt_test_info} 0]
+    if {${qt_test_base_port} eq ${subport}} {
+        set private_building_qt5 true
+    }
+}
 
 if {!${private_building_qt5}} {
     pre-configure {
@@ -722,7 +759,7 @@ if {!${private_building_qt5}} {
                 ui_error "qt5 PortGroup: please run `sudo port uninstall --follow-dependents ${qt5.base_port} and try again"
                 return -code error "improper Qt installed"
             }
-        } else {
+        } elseif { ![info exists qt5.custom_qt_name] } {
             if { ${qt5.name} ne [qt5.get_default_name] } {
                 # see https://wiki.qt.io/Qt-Version-Compatibility
                 ui_warn "qt5 PortGroup: default Qt for this platform is [qt5.get_default_name] but ${qt5.name} is installed"

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         IPC-System-Simple 1.25
+perl5.setup         IPC-System-Simple 1.30
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         IPC::System::Simple - Run commands simply, with detailed diagnostics
@@ -12,12 +12,8 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  d952603a779d2611642d769af81004f9c731271c \
-                    sha256  f1b6aa1dfab886e8e4ea825f46a1cbb26038ef3e727fef5d84444aa8035a4d3b
+checksums           rmd160  942037112338db3c443995b865113c6b28878171 \
+                    sha256  22e6f5222b505ee513058fdca35ab7a1eab80539b98e5ca4a923a70a8ae9ba9e \
+                    size    31902
 
-if {${perl5.major} != ""} {
-    depends_build-append \
-                    port:p${perl5.major}-test-nowarnings
-
-    supported_archs noarch
-}
+supported_archs     noarch

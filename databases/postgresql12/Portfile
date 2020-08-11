@@ -8,8 +8,8 @@ PortGroup muniversal 1.0
 
 #remember to update the -doc and -server as well
 name                postgresql12
-version             12.0
-revision            1
+version             12.3
+revision            0
 
 categories          databases
 platforms           darwin
@@ -27,9 +27,9 @@ master_sites        http://ftp3.de.postgresql.org/pub/Mirrors/ftp.postgresql.org
             postgresql:source/v${version}/
 distname            postgresql-${version}
 
-checksums           rmd160  3633b7841072a1c81b521ad5383fca9200d44ee8 \
-                    sha256  cda2397215f758b793f741c86be05468257b0e6bcb1a6113882ab5d0df0855c6 \
-                    size    20177458
+checksums           rmd160  9b8bda078877344f15f627b0b099da613f290362 \
+                    sha256  94ed64a6179048190695c86ec707cc25d016056ce10fc9d229267d9a8f1dcf41 \
+                    size    20439892
 
 use_bzip2           yes
 
@@ -132,9 +132,9 @@ variant python27 conflicts python3 description {add support for python 2.7} {
 }
 
 variant python3 conflicts python27 description {add support for python 3.x} {
-    depends_lib-append      port:python37
+    depends_lib-append      port:python38
     configure.args-append   --with-python
-    configure.python        ${prefix}/bin/python3.7
+    configure.python        ${prefix}/bin/python3.8
 }
 
 variant perl description {add Perl support} {

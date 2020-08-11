@@ -5,8 +5,8 @@ PortGroup               cmake 1.1
 PortGroup               qt5   1.0
 
 name                    qttesting
-version                 20190802
-revision                1
+version                 20200209
+revision                0
 categories              devel
 # same license as ParaView
 license                 BSD
@@ -19,7 +19,7 @@ homepage                https://github.com/Kitware/QtTesting
 
 fetch.type              git
 git.url                 https://github.com/Kitware/QtTesting
-git.branch              c5c8777e422dfcbea19464dbe394417d57cc267d
+git.branch              60683600befb33d47fe245f2666b467073afab01
 
 # allow ParaView to find libraries
 patchfiles-append       patch-variable_name.diff
@@ -30,4 +30,4 @@ configure.args-append   -DQtTesting_QT_VERSION=5 \
 livecheck.type          regexm
 livecheck.version       ${git.branch}
 livecheck.url           https://gitlab.kitware.com/paraview/qttesting/commits/master
-livecheck.regex         {/paraview/qttesting/commit/([0-9a-z]*)}
+livecheck.regex         {/paraview/qttesting/-/commit/([0-9a-z]*)}

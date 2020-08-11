@@ -17,26 +17,33 @@ maintainers             {@patarra gmail.com:patarra} \
 subport kubectl_select {}
 
 # *NOTE* Remember to update `latestVersion` on a version upgrade.
-set latestVersion       kubectl-1.16
+set latestVersion       kubectl-1.17
+subport kubectl-1.17 {
+    set patchNumber     3
+    checksums           rmd160  9ed5190ce4ea3e6d13b35fb05630e202c0a51d0f \
+                        sha256  f6eb09a1734c203a915c8f406c8508f3613752dc35e331db148646066606ef92 \
+                        size    49577376
+}
+
 subport kubectl-1.16 {
-    set patchNumber     2
-    checksums           rmd160  d8d7848c7b3e276c823f13fec17a50e7db134138 \
-                        sha256  5647a28b8d9f0f2dcb9c8a077d5eb17af6e76c702e55dce43d09e181f70b6577 \
-                        size    53015744
+    set patchNumber     7
+    checksums           rmd160  46a312124aab1c65d9a25d56fbc26dbadac5506e \
+                        sha256  360550c7d957408c613ee979794de4df3238e6569be38d45bd0b2e95be675c58 \
+                        size    48834704
 }
 
 subport kubectl-1.15 {
-    set patchNumber     4
-    checksums           rmd160  e769db0689e797c826d879a035a0202588a0df82 \
-                        sha256  45737d73d16a82a7855deb0cf1d7c9bae1315ea59b4364b95482a03cbcc965d2 \
-                        size    48591088
+    set patchNumber     10
+    checksums           rmd160  22bfa8f33cc5edfcff86bccd6a45a051979799cc \
+                        sha256  ac14a937e3b8d70f86f635b08272813f2e00282d05c61c3087bbbd9333738d02 \
+                        size    48600048
 }
 
 subport kubectl-1.14 {
-    set patchNumber     4
-    checksums           rmd160  92a520f847e959e04cf5d7602d8c419fa6c26d1d \
-                        sha256  de3a28b0245d67b81b75f731b74a17def673ae4a87c98071421394888b5495d8 \
-                        size    48702920
+    set patchNumber     10
+    checksums           rmd160  10bdebc38c14482972e0c344d349a6d450c8d182 \
+                        sha256  43d2c24eafb2ef09a6ac77c2b99070668e83edaa325a16a362e304ba578fdc48 \
+                        size    48716328
 }
 
 subport kubectl-1.13 {

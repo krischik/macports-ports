@@ -2,14 +2,13 @@
 
 PortSystem              1.0
 PortGroup               cmake          1.1
-PortGroup               cxx11          1.1
 PortGroup               mpi            1.0
 PortGroup               linear_algebra 1.0
 PortGroup               muniversal     1.0
 
 name                    gmsh
-version                 4.4.1
-revision                0
+version                 4.5.6
+revision                1
 categories              science
 platforms               darwin
 license                 GPL-2+
@@ -21,18 +20,23 @@ long_description        Gmsh is an automatic 3D finite element mesh generator (p
                         cases with parametric input and up to date visualization            \
                         capabilities.
 
-homepage                http://gmsh.info
-master_sites            http://gmsh.info/src/
+homepage                https://gmsh.info
+master_sites            https://gmsh.info/src/
 distname                gmsh-${version}-source
 extract.suffix          .tgz
 
-checksums               rmd160  e126e2f054acb9321fb68299bbc354f6bccc6ce9 \
-                        sha256  853c6438fc4e4b765206e66a514b09182c56377bb4b73f1d0d26eda7eb8af0dc \
-                        size    13227645
+checksums               rmd160  0474d3ea536588111d1c4a95c5c452ccc7893d4f \
+                        sha256  46eaeb0cdee5822fdaa4b15f92d8d160a8cc90c4565593cfa705de90df2a463f \
+                        size    13528509
+
+compiler.cxx_standard   2011
 
 patchfiles              patch-CMakeLists.txt.diff
+# see https://gitlab.onelab.info/gmsh/gmsh/-/issues/849
+patchfiles-append       patch-gmm.diff
 
 mpi.setup
+veclibfort              no
 
 depends_lib-append      port:alglib \
                         path:lib/libfltk.dylib:fltk \
@@ -53,16 +57,13 @@ depends_lib-append      port:alglib \
                         port:szip \
                         port:zlib
 
-# see http://gmsh.info/doc/texinfo/gmsh.html#Compiling-the-source-code
+# see https://gmsh.info/doc/texinfo/gmsh.html#Compiling-the-source-code
 
-# FLTK native file chooser was never used (not entirely clear why)
-#    see https://github.com/macports/macports-ports/commit/ae18700dfba27d7084104ecfd8c33814008e967b
 # install static library
 # install shared library
 # use shared library for Gmsh executable
 # use MacPorts libraries
-configure.args-append   -DENABLE_NATIVE_FILE_CHOOSER=OFF \
-                        -DENABLE_BUILD_LIB=ON \
+configure.args-append   -DENABLE_BUILD_LIB=ON \
                         -DENABLE_BUILD_SHARED=ON \
                         -DENABLE_BUILD_DYNAMIC=ON \
                         -DENABLE_SYSTEM_CONTRIB=ON
@@ -115,20 +116,7 @@ variant oce description {use Community Edition version of Open CASCADE} {
 variant openmp description {enable support for OpenMP} {
     configure.args-append \
                         -DENABLE_OPENMP=ON
-
-    # blacklist all system compilers, which do not support OpenMP
-    # use whatever compilers cxx11 PG deems acceptable
-    compiler.blacklist-append \
-                        clang \
-                        llvm-gcc-4.2 \
-                        gcc-4.2 \
-                        gcc-4.0 \
-                        apple-gcc-4.2
 }
-
-# please remove on 2020-03-16
-subport ${name}-devel {
-    replaced_by         ${name}
-    PortGroup           obsolete 1.0
-
+if {[variant_isset openmp]} {
+    compiler.openmp_version 2.5
 }

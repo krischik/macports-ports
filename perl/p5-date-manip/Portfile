@@ -5,7 +5,7 @@ PortGroup perl5     1.0
 
 name                p5-date-manip
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Date-Manip 6.78
+perl5.setup         Date-Manip 6.82
 
 platforms           darwin
 maintainers         nomaintainer
@@ -18,9 +18,9 @@ long_description    This is a set of routines designed to make any common\
                     amount of time from another, or parsing international \
                     times are all easily done.
 
-checksums           rmd160  226ab8b25b3ca7983b4586845af1ea7916c9739d \
-                    sha256  cb36084401f9e89999c7046811c83ac58ea44fc12827bf61ca1167a79e915db9 \
-                    size    2012388
+checksums           rmd160  7c9551dc38f107e4c504b001d2e71613b16da978 \
+                    sha256  fa96bcf94c6b4b7d3333f073f5d0faad59f546e5aec13ac01718f2e6ef14672a \
+                    size    2015204
 
 if {${perl5.major} != ""} {
     depends_build-append \

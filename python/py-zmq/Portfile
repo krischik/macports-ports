@@ -2,16 +2,17 @@
 
 PortSystem          1.0
 PortGroup           python 1.0
+PortGroup           legacysupport 1.0
 
 name                py-zmq
 
-version             18.1.0
-checksums           rmd160 8b762b1405b8206874672eefb763cb01e7b62f04 \
-                    sha256 93f44739db69234c013a16990e43db1aa0af3cf5a4b8b377d028ff24515fbeb3 \
-                    size   1158509
+version             19.0.1
+checksums           rmd160 c15a1acbeae4e19ac0e33f90f949975218f2ce30 \
+                    sha256 13a5638ab24d628a6ade8f794195e1a1acd573496c3b85af2f1183603b7bf5e0 \
+                    size   1152365
 revision            0
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {gmail.com:jrjsmrtn @jrjsmrtn} {michaelld @michaelld} openmaintainer
 

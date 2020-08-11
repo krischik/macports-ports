@@ -1,9 +1,10 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
-PortGroup           github 1.0
+PortGroup           golang 1.0
 
-github.setup        wtfutil wtf 0.23.0 v
+go.setup            github.com/wtfutil/wtf 0.30.0 v
+
 homepage            https://wtfutil.com
 
 name                wtfutil
@@ -17,28 +18,17 @@ description         A personal terminal-based dashboard utility, designed for \
                     data.
 long_description    ${description}
 
-fetch.type          git
+checksums           rmd160  4a63bfc0fa035f9a1e5a151596288e481f29560b \
+                    sha256  04cdbb17545dc1558ef1f69759d6fd2f5a5ef20a3b1aa8a082d245818379e941 \
+                    size    2237899
 
-depends_build       port:go
+set build_date      [exec date +%FT%T%z]
 
-use_configure       no
-use_parallel_build  no
-
-build.env           GOPATH=${workpath} \
-                    PATH=$env(PATH):${workpath}/bin
-
-build.target        install
-
-post-extract {
-    reinplace "s|@mv ~/go/bin/wtf ~/go/bin/wtfutil|@mv \$\$GOPATH/bin/wtf \$\$GOPATH/bin/wtfutil|g" ${worksrcpath}/Makefile
-}
-
-post-build {
-    exec go clean
-}
+build.args          -o ${name} -ldflags \
+                        '-X main.version=${version} -X main.date=${build_date}'
 
 destroot {
-    xinstall -m 755 ${workpath}/bin/${name} ${destroot}${prefix}/bin/${name}
+    xinstall -m 755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/${name}
     xinstall -d -m 0755 ${destroot}${prefix}/share/${name}
     xinstall -d -m 0755 ${destroot}${prefix}/share/${name}/sample_configs
 

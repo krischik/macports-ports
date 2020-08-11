@@ -4,16 +4,17 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Log-Any-Adapter-Callback 0.09
+perl5.setup         Log-Any-Adapter-Callback 0.101
 license             {Artistic-1 GPL}
 maintainers         {devans @dbevans} openmaintainer
-description         Log::Any::Adapter::Callback - Send Log::Any logs to a subroutine
+description         Log::Any::Adapter::Callback - (DEPRECATED) Send Log::Any logs to a subroutine
 long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  237dc8842cf813ec1518380c2b6fa335ed79743c \
-                    sha256  68f6b55f0ff7cff763d463097cbef5540c255bed820438f10d1f555f731c9671
+checksums           rmd160  993a09211f9236ca75e6d9102ba44179915573ab \
+                    sha256  d008075a2ceb57bb7e96d5e63b8ce8ec5b987fc9f224b460cba7eff73b954a16 \
+                    size    15512
 
 if {${perl5.major} != ""} {
     depends_lib-append \

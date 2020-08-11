@@ -4,27 +4,24 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        rocky python-filecache 1.0.0 release-
+github.setup        rocky python-filecache 2.1.0
 revision            0
 name                py-pyficache
 
 platforms           darwin
 supported_archs     noarch
 license             GPL-3+
-maintainers         nomaintainer
+maintainers         {reneeotten @reneeotten} openmaintainer
 
-description         A Python module to read and cache lines and file \
-                    info of a Python program
-long_description    The pyficache module allows one to get any line \
-                    from any file, caching lines of the file on first \
-                    access to the file. Although the file may be any \
-                    file, the common use is when the file is a Python \
-                    script since parsing of the file is done to figure \
-                    out where the statement boundaries are.
+description         A Python module for reading and caching lines
+long_description    The pyficache module allows one to get any line from \
+                    any file, caching lines of the file on first access \
+                    to the file. Although the file may be any file, the \
+                    common use is when the file is a Python script.
 
-checksums           rmd160  b1f950c3ee5a043ed26795f331fb10f7a2455eaa \
-                    sha256  8db3241a6648fd3ac478daa19786d722e8f6eaa3f5158af28c3ff86cfef34b1e \
-                    size    43907
+checksums           rmd160  92357349a1986e1f9173b3414c039c5641fd8cf6 \
+                    sha256  4aa908bf384729bc70efe28085ed432b5a18a50c6cfb8de8d896a907532a7eea \
+                    size    47203
 
 python.versions     27 35 36 37 38
 
@@ -33,8 +30,8 @@ if {${subport} ne ${name}} {
                     port:py${python.version}-setuptools
 
     depends_lib-append \
-                    port:py${python.version}-coverage \
-                    port:py${python.version}-pygments
+                    port:py${python.version}-pygments \
+                    port:py${python.version}-xdis
 
     depends_lib-append \
                     port:py${python.version}-nose
@@ -46,8 +43,10 @@ if {${subport} ne ${name}} {
         set docdir ${prefix}/share/doc/${subport}
         xinstall -d ${destroot}${docdir}
         xinstall -m 0644 -W ${worksrcpath} COPYING ChangeLog \
-           NEWS README.rst ${destroot}${docdir}
+           NEWS.md README.rst ${destroot}${docdir}
     }
 
     livecheck.type  none
+} else {
+    github.livecheck.regex  (\[0-9\.\]+)
 }

@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-smart_open
-version             1.8.4
+version             2.0.0
 revision            0
 categories-append   textproc
 platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 35 36 37
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -20,26 +20,29 @@ long_description    ${description}
 
 homepage            https://github.com/RaRe-Technologies/smart_open
 
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  f78ba34008e423c2b7d49a6427faa70c8ebbe070 \
-                    sha256  788e07f035defcbb62e3c1e313329a70b0976f4f65406ee767db73ad5d2d04f9 \
-                    size    63648
+checksums           rmd160  747530cfbdaec8c442fe542d8f313569e06fadc6 \
+                    sha256  555962abf982faff8a8aeb65e0695474e3091f604826055782beffa8400e4e4e \
+                    size    103982
 
 if {${name} ne ${subport}} {
     depends_build-append \
                         port:py${python.version}-setuptools
 
-    depends_lib-append  port:py${python.version}-boto \
-                        port:py${python.version}-bz2file \
-                        port:py${python.version}-requests \
-                        port:py${python.version}-boto3
+    if {${python.version} <= 35} {
+        version             1.10.1
+        revision            0
+        distname            ${python.rootname}-${version}
+        checksums           rmd160  83609eda4fa2bac442ca87a7b3c3ffd08fd2324c \
+                            sha256  c1a65a9b59e2d76626d81c483180733feb763570224239e4ea9ffd836651b131 \
+                            size    92788
+
+        if {${python.version} eq 27} {
+            depends_lib-append  port:py${python.version}-bz2file
+        }
+    }
+
+    depends_lib-append  port:py${python.version}-boto3 \
+                        port:py${python.version}-requests
 
     livecheck.type      none
-}
-
-subport py34-${python.rootname} {
-    replaced_by py35-${python.rootname}
-    PortGroup obsolete 1.0
 }

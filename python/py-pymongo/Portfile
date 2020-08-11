@@ -4,13 +4,12 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pymongo
-version             3.9.0
+version             3.10.1
 revision            0
 categories-append   databases
 platforms           darwin
 license             Apache
-
-python.versions     27 34 35 36 37
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -19,14 +18,11 @@ long_description \
         The PyMongo distribution contains tools for interacting with \
         the Mongo database from Python.
 
-homepage            http://www.mongodb.org/
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
+homepage            https://www.mongodb.org/
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  496fc7495cd9c9f8eed72919e2bc1d6dee7a8bde \
-                    sha256  4249c6ba45587b959292a727532826c5032d59171f923f7f823788f413c2a5a3 \
-                    size    701117
+checksums           rmd160  ec4aef0193194ee32f5954989b0aaaaf39b9b57e \
+                    sha256  993257f6ca3cde55332af1f62af3e04ca89ce63c08b56a387cdd46136c72f2fa \
+                    size    715892
 
 if {${name} ne ${subport}} {
     conflicts               py${python.version}-bson

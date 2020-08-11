@@ -1,0 +1,35 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/derailed/k9s 0.20.5 v
+homepage            https://k9scli.io
+
+categories          sysutils devel
+maintainers         {breun.nl:nils @breun} openmaintainer
+description         K9s
+long_description    K9s provides a curses based terminal UI to interact with \
+                    your Kubernetes clusters. The aim of this project is to \
+                    make it easier to navigate, observe and manage your \
+                    applications in the wild. K9s continually watches \
+                    Kubernetes for changes and offers subsequent commands to \
+                    interact with observed Kubernetes resources.
+
+platforms           darwin
+supported_archs     x86_64
+license             Apache-2
+
+checksums           rmd160  541b1ef56dae29caa2240a704e53833bf70bd0b0 \
+                    sha256  32e90af5a03e250c9833f97aa5372819eda1f7b34fecf3d7a409d902256cd569 \
+                    size    6075210
+
+# Reproduce the "build" target from the upstream Makefile
+set go_ldflags      "-w -X ${go.package}/cmd.version=${version} \
+    -X ${go.package}/cmd.commit=unknown \
+    -X ${go.package}/cmd.date=unknown"
+build.args          -ldflags \"${go_ldflags}\" ${go.package}
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/
+}

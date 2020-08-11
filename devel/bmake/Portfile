@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                bmake
-version             20171207
+version             20200524
 categories          devel
 platforms           darwin
 license             BSD
@@ -14,9 +14,9 @@ master_sites        http://www.crufty.net/ftp/pub/sjg/
 description         Portable NetBSD make
 long_description    bmake is the portable version of NetBSD make.
 
-checksums           rmd160  41fe45f90b5e2f6f82957f3f5f41355bd1e1b118 \
-                    sha256  1703667e53a0498c0903b20612ebcbb41b886a94b238624cfeadd91a4111d39a \
-                    size    555275
+checksums           rmd160  6975f56a51fb40a146a47a47f1c00074c24ccfee \
+                    sha256  79e72bbab47dad2cfc8e6041a61287fb852109c8e3dc1defc5a2b64e3966dadb \
+                    size    577739
 
 worksrcdir          ${name}
 

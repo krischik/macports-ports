@@ -17,14 +17,20 @@ set llvm_version        3.7
 set llvm_version_no_dot 37
 name                    llvm-${llvm_version}
 revision                4
-subport                 clang-${llvm_version} { revision 5 }
+subport                 clang-${llvm_version} { revision 6 }
 set suffix              mp-${llvm_version}
 set sub_prefix          ${prefix}/libexec/llvm-${llvm_version}
 dist_subdir             llvm
 categories              lang
 platforms               darwin
 license                 NCSA
-maintainers             {jeremyhu @jeremyhu} {larryv @larryv}
+maintainers             {jeremyhu @jeremyhu} {larryv @larryv} {kencu @kencu}
+
+# needs xcode to build
+#see https://trac.macports.org/ticket/59677
+#see https://trac.macports.org/ticket/58779
+#see https://trac.macports.org/ticket/60196
+use_xcode yes
 
 if {${subport} eq "llvm-${llvm_version}"} {
     homepage            https://llvm.org/
@@ -52,7 +58,7 @@ if {${subport} eq "llvm-${llvm_version}"} {
                         that can be built using the Clang frontend as a \
                         library to parse C/C++ code.
 
-    depends_lib         port:libxml2 port:llvm-${llvm_version} port:python27
+    depends_lib         port:libxml2 port:llvm-${llvm_version}
     depends_run         port:clang_select port:ld64
     depends_build       port:cctools
     depends_skip_archcheck-append cctools ld64
@@ -62,7 +68,20 @@ if {${subport} eq "llvm-${llvm_version}"} {
     # after #46040 is resolved.
     depends_lib-append  port:libedit port:libffi port:ncurses port:zlib
 
-    default_variants    +analyzer
+    # Avoid requiring a bootstrap version of perl5 on 10.6.
+    if {${os.major} >= 11} {
+        default_variants    +analyzer
+    }
+
+    # port:libxml2 depends on port:icu which now needs a C++11 compiler
+    # this is problematic for bootstrapping, and clang in fact does not require libxml2
+    # (although c-index-test will optionally use it if it is installed)
+    # remove the dependency, and force any installed version of libxml2 to
+    # be ignored during configuration for consistent building
+    if {${os.major} < 13} {
+        depends_lib-delete     port:libxml2
+        configure.env-append   ac_cv_lib_xml2_xmlReadFile=no
+    }
 }
 
 #fetch.type              svn
@@ -185,6 +204,14 @@ configure.args          --enable-bindings=none --enable-libffi --enable-shared -
                         --enable-debug-symbols --disable-debug-runtime \
                         --prefix="${sub_prefix}" --disable-assertions
 
+# use the system python27 if present
+if {${os.platform} eq "darwin" && ${os.major} >= 11} {
+	set pythonfullpath   /usr/bin/python2.7
+} else {
+	set pythonfullpath   ${prefix}/bin/python2.7
+	depends_lib-append   port:python27
+}
+
 if {${subport} eq "llvm-${llvm_version}"} {
     select.group        llvm
     select.file         ${filespath}/mp-${subport}
@@ -192,7 +219,7 @@ if {${subport} eq "llvm-${llvm_version}"} {
     select.group        clang
     select.file         ${filespath}/mp-${subport}
 
-    configure.args-append --with-python=${prefix}/bin/python2.7
+    configure.args-append --with-python=${pythonfullpath}
 }
 
 # llvm-3.5 and later requires a C++11 runtime
@@ -397,7 +424,7 @@ if {${subport} eq "llvm-${llvm_version}"} {
                 ${worksrcpath}/tools/clang/tools/scan-build/ccc-analyzer \
                 ${worksrcpath}/tools/clang/tools/scan-build/c++-analyzer \
                 ${worksrcpath}/tools/clang/tools/scan-build/scan-build
-            reinplace "s|/usr/bin/env python|${prefix}/bin/python2.7|g" \
+            reinplace "s|/usr/bin/env python|${pythonfullpath}|g" \
                 ${worksrcpath}/tools/clang/tools/scan-build/set-xcode-analyzer \
                 ${worksrcpath}/tools/clang/tools/scan-view/scan-view
         }

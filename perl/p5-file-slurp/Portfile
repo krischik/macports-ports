@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         File-Slurp 9999.28 ../../authors/id/C/CA/CAPOEIRAB
+perl5.setup         File-Slurp 9999.30 ../../authors/id/C/CA/CAPOEIRAB
 maintainers         nomaintainer
 license             {Artistic-1 GPL}
 description         Efficient reading/writing of complete files
@@ -19,8 +19,8 @@ long_description    This module provides subs that allow you to read or \
 
 platforms           darwin
 
-checksums           rmd160  71d9f6baa4845bbfbd53ae114274bcdcc01bd2de \
-                    sha256  0587ce010bcb79db9e744f14b5498be97bf2c7f2474d971916d92f0a10827cee \
-                    size    36049
+checksums           rmd160  aa2ba9ded270cd427b450573669cc86a192e80ba \
+                    sha256  2a37163db0b9454e48eb308dac1fc27571be086e0864c9083bed88d9c4e93747 \
+                    size    37889
 
 supported_archs     noarch

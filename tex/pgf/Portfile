@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           texlive 1.0
 PortGroup           github 1.0
 
-github.setup        pgf-tikz pgf 3.1.4b
+github.setup        pgf-tikz pgf 3.1.5b
+revision            0
 categories          tex textproc
 platforms           darwin
 license             {GPL-2 LPPL-1.3}
@@ -22,9 +23,9 @@ homepage            http://sourceforge.net/projects/pgf/
 
 depends_lib         bin:texhash:texlive-basic
 
-checksums           rmd160  a48d10595e79265fe2c8e266c97e36b5023a6467 \
-                    sha256  65c516c6b1ac725381b2f143cc9e440b6cb1e487c866925063a8994b13a6e057 \
-                    size    2426793
+checksums           rmd160  d05cbbaa8879816251316d6ddf26425cc7c7f7b9 \
+                    sha256  7221f01eeda80858c27ee3f33345c571924cb4bf2b0707d092a5efdf3b46818e \
+                    size    2597466
 
 # the patchfiles are only relevant if building the C code gets enabled one day,
 # but the patches are not complete yet (building the module is not working)

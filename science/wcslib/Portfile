@@ -4,12 +4,12 @@ PortSystem          1.0
 PortGroup           compilers 1.0
 
 name                wcslib
-version             6.4
+version             7.3
 revision            0
 
-checksums           rmd160  2783f7b25c8cadc9ca884547ac9c27aa26d66129 \
-                    sha256  13c11ff70a7725563ec5fa52707a9965fce186a1766db193d08c9766ea107000 \
-                    size    2379163
+checksums           rmd160  26a64819c346a241ffbfe853937319028f096c7c \
+                    sha256  4b01cf425382a26ca4f955ed6841a5f50c55952a2994367f8e067e4183992961 \
+                    size    2435669
 
 categories          science
 license             LGPL-3+

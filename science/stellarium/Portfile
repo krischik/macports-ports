@@ -1,9 +1,6 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem      1.0
-PortGroup       github 1.0
-PortGroup       cmake 1.0
-PortGroup       qt5 1.0
 
 name            stellarium
 categories      science
@@ -16,96 +13,89 @@ long_description ${description} \
     It shows a realistic sky in 3D, just like what you see with the naked eye, \
     binoculars or a telescope. It is being used in planetarium projectors. Just \
     set your coordinates and go.
+homepage        https://stellarium.org/
 
-subport stellarium-devel {}
+subport stellarium-devel {
+    # deprecate the devel port, if installed
+    # can be removed after 20210401
+    PortGroup   obsolete 1.0
+    replaced_by stellarium
+    version     20200211-3d0abddc
+    revision    1
+    depends_build
+    depends_lib
+}
 
 if {${name} eq ${subport}} {
 
     # release
 
-    conflicts    stellarium-devel stellarium-qt4
-    github.setup Stellarium stellarium 0.19.2 v
-    checksums    rmd160 bfc9fbe67b8f6f574175f29154b0224794bea6fd \
-                 sha256 06668190d4df5dad351a92ac3466dc3723946bb9bcbc5f908a30d1022bbc1570 \
-                 size   318695000
+    PortGroup    github 1.0
+    PortGroup    cmake 1.0
+    PortGroup    qt5 1.0
+
+    conflicts    stellarium-qt4
+    github.setup Stellarium stellarium 0.20.1 v
+    checksums    rmd160 ee60318d167c4e4ffe0c1824a322580168dfe03b \
+                 sha256 956186ac4ed51255af89169d9c8fd2ae2d9a3783395b25757b63d3ac6d9b87df \
+                 size   344283414
     revision     0
 
-    # temporary fix for the gpsd API changes
-    patchfiles-append patch-fix-gpsd-api.release.diff
+    # builds as 64-bit only, according to its top-level CMakeLists.txt file
+    universal_variant no
 
-} else {
+    qt5.depends_component qtlocation qtmultimedia qtscript qtserialport qttools
 
-    # devel
+    depends_lib-append \
+        port:zlib \
+        path:lib/libgps.dylib:gpsd \
+        port:gettext \
+        port:doxygen \
+        port:python27
 
-    long_description  ${long_description}: \
-        This port is kept up with the Stellarium GIT master branch, which is typically updated daily to weekly.
+    # for libqcocoa.dylib (if not above)
 
-    conflicts    stellarium stellarium-qt4
-    github.setup Stellarium stellarium 7603b928329565e946dc31f77754ee0eb04570ce
-    version   20191110-[string range ${github.version} 0 7]
-    checksums rmd160 e1242083b47d7c601364d669603a2abb3efeb857 \
-              sha256 9d3a8c046f8c2aa628588872722e521ee0147b8b44447f0eeb9e868de8f153e7 \
-              size   319237569
-    revision  0
+    depends_lib-append \
+        path:lib/pkgconfig/glib-2.0.pc:glib2 \
+        port:fontconfig \
+        port:freetype
 
-    # temporary fix for the gpsd API changes
-    patchfiles-append patch-fix-gpsd-api.devel.diff
+    # fix the install prefix for MP use only
+    patchfiles-append patch-CMakeLists.txt.diff
 
-}
+    compiler.c_standard     2011
+    compiler.cxx_standard   2011
 
-homepage        http://stellarium.org/
+    # do VPATH (out of source tree) build
 
-# builds as 64-bit only, according to its top-level CMakeLists.txt file
-universal_variant no
+    cmake.out_of_source yes
 
-qt5.depends_component qtlocation qtmultimedia qtscript qtserialport qttools
+    # prevent opportunistic use of ccache
+    if {![tbool configure.ccache]} {
+        configure.args-append -DCCACHE_PROGRAM=""
+    }
 
-depends_lib-append \
-    port:zlib \
-    path:lib/libgps.dylib:gpsd \
-    port:gettext \
-    port:doxygen \
-    port:python27
+    # special args for our needs
 
-# for libqcocoa.dylib (if not above)
+    configure.args-append \
+        -DMP_APPLICATIONS_DIR=${applications_dir} \
+        -DPYTHON_EXECUTABLE=${prefix}/bin/python2.7
 
-depends_lib-append \
-    path:lib/pkgconfig/glib-2.0.pc:glib2 \
-    port:fontconfig \
-    port:freetype
+    # This post-destroot phase is similar to the 'make macosx_bundle' target,
+    # but it does not copy libraries into the bundle and does not require perl as
+    # another dependency
+    post-destroot {
+        set appdir ${destroot}${applications_dir}/Stellarium.app/Contents
 
-# fix the install prefix for MP use only
-patchfiles-append patch-CMakeLists.txt.diff
+        # move App parts around internally
+        move ${appdir}/share ${appdir}/Resources
 
-# do VPATH (out of source tree) build
+        # copy other useful file(s)
+        copy ${worksrcpath}/util/qt.conf ${appdir}/Resources/
 
-cmake.out_of_source yes
-
-# prevent opportunistic use of ccache
-if {![tbool configure.ccache]} {
-    configure.args-append -DCCACHE_PROGRAM=""
-}
-
-# special args for our needs
-
-configure.args-append \
-    -DMP_APPLICATIONS_DIR=${applications_dir} \
-    -DPYTHON_EXECUTABLE=${prefix}/bin/python2.7
-
-# This post-destroot phase is similar to the 'make macosx_bundle' target,
-# but it does not copy libraries into the bundle and does not require perl as
-# another dependency
-post-destroot {
-    set appdir ${destroot}${applications_dir}/Stellarium.app/Contents
-
-    # move App parts around internally
-    move ${appdir}/share ${appdir}/Resources
-
-    # copy other useful file(s)
-    copy ${worksrcpath}/util/qt.conf ${appdir}/Resources/
-
-    # copy the required qcocoa plugin
-    xinstall -m 755 -d ${appdir}/plugins/platforms
-    copy ${qt_plugins_dir}/platforms/libqcocoa.dylib \
-        ${appdir}/plugins/platforms
+        # copy the required qcocoa plugin
+        xinstall -m 755 -d ${appdir}/plugins/platforms
+        copy ${qt_plugins_dir}/platforms/libqcocoa.dylib \
+            ${appdir}/plugins/platforms
+    }
 }

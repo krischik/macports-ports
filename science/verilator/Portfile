@@ -1,10 +1,9 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem              1.0
-PortGroup               cxx11 1.1
 
 name                    verilator
-version                 4.016
+version                 4.034
 revision                0
 categories              science electronics
 license                 {LGPL-3 Artistic-2}
@@ -19,12 +18,38 @@ master_sites            https://www.veripool.org/ftp
 
 extract.suffix          .tgz
 
-checksums               rmd160  eba0e31b5b4a9769fb65b842c9a4b9d4b34ecfb6 \
-                        sha256  328a8f85c4fb0ecdabbf56e3c261485234dd1c28211e413101c533fdaea9d8a1 \
-                        size    2536449
+checksums               rmd160  4f4202975759303c4dd48c5a1296b68b1c9ef59e \
+                        sha256  54ed7b06ee28b5d21f9d0ee98406d29a508e6124b0d10e54bb32081613ddb80b \
+                        size    2612571
+
+compiler.cxx_standard   2014
 
 installs_libs           no
 
-livecheck.type          regex
-livecheck.url           https://www.veripool.org/projects/verilator/news
+depends_build-append    port:perl5.28
+configure.perl          ${prefix}/bin/perl5.28
+
+depends_build-append    port:flex
+configure.env-append    LEX=${prefix}/bin/flex
+
+depends_build-append    port:grep
+configure.env-append    GREP=${prefix}/bin/grep
+
+depends_build-append    port:flex
+configure.env-append    FLEX=${prefix}/bin/flex
+
+#avoid
+#    In file included from ../V3ParseGrammar.cpp:22:
+#    verilog.c:686:40: warning: '/*' within block comment [-Wcomment]
+#        yVL_CLOCK = 610,               /* "/*verilator sc_clock*/"  */
+#                                           ^
+#    verilog.c:686:62: warning: missing terminating '"' character [-Winvalid-pp-token]
+#        yVL_CLOCK = 610,               /* "/*verilator sc_clock*/"  */
+#                                                                 ^
+#    verilog.c:686:62: error: expected identifier
+#depends_build-append    port:bison
+#configure.env-append    YACC=${prefix}/bin/bison
+configure.env-append    YACC=/usr/bin/bison
+
+livecheck.url           https://www.veripool.org
 livecheck.regex         "Verilator (\\d+(?:\\.\\d+)*) Released"

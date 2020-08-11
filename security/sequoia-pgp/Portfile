@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                sequoia-pgp
-version             0.10.0
+version             0.17.0
 categories          security
 maintainers         {jann @roederja} openmaintainer
 license             GPL-3+
@@ -23,18 +23,18 @@ build.target        build-release
 build.post_args-append     PYTHON=disable PREFIX=${prefix}
 destroot.post_args-append  PYTHON=disable PREFIX=${prefix}
 
-checksums           rmd160  5b9cd515bdbc06d926777b34cd0073840f714863 \
-                    sha256  b8c6b50a3025a8f499c4c2fdf2cfaa102e3dabff81c0f390b892a130c08f7a1f \
-                    size    1584598
+checksums           rmd160  4c0fb33785a9730f699c53908dca0cd66b410b9d \
+                    sha256  253b687f93dfe01876e09aace05aeaa84c24ada81ca5d9341eb77c599012875b \
+                    size    1781151
 
 depends_build       port:pkgconfig \
-                    bin:ginstall:coreutils \
+                    port:coreutils \
                     port:cargo \
                     port:rust
 depends_lib         port:capnproto \
                     port:nettle \
                     port:sqlite3 \
-                    port:openssl
+                    path:lib/libssl.dylib:openssl
 
 livecheck.type      regex
 livecheck.url       https://gitlab.com/sequoia-pgp/sequoia/-/tags

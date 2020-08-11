@@ -22,10 +22,10 @@ homepage        https://www.gnu.org/software/emacs/emacs.html
 master_sites    gnu
 
 if {$subport eq $name} {
-    conflicts   xemacs emacs-devel
+    conflicts   emacs-devel
 }
 subport emacs-devel {
-    conflicts   xemacs $name
+    conflicts   $name
 }
 subport emacs-app {
     conflicts   emacs-app-devel
@@ -58,6 +58,12 @@ post-destroot {
     xinstall -d ${destroot}${prefix}/share/emacs/${version}/leim
     delete ${destroot}${prefix}/bin/ctags
     delete ${destroot}${prefix}/share/man/man1/ctags.1.gz
+
+    # avoid conflicts with xemacs
+    if {$subport eq $name || $subport eq "emacs-devel"} {
+        move ${destroot}${prefix}/bin/etags ${destroot}${prefix}/bin/etags-emacs
+        move ${destroot}${prefix}/share/man/man1/etags.1.gz ${destroot}${prefix}/share/man/man1/etags-emacs.1.gz
+    }
 }
 
 platform darwin {
@@ -73,13 +79,13 @@ platform darwin {
 
 if {$subport eq $name || $subport eq "emacs-app"} {
     version         26.3
-    revision        1
+    revision        7
 
     checksums       rmd160  263c0152f538d3371c60accb710f3825b01ae097 \
                     sha256  09c747e048137c99ed35747b012910b704e0974dde4db6696fde7054ce387591 \
                     size    65207899
 
-    patchfiles      patch-configure.diff
+    patchfiles      patch-configure.diff patch-fix-unexec.diff
 
     pre-configure {
         system -W ${worksrcpath} "sh ./autogen.sh"
@@ -88,18 +94,20 @@ if {$subport eq $name || $subport eq "emacs-app"} {
 
 if {$subport eq "emacs-devel" || $subport eq "emacs-app-devel"} {
     epoch           1
-    version         20190829
+    version         20200524
+    revision        1
 
     fetch.type      git
-    git.url         http://git.savannah.gnu.org/r/emacs.git
-    git.branch      9df285250bc30b5ba86a19c817eea0c56164e022
+    git.url         https://github.com/emacs-mirror/emacs.git
+    git.branch      e7a3ed8a6dddb6e16c83d27a04dfa6ec8160e580
 
     pre-configure {
         system -W ${worksrcpath} "sh ./autogen.sh"
     }
 
     configure.args-append  --with-json
-    depends_lib-append     port:jansson
+    depends_lib-append     port:jansson \
+                           port:gmp
 
     livecheck.type none
 } else {
@@ -133,6 +141,10 @@ if {$subport eq $name || $subport eq "emacs-devel"} {
             port:libpng \
             port:lcms2 \
             port:Xft2
+
+        if {$subport eq "emacs-devel"} {
+            depends_lib-append port:harfbuzz
+        }
 
         # autoconf appears to be dropping linker flags for freetype &
         # fontconfig; work around this. See #28083
@@ -182,6 +194,10 @@ if {$subport eq $name || $subport eq "emacs-devel"} {
     }
 }
 
+if {$subport eq "emacs-app-devel"} {
+    configure.args-append --without-harfbuzz
+}
+
 if {$subport eq "emacs-app" || $subport eq "emacs-app-devel"} {
     categories-append   aqua
 
@@ -191,6 +207,15 @@ if {$subport eq "emacs-app" || $subport eq "emacs-app-devel"} {
     depends_lib-append     port:lcms2
 
     universal_variant   no
+
+    if {$subport eq "emacs-app-devel"} {
+        patchfiles-append   patch-Info.plist.in-devel.diff
+    } else {
+        patchfiles-append   patch-Info.plist.in.diff
+    }        
+    post-patch {
+        reinplace "s,@PATH@,${prefix}/bin:${prefix}/sbin:/usr/bin:/bin:/usr/sbin:/sbin," ${worksrcpath}/nextstep/templates/Info.plist.in
+    }
 
     destroot {
         system -W ${worksrcpath} "make install"
@@ -206,13 +231,11 @@ if {$subport eq "emacs-app" || $subport eq "emacs-app-devel"} {
     }
 
     if {$subport eq "emacs-app"} {
-        revision 4
-    }
-
-    variant multicolor_font description {Apply multicolor font patch} {
-        # Revert "Disable multicolor fonts on OS X..."
-        # This reverts commit 9344612d3cd164317170b6189ec43175757e4231.
-        patchfiles-append   patch-enable-multicolor-fonts.diff
+        variant multicolor_font description {Apply multicolor font patch} {
+            # Revert "Disable multicolor fonts on OS X..."
+            # This reverts commit 9344612d3cd164317170b6189ec43175757e4231.
+            patchfiles-append patch-enable-multicolor-fonts.diff
+        }
     }
 
     variant imagemagick description {Use ImageMagick} {

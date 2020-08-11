@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           compiler_blacklist_versions 1.0
 
 name                mplayer-devel
-version             38122
-revision            0
+version             38174
+revision            1
 categories          multimedia
 license             GPL-2+
 maintainers         {jeremyhu @jeremyhu} openmaintainer

@@ -1,12 +1,11 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem              1.0
-PortGroup               cxx11 1.1
 
 name                    bitcoin
 categories              finance crypto
-version                 0.17.1
-revision                3
+version                 0.20.0
+revision                0
 platforms               darwin
 license                 MIT
 maintainers             {easieste @easye} yopmail.com:sami.laine openmaintainer
@@ -20,35 +19,32 @@ long_description        Bitcoin is a peer-to-peer digital currency. By peer-to-p
 homepage                https://bitcoin.org/
 master_sites            ${homepage}bin/bitcoin-core-${version}/
 
-checksums           rmd160  06ebececcd2888803b50d7d741b0b6d5695ccdbe \
-                    sha256  3e564fb5cf832f39e930e19c83ea53e09cfe6f93a663294ed83a32e194bda42a \
-                    size    6992687
+checksums           rmd160  c6dfc14525e86f0e410c61439ca90dc78fbbe55c \
+                    sha256  ec5a2358ee868d845115dc4fc3ed631ff063c57d5e0a713562d083c5c45efb28 \
+                    size    6980404
 
-depends_build           port:libtool		\
-                        port:pkgconfig		\
-                        port:protobuf3-cpp	\
-                        port:python37
+depends_build           port:autoconf \
+                        port:automake \
+                        port:libtool \
+                        port:pkgconfig \
+                        port:python38
 
 depends_lib             port:boost	\
                         port:libevent	\
                         port:miniupnpc	\
-                        path:lib/libssl.dylib:openssl	\
                         port:zmq
 
 use_parallel_build      yes
+
+configure.cmd           ./autogen.sh && ./configure
 
 configure.args		--disable-ccache		\
 			--disable-silent-rules		\
 			--disable-upnp-default		\
 			--enable-tests			\
 			--disable-bench			\
-			--disable-hardening		\
-			--disable-reduce-exports	\
-			--disable-glibc-back-compat	\
-			--disable-experimental-asm	\
 			--enable-zmq			\
 			--enable-man			\
-			--disable-debug			\
 			--enable-werror			\
 			--enable-largefile		\
 			--with-miniupnpc		\
@@ -56,8 +52,7 @@ configure.args		--disable-ccache		\
 			--with-utils			\
 			--with-libs
 
-# --disable-lcov enables lcov in 0.15.1
-# https://github.com/bitcoin/bitcoin/issues/10828
+compiler.cxx_standard   2011
 
 configure.args-append   --with-daemon=no
 configure.args-append   --with-gui=no
@@ -111,8 +106,10 @@ variant gui description {Build the Qt5 GUI} {
 }
 
 variant wallet description {Build with support for wallet} {
-    configure.args-replace --enable-wallet=no --enable-wallet=yes
     depends_lib-append port:db48
+    configure.args-replace --enable-wallet=no --enable-wallet=yes
+    configure.cppflags-append   "-I${prefix}/include/db48"
+    configure.ldflags-append    "-L${prefix}/lib/db48"
 }
 
 post-destroot {

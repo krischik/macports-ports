@@ -3,7 +3,7 @@
 PortSystem      1.0
 
 name            gnucash-docs
-version         3.5
+version         3.9
 license         GFDL-1.1+
 categories      gnome x11
 maintainers     {dports @drkp} openmaintainer
@@ -25,9 +25,9 @@ long_description \
 homepage        http://www.gnucash.org/
 master_sites    sourceforge:gnucash
 
-checksums       rmd160  984bcda8fd8b9a145ad6a3424566ea7794b42bc3 \
-                sha256  b320815c90397ab6574dfe50b462d72199a0b34b03625b1c8d7b04a2ab6f563e \
-                size    97117948
+checksums       rmd160  6e50a65cf0ca5fb4b63dff300725b2c84b9ef1d5 \
+                sha256  34a77b28492e7efe8208a695b93cf60f04fd639288cdda1f67d30cf7f39a120d \
+                size    70960930
 
 depends_lib     bin:scrollkeeper-config:rarian \
                 port:libxml2 \

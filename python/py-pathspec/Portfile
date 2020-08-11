@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pathspec
-version             0.6.0
+version             0.8.0
 platforms           darwin
 supported_archs     noarch
 license             MPL-2.0
@@ -19,9 +19,9 @@ long_description \
 
 homepage            https://github.com/cpburnz/python-path-specification
 
-checksums           rmd160  56658fa2630e6f079fd3df2ac305b54412ba2ff9 \
-                    sha256  e285ccc8b0785beadd4c18e5708b12bb8fcf529a1e61215b3feff1d1e559ea5c \
-                    size    24159
+checksums           rmd160  985c8a70c189fae39e580c139cbbeba36642b333 \
+                    sha256  da45173eb3a6f2a5a487efba21f050af2b41948be6ab52b6a1e3ff22bb8b7061 \
+                    size    26256
 
 python.versions     38
 

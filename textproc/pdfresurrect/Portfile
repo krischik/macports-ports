@@ -3,11 +3,11 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        enferex pdfresurrect 0.18 v
+github.setup        enferex pdfresurrect 0.20 v
 revision            0
-checksums           rmd160  b8c54a444174b72070bb274cc75395e93906b10e \
-                    sha256  7984f412ccbc7ba47646299c375f91cf10e5c343828d192552c2323f85f874cb \
-                    size    66805
+checksums           rmd160  12643ed805cc8b3669823298fd0a989304759e26 \
+                    sha256  2639099e83e84a0b5b7de61fa5a6aa241ff3b71b9f717805eeca4e505c3e51bd \
+                    size    67673
 
 categories          textproc
 platforms           darwin

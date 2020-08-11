@@ -4,8 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Git-Raw 0.84
-revision            1
+perl5.setup         Git-Raw 0.86
 license             {Artistic-1 GPL}
 maintainers         {devans @dbevans} openmaintainer
 description         Git::Raw - Perl bindings to the Git linkable library (libgit2)
@@ -13,9 +12,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  249d01becbb48c52f0b909351fb86a0472139e05 \
-                    sha256  235c3eba9dfbda0479816721f866602f3193d566e11312fbe38e587c8440af35 \
-                    size    1399888
+checksums           rmd160  040e12abb7033e8944aab6874232ecab5580e135 \
+                    sha256  f8c9d7589bcde504fe10a91e1c7fd869df85e831f218cd3fe5b041e1d1eb44df \
+                    size    1683190
 
 if {${perl5.major} != ""} {
     depends_build-append \
@@ -23,7 +22,9 @@ if {${perl5.major} != ""} {
                     port:p${perl5.major}-devel-checklib \
                     port:p${perl5.major}-file-slurp-tiny \
                     port:p${perl5.major}-getopt-long \
-                    port:p${perl5.major}-test-deep
+                    port:p${perl5.major}-test-deep \
+                    port:p${perl5.major}-test-pod \
+                    port:p${perl5.major}-test-pod-coverage
  
 # dependency on libgit2 not required
 # uses embedded copy of libgit2 source (currently version 0.28 commit 040db8ad749 20190520)

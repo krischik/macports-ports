@@ -16,7 +16,7 @@ checksums       rmd160 a46b886ca26993610c84615fca4340ad3f955f81 \
 license         Boost-1
 categories      devel
 platforms       darwin
-maintainers     {ryandesign @ryandesign} {michaelld @michaelld} openmaintainer
+maintainers     {michaelld @michaelld} openmaintainer
 
 description     Collection of portable C++ source libraries
 
@@ -31,11 +31,13 @@ set distver     [join [split ${version} .] _]
 distname        ${name}_${distver}
 use_bzip2       yes
 
-depends_lib     port:zlib \
+depends_lib     port:bzip2 \
                 port:expat \
-                port:bzip2 \
+                port:icu \
                 port:libiconv \
-                port:icu
+                port:lzma \
+                port:zlib \
+                port:zstd
 
 post-extract {
     fs-traverse dir ${workpath} {
@@ -81,6 +83,9 @@ patchfiles-append patch-compiler.diff
 post-patch {
     reinplace "s|__MACPORTS_CXX__|${configure.cxx}|g" ${worksrcpath}/tools/build/src/tools/clang-darwin.jam
 }
+
+# see https://github.com/boostorg/build/issues/440
+patchfiles-append patch-clang_version.diff
 
 proc write_jam s {
     global worksrcpath
@@ -190,7 +195,7 @@ post-destroot {
     }
 }
 
-set pythons_suffixes {26 27 33 34 35 36 37}
+set pythons_suffixes {27 35 36 37 38}
 
 set pythons_ports {}
 foreach s ${pythons_suffixes} {
@@ -235,7 +240,7 @@ foreach s ${pythons_suffixes} {
 }
 
 if {![variant_isset debug]} {
-    set selected_python python27
+    set selected_python python38
     foreach s ${pythons_suffixes} {
         if {[variant_isset python${s}]} {
             set selected_python python${s}
@@ -264,7 +269,7 @@ variant no_single description {Disable building single-threaded libraries} {
 subport boost-numpy {
     revision 1
     description Boost.Numpy library
-    long_description ${description}
+    long_description {*}${description}
     depends_lib port:boost
     foreach s ${pythons_suffixes} {
         if {[variant_isset python${s}]} {
@@ -286,7 +291,7 @@ subport boost-numpy {
 
 if {$subport eq $name} {
 
-    revision 1
+    revision 2
 
     patchfiles-append patch-disable-numpy-extension.diff
 

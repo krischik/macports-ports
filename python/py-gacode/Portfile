@@ -1,0 +1,43 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           python 1.0
+PortGroup           compilers 1.0
+
+name                py-gacode
+version             0.52
+python.rootname     pygacode
+
+
+compilers.setup     default_fortran
+
+python.versions     37 38
+
+categories-append   science
+platforms           darwin
+maintainers         {fusion.gat.com:smithsp @smithsp} openmaintainer
+description         python bindings for the GACODE suite
+long_description    ${description}
+
+license             MIT
+homepage            https://gacode.io
+
+checksums           rmd160  0beb81a47519c007787179b5271cf9567635fb8a \
+                    sha256  1e84c8c845ec033b60f3e1554918edec8d426d11005269da73322da20c669886 \
+                    size    82824
+patchfiles          patch-setup.py.diff
+
+if {${name} ne ${subport}} {
+    depends_lib-append \
+                    port:py${python.version}-numpy
+
+    pre-test {
+        test.env    PYTHONPATH=[glob -nocomplain ${worksrcpath}/build/lib*]
+    }
+
+    test.run        yes
+    test.cmd        ${python.bin} -c 'from pygacode.test import test_install'
+    test.target
+
+    livecheck.type  none
+}

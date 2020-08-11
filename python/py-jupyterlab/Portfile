@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-jupyterlab
-version             1.2.1
+version             2.1.5
 revision            0
 categories-append   devel
 platforms           darwin
@@ -23,18 +23,17 @@ long_description    JupyterLab enables you to work with documents and \
                     integrated, and extensible manner.
 
 homepage            https://jupyter.org/
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  1f8c2110f11e76b6ed1018b08bc4a5f58a0fedee \
-                    sha256  e74955e70d345b8832e243ce3376f7180c79fed2fcc44043e8a43b122e2cd757 \
-                    size    6659860
+checksums           rmd160  943d97c440e66a22922780bc7b9511a8e08b4983 \
+                    sha256  ca7b92491c32b66ad97be4a44d79aa702e4b6c59167e4189d5ce8cc742b15298 \
+                    size    8468345
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \
                         port:py${python.version}-notebook \
-                        port:py${python.version}-jupyterlab_server
+                        port:py${python.version}-tornado \
+                        port:py${python.version}-jupyterlab_server \
+                        port:py${python.version}-jinja2
 
     build.args-append   --skip-npm
 
@@ -44,7 +43,7 @@ if {${name} ne ${subport}} {
     livecheck.type      none
 }
 
-foreach {old new} {27 37 34 36 35 36} {
+foreach {old new} {27 37 35 37 36 37} {
     subport py${old}-${python.rootname} "
         replaced_by py${new}-${python.rootname}
         PortGroup obsolete 1.0

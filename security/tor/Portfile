@@ -4,7 +4,7 @@ PortSystem          1.0
 
 name                tor
 conflicts           tor-devel
-version             0.4.1.6
+version             0.4.3.5
 revision            0
 categories          security
 platforms           darwin
@@ -23,9 +23,9 @@ long_description    Tor provides a distributed network of servers \
 homepage            https://www.torproject.org/
 master_sites        https://dist.torproject.org/
 
-checksums           rmd160  4d4ccc798a057a75e6d5282d01ddaf306341e0f4 \
-                    sha256  2a88524ce426079fb9b828bc1b789f2c8ade3ed53c130851102debc3518bed71 \
-                    size    7390096
+checksums           rmd160  64096bbb8f723b10d93499e016dd72d995d2ce17 \
+                    sha256  616a0e4ae688d0e151d46e3e4258565da4d443d1ddbd316db0b90910e2d5d868 \
+                    size    7740166
 
 depends_lib         port:libevent \
                     path:lib/libssl.dylib:openssl \

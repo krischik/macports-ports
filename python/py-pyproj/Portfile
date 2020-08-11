@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pyproj
-version             2.4.0
+version             2.6.1.post1
 revision            0
 categories-append   devel
 platforms           darwin
 license             MIT
 
-python.versions     27 34 35 36 37 38
+python.versions     27 35 36 37 38
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -20,22 +20,19 @@ long_description    Pyrex wrapper to provide python interfaces to PROJ.4 \
                     cartographic transformations and geodetic computations.
 
 homepage            https://pyproj4.github.io/pyproj
-master_sites        pypi:[string index ${python.rootname} 0]/${python.rootname}
 
-distname            ${python.rootname}-${version}
-
-checksums           rmd160  11467ecbc8d91c13c1e78b2e6298ef868a00b253 \
-                    sha256  8124fe43d81a7caca43df6930110e2bfd2bd3b82b86587eefd6f6d86a81a658e \
-                    size    460171
+checksums           rmd160  f7ab40847df75a601a72794ab2be52de1e839b68 \
+                    sha256  4f5b02b4abbd41610397c635b275a8ee4a2b5bc72a75572b98ac6ae7befa471e \
+                    size    545482
 
 if {${name} ne ${subport}} {
     depends_build-append \
                         port:py${python.version}-setuptools \
                         port:py${python.version}-cython
 
-    if {${python.version} < 35} {
+    if {${python.version} eq 27} {
         version             2.2.2
-        revision            2
+        revision            0
         distname            ${python.rootname}-${version}
         checksums           rmd160  39ea00d64f1b85f55c254fc4ee75ef37d879fc2d \
                             sha256  6f129a00afdd817dbb331af5709221f35012bcc11a23b8c83fa09197c1190786 \

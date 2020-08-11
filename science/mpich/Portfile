@@ -8,7 +8,7 @@ PortGroup           muniversal 1.0
 
 # make sure to keep in sync with mpi-doc
 name                mpich
-version             3.3.1
+version             3.3.2
 # Note multiple revisions in Portfile (for various sub-ports to reduce builds)
 revision            0
 
@@ -33,13 +33,13 @@ long_description    MPICH is a high-performance and widely portable\
                     through an easy-to-extend modular framework for other\
                     derived implementations.
 
-homepage            http://www.mpich.org/
+homepage            https://www.mpich.org/
 master_sites        ${homepage}static/downloads/${version}
 
 checksums \
-    rmd160  0cece6eeb8c3fe9ddd16eae47be5dae45f3b7941 \
-    sha256  fe551ef29c8eea8978f679484441ed8bb1d943f6ad25b63c235d4b9243d551e5 \
-    size    27275466
+    rmd160  f8392f37058b488b1df90d43b69348662dc71454 \
+    sha256  4bfaf8837a54771d3e4922c84071ef80ffebddbb6971a006038d91ee7ef959b9 \
+    size    27311775
 
 livecheck.type      regex
 livecheck.regex     {href=.([0-9.p]+)/}
@@ -47,7 +47,7 @@ livecheck.url       ${homepage}/static/downloads/
 
 if {[string first "-devel" $subport] > 0} {
     name                mpich-devel
-    version             3.3.1
+    version             3.4a2
     revision            0
     # To see 3.* as newer than 3.*(rc|b|etc.)
     epoch               3
@@ -68,13 +68,15 @@ if {[string first "-devel" $subport] > 0} {
     livecheck.type      none
     # livecheck.regex     {href=.([0-9.abrcp]+)/}
     checksums \
-        rmd160  0cece6eeb8c3fe9ddd16eae47be5dae45f3b7941 \
-        sha256  fe551ef29c8eea8978f679484441ed8bb1d943f6ad25b63c235d4b9243d551e5 \
-        size    27275466
+        rmd160  73bc0fd6cb00ced9f15118decb8610758db8503e \
+        sha256  ca9b9a6d4d858f3f94d2ea1ed0b851fccbc6f2976eb08dfc3379be8c6278aa12 \
+        size    27708244
 }
 
 # As MPICH creates compiler wrappers, there are lots of
 # variants for what compiler the user would like to wrap.
+
+# Please update the mpi portgroup whenever clist is changed.
 
 # Sub-ports names and corresponding configure.compiler value
 array set clist {
@@ -98,7 +100,8 @@ if { ${os.major} > 10 } {
 if { ${os.major} > 12 } {
     set clist(clang60) {macports-clang-6.0}
     set clist(clang70) {macports-clang-7.0}
-    set clist(clang80) {macports-clang-8.0} 
+    set clist(clang80) {macports-clang-8.0}
+    set clist(clang90) {macports-clang-9.0}
 }
 
 foreach key [array name clist] {
@@ -298,14 +301,20 @@ if {${subport} != ${name}} {
     if { [string first gcc $cname] == 0 } {
         append long_description " AND FORTRAN COMPILERS"
         revision                0
-        configure.args-delete   --disable-fortran
-        configure.args-append   --enable-fortran
+        configure.args-replace  --disable-fortran \
+                                --enable-fortran
         select.file             ${filespath}/${name}-${cname}-fortran
         variant fortran description {
             Stub : fortran always enabled for gcc-based version
         } {}
         default_variants-append     +fortran
 
+        if {${cname} eq "gcc10"} {
+            # see https://lists.mpich.org/pipermail/discuss/2020-January/005862.html
+            # see https://github.com/pmodels/mpich/issues/4300
+            # see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91556
+            configure.fflags-append -fallow-argument-mismatch
+        }
 
         if {[ variant_isset tuned ] && ${os.major} >= 14} {
             if {![ file exists ${prefix}/bin/clang ]} {
@@ -337,8 +346,8 @@ if {${subport} != ${name}} {
         compilers.setup    default_fortran
 
         if {[fortran_variant_isset]} {
-            configure.args-delete   --disable-fortran
-            configure.args-append   --enable-fortran
+            configure.args-replace  --disable-fortran \
+                                    --enable-fortran
             select.file             ${filespath}/${name}-${cname}-fortran
 
             # at least currently, the Fortran variants gccX and g95 match the name of the ports
@@ -346,6 +355,13 @@ if {${subport} != ${name}} {
 
             if {[variant_isset g95]} {
                 configure.args-append lt_cv_ld_force_load=no
+            }
+
+            if {[variant_isset gcc10]} {
+                # see https://lists.mpich.org/pipermail/discuss/2020-January/005862.html
+                # see https://github.com/pmodels/mpich/issues/4300
+                # see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=91556
+                configure.fflags-append -fallow-argument-mismatch
             }
         }
     }
@@ -398,14 +414,14 @@ pre-built packages for ${subport} by running:
     variant gforker description {
         Use gforker process manager instead of the default hydra
     } {
-        configure.args-append   --with-pm=gforker
-        configure.args-delete   --with-pm=hydra
+        configure.args-replace  --with-pm=hydra \
+                                --with-pm=gforker
     }
 
     variant tuned description {Build with more optimizations} {
-        configure.args-delete   --enable-fast=O2
-        configure.args-append   --enable-fast=all \
-                                MPICHLIB_CFLAGS='-fomit-frame-pointer -O2'
+        configure.args-replace  --enable-fast=O2 \
+                                --enable-fast=all
+        configure.args-append   MPICHLIB_CFLAGS='-fomit-frame-pointer -O2'
     }
 } else {
     depends_lib-append      port:$name-default

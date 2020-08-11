@@ -3,7 +3,7 @@
 PortSystem      1.0
 PortGroup       github    1.0
 
-github.setup    timescale timescaledb 1.4.2
+github.setup    timescale timescaledb 1.7.1
 revision        0
 license         Apache-2
 description     A time-series database that integrates with PostreSQL.
@@ -20,9 +20,9 @@ long_description \
                 as well as full SQL support. TimescaleDB is packaged \
                 as a PostgreSQL extension.
 
-checksums       rmd160  5b4c191160547e91625ae5f1e13716082758646c \
-                sha256  f14519dd4fcf6ad0135cf2dbe41ee42b65e869328f8ac2d2dd105d14cea9db6c \
-                size    1286472
+checksums       rmd160  b6b518145102a73cc90c1a4d2f43edeb999cb17b \
+                sha256  ce714dc72f6769742ca838e5b3b133ca4504a9b5d8e5fbf7abb12114c6a9f0d6 \
+                size    1945665
 
 depends_build   path:bin/cmake:cmake
 
@@ -52,6 +52,9 @@ if {![variant_isset postgresql96] && \
     ![variant_isset postgresql12] } {
     default_variants +postgresql11
 }
+
+patch.pre_args          -p1
+patchfiles-append       test-CMakeLists.txt.patch
 
 configure.cmd	        ./bootstrap
 configure.pre_args

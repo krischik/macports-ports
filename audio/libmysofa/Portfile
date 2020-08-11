@@ -1,0 +1,25 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem              1.0
+PortGroup               github 1.0
+PortGroup               cmake  1.1
+
+github.setup            hoene libmysofa 1.0 v
+revision                0
+categories              audio devel
+platforms               darwin
+maintainers             {mcalhoun @MarcusCalhoun-Lopez} openmaintainer
+license                 BSD
+
+description             reader for AES SOFA files to get better HRTFs
+
+long_description        libmysofa is a simple set of C functions to read AES SOFA files, \
+                        if they contain HRTFs stored according to the AES69-2015 standard.
+
+checksums               rmd160  07e945b386c210378440c53dfbc78a82a6b0f5d7 \
+                        sha256  208de91208106672325824b7ac5bab1e380efe5ba1bf73b8d80bbc667946fac4 \
+                        size    161384659
+
+depends_lib-append      port:zlib
+
+configure.args-append   -DBUILD_TESTS=no

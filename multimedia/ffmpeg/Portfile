@@ -12,8 +12,7 @@ name                ffmpeg
 conflicts           ffmpeg-devel
 # Please increase the revision of mpv whenever ffmpeg's version is updated.
 epoch               1
-version             4.2.1
-revision            2
+version             4.2.3
 license             LGPL-2.1+
 categories          multimedia
 maintainers         {devans @dbevans} {jeremyhu @jeremyhu} openmaintainer
@@ -55,9 +54,9 @@ master_sites        ${homepage}releases/
 
 use_xz              yes
 
-checksums           rmd160  581749bb22f25357ccae1ea504a65ffc5e1cfe75 \
-                    sha256  cec7c87e9b60d174509e263ac4011b522385fd0775292e1670ecc1180c9bb6d4 \
-                    size    9090632
+checksums           rmd160  a59b9f88a0b3c2e3a343c1d3a821c7bd41970f28 \
+                    sha256  9df6c90aed1337634c1fb026fb01c154c29c82a64ea71291ff2da9aacb9aad31 \
+                    size    9101192
 
 depends_build       port:pkgconfig \
                     port:gmake \

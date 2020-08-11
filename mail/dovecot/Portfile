@@ -1,110 +1,413 @@
-PortSystem          1.0
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        dovecot core 2.3.10.1
 name                dovecot
-conflicts           dovecot2
+revision            0
 epoch               20060722
-version             1.2.17
-revision            2
-set branch          [join [lrange [split ${version} .] 0 1] .]
+set core_version    ${version}
+
 categories          mail
-license             {MIT LGPL-2.1 BSD public-domain}
 maintainers         {jberry @jdberry} openmaintainer
 platforms           darwin
+license             LGPL-2.1
+homepage            https://www.dovecot.org
 
 description         Secure, fast imap and pop3 server
-long_description    Dovecot is an IMAP and POP3 server for Linux/UNIX-like \
-                    systems, written with security primarily in mind. Although \
-                    it's written in C, it uses several coding techniques to \
+long_description    Dovecot is an IMAP and POP3 server for Linux/UNIX-like\
+                    systems, written with security primarily in mind. Although\
+                    it is written in C, it uses several coding techniques to\
                     avoid most of the common pitfalls.
 
-homepage            http://dovecot.org/
-master_sites        ${homepage}releases/${branch}
+checksums           rmd160  8391e5111ca11a20ba8bfe3b1102ecb770d151bb \
+                    sha256  c0f2b73ddf462988acd13ede66dc64dc53766992a06b9399514109b9cf272f08 \
+                    size    3736583
 
-checksums           sha1    457b16791a15e739c6bc8b02bc9c78f9ad794e39 \
-                    rmd160  59f619dba2aadef3cccd6ceb045a2e75a11700a2
+subport ${name}-sieve {
+    github.setup    dovecot pigeonhole 0.5.10
+    revision        0
 
-depends_build       port:pkgconfig
-depends_lib         port:libiconv \
-                    port:zlib \
-                    path:lib/libssl.dylib:openssl
+    description     Pigeonhole sieve and managesieve plugins for dovecot
+    long_description \
+                    Pigeonhole is the name of the project that adds\
+                    support for the Sieve language (RFC 5228) and the\
+                    ManageSieve protocol (RFC 5804) to the Dovecot\
+                    Secure IMAP Server. The Sieve language is used to\
+                    specify how e-mail needs to be processed. By\
+                    writing Sieve scripts, users can customize how\
+                    messages are delivered, e.g. whether they are\
+                    forwarded or stored in special folders. Unwanted\
+                    messages can be discarded or rejected, and, when\
+                    the user is not available, the Sieve interpreter\
+                    can send an automated reply. Above all, the Sieve\
+                    language is meant to be simple, extensible and\
+                    system independent. And, unlike most other mail\
+                    filtering script languages, it does not allow\
+                    users to execute arbitrary programs. This is\
+                    particularly useful to prevent virtual users from\
+                    having full access to the mail store. The\
+                    intention of the language is to make it impossible\
+                    for users to do anything more complex (and\
+                    dangerous) than write simple mail filters.  Using\
+                    the ManageSieve protocol, users can upload their\
+                    Sieve scripts remotely, without needing direct\
+                    filesystem access through FTP or\
+                    SCP. Additionally, a ManageSieve server always\
+                    makes sure that uploaded scripts are valid,\
+                    preventing compile failures at mail delivery. The\
+                    Pigeonhole project provides Sieve support as a\
+                    plugin to Dovecot's Local Delivery Agent\
+                    (LDA). The ManageSieve protocol is provided is an\
+                    additional service, next to Dovecot's own POP3 and\
+                    IMAP services.
 
-configure.args      --sysconfdir=${prefix}/etc/dovecot \
+    homepage        https://pigeonhole.dovecot.org/
+
+    distname        dovecot-${core_version}-pigeonhole-${version}
+
+    checksums       rmd160  e5a00a86aefb7cb6a4bef42ff65e7bac7e6f414c \
+                    sha256  9769d9fb14fed571deb4994a21c2c0ac3a1c9ab7f0d1bd115fdaba75e36f555b \
+                    size    1044145
+
+    depends_lib-append \
+                    port:${name} \
+                    port:gettext \
+                    port:mercurial
+
+    # Note: https://trac.macports.org/ticket/58544#comment:11 for this build logic
+    use_autoreconf  yes
+    autoreconf.cmd  ./autogen.sh
+    depends_build-append \
+                    port:autoconf \
+                    port:automake \
+                    port:libtool
+
+    configure.ldflags-append \
+                    -L${prefix}/lib/dovecot
+    configure.args  --with-managesieve=yes \
+                    --disable-dependency-tracking
+}
+
+set perl5_major_version \
+                    5.28
+
+if {${name} eq ${subport}} {
+    depends_build-append \
+                    port:gettext \
+                    port:pkgconfig \
+                    port:wget
+
+    depends_lib-append \
+                    port:bzip2 \
+                    port:libiconv \
+                    path:lib/libssl.dylib:openssl \
+                    port:lz4 \
+                    port:xz \
+                    port:zlib
+
+    set default_internal_user   _dovecot
+    set default_login_user      _dovenull
+    add_users ${default_internal_user} group=${default_internal_user} realname=Dovecot
+    add_users ${default_login_user}    group=${default_login_user}    realname=Dovenull
+
+    patch.pre_args  -p1
+    patchfiles      patch-doc-example-config-conf.d-10-master.conf.diff \
+                    patch-src-master-master-settings.c.diff
+
+    post-patch {
+        reinplace "s|@@default_internal_user@@|${default_internal_user}|g" \
+            ${worksrcpath}/doc/example-config/conf.d/10-master.conf
+        reinplace "s|@@default_login_user@@|${default_login_user}|g" \
+            ${worksrcpath}/doc/example-config/conf.d/10-master.conf
+    }
+
+    # Note: https://trac.macports.org/ticket/58544#comment:11 for this build logic
+    use_autoreconf  yes
+    autoreconf.cmd  ./autogen.sh
+    depends_build-append \
+                    port:autoconf \
+                    port:automake \
+                    port:libtool
+
+    pre-configure {
+        # the line `dummy < /dev/tty` breaks this; just copy the necessary file
+        # system -W ${worksrcpath} "gettextize -f"
+        xinstall -W ${worksrcpath} ${prefix}/share/gettext/config.rpath .
+    }
+
+    configure.args  --sysconfdir=${prefix}/etc \
                     --localstatedir=${prefix}/var \
-                    --with-ioloop=kqueue \
                     --with-ssl=openssl \
-                    --with-ssldir=${prefix}/etc/ssl \
-                    --enable-header-install
+                    --with-zlib \
+                    --with-bzlib \
+                    --with-ssldir=${prefix}/etc/openssl \
+                    --with-shared-libs \
+                    --with-pam \
+                    --with-gssapi=yes
 
-configure.cppflags  -I${prefix}/include/openssl
+    configure.cppflags  -I${prefix}/include/openssl
+    configure.env-append \
+                    PANDOC=false
 
-# Create the dovecot user and group
-add_users dovecot group=dovecot realname=Dovecot
+    variant ldap description {Enable LDAP support} {
+        depends_lib-append          port:openldap
+        configure.args-append       --with-ldap=yes
+    }
 
-variant postgresql80 conflicts postgresql81 postgresql82 postgresql83 postgresql84 postgresql90 postgresql91 description {Enable PostgreSQL 8.0 support} {
-    depends_lib-append          port:postgresql80
-    configure.args-append       --with-pgsql
-    configure.ldflags-append    -L${prefix}/lib/postgresql80
-    configure.cppflags-append   -I${prefix}/include/postgresql80
+    variant solr description {Enable apache-solr support} {
+        depends_lib-append          port:clucene port:curl port:expat
+        depends_run-append          port:apache-solr8
+        configure.args-append       --with-solr --with-lucene
+    }
+
+    variant lucene description {Enable lucene support} {
+        depends_lib-append          port:clucene
+        configure.args-append       --with-lucene
+    }
+
+    variant libstemmer description {Use libstemmer for full-text search} {
+        depends_lib-append          port:libstemmer
+        configure.args-append       --with-libstemmer
+    }
+
+    variant apns \
+        description "Enable Apple Push Notification Service (APNS)" {
+        # diff -Naur core-2.3.7.1 core-2.3.7.1-pushnotify | sed -E -e 's/core-([[:digit:]]+\.?)+(-pushnotify)?\//.\//g' > dovecot-core-pushnotify.patch
+        patchfiles-append \
+            dovecot-core-pushnotify.patch
+        post-patch {
+            reinplace "s|@PREFIX@|${prefix}|g" \
+                ${worksrcpath}/src/imap/cmd-x-apple-push-service.c \
+                ${worksrcpath}/src/plugins/push-notify/push-notify-plugin.c
+        }
+        depends_run-append \
+                        port:perl${perl5_major_version} \
+                        port:p${perl5_major_version}-net-apns-persistent \
+                        port:p${perl5_major_version}-privileges-drop
+        pre-destroot {
+            xinstall -m 0750 -d \
+                -o ${default_internal_user} -g ${default_login_user} \
+                ${destroot}${prefix}/var/db/${name}-apns/devices \
+                ${destroot}${prefix}/etc/${name}-apns
+            destroot.keepdirs-append \
+                ${destroot}${prefix}/var/db/${name}-apns/devices \
+                ${destroot}${prefix}/etc/${name}-apns
+            xinstall -m 0755 ${filespath}/pushnotify.pl \
+                ${destroot}${prefix}/sbin
+            foreach cmd [list \
+                "s|@PREFIX@|${prefix}|g" \
+                "s|@PERL5_MAJOR_VERSION@|${perl5_major_version}|g" \
+                "s|@DEFAULT_INTERNAL_USER@|${default_internal_user}|g" \
+                ] {
+                reinplace ${cmd} \
+                    ${destroot}${prefix}/sbin/pushnotify.pl
+            }
+        }
+
+        # References:
+        #   * https://github.com/matthewpowell/pushnotify
+        #   * https://www.c0ffee.net/blog/dovecot-push-notifications/
+        notes-append \
+            "Dovecot is configured with the Apple Push Notification Service (APNS)\
+            plugin. APNS use requires these steps:
+
+         1. Acquire APNS Mail certificates from a (virtual) macOS\
+            High Sierra 10.13 and Server.app version 5.6. Export\
+            the APNS certificates and keys from the Keychain into the\
+            files com.apple.servermgrd.apns.mail.cer and\
+            com.apple.servermgrd.apns.mail.key.p12. APNS certificates appear\
+            separately with names APSP:<UUID> that correspond to the\
+            certificate's User ID field, com.apple.mail.XServer.<UUID>.\
+            APNS keys are simply named com.apple.servermgrd.apns.mail.\
+            *Note*: APNS Mail certificate creation is deprecated on\
+            Server.app version 5.7+.
+
+         2. Convert the APNS Mail certificates to PEM files:
+
+                openssl x509 -inform der -in com.apple.servermgrd.apns.mail.cer  \\
+                    | sed '/BEGIN CERTIFICATE/,\$!d'   \\
+                > com.apple.mail.cert.pem
+                openssl pkcs12 -in com.apple.servermgrd.apns.mail.key.p12  \\
+                    -nodes -nocerts | sed '/BEGIN PRIVATE KEY/,\$!d'    \\
+                > com.apple.mail.key.pem
+                # verify that the certificate and key match:
+                openssl x509 -noout -modulus -in com.apple.mail.cert.pem \\
+                | openssl sha1
+                openssl rsa -noout -modulus -in com.apple.mail.key.pem \\
+                | openssl sha1
+                sudo install -m 0640 -o ${default_internal_user} -g ${default_login_user} \\
+                    com.apple.mail.cert.pem com.apple.mail.key.pem \\
+                    ${prefix}/etc/dovecot-apns
+
+         3. Configure dovecot for APNS:
+
+            ${prefix}/etc/${name}/conf.d/15-lda.conf:
+            protocol lda { mail_plugins = \$mail_plugins push_notify }
+
+            ${prefix}/etc/${name}/conf.d/90-apns.conf:
+            aps_topic = com.apple.mail.XServer.<UUID>
+
+            where the certificate's UUID is obtained from the command:
+
+                openssl x509 -text -noout                                   \\
+                    -in ${prefix}/etc/dovecot-apns/com.apple.mail.cert.pem \\
+                | grep -E -o 'com\.apple\.mail\.XServer\.\[0-9a-f-\]+'
+
+         4. Launch the APNS daemon:
+
+                sudo launchctl load -w \\
+                    /Library/LaunchDaemons/org.macports.dovecot-apns.plist
+    "
+    }
+
+    variant postgresql96 \
+        conflicts postgresql10 postgresql11 postgresql12 \
+        description "Enable PostgreSQL 9.6 support" {
+        depends_lib-append          port:postgresql96
+        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql96/bin/pg_config
+        configure.args-append       --with-pgsql
+    }
+
+    variant postgresql10 \
+        conflicts postgresql96 postgresql11 postgresql12 \
+        description "Enable PostgreSQL 10 support" {
+        depends_lib-append          port:postgresql10
+        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql10/bin/pg_config
+        configure.args-append       --with-pgsql
+    }
+
+    variant postgresql11 \
+        conflicts postgresql96 postgresql10 postgresql12 \
+        description "Enable PostgreSQL 11 support" {
+        depends_lib-append          port:postgresql11
+        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql11/bin/pg_config
+        configure.args-append       --with-pgsql
+    }
+
+    variant postgresql12 \
+        conflicts postgresql96 postgresql10 postgresql11 \
+        description "Enable PostgreSQL 12 support" {
+        depends_lib-append          port:postgresql12
+        configure.env-append        PG_CONFIG=${prefix}/lib/postgresql12/bin/pg_config
+        configure.args-append       --with-pgsql
+    }
+
+    # remove 2021-03-02
+    variant postgresql95 requires postgresql11 description "Legacy compatibility variant" {}
+
+    # remove 2021-03-02
+    variant postgresql94 requires postgresql11 description "Legacy compatibility variant" {}
+
+    # remove 2021-03-02
+    variant postgresql93 requires postgresql11 description "Legacy compatibility variant" {}
+
+    # remove 2021-03-02
+    variant postgresql92 requires postgresql11 description "Legacy compatibility variant" {}
+
+    # remove 2021-03-02
+    variant postgresql91 requires postgresql11 description "Legacy compatibility variant" {}
+
+    # remove 2021-03-02
+    variant postgresql90 requires postgresql11 description "Legacy compatibility variant" {}
+
+    # remove 2021-03-02
+    variant postgresql84 requires postgresql11 description "Legacy compatibility variant" {}
+
+    # remove 2021-03-02
+    variant postgresql83 requires postgresql11 description "Legacy compatibility variant" {}
+
+    # remove 2021-03-02
+    variant postgresql82 requires postgresql11 description "Legacy compatibility variant" {}
+
+    variant percona \
+        conflicts mysql57 mysql8 mariadb mariadb10.1 \
+        description "Enable Percona (MySQL) support" {
+            depends_lib-append          port:percona
+            configure.env-append        MYSQL_CONFIG=${prefix}/lib/percona/bin/mysql_config
+            configure.args-append       --with-mysql
+    }
+
+    variant mariadb \
+        conflicts mysql57 mysql8 mariadb10.1 percona \
+        description "Enable MariaDB (MySQL) support" {
+        depends_lib-append          port:mariadb
+        configure.env-append        MYSQL_CONFIG=${prefix}/lib/mariadb/bin/mysql_config
+        configure.args-append       --with-mysql
+    }
+
+    variant mariadb10.1 \
+        conflicts mysql57 mysql8 mariadb percona \
+        description "Enable MariaDB 10.1 (MySQL) support" {
+        depends_lib-append          port:mariadb-10.1
+        configure.env-append        MYSQL_CONFIG=${prefix}/lib/mariadb-10.1/bin/mysql_config
+        configure.args-append       --with-mysql
+    }
+
+    variant mysql57 \
+        conflicts mysql8 mariadb mariadb10.1 percona \
+        description "Enable MySQL 5.7 support" {
+        depends_lib-append          port:mysql57
+        configure.env-append        MYSQL_CONFIG=${prefix}/lib/mysql57/bin/mysql_config
+        configure.args-append       --with-mysql
+    }
+
+    variant mysql8 \
+        conflicts mysql57 mariadb mariadb10.1 percona \
+        description "Enable MySQL 8 support" {
+        depends_lib-append          port:mysql8
+        configure.env-append        MYSQL_CONFIG=${prefix}/lib/mysql8/bin/mysql_config
+        configure.args-append       --with-mysql
+    }
+
+    if {[variant_isset "apns"]} {
+        set daemon_uniquename   \
+                                org.macports.${name}
+        set pushnotify_uniquename \
+                                org.macports.${name}-apns
+        startupitem.type        launchd
+        startupitem.create      no
+        # Inject our own launchd plists to include pushnotify.pl
+        startupitems \
+            name                ${name} \
+            location            LaunchDaemons \
+            uniquename          ${daemon_uniquename} \
+            plist               ${daemon_uniquename}.plist \
+            name                ${name}-apns \
+            location            LaunchDaemons \
+            uniquename          ${pushnotify_uniquename} \
+            plist               ${pushnotify_uniquename}.plist
+
+        post-destroot {
+            xinstall -m 0755 -d \
+                ${destroot}/Library/LaunchDaemons
+            foreach uniquename "${daemon_uniquename} ${pushnotify_uniquename}" {
+                xinstall -m 644 -W ${filespath} ${uniquename}.plist \
+                    ${destroot}/Library/LaunchDaemons
+                reinplace "s|@PREFIX@|${prefix}|g" \
+                    ${destroot}/Library/LaunchDaemons/${uniquename}.plist
+                xinstall -m 0755 -d \
+                    ${destroot}${prefix}/etc/LaunchDaemons/${uniquename}
+                move ${destroot}/Library/LaunchDaemons/${uniquename}.plist \
+                    ${destroot}${prefix}/etc/LaunchDaemons/${uniquename}/
+                if {${startupitem.install} && [geteuid] == 0} {
+                    ln -s \
+                        ${prefix}/etc/LaunchDaemons/${uniquename}/${uniquename}.plist \
+                        ${destroot}/Library/LaunchDaemons/
+                } else {
+                    ln -s \
+                        ${prefix}/etc/LaunchDaemons/${uniquename}/${uniquename}.plist \
+                        ${destroot}${prefix}/etc/LaunchDaemons
+                }
+            }
+        }
+    } else {
+        startupitem.create      yes
+        startupitem.executable  ${prefix}/sbin/${name}
+        startupitem.pidfile     auto ${prefix}/var/run/${name}/master.pid
+    }
+
+    destroot.keepdirs \
+        ${destroot}${prefix}/etc/${name}
 }
-
-variant postgresql81 conflicts postgresql80 postgresql82 postgresql83 postgresql84 postgresql90 postgresql91 description {Enable PostgreSQL 8.1 support} {
-    depends_lib-append          port:postgresql81
-    configure.args-append       --with-pgsql
-    configure.ldflags-append    -L${prefix}/lib/postgresql81
-    configure.cppflags-append   -I${prefix}/include/postgresql81
-}
-
-variant postgresql82 conflicts postgresql80 postgresql81 postgresql83 postgresql84 postgresql90 postgresql91 description {Enable PostgreSQL 8.2 support} {
-    depends_lib-append          port:postgresql82
-    configure.args-append       --with-pgsql
-    configure.ldflags-append    -L${prefix}/lib/postgresql82
-    configure.cppflags-append   -I${prefix}/include/postgresql82
-}
-
-variant postgresql83 conflicts postgresql80 postgresql81 postgresql82 postgresql84 postgresql90 postgresql91 description {Enable PostgreSQL 8.3 support} {
-    depends_lib-append          port:postgresql83
-    configure.args-append       --with-pgsql
-    configure.ldflags-append    -L${prefix}/lib/postgresql83
-    configure.cppflags-append   -I${prefix}/include/postgresql83
-}
-
-variant postgresql84 conflicts postgresql80 postgresql81 postgresql82 postgresql83 postgresql90 postgresql91 description {Enable PostgreSQL 8.4 support} {
-    depends_lib-append          port:postgresql84
-    configure.args-append       --with-pgsql
-    configure.ldflags-append    -L${prefix}/lib/postgresql84
-    configure.cppflags-append   -I${prefix}/include/postgresql84
-}
-
-variant postgresql90 conflicts postgresql80 postgresql81 postgresql82 postgresql83 postgresql84 postgresql91 description {Enable PostgreSQL 9.0 support} {
-    depends_lib-append          port:postgresql90
-    configure.args-append       --with-pgsql
-    configure.ldflags-append    -L${prefix}/lib/postgresql90
-    configure.cppflags-append   -I${prefix}/include/postgresql90
-}
-
-variant postgresql91 conflicts postgresql80 postgresql81 postgresql82 postgresql83 postgresql84 postgresql90 description {Enable PostgreSQL 9.1 support} {
-    depends_lib-append          port:postgresql91
-    configure.args-append       --with-pgsql
-    configure.ldflags-append    -L${prefix}/lib/postgresql91
-    configure.cppflags-append   -I${prefix}/include/postgresql91
-}
-
-variant mysql5 description {Enable MySQL support} {
-    depends_lib-append          path:bin/mysql_config5:mysql5
-    configure.args-append       --with-mysql
-    configure.ldflags-append    -L${prefix}/lib/mysql5/mysql
-    configure.cppflags-append   -I${prefix}/include/mysql5/mysql
-}
-
-variant ldap description {Enable LDAP support} {
-    configure.args-append       --with-ldap
-    depends_lib-append          port:openldap
-}
-
-startupitem.create      yes
-startupitem.executable  ${prefix}/sbin/dovecot
-startupitem.pidfile     auto ${prefix}/var/run/dovecot/master.pid
-
-livecheck.type  regex
-livecheck.url   ${homepage}download.html
-livecheck.regex "${name}-(${branch}\\.\\d+(\\.\\d+)?)${extract.suffix}"
