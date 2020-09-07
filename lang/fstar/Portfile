@@ -45,7 +45,7 @@ if {${fstar.stable}} {
     # Strip everything but <major>.<minor>
     fstar.release       [regsub {^([^\.]+\.[^\.]+).*} ${fstar.version} {\1}]
 } else {
-    fstar.version       20200706
+    fstar.version       20200825
     fstar.release       devel
 }
 
@@ -138,6 +138,21 @@ if {${fstar.project} eq "fstar"} {
 
     kremlin.bin             krml
     kremlin.doc_dirs        examples
+
+    options                 kremlin.cc \
+                            kremlin.ccpath
+
+    kremlin.ccpath          {${configure.compiler}}
+
+    # XXX TODO: We really need a ${configure.compiler.family}
+    if {[string match *clang* ${configure.compiler}]} {
+        kremlin.cc clang
+    } elseif {[string match *gcc* ${configure.compiler}]} {
+        kremlin.cc gcc
+    } else {
+        # Assume GCC-like behavior
+        kremlin.cc gcc
+    }
 } else {
     ui_error "Unsupported project: ${fstar.project}"
 }
@@ -157,13 +172,13 @@ subport fstar {
 }
 
 subport fstar-devel {
-    github.setup        ${github.author} ${github.project} 3d0317cce2e9ca512cfb619adfd5d84318d0b74c
+    github.setup        ${github.author} ${github.project} ad266f974a7fb6d5f9e2e56d64ecc5223c324b19
     version             ${fstar.version}-[string range ${github.version} 0 6]
     revision            0
 
-    checksums           rmd160  e1212f5358d561fd075f464d44f3d885ec391a05 \
-                        sha256  61419c8cc6274498a5d7dd0e27a4f1c52e4921d42b8b077c7920da17bcdb9746 \
-                        size    7651338
+    checksums           rmd160  de3f442adf958bae7382430da090383262ff13fa \
+                        sha256  fa82bdf24b6bbdf77aaeb81c90bcf14837fa229e4beebc44bfe5ac25706e1046 \
+                        size    7618841
     github.tarball_from tarball
 
     patchfiles-append   fstar-devel/patch-tests_machine__integers_Makefile
@@ -207,13 +222,13 @@ subport kremlin {
 }
 
 subport kremlin-devel {
-    github.setup        ${github.author} ${fstar.project} 0f08f1243331ffc62ba3f1b8d8b06e4de8479943
+    github.setup        ${github.author} ${fstar.project} 591383ccd0dbf5b540966601c53ab33979840ffd
     version             ${fstar.version}-[string range ${github.version} 0 6]
     revision            0
 
-    checksums           rmd160  78eecc0f9ab7c6905a87a478d688233ab692b37b \
-                        sha256  7a8dbfe0f25f94cfa8ed41ab380cb9c9ab6fdfebec93081fdcc6dd485e50aecb \
-                        size    829817
+    checksums           rmd160  10e7071250d7fc229c7116c04c723a52bf1f37c0 \
+                        sha256  705f942b8d7558ef4e9fa028aa28f74c7ff52992dc84320871f0eec1d9aeb521 \
+                        size    882590
 
     patchfiles-append   kremlin-devel/patch-clang-driver-options \
                         kremlin-devel/patch-fix-make-command \
@@ -329,12 +344,28 @@ if {${fstar.project} eq "fstar"} {
     #
     # If we exclude it, we can rely on auto-detection of kremlin.home, which
     # allows us to run krml in-place (e.g. for tests)
-    build.args              FSTAR_HOME=${fstar.home}/home \
+    build.args              CC=${configure.cc} \
+                            FSTAR_HOME=${fstar.home}/home \
                             KREMLIN_HOME=${worksrcpath}
+
+    build.env-append        PATH=${workpath}/compiler-bin:$env(PATH) \
+                            "KREMLIN_ARGS=-cc ${kremlin.cc}"
+
+    post-patch {
+        file mkdir "${workpath}/compiler-bin"
+        ln -shf ${configure.cc} ${workpath}/compiler-bin/${kremlin.cc}
+
+        # XXX: Must be kept in-sync with Driver.detect_gnu()
+        foreach {cc_major} {5 6 7 8 9 10} {
+            ln -shf ${configure.cc} ${workpath}/compiler-bin/${kremlin.cc}-${cc_major}
+        }
+    }
 
     test.run                yes
     test.args               {*}${build.args} \
                             -j ${build.jobs}
+    test.env-append         PATH=${workpath}/compiler-bin:$env(PATH) \
+                            "KOPTS=-cc ${kremlin.cc}"
 
     destroot.args           PREFIX=${destroot}${kremlin.home} \
                             FSTAR_HOME=${fstar.home}/home \

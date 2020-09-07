@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        Zettlr Zettlr 1.7.1 v
+github.setup        Zettlr Zettlr 1.7.5 v
 name                zettlr
 revision            0
 
@@ -32,11 +32,9 @@ maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
 checksums           ${distname}${extract.suffix} \
-                    rmd160  48c385ecb3bd12504a7e3f5f70f502b3e0daa912 \
-                    sha256  587e035ad9d8b7f93ae9a22e490c91ad03a8f192df30f6945a25e43fdfc454aa \
-                    size    28211660
-
-set ab_bin_commit   b85740334fec875f5dd8dcd22eb1f729599109db
+                    rmd160  8c9bd2cd4c988a7507a0770f3efe6ea437be4c1b \
+                    sha256  e1bc4ab8b9864ca093a0e7ea63046d44a69b5f82cb3bd38b3b1b1d8234a35892 \
+                    size    27415050
 
 depends_build       port:go \
                     port:yarn
@@ -50,11 +48,6 @@ build {
     # Fetch and build JS dependencies
     system -W ${worksrcpath}        "${build.env} yarn install --frozen-lockfile"
     system -W ${worksrcpath}/source "${build.env} yarn install --frozen-lockfile"
-
-    # Build app-builder-bin locally using Go from ports and insert it into node_modules
-    system "GOPATH=${gopath} GO111MODULE=on go get -v github.com/develar/app-builder@${ab_bin_commit}"
-    file delete ${worksrcpath}/node_modules/app-builder-bin/mac/app-builder
-    file link ${worksrcpath}/node_modules/app-builder-bin/mac/app-builder ${gopath}/bin/app-builder
 
     # Build electron app
     system -W ${worksrcpath} "${build.env} yarn run release:mac --dir"

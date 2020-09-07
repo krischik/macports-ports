@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/golang-migrate/migrate 4.11.0 v
+go.setup            github.com/golang-migrate/migrate 4.12.2 v
 name                go-migrate
 
 categories          devel databases
@@ -22,9 +22,9 @@ long_description    {*}${description} Migrate reads migrations from sources \
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  e18987257659ebd27ba4dd4517951451d037bd35 \
-                    sha256  28c65abb86ae6a9d7b56fb77bf69f33956f395490435cbb7d7bc5d4f5e7e7ac6 \
-                    size    143355
+checksums           rmd160  77ef8e76d8b73eac941e1e78e4b3ba154cf72f8a \
+                    sha256  319df7514586f343ce5d8ca57e0942bb8b15e6442a8fc4c48bc0e92ba9d2e870 \
+                    size    151160
 
 build.cmd           make
 build.pre_args      VERSION=${version}

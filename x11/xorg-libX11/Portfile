@@ -4,7 +4,7 @@ PortSystem  1.0
 PortGroup   compiler_blacklist_versions 1.0
 
 name        xorg-libX11
-version     1.6.9
+version     1.6.12
 categories  x11 devel
 license     X11
 maintainers {jeremyhu @jeremyhu} openmaintainer
@@ -16,9 +16,9 @@ master_sites     xorg:individual/lib/
 
 distname    libX11-${version}
 
-checksums   rmd160  5575e5b54557979aa48c938a765830a3fabfceca \
-            sha256  9cc7e8d000d6193fa5af580d50d689380b8287052270f5bb26a5fb6b58b2bed1 \
-            size    2283814
+checksums   rmd160  f4ced0aa5eb00c6e4a97e95881eff9022f52f9ce \
+            sha256  f108227469419ac04d196df0f3b80ce1f7f65059bb54c0de811f4d8e03fd6ec7 \
+            size    2376498
 
 use_bzip2   yes
 use_parallel_build      yes

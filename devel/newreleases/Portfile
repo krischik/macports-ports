@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/newreleasesio/cli-go 0.1.4 v
+go.setup            github.com/newreleasesio/cli-go 0.1.7 v
 name                newreleases
 
 description         A command line client for managing NewReleases \
@@ -11,9 +11,9 @@ description         A command line client for managing NewReleases \
 
 long_description    {*}${description}
 
-checksums           rmd160  acba7f18026fe7e6310bcc8d759be5d2bdc61e8f \
-                    sha256  93ec1d36b298311502bf16d5241dce290f40c436c46b864fe23306fcfd49d2da \
-                    size    39553
+checksums           rmd160  ca8056e7e9cad27605f79741b0f6a3ac1030ca2c \
+                    sha256  655caf72c513038dbf2c52e80d06c4fba5da6bf7aa9f3abb5ee517cedf9d0586 \
+                    size    40383
 
 categories          devel
 license             BSD

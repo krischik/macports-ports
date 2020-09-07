@@ -9,7 +9,7 @@ PortGroup           legacysupport 1.0
 
 name                poppler
 conflicts           xpdf-tools
-version             0.90.1
+version             20.09.0
 license             GPL-2+
 maintainers         {devans @dbevans} openmaintainer
 categories          graphics
@@ -24,9 +24,9 @@ master_sites        ${homepage} \
 
 use_xz              yes
 
-checksums           rmd160  18d4d31fb0f3519d0e20fda10eac5fbdb81a7e17 \
-                    sha256  984d82e72e91418d280885298c8bdc855a2fd92665fd52a1345b27235e0c71c4 \
-                    size    1633804
+checksums           rmd160  52ebdb0ca57cbb880baaf39d50d9d16a42bd9e09 \
+                    sha256  4ed6eb5ddc4c37f2435c9d78ff9c7c4036455aea3507d1ce8400070aab745363 \
+                    size    1642932
 
 depends_build-append \
                     port:pkgconfig
@@ -102,7 +102,7 @@ if {${subport} ne ${name}} {
     depends_lib-append      port:poppler
 
     post-extract {
-        system -W ${workpath} "${prefix}/bin/git clone --depth=1 http://anongit.freedesktop.org/git/poppler/test"
+        system -W ${workpath} "${prefix}/bin/git clone --depth=1 https://anongit.freedesktop.org/git/poppler/test"
     }
 
 

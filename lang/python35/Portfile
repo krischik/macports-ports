@@ -6,8 +6,9 @@ PortGroup select 1.0
 name                python35
 
 epoch               20170810
-# Remember to keep py35-tkinter and py35-gdbm's versions sync'd with this
+# Remember to keep py35-tkinter, py35-htmldocs, and py35-gdbm's versions sync'd with this
 version             3.5.9
+revision            1
 
 set major           [lindex [split $version .] 0]
 set branch          [join [lrange [split ${version} .] 0 1] .]
@@ -112,6 +113,9 @@ platform darwin {
     }
     post-build {
         set buildlibdir [lindex [glob -directory ${worksrcpath}/build lib.*-*-*-${branch}] 0]
+        # preserve mtime of sysconfig data file to avoid rebuilding things after changing it
+        set oldmtime [file mtime ${buildlibdir}/_sysconfigdata.py]
+
         # Without this, LINKFORSHARED is set to
         # ... $(PYTHONFRAMEWORKDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)
         # (this becomes Python.framework/Versions/3.5/Python) which doesn't
@@ -132,6 +136,8 @@ platform darwin {
         # also remove gettext overlinking
         reinplace "s|-lintl||" \
            ${buildlibdir}/_sysconfigdata.py
+
+        file mtime ${buildlibdir}/_sysconfigdata.py $oldmtime
     }
     post-destroot {
         foreach dir { Headers Resources Python Versions/Current } {

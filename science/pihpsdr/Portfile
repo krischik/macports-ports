@@ -3,7 +3,10 @@
 PortSystem          1.0
 PortGroup           makefile 1.0
 PortGroup           github 1.0
-PortGroup           app 1.0
+PortGroup           legacysupport 1.1
+
+# strnlen
+legacysupport.newest_darwin_requires_legacy 10
 
 name                pihpsdr
 categories          science comms
@@ -13,18 +16,14 @@ maintainers         {ra1nb0w @ra1nb0w} openmaintainer
 description         piHPSDR is an HPSDR application designed for low power boards, like Raspberry.
 long_description    ${description}
 
-github.setup        dl1ycf pihpsdr 4267a511b4e53168a72e832002cf771c12494c56
-version             20200710-[string range ${github.version} 0 7]
-checksums           rmd160  a11656e9bd294a989e5228cc5968e5bc7087de1c \
-                    sha256  eae852c136f28242eb9be24a70b4d3687046865a7cf530dd5abab805cb4c56a8 \
-                    size    98743670
+github.setup        dl1ycf pihpsdr 32dc43670f26d9ac3f9766f7e02650ee20c5e2a7
+version             20200826-[string range ${github.version} 0 7]
+checksums           rmd160  df4948e0df053bd248a50bccb92b49ed67ae4d5e \
+                    sha256  f58ea5b7c21fb65f1c1a229878d2f8a0c32af8369ed8a6c1e1a277fcb27ad7c2 \
+                    size    97654919
 revision            0
 
 compiler.c_standard 1999
-
-# disable SoapySDR support by default
-patchfiles-append \
-    disable-soapysdr.patch
 
 depends_build-append \
     port:pkgconfig
@@ -51,13 +50,6 @@ pre-configure {
         ${worksrcpath}/main.c
 }
 
-destroot {
-     xinstall -m 755 ${worksrcpath}/pihpsdr ${destroot}${prefix}/bin/pihpsdr
-     xinstall -m 755 -d ${destroot}/${prefix}/share/pihpsdr
-     xinstall -m 644 ${worksrcpath}/release/pihpsdr/hpsdr.png \
-         ${destroot}/${prefix}/share/pihpsdr
-}
-
 variant soapysdr description "Enable SoapySDR support" {
     depends_lib-append \
         port:SoapySDR
@@ -71,8 +63,23 @@ variant window1440x900 description "Enable 1440x900 resolution on the main windo
        largewindow-1440x900.patch
 }
 
-app.create yes
-app.name piHPSDR
-app.executable pihpsdr
-app.icon MacOS/hpsdr.icns
-app.retina yes
+destroot {
+    xinstall -d -m 0755 ${destroot}${applications_dir}/piHPSDR.app/Contents
+    xinstall -d -m 0755 ${destroot}${applications_dir}/piHPSDR.app/Contents/MacOS
+    xinstall -d -m 0755 ${destroot}${applications_dir}/piHPSDR.app/Contents/Resources
+    xinstall -m 0644 ${filespath}/pihpsdr.icns \
+        ${destroot}${applications_dir}/piHPSDR.app/Contents/Resources/piHPSDR.icns
+    xinstall -m 0755 ${worksrcpath}/pihpsdr \
+        ${destroot}${applications_dir}/piHPSDR.app/Contents/MacOS/piHPSDR
+    xinstall -m 0644 ${filespath}/info.plist \
+        ${destroot}${applications_dir}/piHPSDR.app/Contents/Info.plist
+    reinplace "s|_VERSION_|${version}|g" \
+        ${destroot}${applications_dir}/piHPSDR.app/Contents/Info.plist
+    ln -s ${applications_dir}/piHPSDR.app/Contents/MacOS/piHPSDR \
+        ${destroot}${prefix}/bin/pihpsdr
+
+    # always needed
+     xinstall -m 755 -d ${destroot}/${prefix}/share/pihpsdr
+     xinstall -m 644 ${worksrcpath}/release/pihpsdr/hpsdr.png \
+         ${destroot}/${prefix}/share/pihpsdr
+}

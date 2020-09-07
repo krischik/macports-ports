@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Test2-Suite 0.000130 ../../authors/id/E/EX/EXODIST
+perl5.setup         Test2-Suite 0.000135 ../../authors/id/E/EX/EXODIST
 license             {Artistic-1 GPL}
 maintainers         {devans @dbevans} openmaintainer
 description         Test2::Suite - Distribution with a rich set of tools built upon the Test2 framework.
@@ -12,9 +12,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  1e59a370fcaef1835bcf4a960d6210af8e6baa55 \
-                    sha256  d462cb95024c0735fc0fdb22f92fda4f852bf85d92d89bd95e4fa212730d534a \
-                    size    224844
+checksums           rmd160  459f058bada1abdfdce36471f34e83441d95543a \
+                    sha256  1d0ac9e1e363c70ffecfe155e2cf917c610c671f65aa1cdb2425a3a6caeae21b \
+                    size    225490
 
 if {${perl5.major} != ""} {
     depends_lib-append \

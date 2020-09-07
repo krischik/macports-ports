@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        grafana grafana 7.1.0 v
+github.setup        grafana grafana 7.1.5 v
 
 description         The tool for beautiful monitoring and metric analytics & \
                     dashboards for Graphite, InfluxDB & Prometheus & More
@@ -47,9 +47,9 @@ set grafana_plist_dir   ${prefix}/etc/LaunchDaemons/org.macports.${name}
 
 add_users               ${grafana_user} group=${grafana_user} realname=Grafana
 
-checksums   rmd160  d4af85d2ea939d9a44ae4e6180366e60ffaaacdb \
-            sha256  e4092f7f2c46d464903305bde0b4e54d215e70d178809dec1f34581ad8d9572b \
-            size    10009932
+checksums   rmd160  de4c180cb6f8348b388188d165784725c4fbe664 \
+            sha256  7ae69011674a5b6a792e8ec84c93e8be9d50ad2e995cc63f3508d0b2e7acb754 \
+            size    10027133
 
 
 post-extract {
