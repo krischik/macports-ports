@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pikepdf
-version             1.19.1
+version             1.19.3
 revision            0
 categories-append   graphics
 license             MPL-2
@@ -18,9 +18,9 @@ homepage            https://github.com/pikepdf/pikepdf
 
 python.versions     37 38
 
-checksums           rmd160  ff1ab815a8466bc0fbefe6106b51881219e083c7 \
-                    sha256  fffe9cb5e4f026216c0f6f9170c30a1f9093b061275d9562b39fd74d5156a2ae \
-                    size    2360132
+checksums           rmd160  5ec7b3c58ce3988931eb136196f7861183ef0611 \
+                    sha256  78dd7990b049da841134b578537f190f00b42a80575903f8c9f59bd68dd8eabb \
+                    size    2360826
 
 if {${name} ne ${subport}} {
     depends_build-append \

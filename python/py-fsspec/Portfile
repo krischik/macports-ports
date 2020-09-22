@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-fsspec
-version             0.8.0
+version             0.8.2
 revision            0
 categories-append   devel
 platforms           darwin
@@ -20,9 +20,9 @@ long_description    ${description}
 
 homepage            https://github.com/intake/filesystem_spec
 
-checksums           rmd160  6b09b6659c319c533ddf0a74197c0f18279cfce2 \
-                    sha256  176f3fc405471af0f1f1e14cffa3d53ab8906577973d068b976114433c010d9d \
-                    size    233049
+checksums           rmd160  95b692d9f917c3ae2bacab27c02064927e98f125 \
+                    sha256  c08fbbb517d1c550be38ae0eba26b0b39b2b656617396ecce8c9ccd1a107c0ee \
+                    size    235598
 
 if {${name} ne ${subport}} {
     depends_build-append \

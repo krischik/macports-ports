@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                vala
-version             0.48.9
+version             0.50.0
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          lang
 maintainers         nomaintainer
@@ -21,9 +21,9 @@ master_sites        gnome:sources/${name}/${branch}/
 
 use_xz              yes
 
-checksums           rmd160  36eca16913fbd1c5a21f6068fe7de025fbb527b4 \
-                    sha256  9cea16d3bb3daddbfe0556b99fbfa08146230db7651e1e674cd08b4df5cefea9 \
-                    size    3472540
+checksums           rmd160  1cd068099d10a3e2c8fc65e7e4bebec9f63af062 \
+                    sha256  838adc50ac08881e06cf233fefd93740dec1530312cc1cf12c36d4e0e87d3071 \
+                    size    3507528
 
 depends_build       port:pkgconfig \
                     port:bison \

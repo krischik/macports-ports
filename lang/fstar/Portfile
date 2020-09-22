@@ -45,7 +45,7 @@ if {${fstar.stable}} {
     # Strip everything but <major>.<minor>
     fstar.release       [regsub {^([^\.]+\.[^\.]+).*} ${fstar.version} {\1}]
 } else {
-    fstar.version       20200825
+    fstar.version       20200919
     fstar.release       devel
 }
 
@@ -172,13 +172,13 @@ subport fstar {
 }
 
 subport fstar-devel {
-    github.setup        ${github.author} ${github.project} ad266f974a7fb6d5f9e2e56d64ecc5223c324b19
+    github.setup        ${github.author} ${github.project} fda6c5ee3ca7fefa9115e2bc2063dd494c900066
     version             ${fstar.version}-[string range ${github.version} 0 6]
     revision            0
 
-    checksums           rmd160  de3f442adf958bae7382430da090383262ff13fa \
-                        sha256  fa82bdf24b6bbdf77aaeb81c90bcf14837fa229e4beebc44bfe5ac25706e1046 \
-                        size    7618841
+    checksums           rmd160  a3785a73ec0eec3b373c97113700b59a77ac6a03 \
+                        sha256  f9887289dd504c723c16456fe75d4539676661c8e2afb38e81175a8c071d88aa \
+                        size    7619095
     github.tarball_from tarball
 
     patchfiles-append   fstar-devel/patch-tests_machine__integers_Makefile
@@ -222,13 +222,13 @@ subport kremlin {
 }
 
 subport kremlin-devel {
-    github.setup        ${github.author} ${fstar.project} 591383ccd0dbf5b540966601c53ab33979840ffd
+    github.setup        ${github.author} ${fstar.project} 504500d9d25b7098a2c65207c982898bd8566f5e
     version             ${fstar.version}-[string range ${github.version} 0 6]
     revision            0
 
-    checksums           rmd160  10e7071250d7fc229c7116c04c723a52bf1f37c0 \
-                        sha256  705f942b8d7558ef4e9fa028aa28f74c7ff52992dc84320871f0eec1d9aeb521 \
-                        size    882590
+    checksums           rmd160  ab0a98761bf2cf1c6485e3d64c3ceac931f89393 \
+                        sha256  a7dcd2b6f5ca93ab22d9bde3ae9d16abd02a9391c602754c4f3363c8c16dceaf \
+                        size    883086
 
     patchfiles-append   kremlin-devel/patch-clang-driver-options \
                         kremlin-devel/patch-fix-make-command \
@@ -353,11 +353,14 @@ if {${fstar.project} eq "fstar"} {
 
     post-patch {
         file mkdir "${workpath}/compiler-bin"
-        ln -shf ${configure.cc} ${workpath}/compiler-bin/${kremlin.cc}
+
+        set krml_cc ${workpath}/compiler-bin/${kremlin.cc}
+        xinstall -m 755 ${filespath}/krml-cc.in ${krml_cc}
+        reinplace "s|@CONFIGURE_CC@|${configure.cc}|g" ${krml_cc}
 
         # XXX: Must be kept in-sync with Driver.detect_gnu()
         foreach {cc_major} {5 6 7 8 9 10} {
-            ln -shf ${configure.cc} ${workpath}/compiler-bin/${kremlin.cc}-${cc_major}
+            ln -shf ${krml_cc} ${krml_cc}-${cc_major}
         }
     }
 

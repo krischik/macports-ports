@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           makefile 1.0
 
-github.setup        clibs clib 2.2.0
+github.setup        clibs clib 2.4.1
 
 categories          devel
 license             MIT
@@ -28,8 +28,8 @@ long_description    {*}${description} Basically the lazy-man’s copy/paste \
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  26029c4e411230d59ac4a74c0bf507a734f612d2 \
-                    sha256  fd99bad38815fbd01e8427f66c50011b4dd1c3dc9a968ff14415e82e999bab7b \
-                    size    170681
+checksums           rmd160  5c6af6cf224500064c62f2834c5ef07d3bbe98fb \
+                    sha256  38b3f110a683b3d8fc8d2fc52b8ebb90bed1b7216624ae372a5ee6aaea6ebfca \
+                    size    172839
 
 makefile.has_destdir no
