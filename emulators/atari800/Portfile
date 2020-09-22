@@ -3,20 +3,20 @@
 PortSystem                  1.0
 
 name                        atari800
-version                     3.1.0
-revision                    2
+version                     4.2.0
+revision                    0
 platforms                   darwin
 categories                  emulators
 maintainers                 nomaintainer
 description                 Atari 800 emulator
 long_description            atari800 is an emulator of the classic Atari 800 8bit computer.
 
-homepage                    http://atari800.sourceforge.net/
-master_sites                sourceforge::prog                                   \
+homepage                    https://atari800.github.io
+master_sites                git:https://github.com/atari800/atari800/releases/download/ATARI800_4_2_0:prog \
                             macports:atari800:appbundles
 
 set patchversion            52737
-set prog                    atari800-${version}.tar.gz
+set prog                    atari800-${version}-src.tgz
 set rom                     xf25.zip
 set appbundles              atari800-appbundles-r${patchversion}.tar.gz
 set share                   atari800-share-r${patchversion}.tar.gz
@@ -31,9 +31,9 @@ extract.only                ${prog}                                             
                             ${appbundles}
 
 checksums                   ${prog} \
-                            rmd160  8644aec61b8f9084d7ced672236d779bee1fedcc \
-                            sha256  901b02cce92ddb0b614f8034e6211f24cbfc2f8fb1c6581ba0097b1e68f91e0c \
-                            size    1492289 \
+                            rmd160  bc8b8c953fe2d1c2907c625beff8427967c74adb \
+                            sha256  55cb5568229c415f1782130afd11df88c03bb6d81fa4aa60a4ac8a2f151f1359 \
+                            size    7047710 \
                             ${rom} \
                             rmd160  e3960898223dd4d1b9a9cc5cfb1251bd726ea5a7 \
                             sha256  98ae0ad10413dd6f35ed80f5662dba6d790def70c7829046e52012a03b574b8a \
@@ -60,11 +60,12 @@ installs_libs               no
 configure.args              --mandir='\${prefix}/share/man'                     \
                             --datadir='\${prefix}/share/atari800'               \
                             --sysconfdir='\${prefix}/etc/${name}'               \
+                            --disable-rserial                                   \
                             --disable-sdltest
 configure.cxxflags-append   "-I${prefix}/include"
 configure.env-append        "CFLAGS=-O2 -I${prefix}/include -I${prefix}/include/SDL -D_GNU_SOURCE=1 -D_THREAD_SAFE"
 
-worksrcdir                  ${name}-${version}/src
+worksrcdir                  ${name}-${version}
 use_parallel_build          yes
 
 post-extract {
