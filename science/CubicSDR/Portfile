@@ -17,11 +17,11 @@ long_description    CubicSDR is the software portion of Software Defined \
     functions in software instead of traditional hardwre.
 homepage            https://www.cubicsdr.com
 
-github.setup        cjcliffe CubicSDR b564a0ddde6bd0d852ff37ab5c5208375da3d8eb
-version             20200419-[string range ${github.version} 0 7]
-checksums           rmd160  fa19ea331d69017964246f496b6012e48637456f \
-                    sha256  64e4f5772fa562f4bafeb0e56ac69a50f869d31c31b9794962f13fc078f5a59e \
-                    size    35493737
+github.setup        cjcliffe CubicSDR 4f1db5544d3075681d736a12e522fed030ece110
+version             20200824-[string range ${github.version} 0 7]
+checksums           rmd160  7a1522459d64eca6a70698a1debe52c09de8943a \
+                    sha256  7b760209129c5489132cbe47132653aac693c7e142ed755b65281b51087397a6 \
+                    size    35855485
 revision            0
 
 compiler.cxx_standard 2011

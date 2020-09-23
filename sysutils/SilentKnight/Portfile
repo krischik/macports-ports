@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                SilentKnight
-version             1.7
+version             1.10
 categories          sysutils aqua
 platforms           darwin
 supported_archs     x86_64
@@ -19,13 +19,13 @@ long_description    SilentKnight checks your Mac's basic security systems are ac
 
 homepage            https://eclecticlight.co/lockrattler-systhist/
 
-master_sites        https://eclecticlightdotcom.files.wordpress.com/2020/05/
+master_sites        https://eclecticlightdotcom.files.wordpress.com/2020/08/
 distname            [strsed [string tolower ${name}${version}] {g/[.]//}]
 use_zip             yes
 
-checksums           rmd160  928dfd95a15e651c3e84cf02c8a8d39b2f94b9b8 \
-                    sha256  23b0c313244c4e40954d648a313cd3a9333db567b6e6b2aca591b3c610923cf4 \
-                    size    8921759
+checksums           rmd160  a1bafdbc92e155be20a525a48457fec55917d706 \
+                    sha256  43da2c9a4fce2e682dec2a6811651d784ab2e6ad87e3976078f7461b42a9aa75 \
+                    size    9209045
 
 use_configure       no
 

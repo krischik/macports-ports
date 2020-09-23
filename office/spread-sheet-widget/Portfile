@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                spread-sheet-widget
-version             0.4
+version             0.6
 categories          office
 license             GPL-3+
 maintainers         {snc @nerdling}
@@ -35,8 +35,8 @@ depends_lib-append  port:gtk3
 depends_build-append    port:coreutils \
                         port:pkgconfig
 
-checksums           rmd160  dc818e405748eb28b3c7dfe735fd6516d9ea62f0 \
-                    sha256  85cdfe1b6642f8fb111ec1e5e70ce0b477fdbc482fa6986155b19505436bcdf9 \
-                    size    517114
+checksums           rmd160  76f5f7176eb28212260eab96da855d6afbecf67e \
+                    sha256  72a225f4bd9d60a6e106a37f2c3bbe249e81b0ca07c0a2fcdde8f5930c4d9321 \
+                    size    522827
 
 configure.install   ${prefix}/bin/ginstall

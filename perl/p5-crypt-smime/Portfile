@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Crypt-SMIME 0.25
-revision            1
+perl5.setup         Crypt-SMIME 0.27
+revision            0
 license             {Artistic-1 GPL}
 maintainers         {devans @dbevans} openmaintainer
 description         Crypt::SMIME - S/MIME message signing, verification, encryption and decryption
@@ -13,9 +13,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  26981e27b1ba4f979b0b3c05d7835613bbb34e38 \
-                    sha256  016c65c9c2818d603c84754d7e672964ce9b46de9b06f5c16687d835099704ae \
-                    size    28029
+checksums           rmd160  e2b11ee072e13b32cdbc75bb618a89be2f483d65 \
+                    sha256  0ec42d9e7702525db13c9d250a44e63daccb7fdfeaeaa55ae572a755daaaebdf \
+                    size    27977
 
 if {${perl5.major} != ""} {
     depends_build-append \

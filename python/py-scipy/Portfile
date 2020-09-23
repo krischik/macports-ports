@@ -5,12 +5,11 @@ PortGroup               python 1.0
 PortGroup               active_variants 1.1
 PortGroup               github 1.0
 PortGroup               compilers 1.0
-PortGroup               compiler_blacklist_versions 1.0
 
-github.setup            scipy scipy 1.5.0 v
-checksums               rmd160  bae805468c0781ea8fff87f25b7c3384dcd0875e \
-                        sha256  b31b616b4571f19a4c1a925b1b19f4eb325d098265692d88ea386537aa3742ab \
-                        size    19831004
+github.setup            scipy scipy 1.5.2 v
+checksums               rmd160  3eecdb6fde97b55f6dd7531501011c2473b4a616 \
+                        sha256  d168d96b759670a59efddd2b75a336fa96ea69130696e2d5600ba99b483f2a8a \
+                        size    19837351
 revision                0
 
 name                    py-scipy
@@ -46,6 +45,8 @@ if {${name} ne ${subport}} {
         revision    0
         github.livecheck.regex {(1\.2\.[0-9.-]+)}
 
+        # See https://trac.macports.org/ticket/60520#comment:6
+        compilers.allow_arguments_mismatch yes
     } else {
 
         # requires PyBind11 as of 1.4.0
@@ -57,11 +58,6 @@ if {${name} ne ${subport}} {
 
         # require thread_local storage as of 1.4.0
         compiler.thread_local_storage yes
-        # Work around thread local compiler selection bug. Remove after
-        # https://github.com/macports/macports-base/pull/161 is released.
-        compiler.blacklist-append {clang < 800}
-
-        compilers.allow_arguments_mismatch yes
     }
 
     if {${python.version} == 35} {
@@ -71,6 +67,9 @@ if {${name} ne ${subport}} {
                     size    18892400
         revision    0
         github.livecheck.regex {(1\.4\.[0-9.-]+)}
+
+        # See https://trac.macports.org/ticket/60520
+        compilers.allow_arguments_mismatch yes
     }
 
     depends_lib-append      port:py${python.version}-numpy \

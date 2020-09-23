@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-blessed
-version             1.17.8
+version             1.17.10
 revision            0
 
 platforms           darwin
@@ -18,9 +18,9 @@ long_description    ${description}
 
 homepage            https://github.com/jquast/blessed
 
-checksums           rmd160  3177f70b05e5ef7dd49316c78b6b13ac200251fc \
-                    sha256  7671d057b2df6ddbefd809009fb08feb2f8d2d163d240b5e765088a90519b2f1 \
-                    size    6697594
+checksums           rmd160  e2f82d9161b1088cd35c921e1c2705eface4ce3b \
+                    sha256  58b9464609f54e2eca5f5926db590a5b01fefef882844ce05064f483b8f96c26 \
+                    size    6697685
 
 python.versions     27 35 36 37 38
 

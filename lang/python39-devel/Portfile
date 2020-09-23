@@ -6,7 +6,7 @@ PortGroup select 1.0
 name                python39-devel
 
 # Remember to keep py39-tkinter and py39-gdbm's versions sync'd with this
-version             3.9.0b3
+version             3.9.0rc2
 
 set branch          [join [lrange [split ${version} .] 0 1] .]
 categories          lang
@@ -24,16 +24,17 @@ master_sites        ${homepage}ftp/python/3.9.0/
 
 distname            Python-${version}
 use_xz              yes
-checksums           md5 09dd89caded1661ddebec6475d945c6f \
-                    rmd160 62cae6a5f736598a7cacd673c1dcc4168585041c \
-                    sha256 af1d09f8f59d1329273c2970e3156e2f9949e5cd9c408264eba3ca84213c957f
+checksums           md5 3e34e48b479f4beec2c0c80fdbde52a2 \
+                    rmd160 7c6eb3caa29c461804a9fdaf843f627c5039b9dd \
+                    sha256 80b57c11f60dc1f46a408b1543f04ed52e6475ed5e597b4c23f3fd65f0b729ba
 
 patchfiles          patch-setup.py.diff \
                     patch-Lib-cgi.py.diff \
                     patch-configure.diff \
                     patch-Lib-ctypes-macholib-dyld.py.diff \
                     patch-libedit.diff \
-                    patch-configure-xcode4bug.diff
+                    patch-configure-xcode4bug.diff \
+                    builtin_bswap16.diff
 
 depends_build       port:pkgconfig
 depends_lib         port:bzip2 \
@@ -102,6 +103,9 @@ platform darwin {
 
     post-build {
         set buildlibdir [lindex [glob -directory ${worksrcpath}/build lib.*-*-*-${branch}] 0]
+        # preserve mtime of sysconfig data file to avoid rebuilding things after changing it
+        set oldmtime [file mtime ${buildlibdir}/_sysconfigdata__darwin_darwin.py]
+
         # Without this, LINKFORSHARED is set to
         # ... $(PYTHONFRAMEWORKDIR)/Versions/$(VERSION)/$(PYTHONFRAMEWORK)
         # (this becomes Python.framework/Versions/3.9/Python) which doesn't
@@ -122,6 +126,8 @@ platform darwin {
         # also remove gettext overlinking
         reinplace "s|-lintl||" \
             ${buildlibdir}/_sysconfigdata__darwin_darwin.py
+
+        file mtime ${buildlibdir}/_sysconfigdata__darwin_darwin.py $oldmtime
     }
 
     post-destroot {

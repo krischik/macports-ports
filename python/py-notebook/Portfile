@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-notebook
-version             6.0.3
+version             6.1.4
 revision            0
 categories-append   devel science
 platforms           darwin
@@ -20,15 +20,16 @@ long_description    ${description}
 
 homepage            https://jupyter.org
 
-checksums           rmd160  92660b516b80d2bc4b28447b53a22f88704d2aad \
-                    sha256  47a9092975c9e7965ada00b9a20f0cf637d001db60d241d479f53c0be117ad48 \
-                    size    14048151
+checksums           rmd160  54dff066c6927be01e57a5082ca6a01b3803a3fb \
+                    sha256  687d01f963ea20360c0b904ee7a37c3d8cda553858c8d6e33fd0afd13e89de32 \
+                    size    13933373
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \
                         port:py${python.version}-jinja2 \
                         port:py${python.version}-tornado \
                         port:py${python.version}-zmq \
+                        port:py${python.version}-argon2-cffi \
                         port:py${python.version}-ipython_genutils \
                         port:py${python.version}-traitlets \
                         port:py${python.version}-jupyter_core \
@@ -49,6 +50,7 @@ if {${name} ne ${subport}} {
                             size    13371684
 
         depends_lib-append  port:py${python.version}-ipaddress
+        depends_lib-delete  port:py${python.version}-argon2-cffi
     }
 
     livecheck.type      none

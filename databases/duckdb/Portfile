@@ -5,7 +5,7 @@ PortGroup           github 1.0
 PortGroup           cmake 1.1
 PortGroup           legacysupport 1.0
 
-github.setup        cwida duckdb 0.1.8 v
+github.setup        cwida duckdb 0.2.1 v
 
 homepage            https://www.duckdb.org/
 
@@ -25,9 +25,9 @@ categories          databases
 platforms           darwin
 license             MIT
 
-checksums           rmd160  5f67598afe8e5e4fbff8eb7aa7da76a3fb6ddc74 \
-                    sha256  413a8521ada73e37ac8244ef5b403c2c2dab46843c8c84d3bd4a087b466051a6 \
-                    size    17310283
+checksums           rmd160  e1430f412afccd6aec63b1c8d0923dfb80331b32 \
+                    sha256  9499291e209b54e83b3f641efd62b5a225c3a7177d5e8f38f7b8eee6cbb26edc \
+                    size    17819071
 
 compiler.cxx_standard 2011
 
@@ -38,5 +38,11 @@ depends_build-append \
 post-destroot {
     # For some reason, the CLI doesn't get installed by CMake.
     # So we come in and do so manually.
-    copy ${cmake.build_dir}/duckdb_cli ${destroot}${prefix}/bin/
+    copy ${cmake.build_dir}/duckdb ${destroot}${prefix}/bin/
+
+    # Install REST tools
+    foreach tool {dbgen rest_server} {
+        copy  ${cmake.build_dir}/tools/rest/${name}_${tool} \
+              ${destroot}${prefix}/bin/
+    }
 }

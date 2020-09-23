@@ -2,7 +2,7 @@ PortSystem 1.0
 PortGroup  legacysupport 1.0
 
 name			bind9
-version			9.16.4
+version			9.16.7
 categories		net
 maintainers		{geeklair.net:dluke @danielluke}
 platforms		darwin freebsd sunos
@@ -24,9 +24,9 @@ homepage		https://www.isc.org/
 distname		bind-${version}
 master_sites		isc:${name}/${version}
 
-checksums	rmd160	6debe010ff34a7e9f137fb089753d6d0ecc9d52c \
-		sha256	7522088d3daac8bcabaae37998178e09139ef5ccae6631cb1d8a625b770f370a \
-		size	3465172
+checksums	rmd160	55a5a7cb173ff0bb2214f073c90c2e281daedbd1 \
+		sha256	9f7d1812ebbd26a699f62b6fa8522d5dec57e4bf43af0042a0d60d39ed8314d1 \
+		size	3241476
 
 use_xz			yes
 

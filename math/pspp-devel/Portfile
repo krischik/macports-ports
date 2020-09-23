@@ -5,10 +5,11 @@ PortGroup           app 1.0
 PortGroup           active_variants 1.1
 
 name                pspp-devel
-set buildstamp      20200612050501
-set buildhash       g8fcedd
-version             1.3.0
-revision            27
+set buildstamp      20200922050501
+set buildhash       gf0a976
+epoch               1
+version             1.4.2
+revision            4
 # depends_test port:p${perl5.major}-text-diff
 categories          math
 license             GPL-3+
@@ -38,15 +39,16 @@ depends_lib-append  path:lib/pkgconfig/cairo.pc:cairo \
                     port:ncurses \
                     path:bin/perl:perl5 \
                     path:lib/pkgconfig/pango.pc:pango \
+                    port:python37 \
                     port:readline \
                     port:spread-sheet-widget \
                     port:zlib
 
 depends_build-append    port:pkgconfig
 
-checksums           rmd160  077435ccde24e527002c1bd9dd524452d9784cfc \
-                    sha256  153bb920f4a687f47f7dc39b5820ea563f99cdcef9dead5af8e8e30b041186ee \
-                    size    7551009
+checksums           rmd160  eb027835ca69dbed2aad334364bc7a9033c0d77a \
+                    sha256  f1db264aeaa4440a0208807bce62fb9861f537580add5ac67ce98ddf34140c35 \
+                    size    7587865
 
 post-extract {
     if {[variant_isset gui]} {
@@ -62,6 +64,7 @@ post-patch {
 }
 
 #configure.cflags-append -g
+configure.python    ${prefix}/bin/python3.7
 configure.perl      ${prefix}/bin/perl
 configure.args-append   --disable-rpath \
                         --without-libpq \
@@ -77,8 +80,10 @@ if {[lsearch -exact ${nif_compilers} ${configure.compiler}] > -1} {
 
 build.target-append  html
 
+test.args           -j${build.jobs}
 test.run            yes
 test.target         check
+test.env            TESTSUITEFLAGS="-j${build.jobs}"
 #test.env            TESTSUITEFLAGS='-v -k unrepresentable'
 #test.env            TESTSUITEFLAGS='1177 1178 1179 1180 1181 1182 1183 1184 1185 1186'
 

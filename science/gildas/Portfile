@@ -5,7 +5,7 @@ PortGroup           compilers 1.0
 PortGroup           active_variants 1.1 
 
 name                gildas
-version             202006b
+version             202009a
 set my_version      [string tolower [clock format [clock scan 2000-[string range ${version} 4 5]-10] -format %b]][string range ${version} 2 3][string range ${version} 6 end]
 categories          science
 platforms           darwin
@@ -30,9 +30,9 @@ master_sites        http://www.iram.fr/~gildas/dist/ \
 distname            ${name}-src-${my_version}
 use_xz              yes
 
-checksums           rmd160  b7fc1d33feddf2c6a9b66dd9515a182ee6507ac7 \
-                    sha256  53473b9115f24e00282835533b708865600dcd8b7aaa1c37242eaa996e5216a4 \
-                    size    42994200
+checksums           rmd160  9a68915cc8262a124d47c85dde95977749fd07e3 \
+                    sha256  9faa0b3e674b5ffe5b1aee88027d7401a46ae28cd0b306595300547605d6222a \
+                    size    42907592
 
 patch.pre_args      -p1
 patchfiles          patch-admin-Makefile.def.diff \

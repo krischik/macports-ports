@@ -1,10 +1,14 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           legacysupport 1.1
+
+# clock_gettime
+legacysupport.newest_darwin_requires_legacy 15
 
 name                knot
-version             2.9.5
-revision            0
+version             3.0.0
+revision            1
 categories          net
 license             GPL-3+
 maintainers         {mps @Schamschula} openmaintainer
@@ -17,9 +21,9 @@ master_sites        https://secure.nic.cz/files/knot-dns/
 
 use_xz              yes
 
-checksums           rmd160  74a139694f4124e9437ed0dff30e594501efcb45 \
-                    sha256  1109a8ba212ff8ddfdbaf44a6f8fc13a2b880a98a9e54c19112ba72a1aacbf76 \
-                    size    1190872
+checksums           rmd160  e34e17f546cb50364b5536edb9d1f8cd70fd0a7b \
+                    sha256  f1c96aff6e873a2f9b1b8c2441d5a7801dd48d3abdb738a4d24b26c2a8fbe6c4 \
+                    size    1329064
 
 depends_build       port:pkgconfig \
                     port:py38-sphinx
@@ -27,8 +31,12 @@ depends_build       port:pkgconfig \
 depends_lib         port:fstrm \
                     port:gnutls \
                     port:libidn \
+                    port:lmdb \
+                    port:nghttp2 \
                     port:protobuf-c \
                     port:userspace-rcu
+
+configure.args      --disable-silent-rules
 
 startupitem.create      yes
 startupitem.netchange   yes

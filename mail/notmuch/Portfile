@@ -5,8 +5,7 @@ PortGroup           compiler_blacklist_versions 1.0
 PortGroup           conflicts_build             1.0
 
 name                notmuch
-version             0.29.3
-revision            0
+version             0.31
 categories          mail
 platforms           darwin
 license             GPL-3+
@@ -21,31 +20,26 @@ long_description    \"Not much mail\" is what Notmuch thinks about your email \
 homepage            https://notmuchmail.org
 master_sites        ${homepage}/releases/
 use_xz              yes
-checksums           rmd160  e935fa029a83b9f7019547e6272c68224b04b0b2 \
-                    sha256  d5f704b9a72395e43303de9b1f4d8e14dd27bf3646fdbb374bb3dbb7d150dc35 \
-                    size    660536
+checksums           rmd160  fb81323f925597cd6dbcb7bc555138d4ed492e40 \
+                    sha256  571fa0e1539c86612b1f2b2c80a398e08ecfef52e27ef7e48cf8e3b84fa18394 \
+                    size    713144
 
 depends_build       port:pkgconfig \
-                    port:python37 \
-                    port:py37-sphinx \
-                    port:py37-sphinxcontrib-applehelp \
-                    port:py37-sphinxcontrib-devhelp \
-                    port:py37-sphinxcontrib-htmlhelp \
-                    port:py37-sphinxcontrib-jsmath \
-                    port:py37-sphinxcontrib-qthelp \
-                    port:py37-sphinxcontrib-serializinghtml
+                    port:python38 \
+                    port:py38-cffi \
+                    port:py38-sphinx \
+                    port:py38-sphinxcontrib-applehelp \
+                    port:py38-sphinxcontrib-devhelp \
+                    port:py38-sphinxcontrib-htmlhelp \
+                    port:py38-sphinxcontrib-jsmath \
+                    port:py38-sphinxcontrib-qthelp \
+                    port:py38-sphinxcontrib-serializinghtml
 
 depends_lib         port:gmime3 \
                     port:gpgme \
                     port:talloc \
                     port:xapian-core \
                     port:zlib
-
-patchfiles          patch-bindings-python-notmuch-globals.py.diff
-
-post-patch {
-    reinplace "s|@PREFIX@|${prefix}|g" ${worksrcpath}/bindings/python/notmuch/globals.py
-}
 
 conflicts_build     ${name} xcbuild
 

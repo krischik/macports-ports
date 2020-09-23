@@ -3,13 +3,15 @@
 PortSystem          1.0
 
 name                rust
-version             1.44.0
-revision            0
+version             1.46.0
+revision            1
 categories          lang devel
 platforms           darwin
 supported_archs     x86_64
 license             {MIT Apache-2} BSD zlib NCSA Permissive
-maintainers         {g5pw @g5pw} openmaintainer
+maintainers         {g5pw @g5pw} \
+                    {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
 
 description         A safe, concurrent, practical language
 
@@ -25,16 +27,17 @@ long_description    Rust is a curly-brace, block-structured expression \
 homepage            https://www.rust-lang.org/
 
 # Get from src/stage0.txt
-set ruststd_version 1.43.1
-set rustc_version   1.43.1
-set cargo_version   0.44.0
+set ruststd_version 1.45.2
+set rustc_version   1.45.2
+set cargo_version   0.46.0
 set llvm_version    9.0
 
 # can use cmake or cmake-devel; default to cmake.
 depends_build       path:bin/cmake:cmake \
                     bin:python2.7:python27
 
-depends_lib         port:llvm-${llvm_version}
+depends_lib         port:llvm-${llvm_version} \
+                    port:libffi
 
 master_sites        https://static.rust-lang.org/dist
 
@@ -47,23 +50,23 @@ distfiles-append    rust-std-${ruststd_version}-${build_arch}-apple-${os.platfor
                     cargo-${cargo_version}-${build_arch}-apple-${os.platform}${extract.suffix}
 
 checksums           ${distname}${extract.suffix} \
-                    rmd160  044d53a0aee5bcab32b9dce679d6b1c0f7a332d4 \
-                    sha256  bf2df62317e533e84167c5bc7d4351a99fdab1f9cd6e6ba09f51996ad8561100 \
-                    size    136756700
+                    rmd160  be052e3ebefd880f1738dca8f96dc946359dfd53 \
+                    sha256  2d6a3b7196db474ba3f37b8f5d50a1ecedff00738d7846840605b42bfc922728 \
+                    size    149449054  
 
 checksums-append \
                     rust-std-${ruststd_version}-x86_64-apple-${os.platform}${extract.suffix} \
-                    rmd160  1ce3cf584ca9467e8a8836282fb959ae898fea54 \
-                    sha256  a08827bf42aa73c8795968c9df28b226668d994332f9ae1e6ec2b9f9935d9ddf \
-                    size    23405362 \
+                    rmd160  b769e20421103ebb675394c46007db22410b120a \
+                    sha256  2a6e3b89f7f68d3b38bc1c255e20fa801b0159e2f81c588deb5734f7765f4799 \
+                    size    22623191 \
                     rustc-${rustc_version}-x86_64-apple-${os.platform}${extract.suffix} \
-                    rmd160  85cdbc98eefa53d4a1abc2a4a73e97f1fe616f05 \
-                    sha256  c7b92b5c3844b6f8201f1a5e41f91b257e764efb4a6bd960198ae60f03dec4bb \
-                    size    85765376 \
+                    rmd160  64373db4741f3798c3b62c1b7b808a7b1a86a8a4 \
+                    sha256  84cc63d2213a05a5007290199d9043092e3bab6f19b8b03ec56d875e2c31cf59 \
+                    size    71529658 \
                     cargo-${cargo_version}-x86_64-apple-${os.platform}${extract.suffix} \
-                    rmd160  088290f96dfb2c271d776f867ad6843426d1a6e8 \
-                    sha256  1071c520204a9e8fe4dd0de66a07a083f06abba16ac88f1df72231328a6395e6 \
-                    size    5608767
+                    rmd160  5d924c398124e8b70d0c3e1693d08367947a723a \
+                    sha256  a81306558ba470de6d2245982717402ce4517850d9032433e5f14a4785a55eae \
+                    size    5673993
 
 if {${os.platform} eq "darwin" && ${os.major} < 11} {
     known_fail yes

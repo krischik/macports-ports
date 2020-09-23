@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        qri-io qri 0.9.8 v
+github.setup        qri-io qri 0.9.12 v
 
 categories          devel net
 license             GPL-3
@@ -11,9 +11,9 @@ platforms           darwin
 
 maintainers         {gmail.com:herby.gillot @herbygillot} openmaintainer
 
-checksums           rmd160  4ea2fb04eb4f180f83ad14a419921a97b39865f1 \
-                    sha256  ca1968aa157dc591ccb95efc979e8364bc95bc6cb4191339f206a635ca923adc \
-                    size    4507517
+checksums           rmd160  b6f93123a10492311de26e4a6fd4e3bff31f3873 \
+                    sha256  fb0a1b49769c3b68ff7993c7084b8b2020095fde910ba2ca8f9e2ce9eb5b22c1 \
+                    size    4578053
 
 description         A global dataset version control system (GDVCS) built on \
                     the distributed web.

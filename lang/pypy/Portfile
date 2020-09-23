@@ -1,11 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           gitlab 1.0
 PortGroup           select 1.0
 
 name                pypy
 version             7.3.1
-revision            0
+revision            2
 categories          lang python devel
 license             MIT PSF
 maintainers         {danchr @danchr} openmaintainer
@@ -13,7 +14,6 @@ maintainers         {danchr @danchr} openmaintainer
 platforms           darwin
 
 homepage            http://pypy.org/
-use_bzip2           yes
 
 depends_build       port:pkgconfig \
                     port:py27-docutils
@@ -29,6 +29,7 @@ depends_run         port:python_select
 select.entries      [list python python-$subport $subport]
 
 patchfiles          no-embed.diff \
+                    fix-build.diff \
                     make_output.diff \
                     ffiplatform.py.diff \
                     paths.diff
@@ -70,6 +71,12 @@ if {$subport == ${name}} {
     select.entries-append [list python2 python2-$subport $subport]
 }
 
+# delayed until ${python.branch} is set
+gitlab.instance     https://foss.heptapod.net
+gitlab.setup        pypy pypy 7.3.1 release-pypy${python.branch}-v
+
+distname            pypy${python.branch}-${version}
+
 if {${python.branch} == 2.7} {
     patchfiles-append   pypy2-darwin.py.diff
 
@@ -83,10 +90,6 @@ if {${python.branch} == 2.7} {
                         sha256  437abe7575827be2f5e519e7f77fe634d4c9f5d3c9f5b7a269ac4c8c8aa7f0e9 \
                         size    22347476
 }
-
-master_sites        https://foss.heptapod.net/pypy/pypy/repository/release-pypy${python.branch}-v${version}
-distname            archive
-dist_subdir         ${name}/pypy${python.branch}-v${version}
 
 description         A fast interpreter for Python ${python.branch}
 long_description \
@@ -115,6 +118,11 @@ destroot.args       --builddir ${destroot}${prefix}/lib \
                     --without-_tkinter --no-embedded-dependencies
 destroot.target     package.py
 destroot.post_args
+
+post-extract {
+    # work around oddness caused by late invocation of gitlab.setup
+    file link ${workpath}/${name}-${version} ${worksrcpath}
+}
 
 post-patch {
     # sanity check, useful when upgrading, as upstream tends to move these around
@@ -259,10 +267,9 @@ if {${os.major} < ${min_darwin} && ${os.platform} eq "darwin"} {
     }
 }
 
+gitlab.livecheck.regex (\[0-9.]+)
+
 if {[regexp \- $subport]} {
     # don't check the tkinter subports
     livecheck.type none
-} else {
-    livecheck.url       https://foss.heptapod.net/api/v4/projects/76/repository/tags
-    livecheck.regex     \"release-pypy${python.branch}-v(\[0-9.\]+)\"
 }

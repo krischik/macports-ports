@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/rancher/cli 2.4.3 v
+go.setup            github.com/rancher/cli 2.4.6 v
 name                rancher-cli
 revision            0
 categories          devel
@@ -19,9 +19,9 @@ long_description    The Rancher CLI (Command Line Interface) is a unified \
                     this tool, you can operate Rancher using a command \
                     line rather than the GUI.
 
-checksums           rmd160  330c1bbb4a3c3ec3f5fc4f4c29341388b3af7273 \
-                    sha256  fd5b14c5d373885e3a300dc5c1668e4fed561128bd6aa254be0e4d0170d1acce \
-                    size    2040198
+checksums           rmd160  3611cd474ac67fcce2b3b3f2967fdd2c5b45674d \
+                    sha256  41df155fc44379d214f1ceedc0aab26c9d8a02bb07679849b12e93f5dd8c20ef \
+                    size    2251987
 
 build.target        github.com/rancher/cli
 

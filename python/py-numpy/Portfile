@@ -6,9 +6,6 @@ PortGroup               github 1.0
 PortGroup               compilers 1.0
 PortGroup               compiler_blacklist_versions 1.0
 
-# some older Clang say they support SIMD when they don't
-compiler.blacklist-append {clang < 900}
-
 name                    py-numpy
 categories-append       math
 license                 BSD
@@ -17,10 +14,10 @@ maintainers             {michaelld @michaelld} openmaintainer
 description             The core utilities for the scientific library scipy for Python
 long_description        ${description}
 
-github.setup            numpy numpy 1.19.0 v
-checksums               rmd160  ab8a2b2c7f60776c7dfe463b29e0c155133466a8 \
-                        sha256  2ff34f681c256927d50b238fa2c80d3323b431593b5a54baa519c0cf90576d9b \
-                        size    7022124
+github.setup            numpy numpy 1.19.2 v
+checksums               rmd160  6156c9670206fd3bafaf47481062d14733256c17 \
+                        sha256  af61a862c693e7960f595ddecbf3b8b7898d805c39d4f16ad5ebc230112f9fa2 \
+                        size    7035423
 revision                0
 
 if {${name} ne ${subport}} {
@@ -39,6 +36,14 @@ python.consistent_destroot yes
 # https://trac.macports.org/ticket/48263
 #universal_variant no
 
+# some older Clang say they support SIMD when they don't
+compiler.blacklist-append {clang < 900}
+
+# require a C/C++11 compliant compiler, to match SciPy and allow some
+# older macOS to build this port.
+compiler.c_standard   2011
+compiler.cxx_standard 2011
+
 # default livecheck
 github.livecheck.regex {(\d+(?:\.\d+)+)}
 
@@ -48,11 +53,13 @@ if {${name} ne ${subport}} {
         checksums           rmd160  cbb34cf0981ea142ff45722d05a9daad20a134ea \
                             sha256  2dce87065d5de1a83485cfb3de5e4e793787890f5c1dcc3536a9cabf2e1620af \
                             size    4691852
-        revision            1
+        revision            2
+        patchfiles-append   patch-cpu-detection.py.27.patch
         patchfiles-append   patch-numpy_core_setup.py.27.diff \
                             patch-numpy_tests_test_scripts.py.27.diff \
                             patch-fcompiler_g95.27.diff
-        github.livecheck.regex {(1\.16(?:\.\d+)+)}
+        livecheck.url       https://numpy.org/doc/stable/release.html
+        livecheck.regex     {(1\.16(?:\.\d+)+)}
     } else {
         patchfiles-append   patch-numpy_core_setup.py.diff \
                             patch-numpy_tests_test_scripts.py.diff \
@@ -65,7 +72,8 @@ if {${name} ne ${subport}} {
         checksums           rmd160  c14f2725afe0f7420d69a6f9ed5744639a2d2b31 \
                             sha256  4a421fdf82dbb3dce7e62400f69c43722b530db109c3321c6c95452f166560d9 \
                             size    5167349
-        revision            0
+        revision            1
+        patchfiles-append   patch-cpu-detection.py.35.patch
         github.livecheck.regex {(1\.18(?:\.\d+)+)}
     }
 

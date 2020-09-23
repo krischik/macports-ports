@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/rancher/rke 1.1.2 v
+go.setup            github.com/rancher/rke 1.1.7 v
 revision            0
 categories          devel
 platforms           darwin
@@ -26,9 +26,9 @@ long_description    Rancher Kubernetes Engine (RKE) is a CNCF-certified \
                     As long as you can run a supported version of \
                     Docker, you can deploy and run Kubernetes with RKE.
 
-checksums           rmd160  a26edb95ef9f0bd06c16515f7ee4380a1a3ba962 \
-                    sha256  941498ac331b738151df9a12dd6b574d0a5d11ba39f12a086d512a3808ad2991 \
-                    size    5503403
+checksums           rmd160  fbdb0632a0d846fe6f5e53579daf4bd205b947bd \
+                    sha256  f538830c5b1e526b951bbb8d9e784d84567b1cc4a20a7eaed7325926a639251f \
+                    size    6212679
 
 build.target        github.com/rancher/rke
 

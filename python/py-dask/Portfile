@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-dask
-version             2.19.0
+version             2.27.0
 revision            0
 categories-append   devel
 platforms           darwin
@@ -28,9 +28,9 @@ long_description    Dask provides multi-core execution on larger-than-memory \
 
 homepage            https://github.com/dask/dask/
 
-checksums           rmd160  9bff8235fab1c3588c694ed57b41a14b0e8f1c14 \
-                    sha256  e18035cebc2a32e9d483f76d7718f846e95a0f75e6b0fe192a21328c236a465b \
-                    size    2810299
+checksums           rmd160  d43788e886732506ce84320ce75ef796224b9791 \
+                    sha256  57ff061ee1d47a62976cd619ea61ca2b841211935a449a2a9d4879863c666a41 \
+                    size    2852785
 
 if {${name} ne ${subport}} {
     depends_build-append \

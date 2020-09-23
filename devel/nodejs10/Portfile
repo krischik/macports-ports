@@ -10,7 +10,7 @@ configure.cxx_stdlib    libc++
 compiler.cxx_standard   2011
 
 name                    nodejs10
-version                 10.21.0
+version                 10.22.1
 
 categories              devel net
 platforms               darwin
@@ -30,9 +30,9 @@ homepage                https://nodejs.org/
 master_sites            ${homepage}dist/v${version}
 use_xz                  yes
 
-checksums               rmd160  d6b2af42b1a4ebfad5a2d4c14a34d857444911eb \
-                        sha256  26b01fa28338cacaa8a66d7963ab2514e81678c268ab52ec55dcf937aadcb73b \
-                        size    21953796
+checksums               rmd160  16eb3503775b349a36ecc1601c8e238ff2ab9c55 \
+                        sha256  f47f4725dcae137b26f8e2a7d0ab2c2c7f1f47e4f96834e6a9242f157132255f \
+                        size    21864488
 
 distname                node-v${version}
 

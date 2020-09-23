@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Mail-DKIM 1.20200513.1
+perl5.setup         Mail-DKIM 1.20200907 ../../authors/id/M/MB/MBRADSHAW
 categories-append   mail
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
@@ -13,9 +13,9 @@ long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  11b4dfd3c22ab53a4b314542d046d0fcfbdb5de8 \
-                    sha256  534524b6b5e5cce3856c151484637f7d02b64edeed57f73215c03fa26dff76bd \
-                    size    176930
+checksums           rmd160  6ccc225f8edd817d737a51c1642b79925f4dcaf7 \
+                    sha256  abff11bd0977b9b8c3b2c3fc2a0dbdd2d38da249568698710fec1002d4251bf5 \
+                    size    177877
 
 if {${perl5.major} != ""} {
     depends_build-append \

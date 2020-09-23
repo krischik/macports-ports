@@ -45,7 +45,7 @@ if {${fstar.stable}} {
     # Strip everything but <major>.<minor>
     fstar.release       [regsub {^([^\.]+\.[^\.]+).*} ${fstar.version} {\1}]
 } else {
-    fstar.version       20200623
+    fstar.version       20200919
     fstar.release       devel
 }
 
@@ -138,6 +138,21 @@ if {${fstar.project} eq "fstar"} {
 
     kremlin.bin             krml
     kremlin.doc_dirs        examples
+
+    options                 kremlin.cc \
+                            kremlin.ccpath
+
+    kremlin.ccpath          {${configure.compiler}}
+
+    # XXX TODO: We really need a ${configure.compiler.family}
+    if {[string match *clang* ${configure.compiler}]} {
+        kremlin.cc clang
+    } elseif {[string match *gcc* ${configure.compiler}]} {
+        kremlin.cc gcc
+    } else {
+        # Assume GCC-like behavior
+        kremlin.cc gcc
+    }
 } else {
     ui_error "Unsupported project: ${fstar.project}"
 }
@@ -157,13 +172,13 @@ subport fstar {
 }
 
 subport fstar-devel {
-    github.setup        ${github.author} ${github.project} 4559e1b4ffdac20e581a7cc69a3d324e2f29cda8
+    github.setup        ${github.author} ${github.project} fda6c5ee3ca7fefa9115e2bc2063dd494c900066
     version             ${fstar.version}-[string range ${github.version} 0 6]
     revision            0
 
-    checksums           rmd160  f0cdde0a007465c6f4ec8bbfd7f9bf8f2edc9a67 \
-                        sha256  2fac89ceef9164bbb486fafbe68592a60028b12733285d024b02a258f6e87b70 \
-                        size    7647899
+    checksums           rmd160  a3785a73ec0eec3b373c97113700b59a77ac6a03 \
+                        sha256  f9887289dd504c723c16456fe75d4539676661c8e2afb38e81175a8c071d88aa \
+                        size    7619095
     github.tarball_from tarball
 
     patchfiles-append   fstar-devel/patch-tests_machine__integers_Makefile
@@ -207,13 +222,13 @@ subport kremlin {
 }
 
 subport kremlin-devel {
-    github.setup        ${github.author} ${fstar.project} 0f08f1243331ffc62ba3f1b8d8b06e4de8479943
+    github.setup        ${github.author} ${fstar.project} 504500d9d25b7098a2c65207c982898bd8566f5e
     version             ${fstar.version}-[string range ${github.version} 0 6]
     revision            0
 
-    checksums           rmd160  78eecc0f9ab7c6905a87a478d688233ab692b37b \
-                        sha256  7a8dbfe0f25f94cfa8ed41ab380cb9c9ab6fdfebec93081fdcc6dd485e50aecb \
-                        size    829817
+    checksums           rmd160  ab0a98761bf2cf1c6485e3d64c3ceac931f89393 \
+                        sha256  a7dcd2b6f5ca93ab22d9bde3ae9d16abd02a9391c602754c4f3363c8c16dceaf \
+                        size    883086
 
     patchfiles-append   kremlin-devel/patch-clang-driver-options \
                         kremlin-devel/patch-fix-make-command \
@@ -329,12 +344,31 @@ if {${fstar.project} eq "fstar"} {
     #
     # If we exclude it, we can rely on auto-detection of kremlin.home, which
     # allows us to run krml in-place (e.g. for tests)
-    build.args              FSTAR_HOME=${fstar.home}/home \
+    build.args              CC=${configure.cc} \
+                            FSTAR_HOME=${fstar.home}/home \
                             KREMLIN_HOME=${worksrcpath}
+
+    build.env-append        PATH=${workpath}/compiler-bin:$env(PATH) \
+                            "KREMLIN_ARGS=-cc ${kremlin.cc}"
+
+    post-patch {
+        file mkdir "${workpath}/compiler-bin"
+
+        set krml_cc ${workpath}/compiler-bin/${kremlin.cc}
+        xinstall -m 755 ${filespath}/krml-cc.in ${krml_cc}
+        reinplace "s|@CONFIGURE_CC@|${configure.cc}|g" ${krml_cc}
+
+        # XXX: Must be kept in-sync with Driver.detect_gnu()
+        foreach {cc_major} {5 6 7 8 9 10} {
+            ln -shf ${krml_cc} ${krml_cc}-${cc_major}
+        }
+    }
 
     test.run                yes
     test.args               {*}${build.args} \
                             -j ${build.jobs}
+    test.env-append         PATH=${workpath}/compiler-bin:$env(PATH) \
+                            "KOPTS=-cc ${kremlin.cc}"
 
     destroot.args           PREFIX=${destroot}${kremlin.home} \
                             FSTAR_HOME=${fstar.home}/home \

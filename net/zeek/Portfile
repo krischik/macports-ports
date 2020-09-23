@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           cmake 1.1
 
 name                zeek
-version             3.1.4
+version             3.2.1
 revision            0
 categories          net security
 platforms           darwin
@@ -22,9 +22,9 @@ homepage            https://www.zeek.org/
 master_sites        https://old.zeek.org/downloads/
 
 
-checksums           rmd160  4852489ff874b0ea41a446d0a91999430016e25b \
-                    sha256  d72b8bcba0def6ba93b650d6f25896d9326ee0b02113b80696f47b08bd73e964 \
-                    size    32130275
+checksums           rmd160  6c17a8713fc27baba83eefea71cfcaa9b4c532d5 \
+                    sha256  1ebcc73815b00df7b7f578d34cd0278030857b6c082aaff416016b00d3d1cb67 \
+                    size    27368572
 
 depends_build-append \
                     port:libgeoip \
@@ -35,7 +35,6 @@ depends_build-append \
 
 # use the system-provided flex
 depends_lib-append  port:bison \
-                    port:caf \
                     port:curl \
                     port:libmagic \
                     port:libpcap \
@@ -60,8 +59,7 @@ platform darwin {
     }
 }
 
-configure.args      -DCAF_ROOT_DIR=${prefix} \
-                    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+configure.args      -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 
 variant python37 conflicts python38 description {Build using Python 3.7} {
     configure.args-append \
@@ -84,17 +82,11 @@ if {![variant_isset python37] && ![variant_isset python38]} {
                     +python38
 }
 
-# fix Catalina build issue
-platform darwin 19 {
-    patchfiles-append \
-                    patch-aux-broker-src-detail-sqlite_backend.cc.diff
-}
-
 post-destroot {
     xinstall -d ${destroot}${prefix}/share/examples/${name}
-    copy ${worksrcpath}/aux/zeekctl/etc/node.cfg ${destroot}${prefix}/share/examples/${name}/
-    copy ${worksrcpath}/aux/zeekctl/etc/networks.cfg ${destroot}${prefix}/share/examples/${name}/
-    copy ${worksrcpath}/aux/zeekctl/etc/zeekctl.cfg.in ${destroot}${prefix}/share/examples/${name}/
+    copy ${worksrcpath}/auxil/zeekctl/etc/node.cfg ${destroot}${prefix}/share/examples/${name}/
+    copy ${worksrcpath}/auxil/zeekctl/etc/networks.cfg ${destroot}${prefix}/share/examples/${name}/
+    copy ${worksrcpath}/auxil/zeekctl/etc/zeekctl.cfg.in ${destroot}${prefix}/share/examples/${name}/
 
     xinstall -d ${destroot}${prefix}/Library/LaunchDaemons/
     copy ${filespath}/org.macports.zeek.plist ${destroot}${prefix}/Library/LaunchDaemons/
@@ -106,6 +98,13 @@ post-destroot {
     destroot.keepdirs ${destroot}${prefix}/etc/${name} \
         ${destroot}${prefix}/var/log/${name} \
         ${destroot}${prefix}/var/spool/${name}
+}
+
+pre-activate {
+    # we have switched to the bundled caf library
+    if {![catch {set installed [lindex [registry_active caf] 0]}]} {
+        registry_deactivate_composite caf "" [list ports_nodepcheck 1]
+    }
 }
 
 post-activate {
