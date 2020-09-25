@@ -7,17 +7,18 @@ version                     4.2.0
 revision                    0
 platforms                   darwin
 categories                  emulators
-maintainers                 krischik, openmaintainer
+maintainers                 {krischik @krischik} openmaintainer
 description                 Atari 800 emulator
-long_description            atari800 is an emulator of the classic Atari 800 8bit computer.
+long_description            Atari800 is an emulator of the classic Atari 800 8bit computer.
 
 set tagversion              ATARI800_4_2_0
 set patchversion            4.2.0
 
 homepage                    https://atari800.github.io
-master_sites                git:https://github.com/atari800/atari800/releases/download/${tagversion}:prog                                  \
-                            git:https://github.com/krischik/macports-user-krischik/releases/download/atari800-${patchversion}:appbundles   \
-                            http://www.emulators.com/freefile:pcxf
+master_sites                git:https://github.com/atari800/atari800/releases/download/${tagversion}:prog                                   \
+                            git:https://github.com/krischik/macports-user-krischik/releases/download/atari800-${patchversion}:appbundles    \
+                            sourceforge:https://prdownloads.sourceforge.net/atari800:rom1                                                   \
+                            http://www.emulators.com/freefile:rom2
 
 set prog                    atari800-${version}-src.tgz
 set rom1                    xf25.zip
@@ -26,8 +27,8 @@ set appbundles              atari800-appbundles-r${patchversion}.tar.gz
 set share                   atari800-share-r${patchversion}.tar.gz
 
 distfiles                   ${prog}:prog                                        \
-                            ${rom1}:prog                                        \
-                            ${rom2}:pcxf                                        \
+                            ${rom1}:rom1                                        \
+                            ${rom2}:rom2                                        \
                             ${share}:appbundles                                 \
                             ${appbundles}:appbundles
 
@@ -73,9 +74,6 @@ configure.args              --mandir='\${prefix}/share/man'                     
                             --disable-sdltest
 configure.cxxflags-append   "-I${prefix}/include"
 configure.env-append        "CFLAGS=-O2 -I${prefix}/include -I${prefix}/include/SDL -D_GNU_SOURCE=1 -D_THREAD_SAFE"
-
-worksrcdir                  ${name}-${version}
-use_parallel_build          yes
 
 post-extract {
     system "unzip -q ${distpath}/${rom1} -d ${workpath}/xf25"
