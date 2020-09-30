@@ -4,7 +4,7 @@ PortSystem              1.0
 PortGroup               cmake 1.1
 
 name                    hatari
-version                 2.1.0
+version                 2.2.1
 revision                2
 categories              emulators
 license                 GPL-2+
@@ -17,8 +17,9 @@ homepage                http://hatari.tuxfamily.org/
 
 master_sites            http://download.tuxfamily.org/hatari/${version}/
 
-checksums               sha256  eb299460e92db4a8a2983a0725cbbc8c185f1470b8ecd791b3d102815da20924 \
-                        rmd160  863a9428ab6d7cae7e7975e0b31fad5ee452b4c2
+checksums               sha256  11afef30a274be84696588583d5a1d65c8046934670f718c311c956ef7106f60 \
+                        rmd160  1d041094beb1f03d1bf8a5126841dbe3ab39a651 \
+                        size    4162798
 
 use_bzip2               yes
 
