@@ -7,6 +7,8 @@ version                     4.2.0
 revision                    0
 platforms                   darwin
 categories                  emulators
+license                     GPL-2+
+
 maintainers                 {krischik @krischik} openmaintainer
 description                 Atari 800 emulator
 long_description            Atari800 is an emulator of the classic Atari 800 8bit computer.
@@ -131,7 +133,11 @@ platform macosx {
     post-destroot {
         xinstall -d ${destroot}${applications_dir}/Atari-800
         foreach comp { Atari-130XE-Basic Atari-130XE-MyDos Atari-1400XL-Basic Atari-1400XL-MyDos Atari-320XE-Basic Atari-320XE-Sparta Atari-800-Basic Atari-800-Dos Atari-800XL-Basic Atari-800XL-Dos} {
+<<<<<<< HEAD
             xinstall -d -m 775 ${destroot}${applications_dir}/Atari-800/${comp}.app       
+=======
+            xinstall -d -m 775 ${destroot}${applications_dir}/Atari-800/${comp}.app
+>>>>>>> remotes/upstream/master
             xinstall -d -m 775 ${destroot}${applications_dir}/Atari-800/${comp}.app/Contents
             xinstall -d -m 775 ${destroot}${applications_dir}/Atari-800/${comp}.app/Contents/MacOS
             xinstall -d -m 775 ${destroot}${applications_dir}/Atari-800/${comp}.app/Contents/Resources
