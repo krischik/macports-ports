@@ -16,7 +16,7 @@ long_description \
                 linker, librarian and several other tools.
 
 # Per http://www.cc65.org/ discontinued support in 2013, moved to github
-# and new versions have appereard on github
+# and new versions have appeared on github
 homepage        http://cc65.github.io/cc65
 distfiles       V${version}.tar.gz
 
@@ -32,27 +32,24 @@ build.target    bin lib
 build.args      PREFIX=${prefix}
 use_parallel_build no
 
-destroot.args   DESTDIR=${destroot} PREFIX=${prefix}
+destroot.args   PREFIX=${prefix}
 
 variant docs description {Install extra documentation} {
     depends_build-append	port:linuxdoc-tools
     build.target-append	    doc
-#    post-destroot {
-#        set docdir ${destroot}${prefix}/share/doc/${name}
-#        file mkdir "${docdir}/html"
-#        foreach file [glob -directory ${docdir} *.htm*] {
-#            move ${file} "${docdir}/html"
-#        }
-#    }
 	
 	if {! [file exists ${prefix}/bin/perl] } {
-		ui_error "
-«${prefix}/bin/perl» is missing but the linuxdoc-tools depends on it.
+		ui_error "«${prefix}/bin/perl» is missing.
 
-Plese create an appropiate symbolic link.
+The linuxdoc-tools depends on the perl executable.
+Please create an appropriate symbolic link.
+For example you could try using:
+
+pushd ${prefix}/bin
+sudo ln -s perl5.28 perl
+popd
 "
-
-	exit 1
+		return -code error "missing dependency"
 	}
 }
 
