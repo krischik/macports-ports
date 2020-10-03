@@ -3,11 +3,11 @@
 PortSystem          1.0
 
 name                gnu-pw-mgr
-version             2.4.2
+version             2.7.4
 revision            0
-checksums           rmd160  39da1a3649e2c6b8e0191d2550b5ab4bafbecf58 \
-                    sha256  27d0c6cf3232f82c994c33cd3fe2db13ae249f4fc914bf6696199fc10bfb6dfb \
-                    size    810548
+checksums           rmd160  287e54a2ca5d6ef925b2f9a1f534202f092fd5a0 \
+                    sha256  e8cb8b8d6c81ac2b01a226f2d2ce7698bf8be830cf65b5a3dd805facabde1c3a \
+                    size    885528
 
 categories          security
 platforms           darwin
@@ -32,3 +32,5 @@ master_sites        gnu
 use_xz              yes
 
 depends_lib         port:gettext
+
+patchfiles          no-format.patch
