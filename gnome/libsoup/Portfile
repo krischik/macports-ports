@@ -65,6 +65,11 @@ if {[variant_isset universal]} {
     destroot.env-append    "CC=${configure.cc} ${configure.cc_archflags}"
 }
 
+platform darwin 8 {
+    # meson on Tiger cannot use rpaths, so we workaround with this to find dylib
+    destroot.env-append    "DYLD_LIBRARY_PATH=${build_dir}/${name}"
+}
+
 variant gnome description {Enable GNOME support} {
     configure.args-replace -Dgnome=false -Dgnome=true
 }

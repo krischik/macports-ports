@@ -3,11 +3,11 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/gohugoio/hugo 0.75.1 v
+go.setup            github.com/gohugoio/hugo 0.76.5 v
 revision            0
-checksums           rmd160  842a9d33336f3417345c5da9139d53606b3cbace \
-                    sha256  2b93ac5d1c56d382dae1a24845a812e5b5c28dc54152cd7cd659c0865c90bf1b \
-                    size    35147125
+checksums           rmd160  cb6353fe9bdd423b49a9ef388b895f6bd712b48e \
+                    sha256  0b6899b302efcef603bed94a7825ff3b9f58b0de8026a683a618234cbcbde9a7 \
+                    size    35393838
 
 categories          www
 platforms           darwin
@@ -17,6 +17,11 @@ description         A Fast and Flexible Static Site Generator built with love in
 long_description    ${description}
 
 build.env-append    GO111MODULE=on
+
+# FIXME: This port currently can't be built without allowing go mod to fetch
+# dependencies during the build phase. See
+# https://trac.macports.org/ticket/61192
+build.env-delete    GOPROXY=off GO111MODULE=off
 
 destroot {
     xinstall -d ${destroot}${prefix}/bin

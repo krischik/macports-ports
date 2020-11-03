@@ -9,7 +9,7 @@ PortGroup muniversal 1.0
 #remember to update the -doc and -server as well
 name                postgresql13
 version             13.0
-revision            0
+revision            1
 
 categories          databases
 platforms           darwin
@@ -88,12 +88,12 @@ test.target         check
 # remember to change livecheck with first proper release
 livecheck.type      regex
 #livecheck.regex    (13\\.\[.0-9\]*\[a-z\]+\[0-9\])
-livecheck.regex    (13\[a-z\]+\[0-9\])
-#livecheck.regex    (13\\.\[.0-9\]+)
+#livecheck.regex    (13\[a-z\]+\[0-9\])
+livecheck.regex    (13\\.\[.0-9\]+)
 livecheck.url       ${homepage}/ftp/source/
 
 post-destroot {
-    system "cd ${destroot}${prefix}/bin && ln -sf ${libdir}/bin/psql psql12"
+    system "cd ${destroot}${prefix}/bin && ln -sf ${libdir}/bin/psql psql13"
 
     reinplace -E "s#^CFLAGS =#CFLAGS +=#g" \
         ${destroot}${prefix}/lib/${name}/pgxs/src/Makefile.global

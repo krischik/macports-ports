@@ -12,7 +12,7 @@ PortGroup           debug 1.0
 mpi.setup
 
 github.setup        OSGeo gdal 3.1.3 v
-revision            0
+revision            2
 checksums           rmd160  10e72a8724dc76f1ac2a27313c26e25c0fa98989 \
                     sha256  161cf55371a143826f1d76ce566db1f0a666496eeb4371aed78b1642f219d51d \
                     size    12087908
@@ -37,9 +37,8 @@ homepage            https://www.gdal.org/
 master_sites        https://download.osgeo.org/gdal/${version}/
 use_xz              yes
 
-# this can be removed in a future version of MacPorts
-# see https://github.com/macports/macports-base/pull/161
-compiler.blacklist-append {clang < 800}
+# error: call to 'abs' is ambiguous
+compiler.blacklist-append {clang < 900}
 
 compiler.cxx_standard     2014
 # See https://trac.macports.org/ticket/56908

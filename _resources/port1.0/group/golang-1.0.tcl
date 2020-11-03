@@ -148,12 +148,12 @@ default worksrcdir      {gopath/src/${go.package}}
 default build.cmd   {${go.bin} build}
 default build.args      ""
 default build.target    ""
-default build.env   {GOPATH=${gopath} GOARCH=${goarch} GOOS=${goos} CC=${configure.cc}}
+default build.env   {GOPATH=${gopath} GOARCH=${goarch} GOOS=${goos} CC=${configure.cc} GOPROXY=off GO111MODULE=off}
 
 default test.cmd    {${go.bin} test}
 default test.args       ""
 default test.target     ""
-default test.env    {GOPATH=${gopath} GOARCH=${goarch} GOOS=${goos} CC=${configure.cc}}
+default test.env    {GOPATH=${gopath} GOARCH=${goarch} GOOS=${goos} CC=${configure.cc} GOPROXY=off GO111MODULE=off}
 
 # go.vendors name1 ver1 name2 ver2...
 # When a go.sum, Gopkg.lock, glide.lock, etc. is present use go2port to generate values
@@ -222,6 +222,11 @@ proc handle_set_go_vendors {vendors_str} {
                     bitbucket.org {
                         set distfile ${vversion}.tar.gz
                         set master_site https://bitbucket.org/${vauthor}/${vproject}/get
+                    }
+                    gitlab.com -
+                    salsa.debian.org {
+                        set distfile ${vproject}-${vversion}.tar.gz
+                        set master_site https://${vdomain}/${vauthor}/${vproject}/-/archive/${vversion}
                     }
                     default {
                         ui_error "go.vendors can't handle dependencies from ${vdomain}"

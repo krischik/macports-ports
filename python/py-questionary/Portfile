@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-questionary
-version             1.5.2
+version             1.7.0
 platforms           darwin
 license             MIT
 supported_archs     noarch
@@ -13,15 +13,15 @@ maintainers         {@harens gmail.com:harensdeveloper} \
                     openmaintainer
 
 description         Python library to build pretty command line user prompts
-long_description    ${description}
+long_description    {*}${description}
 
 homepage            https://github.com/tmbo/questionary
 
-checksums           rmd160 cf49aeb44a206c01edcb2520bf309f3ebcf39d04 \
-                    sha256 f6e41e36b6c86fe0c3ff12a30c6c6a4e80129efba5ad0a115d71fd5df119c726 \
-                    size   213322
+checksums           rmd160 9ccebfe3dbbd89aed71c46e53412c07bb6ba21d1 \
+                    sha256 338f326d3d10204dc3a21a07cfa8243f32d8d8f3d9f3de244951066c0769f2ea \
+                    size   26157
 
-python.versions     38
+python.versions     38 39
 
 if {${name} ne ${subport}} {
 
