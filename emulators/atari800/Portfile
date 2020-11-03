@@ -133,11 +133,7 @@ platform macosx {
     post-destroot {
         xinstall -d ${destroot}${applications_dir}/Atari-800
         foreach comp { Atari-130XE-Basic Atari-130XE-MyDos Atari-1400XL-Basic Atari-1400XL-MyDos Atari-320XE-Basic Atari-320XE-Sparta Atari-800-Basic Atari-800-Dos Atari-800XL-Basic Atari-800XL-Dos} {
-<<<<<<< HEAD
-            xinstall -d -m 775 ${destroot}${applications_dir}/Atari-800/${comp}.app       
-=======
             xinstall -d -m 775 ${destroot}${applications_dir}/Atari-800/${comp}.app
->>>>>>> remotes/upstream/master
             xinstall -d -m 775 ${destroot}${applications_dir}/Atari-800/${comp}.app/Contents
             xinstall -d -m 775 ${destroot}${applications_dir}/Atari-800/${comp}.app/Contents/MacOS
             xinstall -d -m 775 ${destroot}${applications_dir}/Atari-800/${comp}.app/Contents/Resources

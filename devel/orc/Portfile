@@ -23,3 +23,10 @@ checksums           rmd160  ce932fd372795226899c47b681455efefe448180 \
                     size    180340
 
 test.run            yes
+
+platform darwin 8 {
+    # meson on Tiger cannot use rpaths, so we workaround with this to find dylib
+    build.env-append       "DYLD_LIBRARY_PATH=${build_dir}/${name}"
+    test.env-append        "DYLD_LIBRARY_PATH=${build_dir}/${name}:${build_dir}/${name}-test"
+    destroot.env-append    "DYLD_LIBRARY_PATH=${build_dir}/${name}"
+}

@@ -2,11 +2,10 @@
 
 PortSystem                      1.0
 PortGroup                       cmake 1.0
-PortGroup                       compiler_blacklist_versions 1.0
 PortGroup                       mpi 1.0
 
 name                            armadillo
-version                         9.900.3
+version                         10.1.1
 revision                        0
 categories                      science
 platforms                       darwin
@@ -28,9 +27,9 @@ master_sites                    sourceforge:project/arma
 
 use_xz                          yes
 
-checksums                       rmd160  ecf5e4c7adabb7cba6e3fc896335f41fcbbb85d8 \
-                                sha256  d615e736852a74b1753d217718e20f0d8dc4958ccc6dc975030563e18783fc0a \
-                                size    5028472
+checksums                       rmd160  924826cabb857fec8334ea7ece5cad90976a1a6d \
+                                sha256  95e021dba80830e4d55f69a826e4d65c7411a4e400788a387563da16aef51c8e \
+                                size    6040456
 
 depends_build-append            port:pkgconfig
 
@@ -67,8 +66,8 @@ if {[variant_isset gcc44] || [variant_isset gcc45] || [variant_isset gcc46] || \
     configure.cxx_stdlib        libstdc++
 }
 
-# Snow Leopard (and older) will fail to build with the error "Need a newer compiler"
-compiler.blacklist-append       *gcc-3.* *gcc-4.0 *gcc-4.2 {clang <= 211.10.1}
+compiler.cxx_standard           2011
+compiler.thread_local_storage   yes
 
 livecheck.type                  regex
 livecheck.url                   ${homepage}download.html

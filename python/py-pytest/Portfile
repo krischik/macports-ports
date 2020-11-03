@@ -5,7 +5,7 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-pytest
-version             6.1.0
+version             6.1.2
 revision            0
 
 categories-append   devel
@@ -13,7 +13,7 @@ platforms           darwin
 license             MIT
 supported_archs     noarch
 
-python.versions     27 35 36 37 38
+python.versions     27 35 36 37 38 39
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -25,9 +25,9 @@ long_description    The pytest framework makes it easy to write small tests, \
 
 homepage            https://pytest.org
 
-checksums           rmd160  f355c31bc450f849b6e322ead5ef418822ab174a \
-                    sha256  d010e24666435b39a4cf48740b039885642b6c273a3f77be3e7e03554d2806b7 \
-                    size    1083563
+checksums           rmd160  9aff532c77af8e73891b59325ceaae7173d35377 \
+                    sha256  c0a7e94a8cdbc5422a51ccdad8e6f1024795939cc89159a0ae7f0b316ad3823e \
+                    size    1084943
 
 if {${name} ne ${subport}} {
     depends_build-append \

@@ -4,13 +4,13 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-pandas
-version             1.1.2
+version             1.1.4
 revision            0
 categories-append   science
 license             BSD
 platforms           darwin
 
-python.versions     27 35 36 37 38
+python.versions     27 35 36 37 38 39
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -20,9 +20,9 @@ long_description    ${description}
 
 homepage            https://pandas.pydata.org
 
-checksums           rmd160  91eee22df8419c498cfeab648611ff5629f68dcf \
-                    sha256  b64ffd87a2cfd31b40acd4b92cb72ea9a52a48165aec4c140e78fd69c45d1444 \
-                    size    5220166
+checksums           rmd160  9a4be02e091abb6c15d92e90ad31f3a40f9012ae \
+                    sha256  a979d0404b135c63954dea79e6246c45dd45371a88631cdbb4877d844e6de3b6 \
+                    size    5226971
 
 if {${name} ne ${subport}} {
     if {${python.version} eq 27} {

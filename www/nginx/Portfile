@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                nginx
-version             1.19.3
+version             1.19.4
 revision            0
 categories          www mail
 platforms           darwin
@@ -38,9 +38,9 @@ master_sites        https://nginx.org/download:nginx \
 
 distfiles           ${name}-${version}${extract.suffix}:nginx
 checksums           ${name}-${version}${extract.suffix} \
-                    rmd160  9d929897b18ab5ceb246b967bad7fcfade43716a \
-                    sha256  91e5b74fa17879d2463294e93ad8f6ffc066696ae32ad0478ffe15ba0e9e8df0 \
-                    size    1052581 \
+                    rmd160  c9163df53410e75f5ab2c8b10674108b45b02163 \
+                    sha256  61df546927905a0d624f9396bb7a8bc7ca7fd26522ce9714d56a78b73284000e \
+                    size    1054974
 
 depends_lib         port:pcre \
                     port:zlib
@@ -104,6 +104,12 @@ post-destroot {
     }
 
     file rename ${destroot}${prefix}/html ${destroot}${nginx_share}
+
+    # Install the manpage
+    set man_path "${destroot}${prefix}/share/man/man8"
+    xinstall -d -m 0755 ${man_path}
+    xinstall    -m 0644 ${worksrcpath}/man/${name}.8 ${man_path}
+    reinplace -q "s|/var/run/mynginx.pid|${nginx_pidfile}/|g" ${man_path}/${name}.8
 }
 
 post-activate {

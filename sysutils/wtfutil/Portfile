@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/wtfutil/wtf 0.31.0 v
+go.setup            github.com/wtfutil/wtf 0.33.0 v
 
 homepage            https://wtfutil.com
 
@@ -18,14 +18,19 @@ description         A personal terminal-based dashboard utility, designed for \
                     data.
 long_description    ${description}
 
-checksums           rmd160  0402d145d95275e1b276152c052cfdc6235aa1fb \
-                    sha256  4fdbc1f7eb444f39a73e11c08e30f7de55bffc09cc86151c11fb4af00d1e7ffa \
-                    size    2244422
+checksums           rmd160  a53600abe4d42929a02738ca16f11829aa2baeb9 \
+                    sha256  fce35ddd612d1fb86935e2aff5e33b0d90c79d9683c6110305b8c8e1ff46479e \
+                    size    2256686
 
 set build_date      [exec date +%FT%T%z]
 
 build.args          -o ${name} -ldflags \
                         '-X main.version=${version} -X main.date=${build_date}'
+
+# FIXME: This port currently can't be built without allowing go mod to fetch
+# dependencies during the build phase. See
+# https://trac.macports.org/ticket/61192
+build.env-delete    GOPROXY=off GO111MODULE=off
 
 destroot {
     xinstall -m 755 ${worksrcpath}/${name} ${destroot}${prefix}/bin/${name}

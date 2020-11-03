@@ -113,11 +113,11 @@ subport uhd-devel {
     long_description ${description}: \
 Provides the UHD GIT maint or master branch, depending on which is more advanced, and is typically updated every few days to week.
 
-    github.setup EttusResearch uhd 90ce6062b6b5df2eddeee723777be85108e4e7c7
-    version   20200913-[string range ${github.version} 0 7]
-    checksums rmd160 05be534c6604ea0dd7ccadca3da32bb0ba772a8a \
-              sha256 ea13e0df3727e37a34fc62a526da3e360ffad91ca38ad45fb5b48f569b0702d8 \
-              size   33939536
+    github.setup EttusResearch uhd 82e392442ca2531b33e622d8ddf37ee70bb5cb50
+    version   20201012-[string range ${github.version} 0 7]
+    checksums rmd160 0c45c5403fb9e8017b3511b9d2c5b21710235240 \
+              sha256 bdda8589efe532e39d4b306d37c6c8e38c415e5472e48f50f9f81f2e0c22cb1a \
+              size   33959217
     revision  0
 
     conflicts uhd uhd-39lts

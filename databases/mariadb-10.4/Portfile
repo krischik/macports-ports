@@ -6,7 +6,7 @@ legacysupport.newest_darwin_requires_legacy 10
 
 name                mariadb-10.4
 set name_mysql      ${name}
-version             10.4.14
+version             10.4.15
 set version_branch  [join [lrange [split ${version} .] 0 1] .]
 # Please set revision_client and revision_server to 0 if you bump
 # version; these can be changed independently for the 2 subports, but
@@ -84,9 +84,9 @@ if {$subport eq $name} {
                  https://github.com/${wsrep_api_github_author}/${wsrep_api_github_project}/archive/${wsrep_api_github_branch}:tagfour
 
     checksums       ${main_distfile} \
-                    rmd160  7211157a14984b090abf13478503ba1bef633a84 \
-                    sha256  3c11d7217123c3c5a2164402be75c39d1dbc7110f738bb4358c3c4dd14232fc9 \
-                    size    63581873 \
+                    rmd160  c881e0d8b64ba6273c310c1d1dc85d9e6b376e77 \
+                    sha256  f0f025cb9837acadacc8bf0d1fdf0147300ec3a3f23627680cce8a178246c425 \
+                    size    63577332 \
                     ${libmariadb_distfile} \
                     rmd160  9ee86632bb8b43aee53c8930a2058db871934195 \
                     sha256  c673e270324a4fd15a2948648e401b9a48bbbc6ce0a94ddac312bd5028f4c43f \
@@ -147,6 +147,10 @@ if {$subport eq $name} {
                    patch-libmariadb_mariadb_config_CMakeLists.txt.diff \
                    patch-cmake_mysql_version.cmake.diff
 
+    # patch to provide minimum changes required for ARM64 support;
+    # guessing this will be fixed in the next release.
+    patchfiles-append patch-include_my_global.h.diff
+
     post-patch {
         reinplace "s|@NAME@|${name_mysql}|g" \
             ${worksrcpath}/cmake/install_layout.cmake
@@ -187,7 +191,11 @@ if {$subport eq $name} {
                         -DMYSQL_MAINTAINER_MODE:STRING=AUTO \
                         -DICONV_LIBRARIES=${prefix}/lib/libiconv.dylib \
                         -DICONV_INCLUDE_DIR:PATH=${prefix}/include \
-                        -DCONNECT_WITH_LIBXML2=ON
+                        -DCONNECT_WITH_JDBC=OFF \
+                        -DCONNECT_WITH_LIBXML2=ON \
+                        -DCONNECT_WITH_MONGO=OFF \
+                        -DCONNECT_WITH_ODBC=OFF \
+                        -DCONNECT_WITH_REST=OFF
 
     post-destroot {
         # proc portdestroot::destroot_finish fails to find and compress our man pages
