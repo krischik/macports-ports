@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/cloudflare/cloudflared 2020.10.2
+go.setup            github.com/cloudflare/cloudflared 2020.11.7
 categories          net security
 maintainers         {i0ntempest @i0ntempest} openmaintainer
 license             Copyleft
@@ -16,9 +16,9 @@ long_description    Contains the command-line client and its libraries for Argo 
 homepage            https://developers.cloudflare.com/argo-tunnel
 
 checksums           ${distname}${extract.suffix} \
-                        rmd160  0621129f971e2d79ee08356f6a7bda2c5ffc9c4e \
-                        sha256  f0ceb19e669adc2cc7583232f11cbb2e5b111b6b197c672edbf5cd8583e73134 \
-                        size    10398225
+                        rmd160  68ae8ab289cf2992d5c69ed3183e7a49d555f9b9 \
+                        sha256  bcc4ecd58296f448579513cca38fc4bdca6a3a5cccafcdd39f9be073745824bd \
+                        size    10520345
 
 go.vendors          zombiezen.com/go/capnproto2 \
                         repo    github.com/capnproto/go-capnproto2 \

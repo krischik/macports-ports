@@ -9,8 +9,8 @@ PortGroup           conflicts_build              1.0
 epoch               5
 name                gcc10
 version             10.2.0
-revision            2
-subport             libgcc10 { revision 1 }
+revision            4
+subport             libgcc10 { revision 3 }
 platforms           darwin
 categories          lang
 maintainers         nomaintainer
@@ -48,6 +48,18 @@ checksums           rmd160  73f182e7d40e5c2988b2b8cd80cfca601f20e9fc \
                     size    75004144
 
 patchfiles          patch-fix-libgccjit-soname
+
+if { ${os.major} > 19 } {
+    # https://trac.macports.org/ticket/60908
+    # Patch for macOS 11 (Darwin20) version numbering taken from
+    # https://github.com/iains/gcc-darwin-arm64/commit/556ab512
+    patchfiles-append         big-sur-version-fix.diff
+    # Build doesn't understand a 11.0 deployment target so force to 10.16
+    macosx_deployment_target  10.16
+    # Fix detection of sanitizer support
+    # https://trac.macports.org/ticket/61494
+    patchfiles-append         fix-sanitisers-darwin20.diff
+}
 
 depends_lib         port:cctools \
                     port:gmp \
@@ -155,10 +167,10 @@ use_parallel_build  yes
 destroot.target     install install-info-host
 
 # Is this gcc release supported here.
-if { ${os.major} < 11 } {
+if { ${os.major} < 11 || ${os.arch} eq "arm" } {
     known_fail  yes
     pre-fetch {
-        ui_error "${name} ${version} is not supported on Darwin ${os.major}"
+        ui_error "${name} ${version} is not supported on Darwin ${os.major} ${os.arch}"
         return -code error "incompatible OS X version"
     }
 }

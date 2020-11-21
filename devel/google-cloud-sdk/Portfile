@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                google-cloud-sdk
-version             317.0.0
+version             319.0.0
 categories          devel python
 license             Apache-2
 maintainers         {breun.nl:nils @breun} openmaintainer
@@ -20,14 +20,14 @@ supported_archs     i386 x86_64
 
 if { ${configure.build_arch} eq "i386" } {
     distname        ${name}-${version}-darwin-x86
-    checksums       rmd160  eed46208bf3fd731786c6c026ffb548c7c2ca927 \
-                    sha256  d86ad8f2e9b442d2fc6d9c0703b290023acb89dfd8a277ef3cf29032315d58a1 \
-                    size    85618121
+    checksums       rmd160  3123da5e34f2ac1dde6ede18a4e34708cdc44944 \
+                    sha256  cbc88f1ac96504343b6f349b9289c22273f4803c64444d2161b015ff6a5c9fd6 \
+                    size    85701008
 } elseif { ${configure.build_arch} eq "x86_64" } {
     distname        ${name}-${version}-darwin-x86_64
-    checksums       rmd160  b391e64d9d858fe0381d3648b5c6f93369ad9243 \
-                    sha256  3873c60474754192371d4b7d801848d148da620640721c08b757644b47daab4c \
-                    size    86629132
+    checksums       rmd160  2bf06c333dbc3fd29c4487128bf42209def4354f \
+                    sha256  5c37fc7199141c63b6e5b1dfc55ed88ae681077fcf2e5fbd9945ad378cdf8d4e \
+                    size    86713228
 }
 
 homepage            https://cloud.google.com/sdk/

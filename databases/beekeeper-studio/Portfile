@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        beekeeper-studio beekeeper-studio 1.8.7 v
+github.setup        beekeeper-studio beekeeper-studio 1.8.11 v
 revision            0
 
 homepage            https://beekeeperstudio.io/
@@ -29,9 +29,9 @@ maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
 checksums           ${distname}${extract.suffix} \
-                    rmd160  e8090971fb4b36f6f5aebc3915e1e85bdbb8887c \
-                    sha256  d466d7f844c9860c0717b116aa52b0cc42d901a43cc35687d4a1269e0a4b1bdf \
-                    size    42384874
+                    rmd160  a057d6469da970e5dff67d474799295ad30ba7f7 \
+                    sha256  2bb6203e06f06a4a3e934293e6ca6d8dbc06c0bf4dd437ea1b737ad8f349357b \
+                    size    42391572
 
 depends_build       port:yarn
 

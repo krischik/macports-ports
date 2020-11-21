@@ -5,7 +5,7 @@ PortGroup               github 1.0
 PortGroup               makefile 1.0
 PortGroup               legacysupport 1.0
 
-github.setup            jarun nnn 3.2 v
+github.setup            jarun nnn 3.5 v
 revision                0
 categories              sysutils
 license                 BSD
@@ -14,9 +14,9 @@ platforms               darwin
 description             tiny, lightning fast, feature-packed file manager
 long_description        ${name} is a tiny, lightning fast, feature-packed file manager.
 
-checksums               rmd160  8a3ee3f18dda47f9cb720d306fabde5b87c3335a \
-                        sha256  5de81b8c91e0ef720e7c1bce23b5790fe90ea527291f16e529cd8c1aeb9dc00e \
-                        size    143157
+checksums               rmd160  5a97bc64cbea24d98a060412509a1ee45297fe3a \
+                        sha256  649e95b80bf2602e5e76b54d4eee8bb389da50c0b371d1b25955f1acef7e9abb \
+                        size    206040
 
 installs_libs           no
 

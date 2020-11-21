@@ -10,8 +10,8 @@ PortGroup           xcode_workaround             1.0
 epoch               3
 name                gcc9
 version             9.3.0
-revision            3
-subport             libgcc9 { revision 2 }
+revision            4
+subport             libgcc9 { revision 3 }
 platforms           darwin
 categories          lang
 maintainers         nomaintainer
@@ -39,6 +39,18 @@ checksums           rmd160  e0ade31726b8fbb1eb308e2b1383a79633aef996 \
                     size    70533868
 
 patchfiles          patch-fix-libgccjit-soname
+
+if { ${os.major} > 19 } {
+    # https://trac.macports.org/ticket/60908
+    # Patch for macOS 11 (Darwin20) version numbering taken from
+    # https://github.com/iains/gcc-darwin-arm64/commit/556ab512
+    patchfiles-append         big-sur-version-fix.diff
+    # Build doesn't understand a 11.0 deployment target so force to 10.16
+    macosx_deployment_target  10.16
+    # Fix detection of sanitizer support
+    # https://trac.macports.org/ticket/61494
+    patchfiles-append         fix-sanitisers-darwin20.diff
+}
 
 depends_lib         port:cctools \
                     port:gmp \
@@ -143,10 +155,10 @@ use_parallel_build  yes
 destroot.target     install install-info-host
 
 # Is this gcc release supported here.
-if { ${os.major} < 11 } {
+if { ${os.major} < 11 || ${os.arch} eq "arm" } {
     known_fail  yes
     pre-fetch {
-        ui_error "${name} ${version} is not supported on Darwin ${os.major}"
+        ui_error "${name} ${version} is not supported on Darwin ${os.major} ${os.arch}"
         return -code error "incompatible OS X version"
     }
 }
