@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-nbformat
-version             5.0.8
+version             5.1.2
 revision            0
 platforms           darwin
 license             BSD
@@ -19,9 +19,9 @@ long_description    ${description}
 
 homepage            https://jupyter.org
 
-checksums           rmd160  b5cbab209f0ef68f7289f97a3cf4eb3322a0a627 \
-                    sha256  f545b22138865bfbcc6b1ffe89ed5a2b8e2dc5d4fe876f2ca60d8e6f702a30f8 \
-                    size    126111
+checksums           rmd160  9764c670e12b6dc4244b7f053790760e3e592864 \
+                    sha256  1d223e64a18bfa7cdf2db2e9ba8a818312fc2a0701d2e910b58df66809385a56 \
+                    size    94402
 
 if {${name} ne ${subport}} {
 

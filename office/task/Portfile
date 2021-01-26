@@ -1,10 +1,12 @@
 # -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
 
 PortSystem          1.0
+PortGroup           github 1.0
 PortGroup           cmake 1.0
 
+github.setup        GothenburgBitFactory taskwarrior 2.5.3 v
+github.tarball_from releases
 name                task
-version             2.5.1
 maintainers         nomaintainer
 
 categories          office
@@ -18,10 +20,11 @@ platforms           darwin
 license             MIT
 
 homepage            https://taskwarrior.org/
-master_sites        https://taskwarrior.org/download/
 
-checksums           rmd160  ae04417ff7f007c6e01d4d6bd4dede67adc1e35f \
-                    sha256  d87bcee58106eb8a79b850e9abc153d98b79e00d50eade0d63917154984f2a15
+distname            task-${github.version}
+checksums           rmd160  d59dcb1644dccafb0ff35c5ea3e704e88b5d9f71\
+                    sha256  7243d75e0911d9e2c9119ad94a61a87f041e4053e197f7280c42410aa1ee963b\
+                    size    788760
 
 depends_lib         port:gnutls
 

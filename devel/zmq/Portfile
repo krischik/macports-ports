@@ -24,22 +24,28 @@ long_description    \
 if {${name} eq ${subport}} {
     PortGroup cmake 1.1
 
-    github.setup zeromq libzmq 4.3.3 v
-    checksums rmd160 3cccfe903679b264c6919ca5d3154c7c8f5216a1 \
-              sha256 9c1675f4f89af7715fc80fd99e2b5c18ecf8cfabc74c98aaae196626a12b6cc5 \
-              size   915353
-    revision  0
+    github.setup    zeromq libzmq 4.3.4 v
+    checksums       rmd160  540c9bc003266579d84985c52cc27fe6cbb098cd \
+                    sha256  5aa12435d152435a441ecfa8ad49b56eb845829b9bde22f90ea232cebaff055f \
+                    size    918351
+    revision        0
 
     conflicts zmq-devel zmq22 zmq3
+
+    depends_lib-append port:libsodium
+
     configure.args-append \
                      -DWITH_PERF_TOOL=OFF \
                      -DZMQ_BUILD_TESTS=OFF \
-                     -DENABLE_CPACK=OFF
+                     -DENABLE_CPACK=OFF \
+                     -DWITH_LIBBSD=OFF
 
     patch.pre_args -p1
-    patchfiles-append patch-cxx11.release.diff
-    patchfiles-append patch-c11.release.diff
-    patchfiles-append patch-fix-docs-dir.release.diff
+    patchfiles-append \
+        patch-cxx11.release.diff \
+        patch-c11.release.diff \
+        patch-fix-docs-dir.release.diff \
+        patch-fix-no-librt-APPLE.release.diff
 
     # overload the github livecheck regex to look for versions that
     # are just numbers and '.', no letters (e.g., "3.7.3_rc2").
@@ -92,29 +98,35 @@ subport zmq22 {
 subport zmq-devel {
     PortGroup cmake 1.1
 
-    github.setup zeromq libzmq 04f5bbedee58c538934374dc45182d8fc5926fa3
-    version   20200902-[string range ${github.version} 0 7]
-    checksums rmd160 05efc7ae86d5385890b30eb2be1f499aec0eb107 \
-              sha256 23d2a88d8b0ea5782f07052284ec67406c54c2f8262d402b70b78b19f22a8cf9 \
-              size   915352
-    revision  0
+    github.setup    zeromq libzmq 53104ec1b94657908d9c23d65a6f646847622c09
+    version         20210117-[string range ${github.version} 0 7]
+    checksums       rmd160  fd83c3c2b716dddbdb84c2a5f0c74db38366d5fa \
+                    sha256  b69735c314fb4c6f2a8747c27da4beb5b3892613910e0885c2984ccde4fd68fd \
+                    size    918294
+    revision        0
 
     conflicts zmq zmq22 zmq3
+
+    depends_lib-append port:libsodium
+
     configure.args-append \
                      -DWITH_PERF_TOOL=OFF \
                      -DZMQ_BUILD_TESTS=OFF \
-                     -DENABLE_CPACK=OFF
+                     -DENABLE_CPACK=OFF \
+                     -DWITH_LIBBSD=OFF
 
     patch.pre_args -p1
-    patchfiles-append patch-cxx11.devel.diff
-    patchfiles-append patch-c11.devel.diff
-    patchfiles-append patch-fix-docs-dir.devel.diff
+    patchfiles-append \
+        patch-cxx11.devel.diff \
+        patch-c11.devel.diff \
+        patch-fix-docs-dir.devel.diff \
+        patch-fix-no-librt-APPLE.devel.diff
 
 }
 
 # override github information
 
-homepage            http://www.zeromq.org/
+homepage            https://zeromq.org/
 
 # common directory for storing downloaded tarballs
 

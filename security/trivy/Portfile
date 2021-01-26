@@ -3,7 +3,7 @@
 PortSystem          1.0
 PortGroup           golang 1.0
 
-go.setup            github.com/aquasecurity/trivy 0.12.0 v
+go.setup            github.com/aquasecurity/trivy 0.15.0 v
 
 description         A Simple and Comprehensive Vulnerability Scanner for \
                     Containers, Suitable for CI
@@ -21,9 +21,9 @@ license             Apache-2
 maintainers         {gmail.com:herby.gillot @herbygillot} \
                     openmaintainer
 
-checksums           rmd160  bae3a47ab7e287dee52d9f05b8dec699bdebed51 \
-                    sha256  8a8485664be8eeaebef176db67d41a428b30d2aa6bef95ee1bb15b17bddd1062 \
-                    size    20597544
+checksums           rmd160  d84027c8751aa02098a59e0fc323ce3d97ab846c \
+                    sha256  a250aa848702dd3d70ccbb6cc1aca464e54b3ac4125822056197a7bdc1524966 \
+                    size    21438487
 
 build.cmd           make
 build.args          VERSION=${version}

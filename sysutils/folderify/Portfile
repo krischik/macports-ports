@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                folderify
-version             2.1.0
+version             2.1.1
+revision            1
 categories-prepend  sysutils amusements
 platforms           darwin
 license             MIT
@@ -21,14 +22,14 @@ long_description    Generate a native macOS folder icon from a mask file
 
 homepage            https://github.com/lgarron/folderify
 
-checksums           rmd160  3b3b8652f8a9c2d7493541e420d7454af83bc0fa \
-                    sha256  c34f09cdfe3492d448a44d902521ec64d756e8ff107ac4c85f6e6de518f25e4d \
-                    size    3496117
-
-depends_build-append \
-                    port:py${python.version}-setuptools
+checksums           rmd160  1bfec4e0ef2f16cb29a7bfb8aaa9c06cde3d18a8 \
+                    sha256  4167dcd86878fa0115101959d5437531954a6707dbe207f8cb45425a4547d730 \
+                    size    4579099
 
 depends_lib-append \
+                    port:py${python.version}-setuptools
+
+depends_run-append \
                     port:ImageMagick
 
 livecheck.type      pypi

@@ -37,15 +37,19 @@ if {![info exists blas_arch]} {
     #For older versions, we force native variant as there is no PPCG3 target in OpenBLAS
     default_variants-append +native
 }
+if {${build_arch} eq "arm64" } {
+    #currently require native builds for Apple Silicon
+    default_variants-append +native
+}
 
 subport OpenBLAS-devel {}
 if {[string first "-devel" $subport] > 0} {
 
-    github.setup    xianyi OpenBLAS 7e9cb39a2598124eac0b27186e32de10cce09a04
-    version         20201116-[string range ${github.version} 0 7]
-    checksums       rmd160  2d5624acb9c8b7695036c346b9baa67c1848afa9 \
-                    sha256  494769dc612c846b7ab30e5b9d34d9fdbf7084ce46c15bed98f42c2896be557a \
-                    size    12363979
+    github.setup    xianyi OpenBLAS 78702753f23d1a9803eb067f0305a5fe772cf939
+    version         20210102-[string range ${github.version} 0 7]
+    checksums       rmd160  b1c66825794d80bbbd3959a1cc2eb0c00c42cf7a \
+                    sha256  7e18979c4dd33bdc5e388aa68fc475d673032cbb57d340daf1f52e629335a6ea \
+                    size    12442802
     revision        0
 
     name            ${github.project}-devel
@@ -61,10 +65,10 @@ if {[string first "-devel" $subport] > 0} {
 
 } else {
 
-    github.setup    xianyi OpenBLAS 0.3.12 v
-    checksums       rmd160  cbdef2d6ca019cec74dd211ebe14689d12dc8a09 \
-                    sha256  5cfa5c8a993ff8813849e95317e9b1820dfb0ac63e0adc6e95d43030ca5e9a1f \
-                    size    12329032
+    github.setup    xianyi OpenBLAS 0.3.13 v
+    checksums       rmd160  ac0847547d4d1ca21c1e8bb1a681a3680826907c \
+                    sha256  9223b504b90ddf854339f6fdd9e89755feeb9efbdbfbd09ae61411a5fc183d27 \
+                    size    12442494
     revision        0
 
     conflicts       OpenBLAS-devel

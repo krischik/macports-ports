@@ -4,18 +4,19 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         perl-ldap 0.66 ../../authors/id/M/MA/MARSCHAP/
+perl5.setup         perl-ldap 0.68 ../../authors/id/M/MA/MARSCHAP/
+revision            0
 license             {Artistic-1 GPL}
 maintainers         nomaintainer
 description         A client interface to LDAP servers
-long_description    ${description}
+long_description    {*}${description}
 platforms           darwin
 
 homepage            https://metacpan.org/release/perl-ldap
 
-checksums           rmd160  97208a3278920a2a8ea770e3b8478db191245402 \
-                    sha256  09263ce6166e80c98d689d41d09995b813389fd069b784601f6dc57f8e2b4102 \
-                    size    319210
+checksums           rmd160  86148833336a22d93815e760bdbfd0ee31acb626 \
+                    sha256  e2f389fe3e7a9e4b61488692919ad723b98f3b479b5288f610daa8c27995b351 \
+                    size    318199
 
 if {${perl5.major} != ""} {
     depends_build-append \

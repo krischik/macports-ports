@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-imagecodecs
-version             2020.5.30
-revision            0
+version             2021.1.11
+revision            1
 
 categories-append   graphics
 platforms           darwin
@@ -17,9 +17,9 @@ long_description    ${description}
 
 homepage            https://www.lfd.uci.edu/~gohlke/
 
-checksums           rmd160  a50a9a8014d82672e9f6ea4fa73a370b6ffae2e0 \
-                    sha256  c8c776922d3a60824d8d3d31ba674a250d1b4d429e81349b5c88c34d4353ddb5 \
-                    size    8993252
+checksums           rmd160  ca4b0e6802be2678216c472c1c9b1914d48ea963 \
+                    sha256  8347702b2a25fe0f05f5084965e8834c583576f8129d70439c46437d2bb9f9af \
+                    size    9286717
 
 python.versions     37 38 39
 
@@ -34,7 +34,7 @@ if {${name} ne ${subport}} {
                     port:bzip2 \
                     port:charls \
                     port:giflib5 \
-                    port:jpeg \
+                    path:include/turbojpeg.h:libjpeg-turbo \
                     port:libaec \
                     port:openjpeg \
                     port:py${python.version}-cython \
@@ -46,8 +46,8 @@ if {${name} ne ${subport}} {
                     port:zopfli \
                     port:zstd
 
-    patchfiles      patch-setup.py.diff \
-                    patch-imagecodecs-_zopfli.c.diff
+    patchfiles      patch-imagecodecs-zopfli.diff \
+                    patch-setup.py.diff
 
     post-patch {
         reinplace "s|%PREFIX%|${prefix}|g" \

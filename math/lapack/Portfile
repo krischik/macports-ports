@@ -48,14 +48,15 @@ configure.args-append \
 
 if {${subport} eq ${name}} {
     if {[variant_isset gfortran]} {
-        configure.ldflags-append    -L${prefix}/lib/${compilers.gcc_default} -lgfortran
+        set gccPort [fortran_depends_port_name ${compilers.gcc_default}]
+        configure.ldflags-append    -L${prefix}/lib/${gccPort} -lgfortran
     }
     variant accelerate conflicts openblas description {use BLAS in Accelerate.framework} {
         depends_lib-append          port:vecLibFort
         configure.ldflags-append    -lvecLibFort
     }
     variant openblas conflicts accelerate description {use BLAS in openblas} {
-        depends_lib-append          port:openblas
+        depends_lib-append          path:lib/libopenblas.dylib:OpenBLAS
         configure.ldflags-append    -lopenblas
     }
     if {[variant_isset accelerate] || [variant_isset openblas]} {

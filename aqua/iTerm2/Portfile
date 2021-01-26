@@ -6,11 +6,11 @@ PortGroup           xcodeversion 1.0
 
 
 if {${os.major} > 17} {
-    version             3.4.1
+    version             3.4.3
     revision            0
-    checksums           rmd160  16c6756a058ae2ce829de37d6306ce1bba30a564 \
-                        sha256  fc2bfffaa23c5945a0c7a2bb512e5514e7ee33884594ddfcdb657d8a0fbd5226 \
-                        size    23217922
+    checksums           rmd160  d625bfb03db87e4574dccbbf422f2f571517b0f6 \
+                        sha256  3bec3a09a74e7219e71b1c1c5c0c20773b25addd700b96f2f41e5d906dec03c5 \
+                        size    23220589
     patchfiles          patch-Makefile-XC10.diff \
                         patch-remove-sparkle-3.4.diff \
                         patch-nsur.diff

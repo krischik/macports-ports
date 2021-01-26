@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        dbcli litecli 1.2.0 v
-revision            0
+github.setup        dbcli litecli 1.5.0 v
+revision            1
 
 categories          databases python
 maintainers         {@xeron gmail.com:xeron.oskom} openmaintainer
@@ -17,23 +17,24 @@ long_description    {*}${description}
 
 homepage            https://litecli.com/
 
-checksums           rmd160  aca71f38f2c794841070d70a14ab4878d7a16192 \
-                    sha256  00cb7115d6e081cb09366119534a081e777c5bda42ca58a2b38d1a9249a63d97 \
-                    size    882614
+checksums           rmd160  fc623625bea97a53577fd8a42cad009a25c67de6 \
+                    sha256  c5661611610d3225b5c3da254b88935f721f9d62ae4c69fda3fbf96cf6965c7e \
+                    size    884350
 
-patchfiles          setup.py.diff
-
-variant python36 conflicts python37 python38 description "Use Python 3.6" {}
-variant python37 conflicts python36 python38 description "Use Python 3.7" {}
-variant python38 conflicts python36 python37 description "Use Python 3.8" {}
+variant python36 conflicts python37 python38 python39 description "Use Python 3.6" {}
+variant python37 conflicts python36 python38 python39 description "Use Python 3.7" {}
+variant python38 conflicts python36 python37 python39 description "Use Python 3.8" {}
+variant python39 conflicts python36 python37 python38 description "Use Python 3.9" {}
 
 if {[variant_isset python36]} {
     python.default_version 36
 } elseif {[variant_isset python37]} {
     python.default_version 37
-} else {
-    default_variants +python38
+} elseif {[variant_isset python38]} {
     python.default_version 38
+} else {
+    default_variants +python39
+    python.default_version 39
 }
 
 depends_lib-append  port:py${python.version}-cli-helpers \
@@ -47,6 +48,6 @@ depends_lib-append  port:py${python.version}-cli-helpers \
 post-destroot {
     set docdir ${prefix}/share/doc/${subport}
     xinstall -d ${destroot}${docdir}
-    xinstall -m 0644 -W ${worksrcpath} changelog.md README.md \
+    xinstall -m 0644 -W ${worksrcpath} CHANGELOG.md README.md \
         LICENSE CONTRIBUTING.md ${destroot}${docdir}
 }

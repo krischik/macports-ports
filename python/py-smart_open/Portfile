@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-smart_open
-version             3.0.0
+version             4.1.2
 revision            0
 categories-append   textproc
 platforms           darwin
@@ -20,9 +20,9 @@ long_description    ${description}
 
 homepage            https://github.com/RaRe-Technologies/smart_open
 
-checksums           rmd160  ee9ac9234d7b8400cae29e0e81d7847b22c6beb2 \
-                    sha256  7f4e85b71df5a3618f5447d0b417b7a3576308c839690a24a70338b8993684c3 \
-                    size    113028
+checksums           rmd160  8bd333f78262a389f761274daa8dc805551760e2 \
+                    sha256  4bbb6233364fc1173cc0af6b7a56ed76fce32509514f1978a995a5835f3177f1 \
+                    size    118980
 
 if {${name} ne ${subport}} {
     depends_build-append \
@@ -40,10 +40,9 @@ if {${name} ne ${subport}} {
             depends_lib-append  port:py${python.version}-bz2file
         }
 
-        depends_lib-append  port:py${python.version}-boto3
+        depends_lib-append  port:py${python.version}-boto3 \
+                            port:py${python.version}-requests
     }
-
-    depends_lib-append  port:py${python.version}-requests
 
     livecheck.type      none
 }

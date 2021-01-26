@@ -3,7 +3,7 @@
 PortSystem          1.0
 
 name                msmtp
-version             1.8.12
+version             1.8.14
 revision            0
 categories          mail
 platforms           darwin
@@ -21,9 +21,9 @@ homepage            https://marlam.de/msmtp/
 master_sites        ${homepage}releases/
 use_xz              yes
 
-checksums           rmd160  59a40143216dee92e1db901980e9131adbfe89c8 \
-                    sha256  a86fef9477339923afefe974988a38e32d0feb90dfeeb88f7f55aac356a96354 \
-                    size    364712
+checksums           rmd160  59767b638df8c7bc683a256569d753d3402be479 \
+                    sha256  d56f065d711486e9c234618515a02a48a48dab4051b34f3e108fbecb6fb773b4 \
+                    size    363988
 
 depends_build       port:pkgconfig
 depends_lib         port:gettext \

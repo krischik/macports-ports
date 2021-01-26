@@ -4,11 +4,11 @@ PortSystem          1.0
 PortGroup           app 1.0
 
 name                xdiskusage
-version             1.52
+version             1.54
 revision            0
-checksums           rmd160  29d28f67be0cfc340978fc7f3d56a9e751b25f88 \
-                    sha256  eb17f1177c933b8b764ad8b3cad0ec97501d69dde9117ce2a7c759eb60ecb2c7 \
-                    size    54458
+checksums           rmd160  4b4c61bb1eb8c0d14fc200333ff5c51bc2225308 \
+                    sha256  12947465d6e144997acf83a01687780e9a46add0f8049400c38756b2dd807377 \
+                    size    55010
 
 categories          x11
 platforms           darwin

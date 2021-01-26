@@ -4,21 +4,22 @@ PortSystem          1.0
 PortGroup           perl5 1.0
 
 perl5.branches      5.26 5.28 5.30
-perl5.setup         Const-Exporter v0.4.2 ../../authors/id/R/RR/RRWO
+perl5.setup         Const-Exporter v1.1.1 ../../authors/id/R/RR/RRWO
 license             Artistic-2
-maintainers         {devans @dbevans} openmaintainer
+maintainers         nomaintainer
 description         Const::Exporter - Declare constants for export
 long_description    ${description}
 
 platforms           darwin
 
-checksums           rmd160  81f4841305c8bd6a84e40023ab60d0c7f83c8dab \
-                    sha256  b8ece6f4bc7b7aa259c9af8e7139c33ade36ab21ae1afd928d424c97518fb1a8 \
-                    size    20411
+checksums           rmd160  e449087beae95344c6c5346b66c754807f2ef818 \
+                    sha256  873c81c880beb239e621c841feadd890945c5a71a046dd6755e657e66c04f969 \
+                    size    20736
 
 if {${perl5.major} != ""} {
     depends_build-append \
                     port:p${perl5.major}-hash-objectify \
+                    port:p${perl5.major}-sub-identify \
                     port:p${perl5.major}-test-most
 
     depends_lib-append \

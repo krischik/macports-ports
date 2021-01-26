@@ -4,6 +4,7 @@ PortSystem          1.0
 
 PortGroup           active_variants               1.1
 PortGroup           cmake                         1.1
+PortGroup           compilers                     1.0
 PortGroup           compiler_blacklist_versions   1.0
 PortGroup           github                        1.0
 PortGroup           select                        1.0
@@ -11,9 +12,9 @@ PortGroup           xcodeversion                  1.0
 PortGroup           legacysupport                 1.0
 
 # Please also check if Gate needs a revbump after root6 update
-github.setup        root-project root 6-22-04 v
+github.setup        root-project root 6-22-06 v
 version             [string map {- .} ${github.version}]
-revision            0
+revision            2
 livecheck.version   ${github.version}
 
 # Use git commit
@@ -32,9 +33,9 @@ livecheck.url       ${github.homepage}/tags
 # Also, skip anything with trailing rcX etc.
 livecheck.regex     {v(6[-.]\d[02468][-.]\d{2}).tar.gz}
 
-checksums           rmd160  40b3f503b756c97a897a8956d88f376cff332cb5 \
-                    sha256  79a3264121e36b7b4eea5b4b8c58399db0e1261afea2712a06e124b32b47e651 \
-                    size    173080530
+checksums           rmd160  aed7e02f92002eb8c2d09803c8c8c24bba9ae490 \
+                    sha256  cdb7e784773793c722366fe133ca4f0cd39f12078d3226e0380ac36f80c96f67 \
+                    size    173088214
 
 name                root${version_major}
 categories          science
@@ -51,17 +52,13 @@ platforms           darwin
 
 dist_subdir         root/${version}_1
 
-# Force a compatible compiler
-set gcc_ver          10
-configure.fc         ${prefix}/bin/gfortran-mp-${gcc_ver}
-configure.f77        ${prefix}/bin/gfortran-mp-${gcc_ver}
-configure.f90        ${prefix}/bin/gfortran-mp-${gcc_ver}
-depends_lib-append   path:lib/libgcc/libgcc_s.1.dylib:libgcc
-depends_build-append port:gcc${gcc_ver}
+# Use compilers PG to pick a fortran compiler
+compilers.choose    f90 fc f77
+compilers.setup     require_fortran -g95 -gcc44 -gcc45 -gcc46 -gcc47 -gcc48 -gcc49 -gcc5 -gcc6 -gcc7 -gcc8
 compiler.blacklist-append *gcc* {clang < 920} {macports-clang-3.[0-9]} {macports-clang-[4-6].0}
 
 # If using Macports clang, make sure its added as a runtime dep as well as cling will need it.
-foreach clang_v { 7.0 8.0 9.0 10 } {
+foreach clang_v { 7.0 8.0 9.0 10 11 } {
     if { ${configure.compiler} eq "macports-clang-${clang_v}"} {
         depends_run-append port:clang-${clang_v}
     }
@@ -72,7 +69,7 @@ depends_build-append port:pkgconfig
 depends_lib-append  port:expat \
                     port:gmp \
                     port:giflib \
-                    port:jpeg \
+                    path:include/turbojpeg.h:libjpeg-turbo \
                     port:libpng \
                     port:lzma \
                     port:pcre \
@@ -171,7 +168,7 @@ configure.args-append \
                     -DPNG_PNG_INCLUDE_DIR=${prefix}/include
 
 # Work-around until ROOT supports building for macOS 11.X as deployment target.
-if { ${os.major} == 20 } {
+if { ${os.major} >= 20 } {
     macosx_deployment_target 10.16
 }
 
@@ -216,6 +213,18 @@ if { ${os.major} <= 10 } {
         ui_error "${name} is not supported on this OSX release (Darwin ${os.major})."
         return -code error "Unsupported OSX version"
     }
+}
+
+if { ${os.major} >= 20 } {
+    # Starting with macOS 11 the SDK version changes on incremental OS updates,
+    # e.g. going from 11.0 to 11.1. This causes problems with root as it bakes
+    # the SDK version (sysroot) into a number of places in the installed files
+    # and thus users will run into problems if they try and use a binary built on
+    # one incremental OS version, on a different one with a different SDK available.
+    # This is probably not the only port that will have this problem, and we might
+    # need to come up with a better policy in MacPorts to handle this, but until then
+    # unset the sdk version to use, which causes a fallback to the unversioned SDK path.
+    configure.sdk_version
 }
 
 pre-configure {

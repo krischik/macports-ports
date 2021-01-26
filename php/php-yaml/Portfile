@@ -9,15 +9,15 @@ platforms           darwin
 maintainers         {ryandesign @ryandesign} openmaintainer
 license             PHP-3.01
 
-php.branches        5.3 5.4 5.5 5.6 7.0 7.1 7.2 7.3 7.4
+php.branches        5.3 5.4 5.5 5.6 7.0 7.1 7.2 7.3 7.4 8.0
 php.pecl            yes
 
 if {[vercmp ${php.branch} 7.1] >= 0} {
-    version         2.1.0
+    version         2.2.1
     revision        0
-    checksums       rmd160  59dbbd89f44ff9c17a1b852f11d343b54a9867d1 \
-                    sha256  5acbf64d770b4b0aef8c877326fc0711112db4215a27c0fe8e4478fb7314b666 \
-                    size    39439
+    checksums       rmd160  9371284680a528a003a1b53a80223571216f4970 \
+                    sha256  e17ad04e752e25fd099bddd2df9d26dfef183c8d00c4179bc9d7a2e1c97d7819 \
+                    size    40977
 } elseif {[vercmp ${php.branch} 7.0] >= 0} {
     version         2.0.4
     revision        0
@@ -38,8 +38,8 @@ long_description    ${description}
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:libyaml
-    
+
     configure.args      --with-yaml=${prefix}
-    
+
     use_parallel_build  yes
 }

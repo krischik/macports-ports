@@ -5,7 +5,7 @@ PortGroup           perl5 1.0
 
 epoch               1
 perl5.branches      5.26 5.28 5.30
-perl5.setup         IO-AIO 4.72 ../../authors/id/M/ML/MLEHMANN
+perl5.setup         IO-AIO 4.74 ../../authors/id/M/ML/MLEHMANN
 license             {Artistic-1 GPL}
 platforms           darwin
 maintainers         nomaintainer
@@ -13,9 +13,9 @@ maintainers         nomaintainer
 description         Asynchronous Input/Output
 long_description    ${description}
 
-checksums           rmd160  2bfd740521d54679e1feaa50ce4c4a55e3170517 \
-                    sha256  6e5b5e82c95f36d4e26d0745e1bddef0f0beb313b7dae296a668a9fb145e6e9f \
-                    size    176906
+checksums           rmd160  d0361c31b45c680d55fdcb799df326ee662b274c \
+                    sha256  8d82ba2bd7a7d13adacfa2b02a5fd903779c207a57ad979939e2bdb17c7ff460 \
+                    size    181136
 
 if {${perl5.major} != ""} {
     depends_build-append \

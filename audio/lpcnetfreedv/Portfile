@@ -15,11 +15,11 @@ description         Experimental Neural Net speech coding for FreeDV
 long_description    Experimental version of LPCNet being developed \
     for over the air Digital Voice experiments with FreeDV.
 
-github.setup        drowe67 LPCNet e1bdf736a2331b24571db8cff609a5cba7b01ab1
-version             0.2
-checksums           rmd160  af13bb4a36eed9686eec0ecc97198d6465cb4be6 \
-                    sha256  e42677c8d9b9dd4b354e2136ce4a750dc0ba90025bfa01d51956749a61eefd32 \
-                    size    33011095
+github.setup        drowe67 LPCNet cd902649a5a1df149021359f2ea5f5fadf45e4af
+version             20210111-[string range ${github.version} 0 7]
+checksums           rmd160  4a46ac0a59b48d52d67c8e5644700a6ba23881d1 \
+                    sha256  58671c0a7339b9ff897fd38986eb39e2be0b16c0e44aa92d2599c87e15d98a7f \
+                    size    33016940
 revision            0
 
 epoch               1
@@ -34,7 +34,7 @@ configure.args-append \
 # enable optimization on all Intel hardwares
 if {[variant_isset universal]} {
     set merger_configure_args(x86_64) -DAVX=ON
-    set merger_configure_cflags(i386) -mssse3 -msse4.1
+    set merger_configure_cflags(i386) [list -mssse3 -msse4.1]
 } else {
     switch -- ${configure.build_arch} {
         x86_64 { configure.args-append -DAVX=ON }

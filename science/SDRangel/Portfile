@@ -16,17 +16,17 @@ description           SDRangel is an Open Source Qt5 / OpenGL 3.0+ SDR \
     and signal analyzer frontend to various hardware.
 long_description    ${description}
 
-github.setup          f4exb sdrangel 4.21.3 v
-checksums             rmd160  4417344202698246315d3e8b812349c971af5366 \
-                      sha256  9655d4c996e0155fce40e7ca5ad86fcf555f67b8ae1c86709b3f6b935c502304 \
-                      size    28537786
+github.setup          f4exb sdrangel 6.5.1 v
+checksums             rmd160  f7491424509121171884a4207cff0428caf3860c \
+                      sha256  f29be8d69dea894d415dfe2c27729b5b2dbcc13c45e5018bf13912bd6b38246d \
+                      size    35618192
 revision              0
 
-# check just the version 4 branch for now
-github.livecheck.regex (4\[0-9.]*)
+# check just the version 6 branch for now
+github.livecheck.regex (6\[0-9.]*)
 
-compiler.c_standard   2011
-compiler.cxx_standard 2011
+compiler.c_standard   2014
+compiler.cxx_standard 2014
 
 # TEMPORARY
 # https://trac.macports.org/ticket/60012
@@ -52,7 +52,9 @@ depends_lib-append \
 qt5.depends_component \
     qtmultimedia \
     qttools \
-    qtwebsockets
+    qtwebsockets \
+    qtlocation \
+    qtcharts
 
 configure.args-append \
     -DBUILD_GUI=OFF \

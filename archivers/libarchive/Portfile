@@ -16,22 +16,31 @@ long_description \
 	also write shar archives.
 platforms        darwin
 
-version          3.4.3
+version          3.5.1
 revision         0
 
-checksums        rmd160  7b1d1862bffda7b6e16bed6f25e0ead651c59584 \
-                 sha256  ee1e749213c108cb60d53147f18c31a73d6717d7e3d2481c157e1b34c881ea39 \
-                 size    6990533
+checksums        rmd160  80fef1fe33c2a9a86f5ec0cac109a29cf2fcd50e \
+                 sha256  9015d109ec00bb9ae1a384b172bf2fc1dff41e2c66e5a9eeddf933af9db37f5a \
+                 size    7008338
 
 homepage         https://libarchive.org/
 master_sites     ${homepage}downloads/
-
 
 depends_lib      port:bzip2 port:zlib port:libxml2 port:xz \
                  port:lzo2 port:libiconv \
                  port:lz4 port:zstd
 
 patchfiles       patch-libarchive__archive_read_support_format_lha.c.diff
+
+# patch for strnlen -- using legacysupport causes a failure on Tiger
+# note upstream now has fallback function for next release
+# https://github.com/libarchive/libarchive/issues/1464
+# REMOVE this patch for next libarchive release please
+patchfiles-append patch-libarchive-3.5-strnlen.diff
+
+platform darwin 8 {
+    patchfiles-append patch-libarchive-3.5-fix-tests-tiger.diff
+}
 
 depends_build    port:pkgconfig
 
@@ -45,6 +54,9 @@ post-destroot {
         ln -s ${prefix}/bin/${program} ${destroot}${prefix}/libexec/${subport}
     }
 }
+
+test.run yes
+test.target check
 
 livecheck.type  regex
 livecheck.regex libarchive-(\[0-9.\]+)\\.tar.gz

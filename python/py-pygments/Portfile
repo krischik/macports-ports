@@ -6,7 +6,7 @@ PortGroup           select 1.0
 
 name                py-pygments
 python.rootname     Pygments
-version             2.7.2
+version             2.7.4
 revision            0
 categories-append   devel
 platforms           darwin
@@ -27,9 +27,9 @@ long_description \
 
 homepage            http://pygments.org/
 
-checksums           rmd160  35eaa2b96665d64f1bd16d57cfcdb64f23e4ddf6 \
-                    sha256  381985fcc551eb9d37c52088a32914e00517e57f4a21609f48141ba08e193fa0 \
-                    size    2350457
+checksums           rmd160  80d8f04f27d657c430062f129e9be860cbf98768 \
+                    sha256  df49d09b498e83c1a73128295860250b0b7edd4c723a32e9bc0d295c7c2ec337 \
+                    size    2325473
 
 if {${name} ne ${subport}} {
 

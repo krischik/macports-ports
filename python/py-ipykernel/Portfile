@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-ipykernel
-version             5.3.4
+version             5.4.3
 revision            0
 categories-append   devel
 platforms           darwin
@@ -20,9 +20,9 @@ long_description    ${description}
 
 homepage            https://ipython.org/
 
-checksums           rmd160  00fcc40ddb776cc0496b63b6c2793f5266dfc361 \
-                    sha256  9b2652af1607986a1b231c62302d070bc0534f564c393a5d9d130db9abbbe89d \
-                    size    108656
+checksums           rmd160  ecc221c9d66fb3134b09cdecc37df96f2457c8bd \
+                    sha256  697103d218e9a8828025af7986e033c89e0b36e2b6eb84a5bda4739b9a27f3cb \
+                    size    111751
 
 if {${name} ne ${subport}} {
     depends_build-append \

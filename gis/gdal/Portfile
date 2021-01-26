@@ -11,11 +11,11 @@ PortGroup           conflicts_build 1.0
 PortGroup           debug 1.0
 mpi.setup
 
-github.setup        OSGeo gdal 3.2.0 v
+github.setup        OSGeo gdal 3.2.1 v
 revision            0
-checksums           rmd160  d3ed67e5b01ed3adc6492851d54048444fc68339 \
-                    sha256  b051f852600ffdf07e337a7f15673da23f9201a9dbb482bd513756a3e5a196a6 \
-                    size    12169064
+checksums           rmd160  698a78422729f2b299c604d4f50e236c86fcf258 \
+                    sha256  6c588b58fcb63ff3f288eb9f02d76791c0955ba9210d98c3abd879c770ae28ea \
+                    size    12184208
 
 categories          gis
 license             MIT BSD
@@ -97,6 +97,8 @@ configure.args-append \
                     --without-mongocxx \
                     --without-mongocxxv3 \
                     --without-fme \
+                    --without-libkml \
+                    --disable-driver-kmlsuperoverlay \
                     --without-hdf4 \
                     --without-hdf5 \
                     --without-jasper \
@@ -170,6 +172,8 @@ variant lzma \
 variant libkml \
     description {Enable libkml} {
     depends_lib-append      port:libkml
+    configure.args-delete   --without-libkml
+    configure.args-delete   --disable-driver-kmlsuperoverlay
     configure.args-append   --with-libkml=${prefix}
     configure.args-append   --with-libkml-inc=${prefix}/include
     configure.args-append   --with-libkml-lib=${prefix}/lib
@@ -328,7 +332,7 @@ variant xerces description {Enable xerces XML support for GML file format} {
 }
 
 # Database variants
-set postgresql_suffixes {95 96 10 11 12}
+set postgresql_suffixes {95 96 10 11 12 13}
 
 set portsgresql_variants {}
 set postgresql_default_variant "if {"

@@ -5,14 +5,14 @@ PortGroup           python 1.0
 PortGroup           select 1.0
 
 name                py-sympy
-version             1.6.2
+version             1.7.1
 revision            0
 categories-append   science math
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     27 35 36 37 38
+python.versions     27 35 36 37 38 39
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -27,9 +27,9 @@ long_description \
 
 homepage            https://sympy.org/
 
-checksums           rmd160  26882aef86f3d21499d6a800c947e8d80f957f5a \
-                    sha256  1cfadcc80506e4b793f5b088558ca1fcbeaec24cd6fc86f1fdccaa3ee1d48708 \
-                    size    6283481
+checksums           rmd160  a6983e32b75fbfddf828957e1161bdcb6a23b544 \
+                    sha256  a3de9261e97535b83bb8607b0da2c7d03126650fafea2b2789657b229c246b2e \
+                    size    6473875
 
 if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-setuptools \

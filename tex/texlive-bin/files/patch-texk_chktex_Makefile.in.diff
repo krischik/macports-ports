@@ -11,7 +11,7 @@
  @WIN32_TRUE@@WIN32_WRAP_TRUE@wrappers = $(all_scripts:=.exe)
  @WIN32_TRUE@@WIN32_WRAP_TRUE@runscript = $(top_srcdir)/../../texk/texlive/$(WIN_WRAPPER)/runscript.exe
 -texmfdir = $(datarootdir)/$(scriptsdir)
-+texmfdir = @@TEXMFDIST@@/$(scriptsdir)
++texmfdir = @@TEXMFDIST@@/
  nodist_texmf_SCRIPTS = $(perl_scripts:=.pl)
  texmf_SCRIPTS = $(CHKTEX_TREE)/chkweb.sh
  

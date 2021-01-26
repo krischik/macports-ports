@@ -8,23 +8,51 @@ PortGroup           conflicts_build              1.0
 
 epoch               4
 name                gcc-devel
-version             11-20201025
-revision            0
-subport             libgcc-devel { revision 0 }
+
+homepage            https://gcc.gnu.org/
+
 platforms           darwin
 categories          lang
 maintainers         nomaintainer
 # an exception in the license allows dependents to not be GPL
 license             {GPL-3+ Permissive}
+
 description         The GNU compiler collection, prerelease BETA snapshot.
 long_description    The GNU compiler collection, including front ends for \
                     C, C++, Objective-C, Objective-C++ and Fortran. \
-                    This is a prerelease BETA version! built from GCC snapshots.
+                    This is an !experimental!, !BETA! version \
+                    built from GCC snapshots.
 
-homepage            https://gcc.gnu.org/
+if { ${build_arch} eq "arm64" } {
+    # Use lead Darwin developer branch for now
+    # Eventually Darwin Arm support will be merged with upstream at which point
+    # Arm machines can use same snapshots as Intel.
+    PortGroup github 1.0
 
-# Primary releases
-master_sites        https://ftpmirror.gnu.org/gcc/gcc-${version}/ \
+    github.setup    iains gcc-darwin-arm64 a2840b63dc4e557cd270d8d5aad87d8d60ca8c53
+
+    # Version must follow same scheme as with GCC snapshots below <version>-<commit-date>
+    version         11-20210122
+    revision        0
+    subport         libgcc-devel { revision 0 }
+
+    checksums       rmd160  1a67cfb42f9b575345762be65089898e4e176079 \
+                    sha256  e84073e6af41ccf4c0aa618a170e6d1d801bb3ead5a8fdc829b34ede3be6ce15 \
+                    size    124352943
+
+} else {
+    # Use regular GCC releases and snapshsots
+
+    version         11-20210124
+    revision        0
+    subport         libgcc-devel { revision 0 }
+
+    checksums       rmd160  451a8bada81f735defd58f5b6217d2c5c828c188 \
+                    sha256  03741ce68ceab5541d4ee9d310acdc53bebe54a8ff32c5c402db56f5b9dc634f \
+                    size    74862944
+
+    # Primary releases
+    master_sites    https://ftpmirror.gnu.org/gcc/gcc-${version}/ \
                     https://mirror.its.dal.ca/gnu/gcc/gcc-${version}/ \
                     https://mirrors.kernel.org/gnu/gcc/gcc-${version}/ \
                     https://www.mirrorservice.org/sites/ftp.gnu.org/gnu/gcc/gcc-${version}/ \
@@ -35,19 +63,20 @@ master_sites        https://ftpmirror.gnu.org/gcc/gcc-${version}/ \
                     ftp://gcc.ftp.nluug.nl/mirror/languages/gcc/releases/gcc-${version}/ \
                     ftp://gcc.gnu.org/pub/gcc/releases/gcc-${version}/ \
                     gnu:gcc/gcc-${version}
-# snapshots and RC candidates
-master_sites-append https://mirror.koddos.net/gcc/snapshots/${version}/ \
+    # snapshots and RC candidates
+    master_sites-append \
+                    https://mirror.koddos.net/gcc/snapshots/${version}/ \
                     https://bigsearcher.com/mirrors/gcc/snapshots/${version}/ \
                     ftp://ftp.funet.fi/pub/mirrors/sources.redhat.com/pub/gcc/snapshots/${version}/ \
                     ftp://gcc.gnu.org/pub/gcc/snapshots/${version}/
 
-distname            gcc-${version}
-use_xz              yes
+    distname        gcc-${version}
+    use_xz          yes
 
-checksums           rmd160  df883a558afbdacac2152432873e2fd74c3c7125 \
-                    sha256  dd59afe340edc66b62626117790f0310d088b52d350118e48c061c08a6422be1 \
-                    size    72628316
+}
 
+depends_build-append \
+                    port:texinfo
 depends_lib-append  port:cctools \
                     port:gmp \
                     path:lib/pkgconfig/isl.pc:isl \
@@ -65,7 +94,11 @@ license_noconflict  gmp mpfr ppl libmpc zlib
 set major           [lindex [split ${version} .-] 0]
 
 platform darwin {
-    configure.pre_args-append --build=${build_arch}-apple-darwin${os.major}
+    if { ${build_arch} eq "arm64" } {
+        configure.pre_args-append --build=aarch64-apple-darwin${os.major}
+    } else {
+        configure.pre_args-append --build=${build_arch}-apple-darwin${os.major}
+    }
 }
 
 set gcc_configure_langs {c c++ objc obj-c++ lto fortran}
@@ -173,7 +206,7 @@ conflicts_build-append libunwind-headers
 # Note that we really don't want to include libgcc_ext.10.[45].dylib here, but install_name_tool
 # doesn't know how to change the id of stubs, and it's easier than recreating them for each
 # gcc port.
-set dylibs {libgcc_ext.10.4.dylib libgcc_ext.10.5.dylib libgcc_s.1.dylib libgfortran.5.dylib libquadmath.0.dylib libstdc++.6.dylib libobjc-gnu.4.dylib libgomp.1.dylib libitm.1.dylib libssp.0.dylib libasan.6.dylib libubsan.1.dylib libatomic.1.dylib}
+set dylibs {libgcc_ext.10.4.dylib libgcc_ext.10.5.dylib libgcc_s.1.dylib libgcc_s.2.dylib libgfortran.5.dylib libquadmath.0.dylib libstdc++.6.dylib libobjc-gnu.4.dylib libgomp.1.dylib libitm.1.dylib libssp.0.dylib libasan.6.dylib libubsan.1.dylib libatomic.1.dylib}
 
 if {${subport} eq "libgcc-devel"} {
 
@@ -268,6 +301,12 @@ if {${subport} eq "libgcc-devel"} {
 
         # For binary compatibility with binaries that linked against the old libstdcxx port
         ln -s libgcc/libstdc++.6.dylib ${destroot}${prefix}/lib/libstdc++.6.dylib
+
+        # Create README detailing runtime installed.
+        # Also used as file checked for path-like port dependency for libgcc/libgcc-devel deps.
+        xinstall -d ${destroot}${prefix}/share/doc/libgcc
+        system "echo 'libgcc runtime is provided by ${subport}' > ${destroot}${prefix}/share/doc/libgcc/README"
+
     }
 
 } else {

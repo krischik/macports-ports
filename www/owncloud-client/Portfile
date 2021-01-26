@@ -5,36 +5,67 @@ PortGroup               cmake 1.1
 PortGroup               qt5 1.0
 PortGroup               compiler_blacklist_versions 1.0
 
-# Check filenames in https://download.owncloud.com/desktop/stable/
-# owncloudclient-${version}.${build_id}.tar.xz (The source tarball)
-# ownCloud-${version}.${version_id}.pkg.tbz (The official macOS package)
 name                    owncloud-client
-version                 2.6.3
-revision                0
-set build_id            14058
-set version_id          14058
-
-checksums               rmd160  effe036ca72c8714b80947430b4aa9bdea7dff2f \
-                        sha256  e3d38de31e041f0e1836b2b74acfc1fc76eea4955968952a65643cbf36a493f5 \
-                        size    21246672
-
 categories              www aqua
 maintainers             {mps @Schamschula} openmaintainer
 license                 GPL-2+
 description             Desktop Syncing Client for ownCloud
-
 long_description \
     The ownCloud Desktop Client is a tool to synchronize files from ownCloud \
     Server with your computer.
-
-homepage                https://owncloud.org/
-master_sites            https://download.owncloud.com/desktop/stable
-distname                owncloudclient-${version}.${build_id}
-use_xz                  yes
-
-use_xcode               yes
-
 platforms               darwin
+homepage                https://owncloud.org/
+
+if {${os.platform} eq "darwin"} {
+    if {${os.major} < 16} {
+        version             2.6.3
+        set build_id        14058
+        set version_id      14058
+
+        master_sites        https://download.owncloud.com/desktop/stable
+        distname            owncloudclient-${version}.${build_id}
+
+        use_xz              yes
+
+        checksums           rmd160  effe036ca72c8714b80947430b4aa9bdea7dff2f \
+                            sha256  e3d38de31e041f0e1836b2b74acfc1fc76eea4955968952a65643cbf36a493f5 \
+                            size    21246672
+
+        patchfiles-append   patch-use-system-sqlite.diff
+
+        qt5.min_version     5.6
+    } else {
+        PortGroup           github 1.0
+
+        # Check https://github.com/owncloud/client/tags
+        # to find the build_id in the source tarball:
+        # ownCloud-${version}.${build_id}.tar.xz
+        github.setup        owncloud client 2.7.4 v
+        revision            0
+        set build_id        2934
+
+        checksums           rmd160  82d0f86ed75155da26f3ce24dd48a1873d07f4cf \
+                            sha256  1afd1c1f204120027e4e1ae780a9b7da28d0f0047302bb7ce302f999c29038e2 \
+                            size    19232012
+
+        depends_build-append \
+                            port:kde-extra-cmake-modules
+
+        patchfiles-append   patch-CMakeLists.txt.diff
+
+        qt5.min_version     5.13
+
+        configure.args-append \
+                            -DKDE_INSTALL_BUNDLEDIR:PATH=${applications_dir}
+    }
+
+    if {${os.major} < 13} {
+        # Finder extension does not compile on 10.8
+        configure.pre_args-append   -DBUILD_SHELL_INTEGRATION=OFF
+    }
+
+    use_xcode               yes
+}
 
 compiler.cpath
 compiler.library_path
@@ -51,29 +82,17 @@ qt5.depends_component   qtmacextras qtwebkit
 qt5.depends_build_component \
                         qttools
 
-qt5.min_version         5.6
-
-patchfiles              patch-use-system-sqlite.diff \
-                        patch-add-xcodeflags.diff
+patchfiles-append       patch-add-xcodeflags.diff
 
 cmake.install_prefix    ${applications_dir}
 
 # This should match LIB_INSTALL_DIR in CMakeLists.txt
 configure.args-append   -DCMAKE_INSTALL_NAME_DIR=${applications_dir}/owncloud.app/Contents/MacOS \
                         -DXCODEFLAGS="-IDECustomDerivedDataLocation=${workpath}/DerivedData" \
-                        -DMIRALL_VERSION_BUILD=${version_id}
-
-if {${os.major} < 13} {
-    # Finder extension does not compile on 10.8
-    configure.pre_args-append   -DBUILD_SHELL_INTEGRATION=OFF
-}
+                        -DMIRALL_VERSION_BUILD=${build_id}
 
 
 post-destroot {
     ln -s ${applications_dir}/owncloud.app/Contents/MacOS/owncloudcmd \
         ${destroot}${prefix}/bin/owncloudcmd
 }
-
-livecheck.regex     owncloudclient-(${version}.${build_id})${extract.suffix}
-livecheck.url       ${master_sites}
-livecheck.version   ${version}.${build_id}

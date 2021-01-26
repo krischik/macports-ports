@@ -36,14 +36,13 @@ subport cmake-devel {
 
 if {${subport} eq ${name}} {
 
-    gitlab.setup cmake cmake 3.18.5 v
+    gitlab.setup    cmake cmake 3.19.3 v
+    checksums       rmd160  f06e1e943457f79715bae77f347e2417b72a3326 \
+                    sha256  5bff94ab6638995ffd029c9e319e96572fcec21abc9264ccdd03df97adac1113 \
+                    size    7138448
+    revision        0
+
     gitlab.livecheck.regex {([0-9.]+)}
-
-    checksums rmd160 cc7e658d34b65e5889425b33529d35c117e51a22 \
-              sha256 b9fc524aedfefa9043e74431b814f1578be0cefec41778337f7527de002ee10b \
-              size   6946444
-    revision  0
-
     compiler.cxx_standard 2011
 
     platform darwin {
@@ -64,7 +63,6 @@ if {${subport} eq ${name}} {
     long_description ${base_long_description} \
         The ${subport} release port is updated roughly every few months.
 
-    # release-only patches
     patchfiles-append \
         patch-Modules-noArchCheck.diff \
         patch-CMakeFindFrameworks.cmake.diff \
@@ -72,7 +70,8 @@ if {${subport} eq ${name}} {
         patch-fix_cxx14_17_checks.diff \
         patch-fix-system-prefix-path.diff \
         patch-cmake-leopard-tiger.diff \
-        patch-fix-clock_gettime-test.diff
+        patch-fix-clock_gettime-test.diff \
+        patch-qt5gui.diff
 
     depends_lib-append \
         port:curl \
@@ -125,7 +124,7 @@ if {${subport} eq ${name}} {
     platform darwin {
         configure.env-append \
             CMAKE_OSX_DEPLOYMENT_TARGET=${macosx_deployment_target}
-        
+
         if {${configure.sdkroot} eq ""} {
             configure.env-append SDKROOT=/
         }
@@ -194,6 +193,10 @@ if {${subport} eq ${name}} {
         # patch FRAMEWORKS
         reinplace "s|__FRAMEWORKS_DIR__|${frameworks_dir}|g" \
             ${worksrcpath}/Modules/CMakeFindFrameworks.cmake
+
+        # patch APPLICATIONS_DIR
+        reinplace "s|__APPLICATIONS_DIR__|${applications_dir}|g" \
+            ${worksrcpath}/macports.cmake
     }
 
     post-destroot {
@@ -205,23 +208,13 @@ if {${subport} eq ${name}} {
             xinstall -m 0644 -W ${worksrcpath}/Auxiliary/vim/${type} cmake.vim \
                 ${destroot}${prefix}/share/vim/vimfiles/${type}
         }
-        if ([variant_isset gui]) {
-            set app CMake
-            xinstall -d ${destroot}${applications_dir}/${app}.app/Contents/MacOS \
-                ${destroot}${applications_dir}/${app}.app/Contents/Resources
-            xinstall -m 644 ${filespath}/Info.plist.in ${destroot}${applications_dir}/${app}.app/Contents/Info.plist
-            reinplace "s|@VERSION@|${version}|g" ${destroot}${applications_dir}/${app}.app/Contents/Info.plist
-            reinplace "s|@PREFIX@|${prefix}|g" ${destroot}${applications_dir}/${app}.app/Contents/Info.plist
-            ln -s ${prefix}/bin/cmake-gui ${destroot}${applications_dir}/${app}.app/Contents/MacOS/cmake-gui
-            xinstall -m 644 ${worksrcpath}/Source/QtDialog/CMakeSetup.icns ${destroot}${applications_dir}/${app}.app/Contents/Resources/CMakeSetup.icns
-        }
     }
 
     # All the variants create circular dependencies on 10.6 with libc++,
     # due to the default compiler needing cmake to build.
     if {[info exists cmake_bootstrapping]} {
         set some_variant_disabled 0
-        foreach vname {gui qt4 qt5 docs python35 python36 python37 python38} {
+        foreach vname { qt5 docs python35 python36 python37 python38} {
             if {[variant_isset $vname]} {
                 unset ::variations($vname)
                 set some_variant_disabled 1
@@ -235,42 +228,53 @@ if {${subport} eq ${name}} {
         }
     }
 
-    variant gui description {Build Qt-based cmake-gui} {
-        configure.args-append --qt-gui
-    }
-
-    variant qt4 conflicts qt5 requires gui description {Build Qt GUI using Qt4} {
-        PortGroup qt4 1.0
-        if {${subport} eq ${name}} {
-            patchfiles-append patch-qt4gui.diff
-        } else {
-            patchfiles-append patch-qt4gui.devel.diff
-        }
-        configure.args-append --qt-qmake=${qt_qmake_cmd}
-    }
-
-    variant qt5 conflicts qt4 requires gui description {Build Qt GUI using Qt5} {
+    variant qt5 description {Build Qt GUI using Qt5} {
         PortGroup qt5 1.0
-        if {${subport} eq ${name}} {
-            patchfiles-append patch-qt5gui.diff
-        } else {
-            patchfiles-append patch-qt5gui.devel.diff
-        }
-        configure.args-append --qt-qmake=${qt_qmake_cmd}
+        configure.args-append --qt-gui --qt-qmake=${qt_qmake_cmd}
     }
 
-    if {[variant_isset gui]} {
-        if {![variant_isset qt4] && ![variant_isset qt5]} {
-            default_variants +qt4
-        }
-
-        if {![variant_isset qt4] && ![variant_isset qt5]} {
-            ui_error "\n\nYou must select either the +qt4 or +qt5 variant when using variant +gui.\n"
-            return -code error "Invalid variant selection"
-        }
-    } else {
+    if {![variant_isset qt5]} {
         configure.args-append --no-qt-gui
     }
+
+    # Supported pythons
+    set python_versions {27 35 36 37 38 39}
+
+    set python_isset false
+    foreach pyver ${python_versions} {
+        # Conflicting python versions
+        set other_python_versions {}
+        foreach other_pyver ${python_versions} {
+            if {${other_pyver} ne ${pyver}} {
+                if {${other_pyver} ni ${other_python_versions}} {
+                    lappend other_python_versions python${other_pyver}
+                }
+            }
+        }
+
+        if {[variant_isset python${pyver}]} {
+            set python_isset true
+            set PYTHON_VERSION_WITH_DOT ${python_branch}
+            set PYTHON_VERSION_NO_DOT ${pyver}
+        }
+
+        # Get python branch
+        set python_branch  "[string range ${pyver} 0 end-1].[string index ${pyver} end]"
+
+        variant python${pyver} conflicts {*}${other_python_versions} requires docs description "Build documentation using ${python_branch} sphinx" {}
+    }
+
+    if {[variant_isset docs]} {
+        if {!${python_isset}} {
+            set python_isset true
+            default_variants +python39
+        }
+
+        if {!${python_isset}} {
+            ui_error "\n\nYou must select either the +python35, +python36, +python37, or +python38 variant when using variant +docs.\n"
+            return -code error "Invalid variant selection"
+        }
+
 
     variant docs description {Build documentation: HTML and manpages} {
 
@@ -292,46 +296,6 @@ if {${subport} eq ${name}} {
             port:py${PYTHON_VERSION_NO_DOT}-sphinxcontrib-serializinghtml \
             port:py${PYTHON_VERSION_NO_DOT}-sphinxcontrib-websupport
     }
-
-    variant python35 conflicts python36 python37 python38 requires docs \
-        description {Build documentation using Sphinx from Python 3.5} {}
-
-    variant python36 conflicts python35 python37 python38 requires docs \
-        description {Build documentation using Sphinx from Python 3.6} {}
-
-    variant python37 conflicts python35 python36 python38 requires docs \
-        description {Build documentation using Sphinx from Python 3.7} {}
-
-    variant python38 conflicts python35 python36 python37 requires docs \
-        description {Build documentation using Sphinx from Python 3.8} {}
-
-    if {[variant_isset docs]} {
-
-        if {![variant_isset python35] &&
-            ![variant_isset python36] &&
-            ![variant_isset python37] &&
-            ![variant_isset python38]} {
-            default_variants +python37
-        }
-
-        if {![variant_isset python35] &&
-            ![variant_isset python36] &&
-            ![variant_isset python37] &&
-            ![variant_isset python38]} {
-            ui_error "\n\nYou must select either the +python35, +python36, +python37, or +python38 variant when using variant +docs.\n"
-            return -code error "Invalid variant selection"
-        }
-
-        if {[variant_isset python35]} {
-            set PYTHON_VERSION_WITH_DOT "3.5"
-        } elseif {[variant_isset python36]} {
-            set PYTHON_VERSION_WITH_DOT "3.6"
-        } elseif {[variant_isset python37]} {
-            set PYTHON_VERSION_WITH_DOT "3.7"
-        } else {
-            set PYTHON_VERSION_WITH_DOT "3.8"
-        }
-        set PYTHON_VERSION_NO_DOT [join [split ${PYTHON_VERSION_WITH_DOT} "."] ""]
 
         post-patch {
             reinplace "s|__PYTHON_VERSION_WITH_DOT__|${PYTHON_VERSION_WITH_DOT}|g" ${worksrcpath}/macports.cmake

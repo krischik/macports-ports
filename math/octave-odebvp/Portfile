@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           octave 1.0
 
 octave.setup        odebvp 1.0.6
-revision            4
+revision            5
 platforms           darwin
 license             GPL-2+
 maintainers         nomaintainer
@@ -15,7 +15,8 @@ description         To approximate the solution of the \
                     finite-diffence method.
 long_description    ${description}
 
-checksums           rmd160 f8542decb4d7e3b7852ceb806aa1310367de8c18 \
-                    sha256 36f924e58d80b8f23852a1d4ef8486eba2975e6d20dd00bd4ce3307586eb3f67
+checksums           rmd160  f8542decb4d7e3b7852ceb806aa1310367de8c18 \
+                    sha256  36f924e58d80b8f23852a1d4ef8486eba2975e6d20dd00bd4ce3307586eb3f67 \
+                    size    17562
 
 supported_archs     noarch

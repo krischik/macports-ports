@@ -34,7 +34,12 @@ depends_lib         port:tcl \
                     port:tk
 patchfiles          patch-generic-tixGrSort.c.diff \
                     patch-tk_x11.diff \
-                    patch-dyld_variable.diff
+                    patch-dyld_variable.diff \
+                    implicit.patch
+
+# Fix implicit function declarations
+patchfiles-append   patch-missing-headers.diff \
+                    panic.patch
 
 configure.args      --mandir=${prefix}/share/man \
                     --with-tcl=${prefix}/lib \

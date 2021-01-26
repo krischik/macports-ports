@@ -38,13 +38,13 @@ checksums                       rmd160  8fc103fc519e07e9db522ec2f748838571c71acf
 minimum_xcodeversions           {9 3.1.2}
 
 if {${name} eq ${subport}} {
-revision                        3
+revision                        4
 
 conflicts                       graphviz${otherbranch}
 
 depends_build                   port:pkgconfig
 
-depends_lib                     port:jpeg \
+depends_lib                     path:include/turbojpeg.h:libjpeg-turbo \
                                 port:libpng \
                                 port:webp \
                                 port:fontconfig \
@@ -295,7 +295,7 @@ livecheck.regex                 ${my_name}-(\[0-9\]+\\.\[0-9\]*\[02468\](\\.\[0-
 subport graphviz-gui${thisbranch} {
     PortGroup                   xcode 1.0
     
-    revision                    1
+    revision                    2
 
     conflicts                   graphviz-gui${otherbranch} graphviz-oldgui
     
@@ -319,6 +319,7 @@ subport graphviz-gui${thisbranch} {
     extract.post_args-append    ${worksrcdir}/macosx ${worksrcdir}/doc
     
     patchfiles                  patch-project.pbxproj.diff
+    patchfiles-append           super-dealloc.patch
     
     if {[vercmp ${xcodeversion} 10.0] >= 0} {
         # Xcode 10+ will not build against an IBDocument.SystemTarget of 10.5

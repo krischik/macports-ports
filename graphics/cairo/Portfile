@@ -11,6 +11,7 @@ name                        cairo
 conflicts                   cairo-devel
 set my_name                 cairo
 version                     1.16.0
+revision                    1
 checksums                   rmd160  cfd2ef6ec55b267e04600f6b1e36bb07f2566b35 \
                             sha256  5e7b29b3f113ef870d1e3ecf8adf21f923396401604bda16d44be45e66052331 \
                             size    41997432
@@ -18,8 +19,8 @@ checksums                   rmd160  cfd2ef6ec55b267e04600f6b1e36bb07f2566b35 \
 categories                  graphics
 maintainers                 {ryandesign @ryandesign}
 license                     {LGPL-2.1 MPL-1.1}
-homepage                    https://www.cairographics.org/
-master_sites                ${homepage}releases/
+homepage                    https://www.cairographics.org
+master_sites                ${homepage}/releases/
 platforms                   darwin macosx
 use_parallel_build          yes
 dist_subdir                 ${my_name}
@@ -47,6 +48,14 @@ minimum_xcodeversions       {8 2.4.1}
 
 # Prevent cairo from using librsvg, libspectre, poppler.
 patchfiles-append           patch-configure.diff
+
+# Don't check stderr in configure tests.
+patchfiles-append           dont-check-stderr.patch
+
+# Fix crash on macOS Big Sur and newer.
+# https://gitlab.freedesktop.org/cairo/cairo/-/issues/420
+# https://gitlab.freedesktop.org/cairo/cairo/-/merge_requests/52
+patchfiles-append           patch-cairo-quartz-surfaces.diff
 
 # https://trac.macports.org/ticket/34137
 compiler.blacklist-append   {clang < 318.0.61}
@@ -127,5 +136,5 @@ test.run                    yes
 test.target                 check
 
 livecheck.type              regex
-livecheck.url               ${homepage}news/
+livecheck.url               ${homepage}/news/
 livecheck.regex             ${my_name}-(\[0-9\]+\\.\[0-9\]*\[02468\]\\.\[0-9\]+)

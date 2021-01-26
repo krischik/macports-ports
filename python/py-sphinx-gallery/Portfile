@@ -4,7 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 PortGroup           github 1.0
 
-github.setup        sphinx-gallery sphinx-gallery 0.7.0 v
+github.setup        sphinx-gallery sphinx-gallery 0.8.2 v
+github.tarball_from archive
 revision            0
 name                py-sphinx-gallery
 
@@ -16,11 +17,11 @@ maintainers         {reneeotten @reneeotten} openmaintainer
 description         Extension for automatic generation of an example gallery
 long_description    ${description}
 
-checksums           rmd160  de9c54f9a06bb6be3b51e6909a6a41712b963b8a \
-                    sha256  5d7fa3701e911184a12abc3ed9fc8da1a81db67a9ab535f13056b4f4d95a77de \
-                    size    643249
+checksums           rmd160  6e828a3b277febe63d107622ba930893fc27d0c2 \
+                    sha256  6f7fd5244ad6bbde0a0ffce6bb4e056630be051859c9fa7c4be8fa431a9585d9 \
+                    size    674902
 
-python.versions     27 36 37 38
+python.versions     27 36 37 38 39
 
 if {${subport} ne ${name}} {
     if {${python.version} eq 27} {

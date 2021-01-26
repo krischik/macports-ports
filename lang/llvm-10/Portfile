@@ -11,7 +11,7 @@ set clang_executable_version 10
 set lldb_executable_version 10
 name                    llvm-${llvm_version}
 revision                1
-subport                 clang-${llvm_version} { revision 3 }
+subport                 clang-${llvm_version} { revision 4 }
 subport                 lldb-${llvm_version} { revision 1 }
 set suffix              mp-${llvm_version}
 set sub_prefix          ${prefix}/libexec/llvm-${llvm_version}
@@ -143,6 +143,7 @@ if {${subport} eq "clang-${llvm_version}"} {
         1007-Fix-float.h-to-work-on-Snow-Leopard-and-earlier.patch \
         2001-xray-Define-O_CLOEXEC-for-older-SDKs-that-don-t-have.patch \
         2002-Work-around-no-libdispatch-on-10.6.patch \
+        2003-patch-compiler-rt-support-arm64.diff \
         3001-Fix-missing-long-long-math-prototypes-when-using-the.patch \
         3002-implement-atomic-using-mutex-lock_guard-for-64b-ops-.patch \
         openmp-locations.patch \
@@ -207,14 +208,6 @@ configure.args-append \
     -DFFI_INCLUDE_DIR=`pkg-config --cflags-only-I libffi | sed 's/-I//'` \
     -DFFI_LIBRARY_DIR=${prefix}/lib
 
-if { ${os.platform} eq "darwin" && ${os.major} >= 19 } {
-    # prevent compiler_rt from opportunistically trying to build arm64, which fails
-    # See:  https://trac.macports.org/ticket/61477
-    # and https://github.com/macports/macports-ports/pull/9139
-    supported_archs x86_64
-    configure.args-append -DDARWIN_osx_ARCHS="x86_64\;x86_64h"
-}
-
 if {${subport} eq "llvm-${llvm_version}"} {
     select.group        llvm
     select.file         ${filespath}/mp-${subport}
@@ -267,6 +260,14 @@ if {[string match macports-clang-* ${configure.compiler}]} {
     depends_skip_archcheck-append cctools
 }
 
+if {${os.major} <= 14} {
+    # compiler-rt does a broad search for an SDK it likes, but this
+    # search fails on older systems that don't have a MacOSX.sdk
+    # TODO: apply this always to all systems?
+    if {${configure.sdkroot} eq ""} {set configure.sdkroot "/"}
+    configure.args-append -DDARWIN_osx_SYSROOT="${configure.sdkroot}"
+}
+
 # Set CMAKE_LIBTOOL if we're using MacPorts-provided cctools
 if {[lsearch -exact $PortInfo(depends_build) port:cctools] != -1} {
     configure.args-append \
@@ -289,7 +290,7 @@ platform darwin {
 
     configure.cxx_stdlib libc++
     depends_lib-append port:libcxx
-    supported_archs i386 x86_64
+    supported_archs i386 x86_64 arm64
 
     pre-fetch {
         if {${os.major} < 11} {
@@ -587,7 +588,10 @@ if {${subport} eq "llvm-${llvm_version}"} {
                 ${worksrcpath}/tools/clang/lib/Driver/ToolChains/Darwin.cpp
         }
     }
-    default_variants-append +libstdcxx
+    # at present, only the non-arm archs can use this variant
+    if {${build_arch} in "x86_64 i386 ppc64 ppc"} {
+        default_variants-append +libstdcxx
+    }
 
     post-patch {
         reinplace "s|@@PREFIX@@|${prefix}|" \

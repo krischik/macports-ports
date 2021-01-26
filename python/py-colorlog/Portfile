@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-colorlog
-version             4.1.0
+version             4.7.2
 revision            0
 
 categories-append   devel
@@ -18,11 +18,11 @@ long_description    ${description}
 
 homepage            https://github.com/borntyping/python-colorlog
 
-checksums           rmd160  d9fb219bf2f811f612698f59884f22825d43f41f \
-                    sha256  30aaef5ab2a1873dec5da38fd6ba568fa761c9fa10b40241027fa3edea47f3d2 \
-                    size    26460
+checksums           rmd160  1dd7def948ad041c778cde1295db3306b84aaa6d \
+                    sha256  18d05b616438a75762d7d214b9ec3b05d274466c9f3ddd92807e755840c88251 \
+                    size    28764
 
-python.versions     37 38
+python.versions     37 38 39
 
 if {${name} ne ${subport}} {
     depends_build-append \

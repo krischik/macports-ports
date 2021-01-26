@@ -14,7 +14,11 @@ platforms               darwin
 
 github.author           FStarLang
 
-depends_build           port:ocaml-ocamlbuild
+depends_build           port:ocaml-ocamlbuild \
+                        port:gmake
+
+# Requires gmake 3.82+
+build.cmd               ${prefix}/bin/gmake
 
 depends_lib             port:ocaml-batteries \
                         port:ocaml-stdint \
@@ -45,7 +49,7 @@ if {${fstar.stable}} {
     # Strip everything but <major>.<minor>
     fstar.release       [regsub {^([^\.]+\.[^\.]+).*} ${fstar.version} {\1}]
 } else {
-    fstar.version       20200924
+    fstar.version       20210113
     fstar.release       devel
 }
 
@@ -172,13 +176,13 @@ subport fstar {
 }
 
 subport fstar-devel {
-    github.setup        ${github.author} ${github.project} 39375e7bf186b7b7da4ac34c6076b9bd9d57d28d
+    github.setup        ${github.author} ${github.project} 10b73d927999eac56e4bb0dddf05a14ee39f4372
     version             ${fstar.version}-[string range ${github.version} 0 6]
     revision            0
 
-    checksums           rmd160  4d25e0f0fb7fc665bccede4b7b1ed2896324cfbe \
-                        sha256  0b6b5c040ead589db0755cc0ad04ee83e5162bde80910983835e2112694b2a25 \
-                        size    7619144
+    checksums           rmd160  3f96137351ba0ed2a9c1ca958b2b876ae1de5416 \
+                        sha256  6d9c1f0c274d2b441b345576f9f354043bd1007a93e0e3551142de392f0bcdba \
+                        size    7775119
     github.tarball_from tarball
 
     patchfiles-append   fstar-devel/patch-tests_machine__integers_Makefile
@@ -222,17 +226,18 @@ subport kremlin {
 }
 
 subport kremlin-devel {
-    github.setup        ${github.author} ${fstar.project} 504500d9d25b7098a2c65207c982898bd8566f5e
-    version             20200919-[string range ${github.version} 0 6]
+    github.setup        ${github.author} ${fstar.project} 18a6351f033ead59faa9c70d4cafa8be76c43adb
+    version             ${fstar.version}-[string range ${github.version} 0 6]
     revision            1
 
-    checksums           rmd160  ab0a98761bf2cf1c6485e3d64c3ceac931f89393 \
-                        sha256  a7dcd2b6f5ca93ab22d9bde3ae9d16abd02a9391c602754c4f3363c8c16dceaf \
-                        size    883086
+    checksums           rmd160  ec2932944a1a875a84195ab125b5a5084af882ad \
+                        sha256  fe29545aac1548a428e894fbe19c18ac2e7f68dfe44b01d6a05666fbc0ba99f6 \
+                        size    892722
 
     patchfiles-append   kremlin-devel/patch-clang-driver-options \
                         kremlin-devel/patch-fix-make-command \
                         kremlin-devel/patch-fstar-discover-path \
+                        kremlin-devel/patch-fstar-driver-no-lax \
                         kremlin-devel/patch-test_system_system.h
 
     depends_lib-append  port:ocaml-sedlex

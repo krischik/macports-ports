@@ -3,8 +3,8 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup        libyal libewf 20171104
-revision            1
+github.setup        libyal libewf 20201210
+revision            0
 categories          security
 platforms           darwin
 maintainers         nomaintainer
@@ -22,9 +22,9 @@ github.tarball_from releases
 distname            ${name}-experimental-${version}
 worksrcdir          ${name}-${version}
 
-checksums           rmd160  b96f2431a9d14614c90db1741793f3a10d66facf \
-                    sha256  cf36d3baf3a96dbe566fde55ae7d79fc2e7b998806ab13e0f69915799f19e040 \
-                    size    2243405
+checksums           rmd160  39285fa3bf684a0f7d729781bc0e5830b14fb653 \
+                    sha256  748d567b66ec0510dccaa77a1cb0bb78113df5da734a4847b4d82dd191386837 \
+                    size    2585847
 
 depends_build       port:pkgconfig
 

@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           github 1.0
 PortGroup           cmake 1.1
 
-github.setup        materialx MaterialX 1.37.2 v
+github.setup        materialx MaterialX 1.37.4 v
 name                materialx
 categories          graphics
 platforms           darwin
@@ -27,9 +27,9 @@ long_description    MaterialX is an open standard specification and \
                     and texturing, complex nested materials, and \
                     geometric assignments.
 
-checksums           rmd160  cfabb6a6428a817476a2199d58f8b725cbff3252 \
-                    sha256  ab2f27b2e2e743eab5eef8912099bc7ec097524cfda75e2eeca7a0d9d4a9e21d \
-                    size    62620973
+checksums           rmd160  d7b816731f6f20d810ca30e67227be889995a02c \
+                    sha256  995fb67eed08af79e77b13593d8934d520b7b66cf3b634a9c4c298f425ddd840 \
+                    size    62621904
 
 compiler.cxx_standard 2011
 
@@ -41,7 +41,8 @@ if {${os.major} < 16} {
     configure.objcxxflags-prepend   -isystem ${filespath}/old_appkit_compat
 }
 
-configure.args-append   -DMATERIALX_BUILD_TESTS=OFF
+configure.args-append   -DMATERIALX_BUILD_TESTS=OFF \
+                        -DMATERIAL_BUILD_SHARED_LIBS=ON
 
 post-destroot {
     # MaterialX's build files puts files into a ${prefix}/cmake folder
@@ -71,12 +72,20 @@ post-destroot {
             move ${destroot}${prefix}/$dir $mtlx_share_path
         }
     }
+
+    if {[file exists ${destroot}${prefix}/CHANGELOG.md]} {
+        move ${destroot}${prefix}/CHANGELOG.md $mtlx_share_path
+    }
+    if {[file exists ${destroot}${prefix}/README.md]} {
+        move ${destroot}${prefix}/README.md $mtlx_share_path
+    }
 }
+
+livecheck.regex     releases/tag/v(\\d+\\.\\d+\\.\\d+)
 
 variant viewer description {Build the MaterialX viewer} {
     depends_lib-append      port:nanogui-wjakob
 
-    patchfiles-append       patch-use-macports-nanogui.diff
     post-patch {
         reinplace "/return searchPath/i\\
 \\    // Default search path for MacPorts shared directory.\\
@@ -91,7 +100,10 @@ variant viewer description {Build the MaterialX viewer} {
             ${worksrcpath}/source/MaterialXGenShader/Util.cpp
     }
 
-    configure.args-append   -DMATERIALX_BUILD_VIEWER=ON
+    configure.args-append   -DMATERIALX_BUILD_VIEWER=ON \
+                            -DMATERIALX_NANOGUI_EXTERNAL=ON \
+                            -DNANOGUI_EXTRA_LIBS=glfw \
+                            -DNANOGUI_EXTRA_INCS="${prefix}/include\;${prefix}/include/eigen3\;${prefix}/include/nanovg"
 }
 
 variant oiio requires viewer \
@@ -126,14 +138,27 @@ variant docs description {Build documentation} {
         # conforms with MacPorts' mtree layout.
         reinplace -E {s|(CMAKE_INSTALL_PREFIX.*)documents|\1share/doc|} \
             ${worksrcpath}/documents/CMakeLists.txt
+
+        foreach d [list Contributing Images Specification] {
+            reinplace "\$a\\
+\\
+install(DIRECTORY \${CMAKE_CURRENT_SOURCE_DIR}/$d\\
+\\        DESTINATION \"\${CMAKE_INSTALL_PREFIX}/share/doc/MaterialX\"\\
+\\        MESSAGE_NEVER)\\
+" \
+                ${worksrcpath}/documents/CMakeLists.txt
+        }
     }
 
     configure.args-append   -DMATERIALX_BUILD_DOCS=ON
 
     post-destroot {
-        if {[file exists ${destroot}${prefix}/share/doc/MaterialXDocs]} {
-            move ${destroot}${prefix}/share/doc/MaterialXDocs \
-                 ${destroot}${prefix}/share/doc/MaterialX
+        set materialxdocs ${destroot}${prefix}/share/doc/MaterialXDocs
+        if {[file exists $materialxdocs]} {
+            foreach f [glob -directory $materialxdocs *] {
+                move $f ${destroot}${prefix}/share/doc/MaterialX
+            }
+            delete $materialxdocs
         }
     }
 }

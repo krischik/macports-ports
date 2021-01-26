@@ -1,0 +1,70 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           golang 1.0
+
+go.setup            github.com/containers/podman 2.2.1 v
+revision            0
+
+categories          sysutils
+license             Apache-2
+platforms           darwin
+
+description         Tool for managing OCI containers and pods.
+
+long_description    Podman is a tool for running Linux containers. \
+                    You can do this from a MacOS desktop as long as you have access to a linux box \
+                    either running inside of a VM on the host, or available via the network. \
+                    You need to install the remote client and then setup ssh connection information.
+
+maintainers         nomaintainer
+
+checksums           ${distname}${extract.suffix} \
+    rmd160          e359395e2f869d0db8ebfb1ac955462eec0cf210 \
+    sha256          2e24e829d346d9b8a3650e7b471ecaaadb440d11b84d3aab251dade2952af9a4 \
+    size            9653704
+
+
+post-extract {
+    reinplace "s|-mod=vendor||g" ${worksrcpath}/Makefile
+}
+
+build.cmd           make
+build.target        ${name}-remote-darwin
+
+destroot {
+    xinstall -m 0755 ${worksrcpath}/bin/${name}-remote-darwin ${destroot}${prefix}/bin/${name}-remote
+}
+
+variant bash_completion {
+    depends_run-append path:etc/bash_completion:bash-completion
+
+    post-destroot {
+        set completions_path ${prefix}/share/bash-completion/completions
+        xinstall -d ${destroot}${completions_path}
+        xinstall -m 0644 ${worksrcpath}/completions/bash/${name}-remote ${destroot}${completions_path}/
+    }
+}
+
+variant zsh_completion {
+    depends_run-append path:${prefix}/bin/zsh:zsh
+
+    post-destroot {
+        set site-functions ${destroot}${prefix}/share/zsh/site-functions
+        xinstall -d ${site-functions}
+        xinstall -m 0644 ${worksrcpath}/completions/zsh/_${name}-remote ${site-functions}/
+    }
+}
+
+variant fish_completion description {Enable completion support for fish} {
+    depends_run-append path:${prefix}/bin/fish:fish
+
+    post-destroot {
+        set completions_path ${prefix}/share/fish/completions
+        xinstall -d ${destroot}${completions_path}
+        xinstall -m 644 ${worksrcpath}/completions/fish/${name}-remote.fish ${destroot}${completions_path}/
+    }
+}
+
+github.livecheck.regex  {([^"r-]+)}
+

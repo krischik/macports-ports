@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-jupyterlab_server
-version             1.2.0
+version             2.1.2
 revision            0
 categories-append   devel
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     36 37 38
+python.versions     36 37 38 39
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -20,18 +20,20 @@ long_description    ${description}
 
 homepage            http://jupyter.org/
 
-checksums           rmd160  6fc9490e691c36781a2538c958f10caaf2ed8b67 \
-                    sha256  5431d9dde96659364b7cc877693d5d21e7b80cea7ae3959ecc2b87518e5f5d8c \
-                    size    22238
+checksums           rmd160  a225e8c70dbd550ea4f4d92db10d0b7ec678c080 \
+                    sha256  a71ebeb89eb2ab49eca41768f9840bb6896c264203ea755990313d4dfa610a74 \
+                    size    37300
 
 if {${name} ne ${subport}} {
     depends_build-append \
                         port:py${python.version}-setuptools
-    depends_lib-append  port:py${python.version}-requests \
+    depends_lib-append  port:py${python.version}-babel \
+                        port:py${python.version}-jinja2 \
                         port:py${python.version}-json5 \
                         port:py${python.version}-jsonschema \
-                        port:py${python.version}-notebook \
-                        port:py${python.version}-jinja2
+                        port:py${python.version}-packaging \
+                        port:py${python.version}-requests \
+                        port:py${python.version}-jupyter_server
 
     livecheck.type      none
 }

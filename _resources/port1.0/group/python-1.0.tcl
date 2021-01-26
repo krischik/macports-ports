@@ -23,13 +23,12 @@ use_configure   no
 # we want the default universal variant added despite not using configure
 universal_variant yes
 
-default build.target {build[python_get_defaults jobs_arg]}
-
 post-extract {
     # Prevent setuptools' easy_install from downloading dependencies
     set fs [open $env(HOME)/.pydistutils.cfg w+]
     puts $fs {[easy_install]}
-    puts $fs {allow_hosts = None}
+    puts $fs {index_url = ''}
+    puts $fs {find_links = ''}
     close $fs
     # Same for pip
     file mkdir $env(HOME)/.config/pip
@@ -65,7 +64,7 @@ default python.consistent_destroot yes
 
 proc python_get_version {} {
     if {[string match py-* [option name]]} {
-        return [string range [option subport] 2 3]
+        return [string range [option subport] 2 [string first "-" [option subport]]-1]
     } else {
         return [option python.default_version]
     }
@@ -73,7 +72,7 @@ proc python_get_version {} {
 
 proc python_get_default_version {} {
     global python.versions
-    set def_v 38
+    set def_v 39
     if {[info exists python.versions]} {
         if {${def_v} in ${python.versions}} {
             return ${def_v}
@@ -269,22 +268,86 @@ proc python_set_default_version {option action args} {
 
 
 options python.branch python.prefix python.bin python.lib python.libdir \
-        python.include python.pkgd
-# for pythonXY, python.branch is X.Y
-default python.branch   {[string range ${python.version} 0 end-1].[string index ${python.version} end]}
+        python.include python.pkgd python.pep517
+# for pythonXY, python.branch is X.Y, for pythonXYZ, it's X.YZ
+default python.branch   {[string index ${python.version} 0].[string range ${python.version} 1 end]}
 default python.prefix   {${frameworks_dir}/Python.framework/Versions/${python.branch}}
 default python.bin      {${python.prefix}/bin/python${python.branch}}
 default python.lib      {${python.prefix}/Python}
 default python.pkgd     {${python.prefix}/lib/python${python.branch}/site-packages}
 default python.libdir   {${python.prefix}/lib/python${python.branch}}
 default python.include  {[python_get_defaults include]}
-default build.cmd       {${python.bin} setup.py --no-user-cfg}
-default destroot.cmd    {${python.bin} setup.py --no-user-cfg}
-default destroot.destdir {--prefix=${python.prefix} --root=${destroot}}
+default build.cmd       {[python_get_defaults build_cmd]}
+default build.target    {[python_get_defaults build_target]}
+default destroot.cmd    {[python_get_defaults destroot_cmd]}
+default destroot.destdir {[python_get_defaults destroot_destdir]}
+default destroot.target {[python_get_defaults destroot_target]}
+
+default python.pep517   no
+option_proc python.pep517 python_set_pep517
+proc python_set_pep517 {option action args} {
+    if {$action ne "set"} {
+        return
+    }
+    global python.pep517 python.version subport name
+    if {$subport ne $name} {
+        if {[string is true -strict ${python.pep517}]} {
+            depends_build-append    port:py${python.version}-pep517 \
+                                    port:py${python.version}-python-install
+        } else {
+            depends_build-delete    port:py${python.version}-pep517 \
+                                    port:py${python.version}-python-install
+        }  
+    }
+}
 
 proc python_get_defaults {var} {
-    global python.version python.branch python.prefix
+    global python.version python.branch python.prefix python.bin python.pep517 workpath
     switch -- $var {
+        binary_suffix {
+            if {[string match py-* [option name]]} {
+                return -${python.branch}
+            } else {
+                return ""
+            }
+        }
+        build_cmd {
+            if {${python.pep517}} {
+                return "${python.bin} -m pep517.build --no-deps --binary --out-dir ${workpath}"
+            } else {
+                return "${python.bin} setup.py --no-user-cfg"
+            }
+        }
+        build_target {
+            global worksrcpath
+            if {${python.pep517}} {
+                return ${worksrcpath}
+            } else {
+                return build[python_get_defaults jobs_arg]
+            }
+        }
+        destroot_cmd {
+            if {${python.pep517}} {
+                return "${python.bin} -m install --verbose"
+            } else {
+                return "${python.bin} setup.py --no-user-cfg"
+            }
+        }
+        destroot_destdir {
+            global destroot
+            if {${python.pep517}} {
+                return "--destdir ${destroot}"
+            } else {
+                return "--prefix=${python.prefix} --root=${destroot}"
+            }
+        }
+        destroot_target {
+            if {${python.pep517}} {
+                return [glob -nocomplain -directory ${workpath} *.whl]
+            } else {
+                return install
+            }
+        }
         include {
             set inc_dir "${python.prefix}/include/python${python.branch}"
             if {[file exists ${inc_dir}]} {
@@ -303,13 +366,6 @@ proc python_get_defaults {var} {
                 } else {
                     return [lindex ${inc_dirs} 0]
                 }
-            }
-        }
-        binary_suffix {
-            if {[string match py-* [option name]]} {
-                return -${python.branch}
-            } else {
-                return ""
             }
         }
         jobs_arg {

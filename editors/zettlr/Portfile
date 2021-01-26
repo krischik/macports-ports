@@ -1,0 +1,78 @@
+# -*- coding: utf-8; mode: tcl; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- vim:fenc=utf-8:ft=tcl:et:sw=4:ts=4:sts=4
+
+PortSystem          1.0
+PortGroup           github 1.0
+
+github.setup        Zettlr Zettlr 1.8.7 v
+name                zettlr
+revision            0
+
+homepage            https://www.zettlr.com
+
+description         A Markdown Editor for the 21st century.
+
+long_description    Zettlr is a Markdown Editor for the 21st century. \
+                    Zettlr supercharges your writing experience and makes no \
+                    compromises.  It supports standard Markdown and does not \
+                    need any special handling.  Just pull in your existing \
+                    notes, Zettelkasten, and paper projects and start working \
+                    on them immediately.  Zettlr uses a WYSIWYM (What You See \
+                    Is What You Mean) approach and renders certain elements \
+                    such as links directly for your convenience.  Zettlr is \
+                    the first Markdown editor directly aimed at writing \
+                    professionally. Whether you are a college student, a \
+                    researcher, a journalist or an author -- Zettlr has the \
+                    right tools for you.
+
+categories          editors aqua
+license             GPL-3
+platforms           darwin
+supported_archs     x86_64 arm64
+
+maintainers         {gmail.com:herby.gillot @herbygillot} \
+                    openmaintainer
+
+checksums           ${distname}${extract.suffix} \
+                    rmd160  58fd25b4b57c4ecdc2ebff68bb32539c4e950acd \
+                    sha256  04db4b72792a7293da610eebe365924ba61b6731666b17a13308f555a46e919b \
+                    size    25086459
+
+depends_build       port:yarn
+
+build.env-append    CSC_IDENTITY_AUTO_DISCOVERY=false
+
+use_configure       no
+use_xcode           yes
+
+build {
+    switch $build_arch {
+        x86_64 {
+            set package_target {mac-x64}
+        }
+       arm64 {
+            set package_target {mac-arm}
+        }
+    }
+
+    # Fetch and build JS dependencies
+    system -W ${worksrcpath} "${build.env} yarn install --frozen-lockfile"
+
+    # Build reveal.js templates
+    system -W ${worksrcpath} "${build.env} yarn reveal:build"
+
+    # We allow Zettlr to download its own Pandoc bin, as:
+    # a) It seeks a more recent version than the one MacPorts provides
+    # a) It will be embedded into the .app bundle and not affect the ports
+    #    tree.
+    system -W ${worksrcpath} "./scripts/get-pandoc.sh darwin"
+
+    # Build electron app
+    system -W ${worksrcpath} "${build.env} yarn package:${package_target}"
+}
+
+destroot {
+    copy ${worksrcpath}/out/Zettlr-darwin-x64/Zettlr.app \
+        ${destroot}${applications_dir}
+}
+
+github.livecheck.regex {([0-9.]+)}

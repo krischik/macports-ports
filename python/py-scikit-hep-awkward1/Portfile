@@ -6,7 +6,7 @@ PortGroup           github           1.0
 
 name                py-scikit-hep-awkward1
 
-github.setup        scikit-hep awkward-1.0 0.4.4
+github.setup        scikit-hep awkward-1.0 1.0.0
 revision            0
 fetch.type          git
 
@@ -44,3 +44,6 @@ if {${name} ne ${subport}} {
     livecheck.type none 
 
 }
+
+# Exclude pre-release candidates
+github.livecheck.regex {([0-9.]+)}

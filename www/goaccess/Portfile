@@ -3,21 +3,21 @@
 PortSystem          1.0
 
 name                goaccess
-version             1.4.2
+version             1.4.5
 revision            0
 categories          www
 license             MIT
 maintainers         {mps @Schamschula} openmaintainer
 description         GoAccess was designed to be a fast, terminal-based log analyzer.
-long_description    ${description} Its core idea is to quickly analyze and view web \
+long_description    {*}${description} Its core idea is to quickly analyze and view web \
                     server statistics in real time without needing to use your browser.
 platforms           darwin
 homepage            https://goaccess.io/
 master_sites        http://tar.goaccess.io/
 
-checksums           rmd160  1ed45b33e5f33d05a6cec15ef7e3c1be3788073c \
-                    sha256  f0ea433170058866e57bd5d0f98dc70c3857f4762ca5a29e6ece26d2ccce4f67 \
-                    size    633162
+checksums           rmd160  99647f27c4232632981d02f10e25570c6417a721 \
+                    sha256  c4820e781f75d9446f6b1be5fc8d11c6ec94a47fa8dd523001698c589f46c1ba \
+                    size    634067
 
 configure.args      --enable-tcb \
                     --enable-utf8 \

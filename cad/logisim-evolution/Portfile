@@ -4,7 +4,7 @@ PortSystem          1.0
 PortGroup           java 1.0
 PortGroup           github 1.0
 
-github.setup        reds-heig logisim-evolution 3.3.6 v
+github.setup        reds-heig logisim-evolution 3.4.1 v
 revision            0
 
 categories          cad education java
@@ -18,9 +18,9 @@ description         Digital logic designer and simulator
 long_description    Logisim is an educational tool for designing and \
                     simulating digital logic circuits.
 
-checksums           rmd160  2f16261e7414be7fc6947f66271cddb3c5d2e2cb \
-                    sha256  06344fbf4c6a5f8d0809aecba7a0e7ce790e8e9ef24e69874e7f52c6b2d1424f \
-                    size    39941718
+checksums           rmd160  091de52b18a59d9ee79ca1d53fa6975e1a32413b \
+                    sha256  2d7033b81f6df26721dac35128f8cbb4aaea4ad68c89adf063e47b3100674cf4 \
+                    size    39992751
 
 java.version        1.8+
 java.fallback       openjdk10

@@ -83,11 +83,18 @@ platform darwin {
 
 if {$subport eq $name || $subport eq "emacs-app"} {
     version         27.1
-    revision        2
+    revision        5
 
     checksums       rmd160  9ddfd28ab54c4aee168eeecb783d13599e5b5288 \
                     sha256  ffbfa61dc951b92cf31ebe3efc86c5a9d4411a1222b8a4ae6716cfd0e2a584db \
                     size    65782481
+
+    # apply upstream patch to fix configure on arm machines
+    # See https://trac.macports.org/ticket/61594 and
+    # https://git.savannah.gnu.org/cgit/emacs.git/commit/configure.ac?id=4cba236749aafade7bd88cf2a10be48f44983faa
+    patchfiles-append patch-4cba236749aafade7bd88cf2a10be48f44983faa.diff \
+                      apple-silicon-codesign.diff
+    use_autoreconf  yes
 }
 
 if {$subport eq "emacs-devel" || $subport eq "emacs-app-devel"} {
@@ -95,19 +102,43 @@ if {$subport eq "emacs-devel" || $subport eq "emacs-app-devel"} {
     PortGroup       legacysupport 1.0
     legacysupport.newest_darwin_requires_legacy 13
 
-    epoch           1
-    version         20200811
-    revision        2
+    epoch           2
+    version         20210105
 
     fetch.type      git
-    git.url         https://github.com/emacs-mirror/emacs.git
-    git.branch      2a47ef86e95fad1dcc14a02e7471ba5d9cad4b9b
+    git.url         --depth=1000 https://github.com/emacs-mirror/emacs.git
+    git.branch      80e26472206cc44837521ba594cd50e724d9af5c
 
     pre-configure {
         system -W ${worksrcpath} "sh ./autogen.sh"
     }
 
     livecheck.type none
+
+    variant nativecomp description {Builds emacs with native compilation support} {
+        git.url-prepend  --branch feature/native-comp
+        git.branch       8ad983c4acef60a80e8d6b6ba891b1ef957f2d7c
+
+        depends_build-append     port:coreutils
+        depends_lib-append       port:gcc10
+
+        configure.install        ${prefix}/bin/ginstall
+        configure.args-append    --with-nativecomp
+
+        compiler.cpath-prepend   ${prefix}/include/gcc10
+        compiler.library_path-prepend \
+                                 ${prefix}/lib/gcc10
+
+        build.args-append        NATIVE_FULL_AOT=1 \
+            {BYTE_COMPILE_EXTRA_FLAGS='--eval "(setq comp-speed 2)"'}
+
+        if {$subport eq "emacs-app-devel"} {
+            post-patch {
+                reinplace {s|^ELN_DESTDIR =.*|ELN_DESTDIR="${ns_appbindir}/../"|g} \
+                    Makefile.in
+            }
+        }
+    }
 } else {
     livecheck.type  regex
     livecheck.url   https://ftp.gnu.org/gnu/emacs/?C=M&O=D
@@ -133,7 +164,7 @@ if {$subport eq $name || $subport eq "emacs-devel"} {
         depends_lib-append      port:xorg-libXmu \
             port:xorg-libXaw \
             port:xpm \
-            port:jpeg \
+            path:include/turbojpeg.h:libjpeg-turbo \
             port:tiff \
             port:giflib \
             port:libpng \
@@ -152,14 +183,14 @@ if {$subport eq $name || $subport eq "emacs-devel"} {
         depends_lib-append      lib:libXm:openmotif
     }
 
-    variant gtk requires x11 description {Builds emacs as an X11 program with GTK+2 widgets} {
+    variant gtk requires x11 description {Builds emacs as an X11 program with GTK+3 widgets} {
         configure.args-delete   --with-x-toolkit=lucid
         configure.args-delete   --without-gconf
         configure.args-delete   --without-rsvg
-        configure.args-append   --with-x-toolkit=gtk2
+        configure.args-append   --with-x-toolkit=gtk3
         configure.args-append   --with-gconf
         configure.args-append   --with-rsvg
-        depends_lib-append      port:gtk2 \
+        depends_lib-append      port:gtk3 \
                                 path:lib/pkgconfig/glib-2.0.pc:glib2 \
                                 port:gconf \
                                 port:librsvg
@@ -240,4 +271,16 @@ if {$subport eq "emacs-app" || $subport eq "emacs-app-devel"} {
     }
 
     default_variants +rsvg
+}
+
+if {$subport eq $name || $subport eq "emacs-devel"} {
+    variant xwidgets requires gtk description {Enable use of xwidgets in Emacs buffers} {
+        configure.args-append  --with-xwidgets
+    }
+} elseif {$subport eq "emacs-app-devel"} {
+    # Quartz support was added after 27.1 had released via commit: d089c4fbfc8be432dc3015a99b4044dab0a0de97
+    # As soon as the next version is released it should support also emacs-app
+    variant xwidgets description {Enable use of xwidgets in Emacs buffers} {
+        configure.args-append  --with-xwidgets
+    }
 }

@@ -3,11 +3,11 @@
 PortSystem          1.0
 
 name                highlight
-version             3.58
+version             3.60
 revision            0
-checksums           rmd160  679448f782a93cd44f8d84bea81093d20a166103 \
-                    sha256  df80251be1f83adfc58aaad589fd9a8f9a3866b0d89b9f3c81b1696f07db45f8 \
-                    size    1416199
+checksums           rmd160  b74a5e64d57c6b6a64771b6957929c9320f47aea \
+                    sha256  a65cb4bf6e3d9440500ddd5116ce96edd14014c3d44eb77eba533870e4e71d25 \
+                    size    1412486
 
 categories          textproc devel
 platforms           darwin

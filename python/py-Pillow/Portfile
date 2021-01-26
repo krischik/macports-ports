@@ -4,8 +4,8 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-Pillow
-version             8.0.1
-revision            0
+version             8.1.0
+revision            1
 categories-append   devel
 platforms           darwin
 license             BSD
@@ -19,16 +19,16 @@ long_description    ${description}
 
 homepage            https://github.com/python-imaging/Pillow
 
-checksums           rmd160  e1ed47669f9593ce0c7401a94ea38371688e6c0b \
-                    sha256  11c5c6e9b02c9dac08af04f093eb5a2f84857df70a7d4a6a6ad461aca803fb9e \
-                    size    44620531
+checksums           rmd160  79ba951cd01ee56aba5a592034136539eb708f1d \
+                    sha256  887668e792b7edbfb1d3c9d8b5d8c859269a0f0eba4dda562adb95500f60dbba \
+                    size    44934336
 
 if {${name} ne ${subport}} {
     conflicts           py${python.version}-pil
 
     if {${python.version} < 36} {
         version             6.2.1
-        revision            0
+        revision            1
         distname            ${python.rootname}-${version}
         checksums           rmd160  b6a0743f45072e5000f4d985dc1274d32bb7a40b \
                             sha256  bf4e972a88f8841d8fdc6db1a75e0f8d763e66e3754b03006cbc3854d89f1cb1 \
@@ -46,7 +46,7 @@ if {${name} ne ${subport}} {
     depends_lib-append  port:py${python.version}-tkinter \
                         port:py${python.version}-olefile \
                         port:zlib \
-                        port:jpeg \
+                        path:include/turbojpeg.h:libjpeg-turbo \
                         port:tiff \
                         port:lcms2 \
                         port:webp \

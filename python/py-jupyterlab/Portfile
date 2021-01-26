@@ -4,14 +4,14 @@ PortSystem          1.0
 PortGroup           python 1.0
 
 name                py-jupyterlab
-version             2.2.9
+version             3.0.5
 revision            0
 categories-append   devel
 platforms           darwin
 license             BSD
 supported_archs     noarch
 
-python.versions     37 38
+python.versions     36 37 38 39
 
 maintainers         {stromnov @stromnov} openmaintainer
 
@@ -24,15 +24,21 @@ long_description    JupyterLab enables you to work with documents and \
 
 homepage            https://jupyter.org/
 
-checksums           rmd160  f6a529118e3483542aabe4d9cd97185827d3a411 \
-                    sha256  3be8f8edea173753dd838c1b6d3bbcb6f5c801121f824a477025c1b6a1d33dc6 \
-                    size    8535511
+checksums           rmd160  7846b2b10ed0a26642496e9bb295ae882fb8904d \
+                    sha256  ea75d43d9a054e9192b78ae1eefa72270818d1d787ec21f19db1a92d5cc8db35 \
+                    size    9844628
 
 if {${name} ne ${subport}} {
+    depends_build-append \
+                        port:py${python.version}-jupyter_packaging
     depends_lib-append  port:py${python.version}-setuptools \
-                        port:py${python.version}-notebook \
+                        port:py${python.version}-ipython \
+                        port:py${python.version}-packaging \
                         port:py${python.version}-tornado \
+                        port:py${python.version}-jupyter_core \
                         port:py${python.version}-jupyterlab_server \
+                        port:py${python.version}-jupyter_server \
+                        port:py${python.version}-nbclassic \
                         port:py${python.version}-jinja2
 
     build.args-append   --skip-npm
@@ -43,7 +49,7 @@ if {${name} ne ${subport}} {
     livecheck.type      none
 }
 
-foreach {old new} {27 37 35 37 36 37} {
+foreach {old new} {27 38 35 38} {
     subport py${old}-${python.rootname} "
         replaced_by py${new}-${python.rootname}
         PortGroup obsolete 1.0
